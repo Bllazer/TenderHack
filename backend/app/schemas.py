@@ -1,7 +1,7 @@
 from datetime import datetime
-from typing import Literal
+from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, StringConstraints, model_validator
 
 
 class CategoryOut(BaseModel):
@@ -54,6 +54,7 @@ class AnalysisCreate(BaseModel):
     title: str | None = Field(default=None, min_length=1, max_length=1024)
     description: str | None = None
     attributes: list[InputAttribute] = Field(default_factory=list, max_length=100)
+    confirmed_ktru_code: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=64)] | None = None
 
     @model_validator(mode="after")
     def require_source(self):
@@ -90,6 +91,7 @@ class AnalysisResult(BaseModel):
     issues: list[Issue] = Field(default_factory=list)
     next_steps: list[str] = Field(default_factory=list)
     selected_ktru_code: str | None = None
+    confirmed_by_user: bool = False
 
 
 class AnalysisOut(BaseModel):

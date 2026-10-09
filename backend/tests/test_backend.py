@@ -15,7 +15,7 @@ from app import import_catalog
 from app.config import settings
 from app.db import get_session
 from app.main import app
-from app.models import Attribute, Category, CategoryAttribute, STE
+from app.models import Analysis, Attribute, Category, CategoryAttribute, STE
 
 
 @pytest.fixture
@@ -85,7 +85,7 @@ def test_empty_then_demo_and_saved_results(backend):
     for attributes, expected in [
         ([], "ambiguous"),
         ([{"name": "Материал", "value": "бумага"}], "needs_input"),
-        ([{"name": "Материал", "value": "бумага"}, {"name": "Объем", "value": "200", "unit": "мл"}], "resolved"),
+        ([{"name": "Материал", "value": "бумага"}, {"name": "Объем", "value": "200", "unit": "мл"}], "needs_input"),
     ]:
         response = client.post("/api/v1/analyses", json={"title": "test", "attributes": attributes})
         assert response.status_code == 201
@@ -125,7 +125,8 @@ def test_reimport_replaces_rules_and_updates_rows(backend):
         assert len(session.scalars(select(CategoryAttribute)).all()) == 2
         assert session.scalar(select(STE)).title == "changed"
     response = backend[0].post("/api/v1/analyses", json={
-        "title": "test", "attributes": [{"name": "Материал", "value": "картон"}]
+        "title": "test", "attributes": [{"name": "Материал", "value": "картон"}],
+        "confirmed_ktru_code": "DEMO-CUP-PAPER"
     }).json()
     assert response["status"] == "resolved"
 
@@ -200,9 +201,11 @@ def test_errors_never_resolve(backend, extra, code):
     if extra["name"] != "Объем":
         attributes.append({"name": "Объем", "value": "200"})
     attributes.append(extra)
-    response = backend[0].post("/api/v1/analyses", json={"title": "test", "attributes": attributes}).json()
+    response = backend[0].post("/api/v1/analyses", json={"title": "test", "attributes": attributes,
+        "confirmed_ktru_code": "DEMO-CUP-PAPER"}).json()
     assert response["status"] == "needs_input"
     assert response["result"]["selected_ktru_code"] is None
+    assert response["result"]["confirmed_by_user"] is False
     assert code in {issue["code"] for issue in response["result"]["issues"]}
 
 
@@ -225,10 +228,114 @@ def test_numeric_allowed_values_use_numeric_equality(backend):
     for category in data["categories"]:
         category["attributes"][0]["allowed_values"] = ["200,0"]
     load(backend, data)
-    response = backend[0].post("/api/v1/analyses", json={"title": "test", "attributes": [
+    response = backend[0].post("/api/v1/analyses", json={"title": "test", "confirmed_ktru_code": "DEMO-CUP-PAPER", "attributes": [
         {"name": "Материал", "value": "бумага"}, {"name": "Объем", "value": "200.00"}
     ]}).json()
     assert response["status"] == "resolved"
+
+
+def test_single_candidate_requires_manual_confirmation(backend):
+    load(backend)
+    body = {"title": "Стакан", "attributes": [
+        {"name": "Материал", "value": "бумага"}, {"name": "Объем", "value": "200", "unit": "мл"}
+    ]}
+    client = backend[0]
+    initial = client.post("/api/v1/analyses", json=body).json()
+    assert initial["status"] == "needs_input"
+    assert len(initial["result"]["candidates"]) == 1
+    assert initial["result"]["selected_ktru_code"] is None
+    assert initial["result"]["confirmed_by_user"] is False
+    assert any("confirmed_ktru_code" in step for step in initial["result"]["next_steps"])
+    confirmed = client.post("/api/v1/analyses", json={**body, "confirmed_ktru_code": "DEMO-CUP-PAPER"})
+    assert confirmed.status_code == 201
+    result = confirmed.json()
+    assert result["status"] == "resolved"
+    assert result["result"]["selected_ktru_code"] == "DEMO-CUP-PAPER"
+    assert result["result"]["confirmed_by_user"] is True
+    assert result["engine_version"] == "catalog-baseline-v2"
+    assert result["id"] != initial["id"]
+    assert client.get(f"/api/v1/analyses/{result['id']}").json() == result
+    assert client.get(f"/api/v1/analyses/{initial['id']}").json() == initial
+
+
+def test_manual_choice_between_compatible_candidates(backend):
+    data = demo()
+    for category in data["categories"]:
+        category["attributes"][1]["allowed_values"] = ["бумага"]
+    load(backend, data)
+    body = {"title": "test", "attributes": [
+        {"name": "Материал", "value": "бумага"}, {"name": "Объем", "value": "200"}
+    ]}
+    initial = backend[0].post("/api/v1/analyses", json=body).json()
+    assert initial["status"] == "ambiguous"
+    assert len(initial["result"]["candidates"]) == 2
+    for code in ("DEMO-CUP-PAPER", "DEMO-CUP-PLASTIC"):
+        result = backend[0].post("/api/v1/analyses", json={**body, "confirmed_ktru_code": code}).json()
+        assert result["status"] == "resolved"
+        assert result["result"]["selected_ktru_code"] == code
+        assert result["result"]["confirmed_by_user"] is True
+
+
+@pytest.mark.parametrize("code", ["DEMO-CUP-PLASTIC", "MISSING"])
+def test_incompatible_confirmation_is_rejected_without_saving(backend, code):
+    load(backend)
+    with backend[1]() as session:
+        before = session.scalars(select(Analysis)).all()
+    response = backend[0].post("/api/v1/analyses", json={"title": "test", "confirmed_ktru_code": code,
+        "attributes": [{"name": "Материал", "value": "бумага"}, {"name": "Объем", "value": "200"}]})
+    assert response.status_code == 422
+    assert response.json()["detail"]["code"] == "incompatible_ktru_code"
+    assert response.json()["detail"]["field"] == "confirmed_ktru_code"
+    with backend[1]() as session:
+        assert len(session.scalars(select(Analysis)).all()) == len(before)
+
+
+def test_confirmation_cannot_bypass_required_attributes(backend):
+    load(backend)
+    result = backend[0].post("/api/v1/analyses", json={"title": "test", "confirmed_ktru_code": "DEMO-CUP-PAPER",
+        "attributes": [{"name": "Материал", "value": "бумага"}]}).json()
+    assert result["status"] == "needs_input"
+    assert result["result"]["selected_ktru_code"] is None
+    assert result["result"]["confirmed_by_user"] is False
+    assert "Объем" in result["result"]["candidates"][0]["missing_required"]
+
+
+@pytest.mark.parametrize("code", ["", "   "])
+def test_blank_confirmation_is_invalid(backend, code):
+    response = backend[0].post("/api/v1/analyses", json={"title": "test", "confirmed_ktru_code": code})
+    assert response.status_code == 422
+
+
+def test_confirmation_requires_nonempty_catalog(backend):
+    response = backend[0].post("/api/v1/analyses", json={"title": "test", "confirmed_ktru_code": "MISSING"})
+    assert response.status_code == 422
+    assert response.json()["detail"]["code"] == "incompatible_ktru_code"
+
+
+def test_old_results_do_not_claim_manual_confirmation(backend):
+    with backend[1]() as session:
+        item = Analysis(title="old", input_attributes=[], status="resolved",
+                        result={"selected_ktru_code": "DEMO-CUP-PAPER"}, engine_version="catalog-baseline-v1")
+        session.add(item)
+        session.commit()
+        analysis_id = item.id
+    response = backend[0].get(f"/api/v1/analyses/{analysis_id}").json()
+    assert response["status"] == "resolved"
+    assert response["result"]["confirmed_by_user"] is False
+    assert response["engine_version"] == "catalog-baseline-v1"
+
+
+def test_confirmation_checks_all_candidates_before_response_limit(backend):
+    data = demo()
+    template = data["categories"][1]
+    data["categories"] = [{**template, "ktru_code": f"DEMO-{index:02d}"} for index in range(21)]
+    load(backend, data)
+    result = backend[0].post("/api/v1/analyses", json={"title": "test", "confirmed_ktru_code": "DEMO-20",
+        "attributes": [{"name": "Материал", "value": "бумага"}, {"name": "Объем", "value": "200"}]}).json()
+    assert result["status"] == "resolved"
+    assert result["result"]["selected_ktru_code"] == "DEMO-20"
+    assert len(result["result"]["candidates"]) == 20
+    assert any(candidate["ktru_code"] == "DEMO-20" for candidate in result["result"]["candidates"])
 
 
 def test_ready_rejects_unmigrated_database(backend):

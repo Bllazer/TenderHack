@@ -36,7 +36,10 @@ def test_narrowing_and_unit_error():
         status, result = analyze(db, [])
         assert status == "ambiguous" and len(result.candidates) == 2
         status, result = analyze(db, [InputAttribute(name="Материал", value="бумага")])
+        assert status == "needs_input" and result.selected_ktru_code is None
+        status, result = analyze(db, [InputAttribute(name="Материал", value="бумага")], "DEMO-1")
         assert status == "resolved" and result.selected_ktru_code == "DEMO-1"
+        assert result.confirmed_by_user is True
         status, result = analyze(db, [InputAttribute(name="Материал", value="стекло")])
         assert status == "needs_input" and result.issues[-1].code == "no_match"
 
@@ -49,6 +52,6 @@ def test_invalid_unit_cannot_resolve():
         db.flush()
         db.add(CategoryAttribute(category_id=cup.id, attribute_id=volume.id, required=True, allowed_values=[]))
         db.flush()
-        status, result = analyze(db, [InputAttribute(name="Объем", value="200", unit="л")])
+        status, result = analyze(db, [InputAttribute(name="Объем", value="200", unit="л")], "DEMO-3")
         assert status == "needs_input"
         assert result.issues[0].code == "unit_mismatch"

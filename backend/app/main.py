@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import func, select, text
 from sqlalchemy.exc import IntegrityError
 
-from app.analysis import analyze
+from app.analysis import IncompatibleKtruCode, analyze
 from app.config import settings
 from app.db import SessionDep
 from app.models import Analysis, Attribute, Category, CategoryAttribute, Feedback, STE
@@ -110,10 +110,14 @@ def create_analysis(body: AnalysisCreate, session: SessionDep):
         raise HTTPException(404, "ste_not_found")
     title = body.title or ste.title
     description = body.description if body.description is not None else (ste.description if ste else None)
-    status_name, result = analyze(session, body.attributes)
+    try:
+        status_name, result = analyze(session, body.attributes, body.confirmed_ktru_code)
+    except IncompatibleKtruCode as exc:
+        raise HTTPException(422, detail={"code": "incompatible_ktru_code", "field": "confirmed_ktru_code",
+                                        "message": "Подтверждённый код не входит в совместимые конечные позиции КТРУ"}) from exc
     item = Analysis(ste_id=body.ste_id, title=title, description=description,
                     input_attributes=[x.model_dump() for x in body.attributes],
-                    status=status_name, result=result.model_dump())
+                    status=status_name, result=result.model_dump(), engine_version="catalog-baseline-v2")
     session.add(item)
     session.commit()
     session.refresh(item)

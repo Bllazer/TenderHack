@@ -14,9 +14,16 @@ def canon(text: str) -> str:
     return " ".join(text.casefold().replace("ё", "е").split())
 
 
-def analyze(session: Session, attributes: list[InputAttribute]) -> tuple[str, AnalysisResult]:
+class IncompatibleKtruCode(ValueError):
+    pass
+
+
+def analyze(session: Session, attributes: list[InputAttribute],
+            confirmed_ktru_code: str | None = None) -> tuple[str, AnalysisResult]:
     categories = session.scalars(select(Category).where(Category.is_leaf.is_(True)).order_by(Category.ktru_code)).all()
     if not categories:
+        if confirmed_ktru_code is not None:
+            raise IncompatibleKtruCode(confirmed_ktru_code)
         return "needs_data", AnalysisResult(
             issues=[Issue(field="catalog", code="catalog_empty", message="Справочник КТРУ ещё не загружен")],
             next_steps=["Загрузить справочник категорий и характеристик"],
@@ -72,19 +79,31 @@ def analyze(session: Session, attributes: list[InputAttribute]) -> tuple[str, An
                                     name=category.name, matched_attributes=matched, missing_required=missing))
 
     candidates.sort(key=lambda item: (len(item.missing_required), item.ktru_code))
-    candidates = candidates[:20]
-    result = AnalysisResult(normalized_attributes=normalized, candidates=candidates, issues=issues)
+    selected = None
+    if confirmed_ktru_code is not None:
+        selected = next((candidate for candidate in candidates if candidate.ktru_code == confirmed_ktru_code), None)
+        if selected is None:
+            raise IncompatibleKtruCode(confirmed_ktru_code)
+    visible = candidates[:20]
+    if selected is not None and selected not in visible:
+        visible = [*visible[:19], selected]
+    result = AnalysisResult(normalized_attributes=normalized, candidates=visible, issues=issues)
     if not candidates:
         result.issues.append(Issue(field="attributes", code="no_match", message="Совместимый код КТРУ не найден"))
         result.next_steps = ["Проверьте названия, значения и единицы характеристик"]
         return "needs_input", result
-    if len(candidates) == 1 and not candidates[0].missing_required and not issues and normalized:
-        result.selected_ktru_code = candidates[0].ktru_code
+    if selected is not None and not selected.missing_required and not issues:
+        result.selected_ktru_code = selected.ktru_code
+        result.confirmed_by_user = True
         return "resolved", result
-    missing = sorted({name for candidate in candidates for name in candidate.missing_required})
-    result.next_steps = ([f"Уточните характеристику: {name}" for name in missing[:5]] or
-                         ["Добавьте характеристику, различающую варианты КТРУ"])
-    return ("ambiguous" if len(candidates) > 1 and not issues else "needs_input"), result
+    missing = sorted({name for candidate in ([selected] if selected is not None else candidates)
+                      for name in candidate.missing_required})
+    result.next_steps = [f"Уточните характеристику: {name}" for name in missing[:5]]
+    if issues:
+        result.next_steps.insert(0, "Исправьте ошибки входных характеристик перед подтверждением кода КТРУ")
+    if selected is None:
+        result.next_steps.append("Проверьте соответствие категории товару и подтвердите код через confirmed_ktru_code")
+    return ("ambiguous" if selected is None and len(candidates) > 1 and not issues else "needs_input"), result
 
 
 def value_allowed(attribute: Attribute, value: str, allowed: list[str]) -> bool:
