@@ -90,6 +90,9 @@ def load(path: Path) -> None:
             if row.parent_code and row.parent_code not in categories:
                 raise ValueError(f"Unknown parent: {row.parent_code}")
             obj.parent_id = categories[row.parent_code].id if row.parent_code else None
+            # An omitted field is a metadata-only update; [] explicitly clears rules.
+            if "attributes" not in row.model_fields_set:
+                continue
             if len({rule.attribute for rule in row.attributes}) != len(row.attributes):
                 raise ValueError(f"Duplicate category rules: {row.ktru_code}")
             # Each supplied category carries its complete current rule set.

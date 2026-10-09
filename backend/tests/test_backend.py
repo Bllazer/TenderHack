@@ -130,6 +130,43 @@ def test_reimport_replaces_rules_and_updates_rows(backend):
     assert response["status"] == "resolved"
 
 
+@pytest.mark.parametrize("mode", ["replace", "clear", "omit"])
+def test_category_attributes_import_contract(backend, mode):
+    load(backend)
+    original = snapshot(backend[1])["category_attributes"]
+    data = demo()
+    category = data["categories"][0]
+    category["name"] = "updated metadata"
+    if mode == "replace":
+        category["attributes"] = [
+            {"attribute": "Материал", "required": False, "allowed_values": ["стекло"]}
+        ]
+    elif mode == "clear":
+        category["attributes"] = []
+    else:
+        del category["attributes"]
+    load(backend, data)
+    # Repeating each form must preserve its meaning and row identities.
+    first = snapshot(backend[1])
+    load(backend, data)
+    assert snapshot(backend[1]) == first
+    with backend[1]() as session:
+        item = session.scalar(select(Category).where(Category.ktru_code == category["ktru_code"]))
+        assert item.name == "updated metadata"
+        rules = session.scalars(select(CategoryAttribute).where(CategoryAttribute.category_id == item.id)).all()
+        if mode == "replace":
+            assert len(rules) == 1
+            assert session.get(Attribute, rules[0].attribute_id).name == "Материал"
+            assert rules[0].required is False
+            assert rules[0].allowed_values == ["стекло"]
+        elif mode == "clear":
+            assert rules == []
+        else:
+            assert first["category_attributes"] == original
+        other = session.scalar(select(Category).where(Category.ktru_code == data["categories"][1]["ktru_code"]))
+        assert len(session.scalars(select(CategoryAttribute).where(CategoryAttribute.category_id == other.id)).all()) == 2
+
+
 @pytest.mark.parametrize("error", ["duplicate_rule", "alias", "cycle", "numeric"])
 def test_invalid_catalog_rules_roll_back(backend, error):
     load(backend)
