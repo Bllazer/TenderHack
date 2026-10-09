@@ -1,14 +1,5 @@
-:root {
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #17213a;
-  background: #f4f6fb;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* { box-sizing: border-box; }
-body { margin: 0; min-width: 320px; }
-button, input, textarea, select { font: inherit; }
-#root { min-height: 100svh; }
+@font-face{font-family:'Open Sans';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/open-sans-regular.ttf') format('truetype')}
+@font-face{font-family:'Open Sans';font-style:normal;font-weight:600;font-display:swap;src:url('/fonts/open-sans-semibold.ttf') format('truetype')}
+@font-face{font-family:'Open Sans';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/open-sans-bold.ttf') format('truetype')}
+:root{--portal-blue:#264b82;--portal-gray-blue:#d4dbe6;--portal-pale-blue:#e7eef7;--portal-red:#db2b21;--portal-black:#1a1a1a;--portal-pale-black:#8c8c8c;--portal-green:#0d9b68;--portal-sea:#167c85;--portal-orange:#f67319;--portal-muted:#616b79;font-family:'Open Sans',Arial,sans-serif;color:var(--portal-black);background:var(--portal-pale-blue);font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+*{box-sizing:border-box}body{margin:0;min-width:320px}button,input,textarea,select{font:inherit}button,a,input,textarea,select,summary{-webkit-tap-highlight-color:transparent}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.45}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--portal-blue);outline-offset:3px}button{transition:background .15s,border-color .15s}a{color:inherit}p{line-height:1.6}
