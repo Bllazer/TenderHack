@@ -1,0 +1,16 @@
+{
+  "source_version": "synthetic-demo-1",
+  "attributes": [
+    {"name": "Объем", "value_type": "number", "unit": "мл", "aliases": ["Объём"]},
+    {"name": "Материал", "value_type": "text", "aliases": []}
+  ],
+  "categories": [
+    {"ktru_code": "DEMO-CUP-PLASTIC", "name": "Демонстрация: стакан пластиковый", "attributes": [
+      {"attribute": "Объем", "required": true}, {"attribute": "Материал", "required": true, "allowed_values": ["пластик"]}
+    ]},
+    {"ktru_code": "DEMO-CUP-PAPER", "name": "Демонстрация: стакан бумажный", "attributes": [
+      {"attribute": "Объем", "required": true}, {"attribute": "Материал", "required": true, "allowed_values": ["бумага"]}
+    ]}
+  ],
+  "ste": [{"source": "synthetic-demo", "external_id": "cup-1", "title": "Стакан 200 мл"}]
+}
