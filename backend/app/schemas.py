@@ -28,6 +28,7 @@ class CategoryAttributeOut(AttributeOut):
 
 
 class InputAttribute(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
     name: str = Field(min_length=1, max_length=256)
     value: str = Field(min_length=1, max_length=512)
     unit: str | None = Field(default=None, max_length=64)

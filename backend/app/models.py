@@ -17,9 +17,10 @@ def new_id() -> str:
 
 class Category(Base):
     __tablename__ = "categories"
+    __table_args__ = (UniqueConstraint("ktru_code"),)
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
     parent_id: Mapped[str | None] = mapped_column(ForeignKey("categories.id"), nullable=True, index=True)
-    ktru_code: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    ktru_code: Mapped[str] = mapped_column(String(64), index=True)
     name: Mapped[str] = mapped_column(String(512))
     is_leaf: Mapped[bool] = mapped_column(Boolean, default=False)
     source_version: Mapped[str | None] = mapped_column(String(128), nullable=True)

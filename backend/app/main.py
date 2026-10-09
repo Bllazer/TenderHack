@@ -28,6 +28,8 @@ def live() -> dict:
 def ready(session: SessionDep) -> dict:
     try:
         session.execute(text("SELECT 1"))
+        for model in (Category, Attribute, CategoryAttribute, STE, Analysis, Feedback):
+            session.execute(select(model).limit(0))
     except Exception as exc:
         raise HTTPException(status_code=503, detail="database_unavailable") from exc
     return {"status": "ok"}

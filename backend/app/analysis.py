@@ -1,6 +1,7 @@
 """Deterministic catalog baseline. Replace this function with a model adapter later."""
 
 import re
+from decimal import Decimal, InvalidOperation
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -35,7 +36,7 @@ def analyze(session: Session, attributes: list[InputAttribute]) -> tuple[str, An
             issues.append(Issue(field=f"attributes.{index}.name", code="duplicate_attribute", message="Характеристика указана дважды"))
             continue
         seen.add(definition.id)
-        if definition.unit and field.unit and canon(definition.unit) != canon(field.unit):
+        if field.unit is not None and canon(definition.unit or "") != canon(field.unit):
             issues.append(Issue(field=f"attributes.{index}.unit", code="unit_mismatch", message=f"Ожидаемая единица: {definition.unit}; преобразование не выполнено"))
             continue
         if definition.value_type == "number" and not re.fullmatch(r"[+-]?\d+(?:[.,]\d+)?", field.value.strip()):
@@ -61,7 +62,7 @@ def analyze(session: Session, attributes: list[InputAttribute]) -> tuple[str, An
         if any(attribute_id not in allowed_ids for attribute_id in values):
             continue
         if any(rule.attribute_id in values and rule.allowed_values and
-               canon(values[rule.attribute_id]) not in {canon(str(v)) for v in rule.allowed_values}
+               not value_allowed(known[rule.attribute_id], values[rule.attribute_id], rule.allowed_values)
                for rule in category_rules):
             continue
         matched = [known[key].name for key in values if key in allowed_ids]
@@ -83,4 +84,13 @@ def analyze(session: Session, attributes: list[InputAttribute]) -> tuple[str, An
     missing = sorted({name for candidate in candidates for name in candidate.missing_required})
     result.next_steps = ([f"Уточните характеристику: {name}" for name in missing[:5]] or
                          ["Добавьте характеристику, различающую варианты КТРУ"])
-    return ("ambiguous" if len(candidates) > 1 else "needs_input"), result
+    return ("ambiguous" if len(candidates) > 1 and not issues else "needs_input"), result
+
+
+def value_allowed(attribute: Attribute, value: str, allowed: list[str]) -> bool:
+    if attribute.value_type == "number":
+        try:
+            return any(Decimal(value) == Decimal(item.strip().replace(",", ".")) for item in allowed)
+        except InvalidOperation:
+            return False
+    return canon(value) in {canon(item) for item in allowed}

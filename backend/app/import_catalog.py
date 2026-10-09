@@ -2,18 +2,21 @@
 
 import argparse
 import json
+import re
 from pathlib import Path
+from typing import Literal
 
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 
+from app.analysis import canon
 from app.db import SessionLocal
 from app.models import Attribute, Category, CategoryAttribute, STE
 
 
 class AttributeRow(BaseModel):
     name: str
-    value_type: str = "text"
+    value_type: Literal["text", "number", "boolean"] = "text"
     unit: str | None = None
     aliases: list[str] = Field(default_factory=list)
 
@@ -65,6 +68,14 @@ def load(path: Path) -> None:
             obj.value_type, obj.unit, obj.aliases = row.value_type, row.unit, row.aliases
         session.flush()
 
+        aliases = {}
+        for attribute in attrs.values():
+            for name in [attribute.name, *attribute.aliases]:
+                key = canon(name)
+                if not key or (key in aliases and aliases[key] != attribute.name):
+                    raise ValueError(f"Empty or conflicting attribute alias: {name!r}")
+                aliases[key] = attribute.name
+
         categories = {c.ktru_code: c for c in session.scalars(select(Category)).all()}
         for row in data.categories:
             obj = categories.get(row.ktru_code)
@@ -79,9 +90,22 @@ def load(path: Path) -> None:
             if row.parent_code and row.parent_code not in categories:
                 raise ValueError(f"Unknown parent: {row.parent_code}")
             obj.parent_id = categories[row.parent_code].id if row.parent_code else None
+            if len({rule.attribute for rule in row.attributes}) != len(row.attributes):
+                raise ValueError(f"Duplicate category rules: {row.ktru_code}")
+            # Each supplied category carries its complete current rule set.
+            current = session.scalars(select(CategoryAttribute).where(
+                CategoryAttribute.category_id == obj.id)).all()
+            supplied = {attrs[rule.attribute].id for rule in row.attributes if rule.attribute in attrs}
+            for link in current:
+                if link.attribute_id not in supplied:
+                    session.delete(link)
             for rule in row.attributes:
                 if rule.attribute not in attrs:
                     raise ValueError(f"Unknown attribute: {rule.attribute}")
+                if attrs[rule.attribute].value_type == "number" and any(
+                    not re.fullmatch(r"[+-]?\d+(?:[.,]\d+)?", value.strip()) for value in rule.allowed_values
+                ):
+                    raise ValueError(f"Invalid numeric allowed value: {rule.attribute}")
                 link = session.scalar(select(CategoryAttribute).where(
                     CategoryAttribute.category_id == obj.id,
                     CategoryAttribute.attribute_id == attrs[rule.attribute].id))
@@ -89,6 +113,18 @@ def load(path: Path) -> None:
                     link = CategoryAttribute(category_id=obj.id, attribute_id=attrs[rule.attribute].id)
                     session.add(link)
                 link.required, link.allowed_values = rule.required, rule.allowed_values
+        session.flush()
+        by_id = {category.id: category for category in categories.values()}
+        for category in categories.values():
+            seen = set()
+            node = category
+            while node.parent_id:
+                if node.id in seen:
+                    raise ValueError(f"Category hierarchy cycle: {category.ktru_code}")
+                seen.add(node.id)
+                node = by_id[node.parent_id]
+                if node.is_leaf:
+                    raise ValueError(f"Leaf category has children: {node.ktru_code}")
         for row in data.ste:
             if row.ktru_code and row.ktru_code not in categories:
                 raise ValueError(f"Unknown KTRU: {row.ktru_code}")
