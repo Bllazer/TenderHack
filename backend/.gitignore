@@ -6,3 +6,5 @@ __pycache__/
 *.db
 .tools/
 *.egg-info/
+resources/model/*
+!resources/model/.gitkeep

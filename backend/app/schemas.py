@@ -1,119 +1,199 @@
-from datetime import datetime
 from typing import Annotated, Literal
-
-from pydantic import BaseModel, ConfigDict, Field, StringConstraints, model_validator
-
-
-class CategoryOut(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-    id: str
-    parent_id: str | None
-    ktru_code: str
-    name: str
-    is_leaf: bool
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
-class AttributeOut(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-    id: str
-    name: str
-    value_type: str
-    unit: str | None
-    aliases: list[str]
+class InputModel(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
 
-class CategoryAttributeOut(AttributeOut):
-    required: bool
-    allowed_values: list[str]
-
-
-class InputAttribute(BaseModel):
-    model_config = ConfigDict(str_strip_whitespace=True)
-    name: str = Field(min_length=1, max_length=256)
-    value: str = Field(min_length=1, max_length=512)
+class InputFact(InputModel):
+    id: str = Field(min_length=1, max_length=128)
+    name: str = Field(max_length=256)
+    value: str = Field(max_length=512)
     unit: str | None = Field(default=None, max_length=64)
+    unknown: bool = False
+    subject: Literal["product", "packaging", "unspecified"] = "product"
+    replaces: str | None = Field(default=None, max_length=128)
 
 
-class STECreate(BaseModel):
-    source: str = Field(min_length=1, max_length=64)
-    external_id: str = Field(min_length=1, max_length=256)
-    title: str = Field(min_length=1, max_length=1024)
-    description: str | None = None
-    category_id: str | None = None
-    raw_payload: dict = Field(default_factory=dict)
+class Answer(InputModel):
+    question_id: str = Field(min_length=1, max_length=512)
+    value: str | None = Field(default=None, max_length=512)
+    unit: str | None = Field(default=None, max_length=64)
+    unknown: bool = False
 
 
-class STEOut(STECreate):
-    model_config = ConfigDict(from_attributes=True)
-    id: str
-    created_at: datetime
-
-
-class AnalysisCreate(BaseModel):
-    ste_id: str | None = None
-    title: str | None = Field(default=None, min_length=1, max_length=1024)
-    description: str | None = None
-    attributes: list[InputAttribute] = Field(default_factory=list, max_length=100)
-    confirmed_ktru_code: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=64)] | None = None
+class AnalysisCreate(InputModel):
+    description: str = Field(min_length=1, max_length=12000)
+    attributes: list[InputFact] = Field(default_factory=list, max_length=100)
+    additional: list[Annotated[str, Field(max_length=1024)]] = Field(default_factory=list, max_length=100)
+    confirmed_category_id: str | None = Field(default=None, min_length=1, max_length=128)
+    answers: list[Answer] = Field(default_factory=list, max_length=100)
+    confirmed_ktru_code: str | None = Field(default=None, min_length=1, max_length=64)
+    candidate_limit: int = Field(default=20, ge=1, le=100)
 
     @model_validator(mode="after")
-    def require_source(self):
-        if not self.ste_id and not self.title:
-            raise ValueError("Укажите ste_id или title")
+    def validate_state(self):
+        if not self.description.strip():
+            raise ValueError("Введите описание товара")
+        if len({fact.id for fact in self.attributes}) != len(self.attributes):
+            raise ValueError("Идентификаторы фактов должны быть уникальны")
+        if len({answer.question_id for answer in self.answers}) != len(self.answers):
+            raise ValueError("Передайте текущее значение каждого ответа один раз")
         return self
 
 
-class NormalizedAttribute(BaseModel):
-    attribute_id: str
+class Issue(BaseModel):
+    code: str
+    severity: Literal["info", "warning", "error"] = "error"
+    explanation: str
+    fact_id: str | None = None
+    property_id: str | None = None
+    candidate_code: str | None = None
+    rule_source: str | None = None
+    suggested_action: str = "Проверьте исходные сведения"
+    confirmation_required: bool = False
+
+
+class Correction(BaseModel):
+    fact_id: str
+    kind: Literal["auto_normalization", "proposed_text_fix", "proposed_fact_change"]
+    original: str
+    normalized: str
+    explanation: str
+    confirmation_required: bool = False
+
+
+class Fact(BaseModel):
+    id: str
     name: str
     value: str
     unit: str | None = None
-    source: Literal["input", "description"] = "input"
+    raw: str
+    span: tuple[int, int] | None = None
+    source: Literal["text", "input", "answer"]
+    subject: str = "product"
+    negated: bool = False
+    unknown: bool = False
+    normalized_value: str | None = None
+    normalized_unit: str | None = None
+    mappings: list[str] = Field(default_factory=list)
 
 
-class Issue(BaseModel):
-    field: str
-    code: str
-    message: str
+class Fragment(BaseModel):
+    id: str | None = None
+    raw: str
+    span: tuple[int, int] | None = None
+
+
+class CategoryCandidate(BaseModel):
+    id: str
+    name: str
+    rank: int
+    rank_score: float
+    reasons: list[str]
+
+
+class Check(BaseModel):
+    property_id: str
+    name: str
+    outcome: Literal["compatible", "incompatible", "unknown"]
+    reason: str
+    fact_ids: list[str] = Field(default_factory=list)
+    value_codes: list[str] = Field(default_factory=list)
 
 
 class Candidate(BaseModel):
-    category_id: str
     ktru_code: str
     name: str
-    matched_attributes: list[str]
+    okpd2: str | None
+    outcome: Literal["compatible", "incompatible", "unknown"]
+    checks: list[Check]
     missing_required: list[str]
+    has_characteristics: bool
 
 
-class AnalysisResult(BaseModel):
-    normalized_attributes: list[NormalizedAttribute] = Field(default_factory=list)
-    candidates: list[Candidate] = Field(default_factory=list)
-    issues: list[Issue] = Field(default_factory=list)
-    next_steps: list[str] = Field(default_factory=list)
-    selected_ktru_code: str | None = None
+class QuestionOption(BaseModel):
+    value: str
+    label: str
+
+
+class Question(BaseModel):
+    id: str
+    kind: Literal["conflict", "category", "property", "code"]
+    title: str
+    reason: str
+    property_name: str | None = None
+    options: list[QuestionOption] = Field(default_factory=list)
+    unit: str | None = None
+    allow_unknown: bool = True
+
+
+class Verification(BaseModel):
+    type_verified: bool = False
+    ktru_unique: bool = False
+    fields_complete: bool = False
+    value_verified: bool = False
+    catalog_scope_complete: bool = False
+    value_indistinguishable: bool = False
     confirmed_by_user: bool = False
+    blocking_issues: bool = False
+
+
+class Scope(BaseModel):
+    category_id: str | None = None
+    position_count: int = 0
+    evaluated_count: int = 0
+    complete: bool = False
 
 
 class AnalysisOut(BaseModel):
-    id: str
-    ste_id: str | None
-    title: str
-    description: str | None
-    input_attributes: list[InputAttribute]
     status: Literal["needs_data", "needs_input", "ambiguous", "resolved"]
-    result: AnalysisResult
+    original_text: str
+    normalized_text: str
+    original_facts: list[Fact] = Field(default_factory=list)
+    facts: list[Fact]
+    unparsed: list[Fragment]
+    additional: list[Fragment]
+    categories: list[CategoryCandidate] = Field(default_factory=list)
+    candidates: list[Candidate] = Field(default_factory=list)
+    excluded: list[Candidate] = Field(default_factory=list)
+    candidate_count: int = 0
+    excluded_count: int = 0
+    scope: Scope = Field(default_factory=Scope)
+    issues: list[Issue] = Field(default_factory=list)
+    corrections: list[Correction] = Field(default_factory=list)
+    next_question: Question | None = None
+    next_steps: list[str] = Field(default_factory=list)
+    verification: Verification = Field(default_factory=Verification)
+    selected_ktru_code: str | None = None
+    catalog_version: str
+    engine_version: str = "stateless-pipeline-v1"
+
+
+class ErrorDetail(BaseModel):
+    code: str
+    field: str | None = None
+    message: str | None = None
+    catalog_version: str | None = None
+
+
+class ErrorResponse(BaseModel):
+    detail: ErrorDetail | list[dict]
+
+
+class Health(BaseModel):
+    status: Literal["ok"] = "ok"
+
+
+class Ready(Health):
+    catalog_version: str
     engine_version: str
-    created_at: datetime
 
 
-class FeedbackCreate(BaseModel):
-    verdict: Literal["accepted", "rejected", "corrected"]
-    corrected_ktru_code: str | None = Field(default=None, max_length=64)
-    corrected_attributes: list[InputAttribute] = Field(default_factory=list)
-    comment: str | None = Field(default=None, max_length=2000)
-
-
-class FeedbackOut(FeedbackCreate):
-    id: str
-    analysis_id: str
-    created_at: datetime
+class CatalogStatus(BaseModel):
+    categories: int
+    positions: int
+    catalog_version: str
+    ready: bool
+    reason: str | None

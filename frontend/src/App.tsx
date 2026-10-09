@@ -1,163 +1,166 @@
 import { useEffect, useRef, useState } from 'react'
+import { analyze, emptyDraft } from './api'
+import type { Draft, Fact, Result } from './api'
 import './App.css'
 
 type Stage = 'input' | 'question' | 'review' | 'correction' | 'done'
-type Field = 'product' | 'material' | 'volume' | 'purpose'
-type Product = { product: boolean; material: string; volume: string; purpose: string; converted: string }
-type Snapshot = { stage: Stage; field: Field; data: Product; answer: string }
-const initial: Product = { product: false, material: '', volume: '', purpose: '', converted: '' }
+type Snapshot = { stage: Stage; draft: Draft; result: Result | null }
 const examples = [
-  ['Полное описание', 'Бумажный стакан для горячего кофе, объём 0,2 л.'],
-  ['Без характеристик', 'Стакан для напитков.'],
-  ['Неопределённый товар', 'Нужно что-то для мероприятия.'],
+  ['Инструмент', 'Дрель электрическая; питание: от сети; мощность: 0,65 кВт; без удара.'],
+  ['Мебель', 'Стол письменный; высота: 75 см; материал: дерево.'],
+  ['Неполное описание', 'Куртка рабочая для зимы.'],
 ]
-const validVolume = (value: string) => /^\d+(?:[.,]\d+)?$/.test(value) && Number(value.replace(',', '.')) > 0
-function extract(text: string): Product {
-  const lower = text.toLowerCase()
-  const ml = lower.match(/(\d+(?:[.,]\d+)?)\s*мл(?=\s|[.,;]|$)/u)
-  const liters = lower.match(/(\d+(?:[.,]\d+)?)\s*(?:литр[а-я]*|л)(?=\s|[.,;]|$)/u)
-  const volume = ml?.[1].replace(',', '.') || (liters ? String(Number(liters[1].replace(',', '.')) * 1000) : '')
-  const paper = /бумаж|бумаг/u.test(lower), plastic = /пластик/u.test(lower)
-  const hot = /горяч|кофе/u.test(lower), cold = /холод/u.test(lower)
-  return {
-    product: /стакан/u.test(lower),
-    material: paper !== plastic ? (paper ? 'Бумага' : 'Пластик') : '',
-    volume: validVolume(volume) ? volume : '',
-    purpose: hot !== cold ? (hot ? 'Горячие напитки' : 'Холодные напитки') : '',
-    converted: !ml && liters ? liters[1] + ' л → ' + volume + ' мл' : '',
-  }
-}
-function missing(product: Product): Field | undefined {
-  if (!product.product) return 'product'
-  if (!product.material) return 'material'
-  if (!product.volume) return 'volume'
-  if (!product.purpose) return 'purpose'
-}
-const questions: Record<Field, { title: string; help: string }> = {
-  product: { title: 'Укажите товар', help: 'Товар не определён. Выберите тип или измените описание.' },
-  material: { title: 'Укажите материал', help: 'В описании не указан однозначный материал стакана.' },
-  volume: { title: 'Укажите объём', help: 'Введите объём стакана в миллилитрах.' },
-  purpose: { title: 'Укажите назначение', help: 'Выберите, для каких напитков предназначен стакан.' },
-}
+
 function App() {
   const [stage, setStage] = useState<Stage>('input')
-  const [description, setDescription] = useState('')
-  const [data, setData] = useState<Product>(initial)
-  const [field, setField] = useState<Field>('product')
-  const [answer, setAnswer] = useState('')
-  const [correction, setCorrection] = useState<Field>('material')
+  const [draft, setDraft] = useState<Draft>(emptyDraft)
+  const [result, setResult] = useState<Result | null>(null)
   const [history, setHistory] = useState<Snapshot[]>([])
+  const [answer, setAnswer] = useState('')
+  const [answerUnit, setAnswerUnit] = useState('')
+  const [unknown, setUnknown] = useState(false)
+  const [editing, setEditing] = useState<Fact | null>(null)
+  const [editName, setEditName] = useState('')
+  const [editValue, setEditValue] = useState('')
+  const [editUnit, setEditUnit] = useState('')
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [copied, setCopied] = useState(false)
-  const [editing, setEditing] = useState(false)
+  const sequence = useRef(0)
+  const controller = useRef<AbortController | null>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
-  // Move keyboard focus without scrolling the viewport when a step changes.
-  useEffect(() => { titleRef.current?.focus({ preventScroll: true }) }, [stage, field])
-  function go(next: Stage, nextData = data, nextField = field, nextAnswer = '') {
-    setHistory(items => [...items, { stage, data, field, answer }])
-    setStage(next); setData(nextData); setField(nextField); setAnswer(nextAnswer)
-    setError(''); setCopied(false)
+  const question = result?.next_question
+  const canConfirm = !!result && result.candidate_count === 1 && result.verification.type_verified && result.verification.ktru_unique
+    && result.verification.fields_complete && result.verification.value_verified && result.verification.catalog_scope_complete && !result.verification.blocking_issues
+
+  function invalidate() { sequence.current++; controller.current?.abort(); setLoading(false); setError(''); setCopied(false) }
+  useEffect(() => () => { sequence.current++; controller.current?.abort() }, [])
+  useEffect(() => { titleRef.current?.focus({ preventScroll: true }) }, [stage, question?.id])
+
+  async function submit(next: Draft) {
+    if (!next.description.trim()) { setError('Введите описание товара.'); return }
+    invalidate()
+    const requestId = sequence.current
+    const abort = new AbortController()
+    controller.current = abort
+    setLoading(true); setDraft(next)
+    try {
+      const response = await analyze(next, abort.signal)
+      if (requestId !== sequence.current) return
+      setHistory(items => [...items, { stage, draft, result }])
+      setResult(response); setAnswer(''); setAnswerUnit(response.next_question?.unit || ''); setUnknown(false)
+      setStage(response.status === 'resolved' && response.selected_ktru_code ? 'done'
+        : response.next_question && response.next_question.kind !== 'code' && response.next_question.kind !== 'conflict' ? 'question' : 'review')
+    } catch (failure) {
+      if (requestId !== sequence.current || abort.signal.aborted) return
+      setError(failure instanceof Error ? failure.message : 'Не удалось связаться с API. Повторите запрос.')
+    } finally { if (requestId === sequence.current) setLoading(false) }
   }
-  function advance(nextData: Product) {
-    const nextField = missing(nextData)
-    go(nextField ? 'question' : 'review', nextData, nextField || field)
-  }
-  function analyze() {
-    if (!description.trim()) { setError('Введите описание товара.'); return }
-    setEditing(false); setError('')
-    const nextData = extract(description), nextField = missing(nextData)
-    setData(nextData); setField(nextField || 'product'); setAnswer('')
-    setStage(nextField ? 'question' : 'review'); setCopied(false)
-    setHistory([{ stage: 'input', data: initial, field: 'product', answer: '' }])
+
+  function editDescription(value: string) {
+    invalidate(); setResult(null)
+    setDraft(current => ({ ...current, description: value, attributes: current.attributes.map(item => ({ ...item, replaces: null })),
+      confirmed_category_id: null, confirmed_ktru_code: null, answers: [] }))
   }
   function back() {
+    invalidate()
     const previous = history.at(-1)
-    if (!previous) return
-    setStage(previous.stage); setField(previous.field); setData(previous.data); setAnswer(previous.answer)
-    setHistory(items => items.slice(0, -1)); setError(''); setCopied(false); setEditing(false)
+    if (previous) {
+      setDraft(previous.draft); setResult(previous.result); setStage(previous.stage); setHistory(items => items.slice(0, -1))
+    } else setStage('input')
+  }
+  function edit(fact: Fact | null) {
+    invalidate(); setEditing(fact); setEditName(fact?.name || ''); setEditValue(fact?.value || ''); setEditUnit(fact?.unit || '')
+    setHistory(items => [...items, { stage, draft, result }]); setStage('correction')
+  }
+  function applyEdit() {
+    if (!editName.trim() || !editValue.trim()) { setError('Укажите имя и значение характеристики.'); return }
+    const existing = draft.attributes.find(item => item.id === editing?.id)
+    const item = { id: existing?.id || `input:${crypto.randomUUID()}`, name: editName, value: editValue, unit: editUnit || null,
+      subject: existing?.subject || (editing?.subject === 'packaging' ? 'packaging' as const : 'product' as const),
+      replaces: existing?.replaces || editing?.id || null }
+    void submit({ ...draft, attributes: [...draft.attributes.filter(fact => fact.id !== item.id), item], confirmed_ktru_code: null })
   }
   function submitAnswer() {
-    if (!answer) { setError('Выберите ответ.'); return }
-    if (field === 'volume' && !validVolume(answer)) { setError('Введите положительное число, например 200.'); return }
-    const nextData = field === 'product' ? { ...data, product: true }
-      : { ...data, [field]: field === 'volume' ? answer.replace(',', '.') : answer, ...(field === 'volume' ? { converted: '' } : {}) }
-    setEditing(false); advance(nextData)
+    if (!question) return
+    if (!unknown && !answer.trim()) { setError('Выберите ответ или укажите «Не знаю».'); return }
+    const next = { ...draft, confirmed_ktru_code: null, answers: [...draft.answers.filter(item => item.question_id !== question.id),
+      { question_id: question.id, value: unknown ? null : answer, unit: answerUnit || null, unknown }] }
+    if (question.kind === 'category') next.confirmed_category_id = unknown ? null : answer
+    void submit(next)
   }
-  function reset() {
-    setStage('input'); setDescription(''); setData(initial); setAnswer(''); setHistory([])
-    setError(''); setCopied(false); setEditing(false)
-  }
-  function startCorrection() { setCorrection('material'); go('correction') }
-  function applyCorrection() {
-    if (correction === 'product') { go('input'); return }
-    setEditing(true); go('question', data, correction, data[correction])
-  }
-  const code = 'DEMO-CUP-' + (data.material === 'Бумага' ? 'PAPER' : 'PLASTIC') + '-' + (data.purpose === 'Горячие напитки' ? 'HOT' : 'COLD')
-  const title = stage === 'input' ? 'Описание товара' : stage === 'question' ? questions[field].title
-    : stage === 'correction' ? 'Что нужно исправить?' : stage === 'done' ? 'Подбор завершён' : 'Проверьте результат'
-  const currentStep = stage === 'input' ? 0 : stage === 'question' || stage === 'correction' ? 1 : 2
   async function copy() {
-    try { await navigator.clipboard.writeText(code); setCopied(true); setError('') }
-    catch { setError('Не удалось скопировать код. Выделите его и скопируйте вручную.') }
+    if (!result?.selected_ktru_code) return
+    try { await navigator.clipboard.writeText(result.selected_ktru_code); setCopied(true) }
+    catch { setError('Выделите код и скопируйте его вручную.') }
   }
+  function reset() { invalidate(); setDraft(emptyDraft()); setResult(null); setStage('input'); setHistory([]) }
+  const title = stage === 'input' ? 'Описание товара' : stage === 'question' ? question?.title || 'Уточните сведения'
+    : stage === 'correction' ? 'Исправьте характеристику' : stage === 'done' ? 'Подбор завершён' : 'Проверьте результат'
+  const currentStep = stage === 'input' ? 0 : stage === 'question' || stage === 'correction' ? 1 : 2
+
   return <main className="catalog-page">
     <div className="page-context">Каталог товаров <span aria-hidden="true">/</span> Новая позиция</div>
-    <div className="page-heading"><h1>Подбор КТРУ</h1><span className="preview-label">Демо</span></div>
-    <section className="picker" aria-label="Подбор кода КТРУ">
+    <div className="page-heading"><h1>Подбор КТРУ</h1><span className="preview-label">API</span></div>
+    <section className="picker" aria-label="Подбор кода КТРУ" aria-busy={loading}>
       <ol className="progress" aria-label="Этапы подбора">
-        {['Описание', 'Уточнение', 'Результат'].map((label, index) =>
-          <li key={label} className={index === currentStep ? 'current' : index < currentStep ? 'complete' : ''} aria-current={index === currentStep ? 'step' : undefined}><span>{index + 1}.</span> {label}</li>)}
+        {['Описание', 'Уточнение', 'Результат'].map((label, index) => <li key={label} className={index === currentStep ? 'current' : index < currentStep ? 'complete' : ''} aria-current={index === currentStep ? 'step' : undefined}><span>{index + 1}.</span> {label}</li>)}
       </ol>
       <div className="step-content">
         <h2 ref={titleRef} tabIndex={-1} className="step-title">{title}</h2>
-        {stage === 'input' && <form id="description-form" onSubmit={event => { event.preventDefault(); analyze() }}>
-          <p className="help">Укажите название и известные характеристики: материал, размер, назначение.</p>
+        {stage === 'input' && <form id="description-form" onSubmit={event => { event.preventDefault(); void submit(draft) }}>
+          <p className="help">Укажите товар, известные характеристики и единицы. Исходное описание сохранится между шагами.</p>
           <label className="sr-only" htmlFor="description">Описание товара</label>
-          <textarea id="description" value={description} onChange={event => { setDescription(event.target.value); setError('') }} placeholder="Например: бумажный стакан для горячих напитков, 200 мл" aria-invalid={!!error} aria-describedby={error ? 'form-error' : undefined}/>
-          <div className="example-links"><span>Примеры:</span>{examples.map(([label, text]) => <button type="button" key={label} className="link-button" onClick={() => { setDescription(text); setError('') }}>{label}</button>)}</div>
+          <textarea id="description" value={draft.description} maxLength={12000} onChange={event => editDescription(event.target.value)} placeholder="Например: дрель электрическая; мощность: 650 Вт" aria-invalid={!!error} />
+          <div className="example-links"><span>Примеры:</span>{examples.map(([label, text]) => <button type="button" key={label} className="link-button" onClick={() => editDescription(text)}>{label}</button>)}</div>
         </form>}
-        {stage === 'question' && <form id="question-form" onSubmit={event => { event.preventDefault(); submitAnswer() }}>
-          <p className="help">{editing ? 'Остальные характеристики останутся без изменений.' : questions[field].help}</p>
-          {field === 'product' ? <div className="product-choice">
-            <label className="radio-row"><input type="radio" name="product" value="Стакан" checked={answer === 'Стакан'} onChange={() => { setAnswer('Стакан'); setError('') }}/><span>Стакан</span></label>
-            <p className="help compact">В демоверсии доступен только подбор стаканов.</p>
-            <button type="button" className="link-button" onClick={() => go('input')}>Изменить описание товара</button>
-          </div> : field === 'volume' ? <div className="volume-field">
-            <label htmlFor="volume">Объём</label><div className="measurement"><input id="volume" value={answer} onChange={event => { setAnswer(event.target.value); setError('') }} inputMode="decimal" placeholder="200" aria-invalid={!!error} aria-describedby={error ? 'form-error' : undefined}/><span>мл</span></div>
-          </div> : <fieldset className="radio-list"><legend className="sr-only">{questions[field].title}</legend>{(field === 'material' ? ['Бумага', 'Пластик'] : ['Горячие напитки', 'Холодные напитки']).map(value =>
-            <label className="radio-row" key={value}><input type="radio" name={field} value={value} checked={answer === value} onChange={() => { setAnswer(value); setError('') }}/><span>{value}</span></label>)}</fieldset>}
-          {field !== 'product' && <div className="known-data"><span>Товар: стакан</span>{field !== 'material' && data.material && <span>Материал: {data.material.toLowerCase()}</span>}{field !== 'volume' && data.volume && <span>Объём: {data.volume} мл</span>}{field !== 'purpose' && data.purpose && <span>{data.purpose}</span>}</div>}
+        {stage === 'question' && question && <form id="question-form" onSubmit={event => { event.preventDefault(); submitAnswer() }}>
+          <p className="help">{question.reason}</p>
+          {question.options.length > 0 ? <fieldset className="radio-list" disabled={loading}><legend className="sr-only">{question.title}</legend>
+            {question.options.map(option => <label className="radio-row" key={option.value}><input type="radio" name="answer" checked={!unknown && answer === option.value} onChange={() => { setAnswer(option.value); setUnknown(false); setError('') }} /><span>{option.label}</span></label>)}
+          </fieldset> : <div className="measurement"><label className="sr-only" htmlFor="answer">Значение</label><input id="answer" value={answer} disabled={unknown || loading} onChange={event => setAnswer(event.target.value)} placeholder="Значение" />
+            <label className="sr-only" htmlFor="answer-unit">Единица</label><input id="answer-unit" value={answerUnit} disabled={unknown || loading} onChange={event => setAnswerUnit(event.target.value)} placeholder="Единица" /></div>}
+          {question.allow_unknown && <label className="radio-row"><input type="radio" name="answer" checked={unknown} disabled={loading} onChange={() => { setUnknown(true); setError('') }} /><span>Не знаю</span></label>}
+          <button type="button" className="link-button" onClick={() => edit(null)}>Добавить или исправить сведения</button>
         </form>}
-        {stage === 'correction' && <form id="correction-form" onSubmit={event => { event.preventDefault(); applyCorrection() }}>
-          <p className="help">Выберите характеристику или вернитесь к описанию товара.</p>
-          <fieldset className="radio-list"><legend className="sr-only">Что исправить</legend>{([
-            ['material', 'Материал', data.material], ['volume', 'Объём', data.volume + ' мл'],
-            ['purpose', 'Назначение', data.purpose], ['product', 'Другой товар', 'Изменить описание'],
-          ] as [Field, string, string][]).map(([key, label, value]) => <label className="radio-row correction-row" key={key}><input type="radio" name="correction" value={key} checked={correction === key} onChange={() => setCorrection(key)}/><span>{label}</span><small>{value}</small></label>)}</fieldset>
+        {stage === 'correction' && <form id="correction-form" onSubmit={event => { event.preventDefault(); applyEdit() }}>
+          <p className="help">Правка запускает полную проверку. Остальные сведения сохранятся.</p>
+          <div className="edit-fields"><label>Характеристика<input value={editName} onChange={event => setEditName(event.target.value)} maxLength={256} /></label>
+            <label>Значение<input value={editValue} onChange={event => setEditValue(event.target.value)} maxLength={512} /></label>
+            <label>Единица<input value={editUnit} onChange={event => setEditUnit(event.target.value)} maxLength={64} /></label></div>
         </form>}
-        {(stage === 'review' || stage === 'done') && <div className="result">
-          <p className="help">{stage === 'review' ? 'Подходит ли эта позиция вашему товару?' : 'Вы подтвердили позицию и характеристики.'}</p>
-          <div className="result-name"><h3>Стакан {data.material === 'Бумага' ? 'бумажный' : 'пластиковый'}</h3>{stage === 'done' && <span className="confirmed">Подтверждено</span>}</div>
-          <dl className="result-data">
-            <div><dt>Код КТРУ <span className="demo-code">(демо)</span></dt><dd className="result-code">{code}</dd></div>
-            <div><dt>Материал</dt><dd>{data.material}</dd></div><div><dt>Объём</dt><dd>{data.volume} мл</dd></div><div><dt>Назначение</dt><dd>{data.purpose}</dd></div>
-          </dl>
-          {data.converted && <p className="unit-note">Пересчёт единиц: {data.converted}</p>}
+        {result && stage !== 'input' && stage !== 'correction' && <div className="result">
+          {result.status === 'needs_data' && <p className="data-notice" role="status">Проверенный каталог ещё не подключён. Описание и характеристики сохранены в форме; завершить подбор пока нельзя.</p>}
+          {result.next_steps.map(step => <p className="help compact" key={step}>{step}</p>)}
+          {result.facts.length > 0 && <><h3 className="section-label">Характеристики</h3><dl className="result-data">{result.facts.map(fact => <div key={fact.id}><dt>{fact.name || 'Неустановленное свойство'}</dt><dd>{fact.unknown ? 'Не знаю' : `${fact.value} ${fact.unit || ''}`} <button type="button" className="link-button" onClick={() => edit(fact)}>Исправить</button></dd></div>)}</dl></>}
+          {result.corrections.map((item, index) => <p className="unit-note" key={index}>{item.original} → {item.normalized}. {item.explanation}{item.confirmation_required && ' Нужна ваша правка.'}</p>)}
+          {result.candidates.length > 0 && <><h3 className="section-label">Конечные позиции: {result.candidate_count}</h3>
+            {result.candidates.map(candidate => <div className="candidate" key={candidate.ktru_code}><strong>{candidate.name}</strong><div className="result-code">{candidate.ktru_code}</div>
+              <p className="help compact">{candidate.outcome === 'compatible' ? 'Значения совместимы' : 'Проверка не завершена'}{candidate.missing_required.length > 0 && ` · Требуется: ${candidate.missing_required.join(', ')}`}</p></div>)}</>}
+          {result.excluded.length > 0 && <details><summary>Исключено позиций: {result.excluded_count}</summary>{result.excluded.map(candidate => <p key={candidate.ktru_code}>{candidate.name}: {candidate.checks.filter(check => check.outcome === 'incompatible').map(check => `${check.name} — ${check.reason}`).join('; ')}</p>)}</details>}
+          {(result.unparsed.length > 0 || result.additional.length > 0) && <details><summary>Неразобранные и дополнительные сведения</summary>{[...result.unparsed, ...result.additional].map((item, index) => <p key={index}>{item.raw} {item.id?.startsWith('fragment:') && <button className="link-button" onClick={() => edit({ id: item.id!, name: '', value: item.raw, unit: null, raw: item.raw, source: 'text', subject: 'product', unknown: false, normalized_value: null, normalized_unit: null })}>Указать характеристику</button>}</p>)}</details>}
+          {result.issues.map((issue, index) => <p className={issue.severity === 'error' ? 'form-error' : 'help compact'} key={index}>{issue.explanation} {issue.suggested_action}</p>)}
+          {stage === 'done' && <div className="result-name"><h3 className="result-code">{result.selected_ktru_code}</h3><span className="confirmed">Подтверждено и проверено</span></div>}
+          <div className="known-data"><span>Проверено позиций: {result.scope.evaluated_count}</span><span>{result.scope.complete ? 'Область проверена полностью' : 'Покрытие не подтверждено'}</span></div>
         </div>}
+        {loading && <p className="help" role="status">Проверяем описание и характеристики…</p>}
         {error && <p className="form-error" id="form-error" role="alert">{error}</p>}
       </div>
       <div className="action-bar">
         {stage === 'input' ? <span className="action-hint">Описание сохранится на следующих шагах</span> : <button className="link-button back-button" onClick={back}>Назад</button>}
         <div className="action-buttons">
-          {stage === 'input' && <button className="primary" type="submit" form="description-form">Подобрать КТРУ</button>}
-          {stage === 'question' && <button className="primary" type="submit" form="question-form">Продолжить</button>}
-          {stage === 'correction' && <button className="primary" type="submit" form="correction-form">Изменить</button>}
-          {stage === 'review' && <><button className="secondary" onClick={startCorrection}>Не подходит</button><button className="primary" onClick={() => go('done')}>Подтвердить</button></>}
-          {stage === 'done' && <><button className="secondary" onClick={reset}>Новый подбор</button><button className="primary" onClick={copy}>{copied ? 'Скопировано' : 'Скопировать код'}</button></>}
+          {draft.confirmed_category_id && stage !== 'input' && stage !== 'done' && <button className="secondary" disabled={loading} onClick={() => void submit({ ...draft, confirmed_category_id: null, confirmed_ktru_code: null, answers: draft.answers.filter(item => item.question_id !== 'category') })}>Изменить категорию</button>}
+          {stage === 'input' && <button className="primary" type="submit" form="description-form" disabled={loading}>Подобрать КТРУ</button>}
+          {stage === 'question' && <button className="primary" type="submit" form="question-form" disabled={loading}>Продолжить</button>}
+          {stage === 'correction' && <button className="primary" type="submit" form="correction-form" disabled={loading}>Проверить правку</button>}
+          {stage === 'review' && <><button className="secondary" onClick={() => { invalidate(); setStage('input') }}>Изменить описание</button><button className="secondary" onClick={() => edit(null)}>Добавить характеристику</button>
+            {canConfirm && <button className="primary" disabled={loading} onClick={() => void submit({ ...draft, confirmed_ktru_code: result!.candidates[0].ktru_code })}>Подтвердить код</button>}
+            {result?.status === 'needs_data' && <button className="primary" disabled={loading} onClick={() => void submit(draft)}>Повторить проверку</button>}</>}
+          {stage === 'done' && <><button className="secondary" onClick={reset}>Новый подбор</button><button className="primary" onClick={() => void copy()}>{copied ? 'Скопировано' : 'Скопировать код'}</button></>}
         </div>
       </div>
     </section>
-    <div className="preview-note">Демоверсия интерфейса. Условные позиции, без подключения к API.</div>
+    <div className="preview-note">{result ? `Каталог: ${result.catalog_version} · Алгоритм: ${result.engine_version}` : 'Категорию и код подтверждает пользователь. Значения проверяет API.'}</div>
   </main>
 }
 export default App

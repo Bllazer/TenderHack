@@ -1,10 +1,12 @@
+from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    database_url: str = "postgresql+psycopg://tenderhack:tenderhack@localhost:5432/tenderhack"
-    cors_origins: str = "http://localhost:3000,http://localhost:5173"
-
+    catalog_dir: Path = Path("resources/catalog")
+    model_dir: Path = Path("resources/model")
+    cors_origins: str = "http://localhost:5173,http://localhost:8080"
+    max_parallel_analyses: int = 2
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 

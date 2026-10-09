@@ -1,29 +1,19 @@
 # TenderHack
 
-Репозиторий команды хакатона 9–11 октября 2026.
-
-- `frontend/` — React + TypeScript + Vite.
-- `backend/` — FastAPI, PostgreSQL, Alembic, базовый алгоритм КТРУ.
-- [`backend/docs/API.md`](backend/docs/API.md) — действующий контракт для фронтенда. Обновлять в одном коммите с изменением API.
-- [`backend/docs/RESEARCH.md`](backend/docs/RESEARCH.md) — постановка задачи, источники и открытые вопросы к датасету.
-
-## Запуск API
+React/Vite и stateless Python/FastAPI: описание → извлечение → поиск категории → уточнение → проверка конечных позиций → ручное подтверждение кода. Данные формы живут в браузере; каждый запрос передаёт полное текущее состояние. Базы данных и серверного хранения анализов нет.
 
 ```sh
-docker compose up --build
+# Из корня репозитория
+docker compose up --build -d
 ```
 
-Swagger: http://localhost:8000/api/docs. Проверка готовности: http://localhost:8000/api/health/ready. Каталог изначально пуст; API возвращает `needs_data`, пока не загружен набор организаторов. Для отдельного синтетического примера и локальной разработки см. [backend/README.md](backend/README.md).
+Frontend: http://localhost:8080, API: http://localhost:8000/api/docs. Nginx и Vite сохраняют `/api`.
 
-## Запуск фронтенда
+Очищенные данные ещё не предоставлены. Рабочий каталог намеренно пуст: API отвечает `needs_data`, readiness — HTTP 503. Синтетические данные используются только тестами; демонстрационные коды не выдаются за КТРУ.
 
-Нужен Node.js 22.12+ (или более новый поддерживаемый LTS) и pnpm.
+- [Запуск, ресурсы и проверки backend](backend/README.md)
+- [Контракт API и сценарий frontend](backend/docs/API.md)
+- [Формат проверенной поставки](backend/docs/CATALOG.md)
+- [Frontend](frontend/README.md)
 
-```sh
-npm install --global pnpm@11
-cd frontend
-pnpm install --frozen-lockfile
-pnpm dev
-```
-
-Открыть http://localhost:5173. Vite перенаправляет `/api/*` на FastAPI. Подробнее о структуре и проверках — в [frontend/README.md](frontend/README.md).
+Для разработки frontend из `frontend/`: `pnpm install --frozen-lockfile`, `pnpm dev`, `pnpm build`, `pnpm lint`. Backend запускается отдельно; Vite проксирует API на порт 8000.

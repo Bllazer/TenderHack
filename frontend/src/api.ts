@@ -1,0 +1,29 @@
+export type InputFact = { id: string; name: string; value: string; unit: string | null; unknown?: boolean; subject?: 'product' | 'packaging' | 'unspecified'; replaces?: string | null }
+export type Answer = { question_id: string; value: string | null; unit: string | null; unknown: boolean }
+export type Draft = { description: string; attributes: InputFact[]; additional: string[]; confirmed_category_id: string | null; answers: Answer[]; confirmed_ktru_code: string | null }
+export type Fact = { id: string; name: string; value: string; unit: string | null; raw: string; source: 'text' | 'input' | 'answer'; subject: string; unknown: boolean; normalized_value: string | null; normalized_unit: string | null }
+export type Candidate = { ktru_code: string; name: string; outcome: 'compatible' | 'incompatible' | 'unknown'; missing_required: string[]; checks: { name: string; outcome: string; reason: string }[] }
+export type Question = { id: string; kind: 'category' | 'property' | 'conflict' | 'code'; title: string; reason: string; property_name: string | null; options: { value: string; label: string }[]; unit: string | null; allow_unknown: boolean }
+export type Result = {
+  status: 'needs_data' | 'needs_input' | 'ambiguous' | 'resolved'; original_text: string; normalized_text: string;
+  facts: Fact[]; unparsed: { id: string | null; raw: string }[]; additional: { id: string | null; raw: string }[];
+  categories: { id: string; name: string; rank: number }[]; candidates: Candidate[]; excluded: Candidate[];
+  candidate_count: number; excluded_count: number; scope: { category_id: string | null; complete: boolean; evaluated_count: number };
+  issues: { code: string; severity: string; explanation: string; suggested_action: string }[];
+  corrections: { fact_id: string; original: string; normalized: string; explanation: string; confirmation_required: boolean }[];
+  next_question: Question | null; next_steps: string[];
+  verification: { type_verified: boolean; ktru_unique: boolean; fields_complete: boolean; value_verified: boolean; catalog_scope_complete: boolean; blocking_issues: boolean; value_indistinguishable: boolean; confirmed_by_user: boolean };
+  selected_ktru_code: string | null; catalog_version: string; engine_version: string;
+}
+
+export const emptyDraft = (): Draft => ({ description: '', attributes: [], additional: [], confirmed_category_id: null, answers: [], confirmed_ktru_code: null })
+
+export async function analyze(draft: Draft, signal: AbortSignal): Promise<Result> {
+  const response = await fetch('/api/v1/analyses', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(draft), signal })
+  const body = await response.json()
+  if (!response.ok) {
+    const detail = body.detail
+    throw new Error(Array.isArray(detail) ? 'Проверьте заполнение полей и длину описания.' : detail?.message || 'Сервис временно недоступен. Повторите запрос.')
+  }
+  return body as Result
+}

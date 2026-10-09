@@ -1,0 +1,40 @@
+"""Property identity is contextual; lexical similarity is only a suggestion."""
+from difflib import get_close_matches
+
+from app.catalog import Position, Property
+from app.schemas import Fact, Issue, Correction
+from app.search import canon
+
+
+def map_facts(position: Position, facts: list[Fact]):
+    groups: dict[str, list[Fact]] = {prop.id: [] for prop in position.properties}
+    issues: list[Issue] = []
+    corrections: list[Correction] = []
+    names = [prop.name for prop in position.properties]
+    for fact in facts:
+        matches = [prop for prop in position.properties if fact.subject == prop.subject
+                   and canon(fact.name) in {canon(prop.name), *(canon(alias) for alias in prop.aliases)}]
+        if matches:
+            priority = min(0 if prop.source == "ktru" else 1 for prop in matches)
+            matches = [prop for prop in matches if (0 if prop.source == "ktru" else 1) == priority]
+        if len(matches) == 1:
+            prop: Property = matches[0]
+            groups[prop.id].append(fact)
+            identity = f"{position.code}/{prop.id}"
+            if identity not in fact.mappings:
+                fact.mappings.append(identity)
+        elif len(matches) > 1:
+            issues.append(Issue(code="mapping_ambiguous", fact_id=fact.id, candidate_code=position.code,
+                                explanation=f"Имя «{fact.name}» соответствует нескольким свойствам позиции; уточните контекст"))
+        elif fact.name:
+            possible = get_close_matches(canon(fact.name), [canon(name) for name in names], n=1, cutoff=.82)
+            if possible:
+                target = next(name for name in names if canon(name) == possible[0])
+                corrections.append(Correction(fact_id=fact.id, kind="proposed_text_fix", original=fact.name,
+                                              normalized=target, explanation="Похожее имя; сопоставление требует вашей правки",
+                                              confirmation_required=True))
+            if position.no_new_features is True:
+                issues.append(Issue(code="additional_not_exportable", severity="warning", fact_id=fact.id,
+                                    candidate_code=position.code, rule_source=position.no_new_features_evidence,
+                                    explanation=f"«{fact.name}» сохранено дополнительно; у позиции запрещено добавление характеристик"))
+    return groups, issues, corrections

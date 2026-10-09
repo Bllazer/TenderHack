@@ -1,0 +1,27 @@
+{
+  "format_version": 1,
+  "catalog_version": "synthetic-test-only-v1",
+  "source_description": "Synthetic tests, not official KTRU. Never load into production.",
+  "validation_report": "Hand-checked software regression constraints only.",
+  "synthetic": true,
+  "categories": [
+    {"id":"tools", "name":"Дрели электрические", "search_text":"Дрель электрическая инструмент питание от сети мощность", "position_codes":["TEST-DRILL-FAMILY"], "link_verified":true,"coverage_verified":true,"evidence":"test"},
+    {"id":"furniture", "name":"Столы", "search_text":"Стол письменный мебель высота дерево", "position_codes":["TEST-TABLE"], "link_verified":true,"coverage_verified":true,"evidence":"test"},
+    {"id":"clothes", "name":"Рабочие куртки", "search_text":"Куртка зимняя одежда рабочая размер", "position_codes":["TEST-JACKET"], "link_verified":true,"coverage_verified":true,"evidence":"test"}
+  ],
+  "positions": [
+    {"code":"TEST-DRILL-FAMILY", "name":"Дрели", "is_template":true,"status":"actual","source_path":"test"},
+    {"code":"TEST-DRILL-MAINS", "name":"Дрель от сети", "parent_code":"TEST-DRILL-FAMILY", "is_template":false,"status":"actual","source_path":"test", "properties":[
+      {"id":"mains-power-source","semantic_key":"power-source","name":"Питание","aliases":[],"value_type":"text","required":true,"verified":true,"evidence":"test","allowed":[{"kind":"enum","value":"от сети","value_code":"TEST-SOURCE-MAINS","source":"test"}]},
+      {"id":"mains-power","semantic_key":"power","name":"Мощность","aliases":["мощностью"],"value_type":"number","required":true,"verified":true,"evidence":"test","allowed":[{"kind":"interval","lower":"500","upper":"800","unit":"Вт","raw_unit":"Ватт","value_code":"TEST-POWER-RANGE","source":"test"}]}
+    ]},
+    {"code":"TEST-DRILL-BATTERY", "name":"Дрель аккумуляторная", "parent_code":"TEST-DRILL-FAMILY", "is_template":false,"status":"actual","source_path":"test", "properties":[
+      {"id":"battery-source","semantic_key":"power-source","name":"Питание","value_type":"text","required":true,"verified":true,"evidence":"test","allowed":[{"kind":"enum","value":"от аккумулятора","value_code":"TEST-SOURCE-BATTERY","source":"test"}]},
+      {"id":"battery-voltage","semantic_key":"voltage","name":"Напряжение","value_type":"number","required":true,"verified":true,"evidence":"test","allowed":[{"kind":"interval","lower":"12","upper":"24","unit":"В","raw_unit":"Вольт","source":"test"}]}
+    ]},
+    {"code":"TEST-TABLE", "name":"Стол", "is_template":false,"status":"actual","source_path":"test", "properties":[
+      {"id":"height","semantic_key":"height","name":"Высота","value_type":"number","required":true,"verified":true,"evidence":"test","allowed":[{"kind":"interval","lower":"700","upper":"800","unit":"мм","raw_unit":"миллиметр","source":"test"}]}
+    ]},
+    {"code":"TEST-JACKET", "name":"Куртка без правил", "is_template":false,"status":"actual","source_path":"test"}
+  ]
+}

@@ -1,128 +1,80 @@
-# API v0.1 — контракт для фронтенда
+# API v0.2 — stateless контракт frontend
 
-Базовый URL для фронтенда: `/api` (Vite проксирует его на `http://127.0.0.1:8000`); прикладные маршруты начинаются с `/api/v1`. JSON в UTF-8. Автогенерируемая спецификация: `/api/openapi.json`, Swagger UI: `/api/docs`. Этот файл обновлять при каждом изменении маршрутов, статусов или полей. Даты — ISO 8601 UTC. Идентификаторы — UUID в строковом виде. `GET` возвращает `200`, создание — `201`; ошибки: стандартное FastAPI `{"detail": ...}` (`404`, `409`, `422`, `503`). Авторизации в прототипе нет: не выставлять публично.
+Базовый URL `/api`. Vite и Docker nginx сохраняют префикс. OpenAPI: `/api/openapi.json`, Swagger: `/api/docs`. Сервер не хранит анализы: каждый POST передаёт полное текущее состояние, ответ полностью заменяет предыдущий результат.
 
-| Метод | Путь | Назначение |
-| --- | --- | --- |
-| GET | `/api/health` и `/api/health/live` | Жив процесс, `{"status":"ok"}` |
-| GET | `/api/health/ready` | Доступна БД и таблицы приложения после миграции; `{"status":"ok"}`; при сбое или отсутствии таблиц `503` |
-| GET | `/api/v1/catalog/status` | `{"categories":0,"attributes":0,"ste":0}`; фронт показывает состояние отсутствия данных |
-| GET | `/api/v1/catalog/categories?parent_id=&q=&limit=50&offset=0` | Список категорий/позиций КТРУ; `limit` 1–100; без `parent_id` возвращает все уровни |
-| GET | `/api/v1/catalog/categories/{category_id}/attributes` | Определения характеристик и правила выбранного кода; `404` |
-| GET | `/api/v1/ste?q=&limit=50&offset=0` | Карточки СТЕ; пустой список без данных |
-| POST | `/api/v1/ste` | Создать карточку; дубль `(source,external_id)` → `409` |
-| GET | `/api/v1/ste/{ste_id}` | Карточка или `404` |
-| POST | `/api/v1/analyses` | Создать синхронный анализ и сохранить результат |
-| GET | `/api/v1/analyses/{analysis_id}` | Получить сохранённый результат или `404` |
-| POST | `/api/v1/analyses/{analysis_id}/feedback` | Сохранить оценку/исправление или `404` |
+## Маршруты
 
-## Основной сценарий
+| Метод | Путь | Результат |
+|---|---|---|
+| GET | `/api/health`, `/api/health/live` | 200 `{"status":"ok"}` — процесс работает |
+| GET | `/api/health/ready` | 200 status/catalog_version/engine_version либо 503 `detail.code` и catalog_version |
+| GET | `/api/v1/catalog/status` | 200 categories/positions/catalog_version/ready/reason |
+| POST | `/api/v1/analyses` | 200 полный результат; 422 неверный ввод/подтверждение; 429 заняты слоты; 503 внутренняя ошибка |
 
-1. `GET /api/v1/catalog/status`. Если `categories=0`, показывать ожидание датасета; анализ всё равно вернёт `needs_data`.
-2. Пользователь вводит название, описание, пары `name`/`value`/`unit`. После каждого уточнения отправлять новый `POST /api/v1/analyses` (предыдущие результаты сохраняются; это не обновление).
-3. Показывать `result.normalized_attributes`, `result.issues`, `result.candidates`, `result.next_steps`. Даже единственный кандидат без ручного подтверждения возвращается с `needs_input` и `selected_ktru_code=null`. Название и описание не участвуют в подборе: пользователь должен проверить соответствие категории товару.
-4. После явного выбора пользователя повторить `POST /api/v1/analyses` с текущими характеристиками и `confirmed_ktru_code`. Принять выбранный код только при `status=resolved`, непустом `selected_ktru_code` и `result.confirmed_by_user=true`. Это новый анализ; предыдущий результат не меняется.
-5. Оценку/исправление результата отправлять в `/api/v1/analyses/{analysis_id}/feedback`. Feedback не подтверждает код, не меняет статус анализа и пока не влияет на алгоритм.
+Старые серверные GET сохранённого анализа, CRUD СТЕ, сохраняемый feedback и маршруты чтения категорий/правил удалены (404). Их заменяет полный ответ POST; analysis_id, ste_id, title, raw_payload и старый контейнер result не используются. Frontend вызывает только POST анализа. Миграция не требуется: серверного хранилища нет.
 
-Запрос:
+## Запрос
 
 ```json
 {
-  "title": "Стакан 200 мл",
-  "description": "Для напитков",
-  "attributes": [
-    {"name": "Объем", "value": "200", "unit": "мл"},
-    {"name": "Материал", "value": "бумага", "unit": null}
-  ]
+  "description": "Дрель электрическая; мощность: 650 Вт",
+  "attributes": [],
+  "additional": ["Для мастерской"],
+  "confirmed_category_id": null,
+  "answers": [],
+  "confirmed_ktru_code": null,
+  "candidate_limit": 20
 }
 ```
 
-Вместо `title` можно передать `ste_id` существующей карточки. Если переданы оба, явный `title` имеет приоритет; `description` наследуется от СТЕ, если не задан. Минимум одно из `title` и `ste_id` обязательно. Максимум 100 входных характеристик.
+description: непустой исходный текст до 12000 символов. attributes: до 100 объектов `{id, name, value, unit?, unknown?, subject?, replaces?}`. id уникален, до 128; name до 256, value до 512, unit до 64. subject: `product` (по умолчанию), `packaging`, `unspecified`. unknown по умолчанию false. `replaces` — идентификатор предыдущего извлечённого/ответного факта либо `fragment:start:end`, если пользователь явно исправляет/размечает фрагмент. Неприменимый идентификатор отклоняется: исправление не должно незаметно потеряться после смены текста. Ответ сохраняет original_facts и corrections; facts содержит действующее состояние.
 
-Первый ответ на запрос выше: `status=needs_input`; `result.candidates` содержит `DEMO-CUP-PAPER`, `result.selected_ktru_code=null`, `result.confirmed_by_user=false`, `result.next_steps` предлагает проверить товар и передать `confirmed_ktru_code`.
+additional: до 100 строк по 1024 символа. answers: до 100 объектов `{question_id, value?, unit?, unknown?}`, один текущий ответ на идентификатор. «Не знаю»: value=null, unknown=true. confirmed_category_id: до 128 символов, confirmed_ktru_code: до 64. candidate_limit: 1–100, по умолчанию 20; ограничивает выдачу, а не проверяемую область. Все остальные поля запрещены, включая клиентские verification/normalized_value: доказательства вычисляются заново.
 
-Необязательный `confirmed_ktru_code` — строка длиной 1–64 после удаления пробелов по краям; отсутствие поля или `null` означает отсутствие подтверждения. Пустая строка даёт `422`. Код сравнивается точно, с учётом регистра. Проверка всегда выполняется заново по текущему каталогу и текущим характеристикам. При нескольких совместимых кандидатах ручной выбор одного разрешён; обязательные характеристики проверяются именно для выбранного кандидата. Несовместимый, неизвестный или промежуточный код даёт `422`, анализ не сохраняется:
+Ответы предыдущей категории сохраняются как источник явной правки через replaces; в новой категории они не становятся действующими фактами или доказательством. Идентификатор вопроса сверяется со snapshot каталога.
 
-```json
-{"detail":{"code":"incompatible_ktru_code","field":"confirmed_ktru_code","message":"Подтверждённый код не входит в совместимые конечные позиции КТРУ"}}
-```
+При исправлении фактов сбрасывайте confirmed_ktru_code. При смене исходного текста сбрасывайте категорию, ответы и устаревшие replaces; при смене категории удаляйте её ответ и подтверждение кода. Свойства другой категории сохраняются как дополнительные сведения, но не считаются доказательством.
 
-Если код совместим, но есть ошибки входа или отсутствуют обязательные характеристики, ответ `201` со статусом `needs_input`, `selected_ktru_code=null`, `confirmed_by_user=false`; исправьте характеристики и повторите запрос с подтверждением. При пустом каталоге запрос без подтверждения даёт `needs_data`, с кодом подтверждения — `422`, поскольку совместимых кандидатов нет.
+## Ответ
 
-Запрос после ручного подтверждения:
+Всегда: status, original_text, normalized_text, original_facts, facts, unparsed, additional, categories, candidates, excluded, candidate_count, excluded_count, scope, issues, corrections, next_question, next_steps, verification, selected_ktru_code, catalog_version, engine_version.
 
-```json
-{
-  "title": "Стакан 200 мл",
-  "description": "Для напитков",
-  "attributes": [
-    {"name": "Объем", "value": "200", "unit": "мл"},
-    {"name": "Материал", "value": "бумага", "unit": null}
-  ],
-  "confirmed_ktru_code": "DEMO-CUP-PAPER"
-}
-```
+- Fact: id/name/value/unit/raw/span/source/subject/negated/unknown/normalized_value/normalized_unit/mappings. source: text/input/answer. span — полуоткрытый диапазон символов исходного текста либо null. Нормализация не меняет исходный факт.
+- Fragment: id/raw/span. Нераспознанные и дополнительные сведения не теряются.
+- CategoryCandidate: id/name/rank/rank_score/reasons. rank_score — RRF, не вероятность. Предложение требует подтверждения типа пользователем.
+- Candidate: ktru_code/name/okpd2/outcome/checks/missing_required/has_characteristics. outcome: compatible/incompatible/unknown. Check: property_id/name/outcome/reason/fact_ids/value_codes. Шаблон не становится конечным кандидатом. Допустимые элементы сохраняют свои единицы и value_code в каталоге.
+- candidate_count/excluded_count — полные количества до лимита ответа. scope: category_id/position_count/evaluated_count/complete. Весь конечный пул выбранной области проверяется до ограничения UI.
+- Issue: code/severity/explanation/fact_id/property_id/candidate_code/rule_source/suggested_action/confirmation_required. severity: info/warning/error. Correction: fact_id/kind/original/normalized/explanation/confirmation_required; kind: auto_normalization/proposed_text_fix/proposed_fact_change. Безопасное преобразование единицы показывается; изменение факта требует пользовательского ввода.
+- next_question: null либо id/kind/title/reason/property_name/options/unit/allow_unknown; kind: conflict/category/property/code; options: value/label. По одному вопросу. Неизвестный ответ не подтверждает значение, уже отвеченный вопрос не повторяется бесконечно.
 
-Ответ после подтверждения (`id`, `created_at` условные):
+Варианты вопроса свойства объединяются из проверенных правил всех оставшихся позиций той же семантики и объекта (товар/упаковка); правила разных объектов не смешиваются.
+- verification: type_verified/ktru_unique/fields_complete/value_verified/catalog_scope_complete/value_indistinguishable/confirmed_by_user/blocking_issues — boolean. confirmed_by_user отражает присланное явное подтверждение кода, а не успешность проверки.
 
-```json
-{
-  "id": "e82ab288-3ce6-44f7-b6fb-393b1e2d8069",
-  "ste_id": null,
-  "title": "Стакан 200 мл",
-  "description": "Для напитков",
-  "input_attributes": [
-    {"name": "Объем", "value": "200", "unit": "мл"},
-    {"name": "Материал", "value": "бумага", "unit": null}
-  ],
-  "status": "resolved",
-  "result": {
-    "normalized_attributes": [
-      {"attribute_id": "...", "name": "Объем", "value": "200", "unit": "мл", "source": "input"},
-      {"attribute_id": "...", "name": "Материал", "value": "бумага", "unit": null, "source": "input"}
-    ],
-    "candidates": [
-      {"category_id": "...", "ktru_code": "DEMO-CUP-PAPER", "name": "Демонстрация: стакан бумажный", "matched_attributes": ["Объем", "Материал"], "missing_required": []}
-    ],
-    "issues": [],
-    "next_steps": [],
-    "selected_ktru_code": "DEMO-CUP-PAPER",
-    "confirmed_by_user": true
-  },
-  "engine_version": "catalog-baseline-v2",
-  "created_at": "2026-10-09T09:00:00Z"
-}
-```
+## Статусы и подтверждение
 
-Пример вызова из Vite; `code` передаётся обработчиком явного выбора пользователя, а не выбирается автоматически из первого ответа:
+`needs_data`: нет пригодного каталога/индекса/модели или недостаточно подтверждённых ограничений/покрытия. Поиск при недоступной модели может дать лексические предложения, но не успешный подбор. Пустой рабочий каталог отвечает needs_data, readiness — 503 catalog_empty.
 
-```js
-async function analyze(payload, code = null) {
-  const response = await fetch('/api/v1/analyses', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ...payload, confirmed_ktru_code: code }),
-  });
-  const body = await response.json();
-  if (!response.ok) throw new Error(JSON.stringify(body.detail));
-  return body;
-}
-// await analyze(payload) — первичный анализ.
-// await analyze(payload, chosenCode) — после ручного подтверждения.
-```
+`needs_input`: нужна категория, исправление/уточнение факта, обязательное поле либо подтверждение единственного проверенного кода. Один кандидат сам по себе никогда не означает resolved.
 
-Коды `status`: `needs_data` (пустой справочник без подтверждения), `needs_input` (ожидается ручное подтверждение единственного кандидата, недостаёт обязательных характеристик, есть ошибки входа либо нет совместимых позиций), `ambiguous` (несколько вариантов без подтверждения и ошибок входа), `resolved` (пользователь подтвердил совместимый конечный код, его обязательные поля заполнены, ошибок входа нет). В `issues[].code`: `catalog_empty`, `unknown_attribute`, `duplicate_attribute`, `unit_mismatch`, `invalid_number`, `no_match`. `field` — путь к ошибочному полю запроса. `candidates` ограничены 20 вариантами; подтверждение проверяется по полному набору кандидатов, выбранный кандидат обязательно входит в ответ. Не используйте список как полную выгрузку КТРУ.
+`ambiguous`: несколько позиций, которые не удалось обоснованно различить. Одинаковые ограничения прекращают вопросы по значениям. Нельзя выбирать по рангу, названию или ручному коду при оставшейся неоднозначности. Подтверждённый смысловой разделитель должен быть представлен проверенным свойством каталога; текстовой эвристики нет.
 
-`result.confirmed_by_user` — булево поле, `true` только при успешном ручном подтверждении. Оно обозначает явный выбор через запрос, а не независимую проверку текста, авторства или правильности кода. У новых анализов `engine_version=catalog-baseline-v2`. Сохранённые ранее результаты не пересчитываются: старый `resolved` может иметь `confirmed_by_user=false`; фронт должен требовать ручное подтверждение новым запросом.
+`resolved`: категория подтверждена и её связь проверена, осталась единственная совместимая конечная позиция, её значения проверены, обязательные поля заполнены, вся область покрыта, блокирующих проблем нет, пользователь явно подтвердил именно этот код. У позиции без характеристик value_verified=false, resolved запрещён. Ручной выбор не исключает остальных кандидатов и не обходит несовместимость.
 
-В `attributes` начальные и конечные пробелы `name`, `value`, `unit` удаляются; пустые после этого `name` и `value` дают `422`. Отсутствующая единица наследуется из справочника. Явно переданная единица должна совпадать с единицей справочника, включая отсутствие единицы у безразмерной характеристики; иначе `unit_mismatch` и `needs_input`, без преобразования. Числовые перечислимые значения сравниваются как числа: `200`, `200.00` и `200,0` эквивалентны.
+Во всех незавершённых статусах **selected_ktru_code=null**. Несовместимый/чужой/шаблонный confirmed_ktru_code — HTTP 422, без успешного результата.
 
-`GET /api/v1/catalog/categories` возвращает `id`, `parent_id`, `ktru_code`, `name`, `is_leaf`. Маршрут `/attributes` возвращает `id`, `name`, `value_type` (`text`/`number`/`boolean` в данных), `unit`, `aliases`, `required`, `allowed_values`. Пока базовый алгоритм проверяет числовой тип, совпадение единицы и перечислимые значения; `boolean` обрабатывает как текст. Перевод единиц, поиск опечаток, распознавание текста и ранжирование названия ожидают модельный модуль. До этого не показывать результат как ML прогноз.
+## Полный сценарий frontend
 
-Создание СТЕ: `{"source":"organizer","external_id":"123","title":"...","description":null,"category_id":null,"raw_payload":{}}`. `source + external_id` должны быть уникальны. `raw_payload` нужен для трассировки исходной строки, основной API не предполагает его структуру.
+1. POST исходного описания как в примере. С проверенной поставкой сервер возвращает categories и вопрос kind=category. Без поставки — needs_data с сохранёнными фактами и причиной.
+2. Пользователь выбирает id из categories. Повторный POST содержит прежние поля и `confirmed_category_id` с выбранным id; answers может содержать `{ "question_id":"category", "value":"<id из ответа>", "unknown":false }`.
+3. Получив вопрос свойства, frontend добавляет ответ, например `{ "question_id":"<id вопроса>", "value":"650", "unit":"Вт", "unknown":false }`, сохраняя полное состояние. Для «не знаю» value=null, unknown=true. Сервер снова проверяет все позиции.
+4. Исправление: attributes пополняется `{ "id":"input:power", "name":"Мощность", "value":"700", "unit":"Вт", "replaces":"<id факта из ответа>" }`; confirmed_ktru_code=null. Повторная проверка может изменить кандидатов и вопросы.
+5. При единственной доказанно совместимой позиции сервер возвращает needs_input, next_question.kind=code, понятный next_steps и selected_ktru_code=null. Frontend показывает кнопку подтверждения только при type_verified, ktru_unique, fields_complete, value_verified, catalog_scope_complete и отсутствии blocking_issues.
+6. POST того же состояния с confirmed_ktru_code, скопированным из кандидата. При выполнении всех условий: resolved, verification.confirmed_by_user=true, selected_ktru_code равен коду. Результат отображается и копируется только из ответа сервера.
 
-Feedback: `{"verdict":"corrected","corrected_ktru_code":"...","corrected_attributes":[{"name":"Материал","value":"бумага","unit":null}],"comment":"..."}`. `verdict` — `accepted`, `rejected` или `corrected`; при `corrected` нужен код либо характеристика. Ответ повторяет поля и добавляет `id`, `analysis_id`, `created_at`.
+В примерах нет выдуманных официальных кодов: id и код берутся из реальной поставки/предыдущего ответа. Синтетические TEST-коды находятся только в tests/fixtures. Frontend сохраняет форму между шагами, показывает загрузку/HTTP-ошибки; AbortController и номер запроса предотвращают перезапись нового ввода устаревшим ответом.
 
-## Совместимость
+## Ошибки
 
-Поля и статусы выше — контракт v0.1. Изменения сначала в Pydantic схемах/OpenAPI и этом документе в одном коммите. Алгоритмический модуль должен сохранять эти внешние формы. Для больших наборов данных добавить полнотекстовый поиск и постраничную навигацию с `total` в следующей версии, не менять молча тип ответа.
+422 валидации Pydantic: `{"detail":[{"type":"...","loc":["body","..."],"msg":"...","input":"..."}]}`. 422 подтверждения: `{"detail":{"code":"incompatible_ktru_code","field":"confirmed_ktru_code","message":"Подтверждение не соответствует текущей области и фактам"}}`; также unknown_category/stale_source согласно полю ошибки.
+
+429: detail.code=analysis_busy; повторите после завершения текущего анализа. 503 выполнения: detail.code=analysis_unavailable, безопасное сообщение без внутренних исключений. 503 readiness: detail.code — catalog_empty/resources_invalid/model_unavailable/search_unavailable. HTTP-ошибка никогда не заменяется фиктивным resolved.

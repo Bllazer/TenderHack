@@ -1,115 +1,125 @@
-"""Deterministic catalog baseline. Replace this function with a model adapter later."""
-
-import re
-from decimal import Decimal, InvalidOperation
-
-from sqlalchemy import select
-from sqlalchemy.orm import Session
-
-from app.models import Attribute, Category, CategoryAttribute
-from app.schemas import AnalysisResult, Candidate, InputAttribute, Issue, NormalizedAttribute
+"""Stateless A -> B -> contextual mapping -> C/E -> D orchestration."""
+from app.catalog import Snapshot
+from app.checks import evaluate
+from app.extraction import MEASUREMENT, apply_inputs, extract, normalize
+from app.questions import next_question, property_question_id
+from app.schemas import AnalysisCreate, AnalysisOut, Correction, Fact, Fragment, Issue, Scope, Verification
 
 
-def canon(text: str) -> str:
-    return " ".join(text.casefold().replace("ё", "е").split())
+class InvalidConfirmation(ValueError):
+    def __init__(self, field: str, code: str):
+        self.field, self.code = field, code
 
 
-class IncompatibleKtruCode(ValueError):
-    pass
-
-
-def analyze(session: Session, attributes: list[InputAttribute],
-            confirmed_ktru_code: str | None = None) -> tuple[str, AnalysisResult]:
-    categories = session.scalars(select(Category).where(Category.is_leaf.is_(True)).order_by(Category.ktru_code)).all()
-    if not categories:
-        if confirmed_ktru_code is not None:
-            raise IncompatibleKtruCode(confirmed_ktru_code)
-        return "needs_data", AnalysisResult(
-            issues=[Issue(field="catalog", code="catalog_empty", message="Справочник КТРУ ещё не загружен")],
-            next_steps=["Загрузить справочник категорий и характеристик"],
-        )
-
-    definitions = session.scalars(select(Attribute)).all()
-    by_name = {canon(alias): item for item in definitions for alias in [item.name, *item.aliases]}
-    normalized: list[NormalizedAttribute] = []
-    issues: list[Issue] = []
-    seen: set[str] = set()
-    for index, field in enumerate(attributes):
-        definition = by_name.get(canon(field.name))
-        if definition is None:
-            issues.append(Issue(field=f"attributes.{index}.name", code="unknown_attribute", message=f"Не найдена характеристика «{field.name}»"))
-            continue
-        if definition.id in seen:
-            issues.append(Issue(field=f"attributes.{index}.name", code="duplicate_attribute", message="Характеристика указана дважды"))
-            continue
-        seen.add(definition.id)
-        if field.unit is not None and canon(definition.unit or "") != canon(field.unit):
-            issues.append(Issue(field=f"attributes.{index}.unit", code="unit_mismatch", message=f"Ожидаемая единица: {definition.unit}; преобразование не выполнено"))
-            continue
-        if definition.value_type == "number" and not re.fullmatch(r"[+-]?\d+(?:[.,]\d+)?", field.value.strip()):
-            issues.append(Issue(field=f"attributes.{index}.value", code="invalid_number", message="Ожидается числовое значение"))
-            continue
-        normalized.append(NormalizedAttribute(
-            attribute_id=definition.id, name=definition.name,
-            value=field.value.strip().replace(",", ".") if definition.value_type == "number" else field.value.strip(),
-            unit=definition.unit or field.unit,
-        ))
-
-    links = session.scalars(select(CategoryAttribute)).all()
-    rules: dict[str, list[CategoryAttribute]] = {}
-    for link in links:
-        rules.setdefault(link.category_id, []).append(link)
-    known = {item.id: item for item in definitions}
-    values = {item.attribute_id: item.value for item in normalized}
-    candidates: list[Candidate] = []
-    for category in categories:
-        category_rules = rules.get(category.id, [])
-        allowed_ids = {rule.attribute_id for rule in category_rules}
-        # Every recognized user attribute must belong to the candidate category.
-        if any(attribute_id not in allowed_ids for attribute_id in values):
-            continue
-        if any(rule.attribute_id in values and rule.allowed_values and
-               not value_allowed(known[rule.attribute_id], values[rule.attribute_id], rule.allowed_values)
-               for rule in category_rules):
-            continue
-        matched = [known[key].name for key in values if key in allowed_ids]
-        missing = [known[rule.attribute_id].name for rule in category_rules
-                   if rule.required and rule.attribute_id not in values]
-        candidates.append(Candidate(category_id=category.id, ktru_code=category.ktru_code,
-                                    name=category.name, matched_attributes=matched, missing_required=missing))
-
-    candidates.sort(key=lambda item: (len(item.missing_required), item.ktru_code))
-    selected = None
-    if confirmed_ktru_code is not None:
-        selected = next((candidate for candidate in candidates if candidate.ktru_code == confirmed_ktru_code), None)
-        if selected is None:
-            raise IncompatibleKtruCode(confirmed_ktru_code)
-    visible = candidates[:20]
-    if selected is not None and selected not in visible:
-        visible = [*visible[:19], selected]
-    result = AnalysisResult(normalized_attributes=normalized, candidates=visible, issues=issues)
-    if not candidates:
-        result.issues.append(Issue(field="attributes", code="no_match", message="Совместимый код КТРУ не найден"))
-        result.next_steps = ["Проверьте названия, значения и единицы характеристик"]
-        return "needs_input", result
-    if selected is not None and not selected.missing_required and not issues:
-        result.selected_ktru_code = selected.ktru_code
-        result.confirmed_by_user = True
-        return "resolved", result
-    missing = sorted({name for candidate in ([selected] if selected is not None else candidates)
-                      for name in candidate.missing_required})
-    result.next_steps = [f"Уточните характеристику: {name}" for name in missing[:5]]
-    if issues:
-        result.next_steps.insert(0, "Исправьте ошибки входных характеристик перед подтверждением кода КТРУ")
-    if selected is None:
-        result.next_steps.append("Проверьте соответствие категории товару и подтвердите код через confirmed_ktru_code")
-    return ("ambiguous" if selected is None and len(candidates) > 1 and not issues else "needs_input"), result
-
-
-def value_allowed(attribute: Attribute, value: str, allowed: list[str]) -> bool:
-    if attribute.value_type == "number":
-        try:
-            return any(Decimal(value) == Decimal(item.strip().replace(",", ".")) for item in allowed)
-        except InvalidOperation:
-            return False
-    return canon(value) in {canon(item) for item in allowed}
+def analyze(data: Snapshot, search, body: AnalysisCreate) -> AnalysisOut:
+    extracted, unparsed = extract(body.description, data.extraction_names)
+    result = AnalysisOut(status="needs_data", original_text=body.description, normalized_text=normalize(body.description),
+                         facts=extracted, unparsed=unparsed, additional=[Fragment(raw=raw) for raw in body.additional],
+                         catalog_version=data.catalog.catalog_version,
+                         verification=Verification(confirmed_by_user=bool(body.confirmed_ktru_code)))
+    result.original_facts = [fact.model_copy(deep=True) for fact in extracted]
+    category_id = body.confirmed_category_id
+    if category_id and category_id not in data.categories:
+        raise InvalidConfirmation("confirmed_category_id", "unknown_category")
+    positions, scope_complete = data.pool(category_id) if category_id else ((), False)
+    registry = {property_question_id(category_id, prop): prop for position in positions for prop in position.properties}
+    answered = {answer.question_id for answer in body.answers}
+    for answer in body.answers:
+        prop = registry.get(answer.question_id)
+        if prop:
+            from app.search import canon
+            superseded = [fact for fact in extracted if fact.subject == prop.subject and canon(fact.name) in
+                          {canon(prop.name), *(canon(alias) for alias in prop.aliases)}]
+            extracted = [fact for fact in extracted if fact not in superseded]
+            for fact in superseded:
+                result.corrections.append(Correction(fact_id="answer:" + answer.question_id, kind="proposed_fact_change",
+                                                    original=fact.raw, normalized=answer.value or "не знаю",
+                                                    explanation="Текущий явный ответ пользователя заменяет предыдущее значение; источник сохранён"))
+            extracted.append(Fact(id="answer:" + answer.question_id, name=prop.name, value=answer.value or "", unit=answer.unit,
+                                  raw=answer.value or "не знаю", source="answer", subject=prop.subject,
+                                  unknown=answer.unknown or not answer.value))
+    result.facts = apply_inputs(extracted, body.attributes)
+    sources = {fact.id: fact.raw for fact in result.original_facts + extracted} | {fragment.id: fragment.raw for fragment in unparsed}
+    # Previous-category answers remain provenance for explicit edits, never proof in the new category.
+    sources.update({"answer:" + answer.question_id: answer.value or "не знаю" for answer in body.answers
+                    if answer.question_id in data.answer_properties})
+    for item in body.attributes:
+        if item.replaces:
+            if item.replaces not in sources:
+                raise InvalidConfirmation("attributes.replaces", "stale_source")
+            result.corrections.append(Correction(fact_id=item.id, kind="proposed_fact_change", original=sources[item.replaces],
+                                                normalized=f"{item.name}: {item.value} {item.unit or ''}".strip(),
+                                                explanation="Явная правка пользователя; новые значения проверяются заново"))
+    replaced = {item.replaces for item in body.attributes if item.replaces}
+    result.unparsed = [fragment for fragment in unparsed if fragment.id not in replaced]
+    if search:
+        result.categories = search.find(body.description)
+    if data.problem or not data.categories or not data.positions:
+        result.issues = [Issue(code=data.problem or "catalog_empty", explanation="Проверенная поставка каталога, индексов и модели ещё не готова",
+                              suggested_action="Подготовьте проверенный snapshot и перезапустите API")]
+        result.next_steps = ["Сведения сохранены в форме. Подбор доступен после подключения проверенного каталога"]
+        return result
+    if not category_id:
+        result.status = "needs_input"
+        result.next_question, _ = next_question(None, result.categories, (), [], result.facts, [], answered, False, None)
+        result.next_steps = ["Подтвердите категорию; совпадение чисел не доказывает тип товара"]
+        if body.confirmed_ktru_code:
+            result.issues.append(Issue(code="type_unconfirmed", explanation="Сначала подтвердите категорию товара"))
+        return result
+    result.scope = Scope(category_id=category_id, position_count=len(positions), evaluated_count=len(positions), complete=scope_complete)
+    all_candidates = []
+    all_issues = []
+    for position in positions:
+        candidate, issues, corrections = evaluate(position, result.facts)
+        all_candidates.append(candidate)
+        all_issues.extend(issues)
+        result.corrections.extend(corrections)
+    remaining = [candidate for candidate in all_candidates if candidate.outcome != "incompatible"]
+    excluded = [candidate for candidate in all_candidates if candidate.outcome == "incompatible"]
+    result.candidate_count, result.excluded_count = len(remaining), len(excluded)
+    result.candidates = remaining[:body.candidate_limit]
+    result.excluded = excluded[:body.candidate_limit]
+    active_issues = [issue for issue in all_issues if issue.candidate_code in {candidate.ktru_code for candidate in remaining}]
+    if not remaining:
+        active_issues = all_issues + [Issue(code="no_compatible_candidate", explanation="В выбранной области нет совместимых позиций")]
+    if body.confirmed_ktru_code:
+        confirmed = next((candidate for candidate in remaining if candidate.ktru_code == body.confirmed_ktru_code), None)
+        if confirmed is None:
+            raise InvalidConfirmation("confirmed_ktru_code", "incompatible_ktru_code")
+        if confirmed not in result.candidates:
+            result.candidates = [*result.candidates[:body.candidate_limit - 1], confirmed]
+    result.additional.extend(Fragment(raw=f"{fact.name}: {fact.value} {fact.unit or ''}".strip(), span=fact.span)
+                             for fact in result.facts if not fact.mappings)
+    if not scope_complete:
+        active_issues.append(Issue(code="insufficient_catalog_coverage", explanation="Полнота связей и конечных позиций выбранной области не подтверждена"))
+    if any(match["unit"] for fragment in result.unparsed for match in MEASUREMENT.finditer(fragment.raw)):
+        active_issues.append(Issue(code="unmapped_measurement", explanation="В исходном тексте осталось измерение без установленного свойства",
+                                  suggested_action="Добавьте характеристику с именем и единицей или уточните описание"))
+    if any(candidate.outcome == "unknown" for candidate in remaining):
+        active_issues.append(Issue(code="verification_incomplete", explanation="Есть непроверенные факты, обязательные поля или ограничения"))
+    unique = len(remaining) == 1
+    value_verified = unique and remaining[0].outcome == "compatible"
+    fields_complete = unique and not remaining[0].missing_required
+    blocking = any(issue.severity == "error" for issue in active_issues)
+    ready = unique and value_verified and fields_complete and scope_complete and not blocking
+    result.next_question, indistinguishable = next_question(category_id, result.categories, positions, remaining,
+                                                           result.facts, active_issues, answered, ready, body.confirmed_ktru_code)
+    result.verification = Verification(type_verified=bool(category_id and data.categories[category_id].link_verified),
+                                      ktru_unique=unique, fields_complete=fields_complete, value_verified=value_verified,
+                                      catalog_scope_complete=scope_complete, value_indistinguishable=indistinguishable,
+                                      confirmed_by_user=bool(body.confirmed_ktru_code), blocking_issues=blocking)
+    result.issues = list({issue.model_dump_json(): issue for issue in active_issues}.values())
+    result.corrections = list({item.model_dump_json(): item for item in result.corrections}.values())
+    if ready and result.verification.type_verified and body.confirmed_ktru_code == remaining[0].ktru_code:
+        result.status, result.selected_ktru_code = "resolved", remaining[0].ktru_code
+        result.next_question = None
+    else:
+        result.status = "ambiguous" if len(remaining) > 1 and not blocking else "needs_input"
+        if indistinguishable:
+            result.status = "ambiguous"
+            result.next_steps = ["Ограничения позиций одинаковы. Без проверенного смыслового разделителя выбрать один код нельзя"]
+        elif result.next_question:
+            result.next_steps = [result.next_question.title]
+        else:
+            result.next_steps = ["Проверьте замечания и уточните исходные сведения; неизвестное не считается подтверждённым"]
+    return result

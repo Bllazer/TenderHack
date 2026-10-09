@@ -1,28 +1,26 @@
 services:
-  db:
-    image: postgres:16-alpine
-    environment:
-      POSTGRES_DB: tenderhack
-      POSTGRES_USER: tenderhack
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tenderhack}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "127.0.0.1:5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U tenderhack -d tenderhack"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
   api:
     build: ./backend
     environment:
-      DATABASE_URL: postgresql+psycopg://tenderhack:${POSTGRES_PASSWORD:-tenderhack}@db:5432/tenderhack
-      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://localhost:5173}
+      CATALOG_DIR: /srv/resources/catalog
+      MODEL_DIR: /srv/resources/model
+      HF_HUB_OFFLINE: "1"
+      TRANSFORMERS_OFFLINE: "1"
+      MAX_PARALLEL_ANALYSES: "2"
+    volumes:
+      - ./backend/resources/catalog:/srv/resources/catalog:ro
+      - ./backend/resources/model:/srv/resources/model:ro
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health/live')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+  frontend:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:8080:80"
     depends_on:
-      db:
+      api:
         condition: service_healthy
-volumes:
-  postgres_data:
