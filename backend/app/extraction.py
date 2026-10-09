@@ -8,7 +8,8 @@ from app.units import UNITS
 
 NUMBER = r"[+−-]?\d+(?:[.,]\d+)?"
 UNIT_PATTERN = "|".join(re.escape(alias) for alias in sorted(UNITS, key=len, reverse=True))
-MEASUREMENT = re.compile(rf"(?P<value>(?:(?:не менее|не более|не выше|не ниже|[<>]=?|[≤≥])\s*)?{NUMBER}(?:\s*(?:–|\.\.|…|-)\s*{NUMBER})?)\s*(?P<unit>{UNIT_PATTERN})?(?=$|[\s,;.)\]])", re.I)
+BRACKET_INTERVAL = rf"[\[(]\s*{NUMBER}\s*;\s*{NUMBER}\s*[\])]"
+MEASUREMENT = re.compile(rf"(?P<value>{BRACKET_INTERVAL}|(?:(?:не менее|не более|не выше|не ниже|[<>]=?|[≤≥])\s*)?{NUMBER}(?:\s*(?:–|\.\.|…|-)\s*{NUMBER})?)\s*(?P<unit>{UNIT_PATTERN})?(?=$|[\s,;.)\]])", re.I)
 
 
 def normalize(text: str) -> str:
@@ -38,7 +39,11 @@ def make_fact(name: str, value: str, unit: str | None, raw: str, span: tuple[int
 
 def split_measurement(value: str) -> tuple[str, str | None]:
     match = MEASUREMENT.fullmatch(value.strip())
-    return (match["value"], match["unit"]) if match else (value.strip(), None)
+    return (measurement_value(match["value"]), match["unit"]) if match else (value.strip(), None)
+
+
+def measurement_value(value: str) -> str:
+    return re.sub(r"\s+", "", value) if re.fullmatch(BRACKET_INTERVAL, value) else value
 
 
 def extract(text: str, names: tuple[str, ...]) -> tuple[list[Fact], list[Fragment]]:
@@ -68,7 +73,7 @@ def extract(text: str, names: tuple[str, ...]) -> tuple[list[Fact], list[Fragmen
                 measure = MEASUREMENT.match(tail)
                 if measure:
                     right = start + match.end() + measure.end()
-                    facts.append(make_fact(match[0].strip(" :="), measure["value"], measure["unit"],
+                    facts.append(make_fact(match[0].strip(" :="), measurement_value(measure["value"]), measure["unit"],
                                            text[absolute:right], (absolute, right), len(facts)))
                     covered.append((absolute, right))
                 else:

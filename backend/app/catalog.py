@@ -128,6 +128,8 @@ def validate_allowed(value: AllowedValue) -> None:
     if value.lower is not None and value.upper is not None:
         if Decimal(value.lower) > Decimal(value.upper):
             raise ValueError("Reversed interval")
+        if Decimal(value.lower) == Decimal(value.upper) and not (value.lower_inclusive and value.upper_inclusive):
+            raise ValueError("Empty interval: equal bounds require both endpoints inclusive")
 
 
 @dataclass(frozen=True)

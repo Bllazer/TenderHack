@@ -20,6 +20,11 @@ class Interval:
     lower_inclusive: bool = True
     upper_inclusive: bool = True
 
+    @property
+    def empty(self) -> bool:
+        return self.lower > self.upper or (self.lower == self.upper and
+                                           not (self.lower_inclusive and self.upper_inclusive))
+
     def scaled(self, factor: Decimal):
         return Interval(self.lower * factor, self.upper * factor, self.lower_inclusive, self.upper_inclusive)
 
@@ -43,7 +48,7 @@ def number(value: str) -> Interval | None:
         if not ranged:
             return None
         result = Interval(Decimal(ranged[1]), Decimal(ranged[2]))
-    return result if result.lower <= result.upper else None
+    return None if result.empty else result
 
 
 def allowed_interval(item: AllowedValue) -> Interval:
@@ -56,6 +61,8 @@ def allowed_interval(item: AllowedValue) -> Interval:
 
 
 def subset(query: Interval, allowed: list[Interval]) -> bool:
+    if query.empty or any(interval.empty for interval in allowed):
+        return False
     # Union only after all alternatives have been converted to one verified dimension.
     merged: list[Interval] = []
     for interval in sorted(allowed, key=lambda item: (item.lower, not item.lower_inclusive)):
