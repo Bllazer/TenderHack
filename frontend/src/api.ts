@@ -3,7 +3,7 @@ export type Answer = { question_id: string; value: string | null; unit: string |
 export type Draft = { description: string; attributes: InputFact[]; additional: string[]; confirmed_category_id: string | null; answers: Answer[]; confirmed_ktru_code: string | null }
 export type Fact = { id: string; name: string; value: string; unit: string | null; raw: string; source: 'text' | 'input' | 'answer'; subject: string; unknown: boolean; normalized_value: string | null; normalized_unit: string | null }
 export type Candidate = { ktru_code: string; name: string; outcome: 'compatible' | 'incompatible' | 'unknown'; missing_required: string[]; checks: { name: string; outcome: string; reason: string }[] }
-export type Question = { id: string; kind: 'category' | 'property' | 'conflict' | 'code'; title: string; reason: string; property_name: string | null; options: { value: string; label: string }[]; unit: string | null; allow_unknown: boolean }
+export type Question = { id: string; kind: 'category' | 'property' | 'conflict' | 'code' | 'correction'; title: string; reason: string; property_name: string | null; options: { value: string; label: string }[]; unit: string | null; allow_unknown: boolean }
 export type Result = {
   status: 'needs_data' | 'needs_input' | 'ambiguous' | 'resolved'; original_text: string; normalized_text: string;
   facts: Fact[]; unparsed: { id: string | null; raw: string }[]; additional: { id: string | null; raw: string }[];
@@ -19,11 +19,17 @@ export type Result = {
 export const emptyDraft = (): Draft => ({ description: '', attributes: [], additional: [], confirmed_category_id: null, answers: [], confirmed_ktru_code: null })
 
 export async function analyze(draft: Draft, signal: AbortSignal): Promise<Result> {
-  const response = await fetch('/api/v1/analyses', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(draft), signal })
-  const body = await response.json()
+  let response: Response
+  try { response = await fetch('/api/v1/analyses', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(draft), signal }) }
+  catch (error) {
+    if (signal.aborted) throw error
+    throw new Error('Не удалось связаться с сервисом. Проверьте подключение и повторите проверку.')
+  }
+  const body = await response.json().catch(() => null)
   if (!response.ok) {
-    const detail = body.detail
+    const detail = body?.detail
     throw new Error(Array.isArray(detail) ? 'Проверьте заполнение полей и длину описания.' : detail?.message || 'Сервис временно недоступен. Повторите запрос.')
   }
+  if (!body || !['needs_data', 'needs_input', 'ambiguous', 'resolved'].includes(body.status)) throw new Error('Сервис вернул неполный ответ. Повторите проверку.')
   return body as Result
 }
