@@ -4,6 +4,7 @@ from app.components import Components, ExistingSearcher, SearchInput, existing_c
 from app.extraction import MEASUREMENT, apply_inputs, normalize
 from app.questions import property_question_id
 from app.correction_flow import resolve_suggestions
+from app.catalog_diagnostics import position_blockers
 from app.schemas import AnalysisCreate, AnalysisOut, Correction, Fact, Fragment, Issue, Scope, Verification
 
 
@@ -14,7 +15,14 @@ class InvalidConfirmation(ValueError):
 
 def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components | None = None) -> AnalysisOut:
     components = components or existing_components()
-    extraction = components.extractor.extract(body.description, data.extraction_names) if components.extractor else None
+    category_id = body.confirmed_category_id
+    if category_id and category_id not in data.categories:
+        raise InvalidConfirmation("confirmed_category_id", "unknown_category")
+    positions, scope_complete = data.pool(category_id) if category_id else ((), False)
+    properties = tuple(prop for position in positions for prop in position.properties)
+    names = tuple(sorted({name for prop in properties for name in (prop.name, *prop.aliases)})) if category_id else data.extraction_names
+    extraction = components.extractor.extract(body.description, names,
+        scoped_properties=properties) if components.extractor else None
     extracted, unparsed = (extraction.facts, extraction.unparsed) if extraction else ([], [Fragment(raw=body.description)])
     result = AnalysisOut(status="needs_data", original_text=body.description, normalized_text=normalize(body.description),
                          facts=extracted, unparsed=unparsed, additional=[Fragment(raw=raw) for raw in body.additional],
@@ -23,10 +31,6 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
     result.original_facts = [fact.model_copy(deep=True) for fact in extracted]
     if extraction:
         result.corrections.extend(extraction.corrections)
-    category_id = body.confirmed_category_id
-    if category_id and category_id not in data.categories:
-        raise InvalidConfirmation("confirmed_category_id", "unknown_category")
-    positions, scope_complete = data.pool(category_id) if category_id else ((), False)
     registry = {property_question_id(category_id, prop): prop for position in positions for prop in position.properties}
     answered = {answer.question_id for answer in body.answers}
     for answer in body.answers:
@@ -100,13 +104,14 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
             candidate.missing_required = sorted(set(candidate.missing_required) | set(required_missing))
             if candidate.outcome == "compatible":
                 candidate.outcome = "unknown"
-        unsupported = any(not prop.verified or not prop.allowed or prop.required is None or
-                          prop.kind not in ("1", "2") or prop.unsupported_reasons for prop in position.properties)
-        if not position.properties or unsupported or position.source_issues or position.resolve_blocked is True:
+        candidate.blocking_reasons = position_blockers(position)
+        if candidate.blocking_reasons:
             catalog_blocked.add(position.code)
             candidate.outcome = "unknown"
-            issues.append(Issue(code="source_issue" if position.source_issues else "verification_incomplete",
-                                candidate_code=position.code, explanation="Данные позиции не допускают завершение подбора"))
+            issues.extend(Issue(code=reason.code, candidate_code=position.code,
+                property_id=reason.property_id, rule_source=reason.rule_source, explanation=reason.explanation,
+                suggested_action="Нужно поддержать семантику ограничения или уточнить источник; заполнение формы не снимает блокировку")
+                for reason in candidate.blocking_reasons)
         all_candidates.append(candidate)
         all_issues.extend(issues)
         result.corrections.extend(corrections)
@@ -145,6 +150,10 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
                                                            result.facts, active_issues, answered, ready, body.confirmed_ktru_code)
     if pending:
         result.next_question, indistinguishable = pending[0][1], False
+    # Input questions cannot repair unavailable constraint semantics in a competing code.
+    if not pending and any(candidate.ktru_code in catalog_blocked for candidate in remaining):
+        if result.next_question and result.next_question.kind in ("property", "code"):
+            result.next_question = None
     result.verification = Verification(type_verified=bool(category_id and data.categories[category_id].link_verified),
                                       ktru_unique=unique and value_verified, fields_complete=fields_complete, value_verified=value_verified,
                                       catalog_scope_complete=scope_complete, value_indistinguishable=indistinguishable,
@@ -166,7 +175,7 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
         if not result.next_question and any(candidate.ktru_code in catalog_blocked for candidate in remaining):
             result.status = "needs_data"
             result.issues.append(Issue(code="catalog_constraints_unavailable",
-                explanation="В оставшемся пуле есть позиция без пригодных проверенных ограничений; правка ввода не устраняет эту проблему каталога",
-                suggested_action="Нужна исправленная поставка ограничений либо выбор другого типа товара"))
-            result.next_steps = ["Нужна исправленная поставка ограничений; можно изменить категорию товара. Ручное подтверждение кода не обходит эту проверку"]
+                explanation="В оставшемся пуле есть неподдержанные или непроверенные ограничения; правка ввода не устраняет эту блокировку",
+                suggested_action="Нужна поддержка указанной семантики или уточнение данных источника; можно выбрать другой тип товара"))
+            result.next_steps = ["Нужна поддержка семантики ограничений либо уточнение исходных единиц/данных; можно изменить категорию товара. Ручное подтверждение кода не обходит эту проверку"]
     return result

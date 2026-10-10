@@ -12,6 +12,8 @@ from app.config import settings
 from app.schemas import AnalysisCreate, AnalysisOut, CatalogStatus, ErrorResponse, Health, Ready, ENGINE_VERSION
 from app.search import E5Encoder, Search
 from app.components import existing_components
+from app.catalog_diagnostics import position_blockers
+from app.schemas import CatalogPositionCard
 
 logger = logging.getLogger(__name__)
 
@@ -84,6 +86,17 @@ def catalog_status():
             "missing_resources": list(data.missing_resources) + list(app.state.components.missing),
             "templates": sum(p.is_template is True for p in data.positions.values()),
             "final_positions": sum(p.is_template is False for p in data.positions.values())}
+
+
+@app.get("/api/v1/catalog/positions/{code}", response_model=CatalogPositionCard,
+         responses={404: {"model": ErrorResponse}})
+def catalog_position(code: str):
+    data = app.state.data
+    position = data.positions.get(code)
+    if position is None:
+        raise HTTPException(404, {"code": "unknown_ktru_code", "field": "code"})
+    return CatalogPositionCard(catalog_version=data.catalog.catalog_version, position=position,
+                               blocking_reasons=position_blockers(position))
 
 
 @app.post("/api/v1/analyses", response_model=AnalysisOut,

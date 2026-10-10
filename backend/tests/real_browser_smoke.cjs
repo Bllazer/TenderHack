@@ -82,14 +82,33 @@ const cases = JSON.parse(fs.readFileSync('.tools/real-runtime-http.json', 'utf8'
   for (const [scenario, description, category, expected] of [
     ['ambiguity', 'Газ горючий природный (газ естественный); Назначение: Промышленное и коммунально-бытовое; Объем баллона: 11 л', '06.20.10.110-00000009', 'ambiguous'],
     ['no rules', 'Нефть сырая', '06.10.10.100-00000001', 'needs_data'],
-    ['unsupported constraints', 'Контур дыхательный, одноразового использования', '32.50.13.190-00009', 'needs_input'],
-    ['wrong unit', 'Дрель ручная электрическая; Тип питания: От сети; Мощность: 650 кг', '28.24.11.000-00000003', 'needs_input'],
+    ['unsupported constraints', 'Контур дыхательный, одноразового использования', '32.50.13.190-00009', 'needs_data'],
+    ['wrong unit', 'Дрель ручная электрическая; Тип питания: От сети; Мощность: 650 кг', '28.24.11.000-00000003', 'needs_data'],
   ]) {
     const response = await begin(description, category);
     if (response.status !== expected || response.selected_ktru_code !== null) throw new Error(JSON.stringify(response));
     if (await page.getByRole('button', {name:'Подтвердить код',exact:true}).count()) throw new Error('Confirmation offered without proof');
     reports.push({scenario,status:response.status,candidate_count:response.candidate_count});
     console.log('Real browser ' + scenario + ': ' + response.status);
+  }
+  for (const description of ['лопата совковая', 'ловпата совкавая', 'Лопата; Тип лопаты: Совкавая']) {
+    for (const decision of description === 'лопата совковая' ? [null] : ['accept', 'reject']) {
+      let response = await begin(description, '25.99.29.120-00004');
+      if (decision) {
+        if (response.next_question?.kind !== 'correction') throw new Error('Value correction not offered');
+        const index = response.next_question.options.findIndex(x => decision === 'reject' ? x.value === 'reject' : x.label.includes('Совковая'));
+        if (index < 0) throw new Error('Value correction option missing');
+        await page.locator('input[name="answer"]').nth(index).check();
+        response = await next(() => page.locator('button[form="question-form"]').click());
+      }
+      if (response.status !== 'needs_data' || response.next_question !== null || response.selected_ktru_code !== null)
+        throw new Error(JSON.stringify(response));
+      if (!response.candidates.every(x => x.blocking_reasons.some(b => b.unsupported_reasons.includes('multiple_choice_not_supported'))))
+        throw new Error('Missing source diagnostics');
+      reports.push({description, decision, status:response.status, facts:response.facts});
+      console.log('Real browser ' + description + ' / ' + decision + ': needs_data with exact diagnostics');
+      await page.screenshot({path:'.tools/real-shovel-' + reports.length + '.png',fullPage:true});
+    }
   }
   fs.writeFileSync('.tools/real-runtime-browser.json', JSON.stringify(reports,null,2));
   await browser.close();

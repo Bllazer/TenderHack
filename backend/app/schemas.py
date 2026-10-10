@@ -1,7 +1,8 @@
 from typing import Annotated, Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
+from app.catalog import Position
 
-ENGINE_VERSION = "stateless-pipeline-v2-cd-gated"
+ENGINE_VERSION = "stateless-pipeline-v3-context-values-cd-gated"
 
 
 class InputModel(BaseModel):
@@ -105,6 +106,25 @@ class Check(BaseModel):
     value_codes: list[str] = Field(default_factory=list)
 
 
+class BlockingReason(BaseModel):
+    code: str
+    explanation: str
+    property_id: str | None = None
+    property_name: str | None = None
+    kind: str | None = None
+    units: list[str | None] = Field(default_factory=list)
+    unsupported_reasons: list[str] = Field(default_factory=list)
+    source_issues: list[str] = Field(default_factory=list)
+    resolve_blocked_reason: list[str] = Field(default_factory=list)
+    rule_source: str | None = None
+
+
+class CatalogPositionCard(BaseModel):
+    catalog_version: str
+    position: Position
+    blocking_reasons: list[BlockingReason]
+
+
 class Candidate(BaseModel):
     ktru_code: str
     name: str
@@ -113,6 +133,7 @@ class Candidate(BaseModel):
     checks: list[Check]
     missing_required: list[str]
     has_characteristics: bool
+    blocking_reasons: list[BlockingReason] = Field(default_factory=list)
 
 
 class QuestionOption(BaseModel):

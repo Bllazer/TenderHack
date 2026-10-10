@@ -14,7 +14,7 @@ class ExtractionResult:
 
 
 class Extractor(Protocol):
-    def extract(self, text: str, names: tuple[str, ...]) -> ExtractionResult: ...
+    def extract(self, text: str, names: tuple[str, ...], *, scoped_properties=()) -> ExtractionResult: ...
 
 
 @dataclass(frozen=True)
@@ -53,9 +53,9 @@ class Components:
 
 
 class ExistingExtractor:
-    def extract(self, text, names):
+    def extract(self, text, names, *, scoped_properties=()):
         from app.extraction import extract
-        facts, unparsed = extract(text, names)
+        facts, unparsed = extract(text, names, scoped_properties=scoped_properties)
         return ExtractionResult(facts, unparsed)
 
 

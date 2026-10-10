@@ -1,6 +1,7 @@
 """Conservative extraction: raw offsets remain attached, no inferred missing values."""
 import re
 import unicodedata
+from difflib import SequenceMatcher
 from functools import lru_cache
 from threading import Lock
 
@@ -193,7 +194,32 @@ def split_measurement(value: str, dictionary=()) -> tuple[str, str | None, bool]
     return text, None, False
 
 
-def extract(text: str, names: tuple[str, ...]) -> tuple[list[Fact], list[Fragment]]:
+@lru_cache(maxsize=128)
+def enum_dictionary(properties):
+    """Reusable vocabulary of immutable scope rules, not a second search index."""
+    return tuple((prop, item.value, canon(item.value)) for prop in properties
+                 if prop.verified and prop.value_type in ("text", "boolean")
+                 for item in prop.allowed if item.kind == "enum" and item.value)
+
+
+def enum_targets(properties, value: str, name: str = "", subject: str | None = None):
+    """Scope-only suggestions; similarity is never verification."""
+    exact, close = {}, {}
+    supplied = canon(value)
+    for prop, target, wanted in enum_dictionary(tuple(properties)):
+        if subject and prop.subject != subject:
+            continue
+        if name and canon(name) not in {canon(prop.name), *(canon(alias) for alias in prop.aliases)}:
+            continue
+        key = (prop.semantic_key or prop.id, prop.subject, prop.name, target)
+        if wanted == supplied:
+            exact[key] = (prop, target)
+        elif len(supplied) >= 5 and len(wanted) >= 5 and SequenceMatcher(None, supplied, wanted).ratio() >= .85:
+            close[key] = (prop, target)
+    return list(exact.values()), list(close.values())
+
+
+def extract(text: str, names: tuple[str, ...], *, scoped_properties=()) -> tuple[list[Fact], list[Fragment]]:
     facts: list[Fact] = []
     covered: list[tuple[int, int]] = []
     dictionary = name_dictionary(names)
@@ -252,6 +278,46 @@ def extract(text: str, names: tuple[str, ...]) -> tuple[list[Fact], list[Fragmen
                         facts.append(make_fact(name, value, None, text[absolute:right],
                                                (absolute, right), len(facts)))
                         covered.append((absolute, right))
+    # Reuse A's segmentation/provenance and the confirmed scope, never the global catalog.
+    values = sorted({value for _, value, _ in enum_dictionary(tuple(scoped_properties))}, key=len, reverse=True)
+    windows = []
+    tokens = list(re.finditer(r"\w+", text))
+    clauses = list(segments(text, dictionary))
+    for value in values:
+        words = re.findall(r"\w+", value)
+        if not words:
+            continue
+        pattern = r"(?<!\w)" + re.escape(value) + r"(?!\w)"
+        windows.extend((m.start(), m.end()) for m in re.finditer(pattern, text, re.I))
+        # Only complete token windows; the correction flow requires explicit acceptance.
+        for i in range(len(tokens) - len(words) + 1):
+            left, right = tokens[i].start(), tokens[i + len(words) - 1].end()
+            supplied = canon(text[left:right])
+            if len(supplied) >= 5 and len(value) >= 5 and SequenceMatcher(None, supplied, canon(value)).ratio() >= .85:
+                windows.append((left, right))
+    for left, right in sorted(set(windows), key=lambda span: (span[0], -(span[1] - span[0]))):
+        if any(left < end and right > start for start, end in covered):
+            continue
+        value = text[left:right]
+        exact, close = enum_targets(scoped_properties, value)
+        ownership = {(prop.semantic_key or prop.id, prop.subject) for prop, _ in exact}
+        begin, end, clause = next((a, b, chunk) for a, b, chunk in clauses if a <= left and right <= b)
+        negation = bool(re.search(r"\b(?:не|без|нет)\b", clause, re.I))
+        uncertain = negation or "?" in clause or bool(re.search(
+            r"\b(?:возможно|вероятно|кажется|предположительно|неизвестно|непонятно)\b", clause, re.I))
+        raw_left, raw_right = (begin, end) if uncertain else (left, right)
+        if len(ownership) == 1:
+            prop = exact[0][0]
+            fact = make_fact(prop.name, value, None, text[raw_left:raw_right], (raw_left, raw_right), len(facts),
+                             negated=negation, unknown=uncertain)
+            fact.subject = prop.subject
+        elif exact or close:
+            fact = make_fact("", value, None, text[raw_left:raw_right], (raw_left, raw_right), len(facts),
+                             negated=negation, unknown=uncertain)
+        else:
+            continue
+        facts.append(fact)
+        covered.append((left, right))
     unparsed: list[Fragment] = []
     cursor = 0
     for start, end in sorted(covered):
