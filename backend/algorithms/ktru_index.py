@@ -105,9 +105,6 @@ class Position:
         for c in self.characteristics:
             if c.code == def_id:
                 return c
-        for c in self.characteristics:            # коды в выгрузке усечены: сравниваем по префиксу
-            if c.code and (c.code.startswith(def_id) or def_id.startswith(c.code)):
-                return c
         return None
 
     def chars_by_name(self, name: Optional[str]) -> list:
@@ -118,9 +115,7 @@ class Position:
         exact = [c for c in self.characteristics if normalize_name(c.name) == key]
         if exact:
             return exact
-        return [c for c in self.characteristics
-                if len(normalize_name(c.name)) >= 5
-                and (normalize_name(c.name) in key or key in normalize_name(c.name))]
+        return []
 
     def char_by_name(self, name: Optional[str]) -> Optional[Characteristic]:
         found = self.chars_by_name(name)

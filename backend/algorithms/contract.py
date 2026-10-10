@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 from typing import Any, Optional
+import math
 
 SCHEMA_VERSION = "1.0"
 
@@ -66,11 +67,21 @@ class Fact:
                 out.append("для %s нужен список чисел" % self.kind)
             else:
                 for v in vals:
-                    if isinstance(v, bool) or not isinstance(v, (int, float)):
+                    if isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v):
                         out.append("значение %r не число, а %s" % (v, type(v).__name__))
         elif self.kind == "range":
             if not (isinstance(self.value, dict) and ("min" in self.value or "max" in self.value)):
                 out.append("для range нужен {'min':..,'max':..}")
+            else:
+                low, high = self.value.get("min"), self.value.get("max")
+                if low is None and high is None:
+                    out.append("range has no bounds")
+                elif any(isinstance(x, bool) or not isinstance(x, (int, float)) or not math.isfinite(x)
+                         for x in (low, high) if x is not None):
+                    out.append("range bounds must be finite numbers")
+                elif low is not None and high is not None and (low > high or (low == high and not (
+                        self.value.get("min_inclusive", True) and self.value.get("max_inclusive", True)))):
+                    out.append("range is empty or inverted")
         elif self.kind == "text" and not isinstance(self.value, str):
             out.append("для text нужна строка")
         elif self.kind == "text_set" and not (isinstance(self.value, list) and all(isinstance(x, str) for x in self.value)):

@@ -9,7 +9,7 @@ from starlette.concurrency import run_in_threadpool
 from app.analysis import InvalidConfirmation, analyze
 from app.catalog import Catalog, load_snapshot, snapshot
 from app.config import settings
-from app.schemas import AnalysisCreate, AnalysisOut, CatalogStatus, ErrorResponse, Health, Ready
+from app.schemas import AnalysisCreate, AnalysisOut, CatalogStatus, ErrorResponse, Health, Ready, ENGINE_VERSION
 from app.search import E5Encoder, Search
 from app.components import existing_components
 
@@ -48,7 +48,7 @@ def resources():
 async def lifespan(app: FastAPI):
     app.state.data, app.state.search = await run_in_threadpool(resources)
     app.state.slots = BoundedSemaphore(max(1, settings.max_parallel_analyses))
-    app.state.components = existing_components()
+    app.state.components = await run_in_threadpool(existing_components, app.state.data)
     yield
 
 
@@ -71,7 +71,7 @@ def ready():
     if data.problem or not app.state.search or missing:
         raise HTTPException(503, {"code": data.problem or (missing[0] + "_missing" if missing else "search_unavailable"),
                                   "catalog_version": data.catalog.catalog_version, "missing_resources": missing})
-    return {"status": "ok", "catalog_version": data.catalog.catalog_version, "engine_version": "stateless-pipeline-v1"}
+    return {"status": "ok", "catalog_version": data.catalog.catalog_version, "engine_version": ENGINE_VERSION}
 
 
 @app.get("/api/v1/catalog/status", response_model=CatalogStatus)

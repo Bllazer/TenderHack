@@ -34,7 +34,10 @@ def answered_from_facts(facts: list) -> set:
     """
     answered = set()
     for f in facts:
-        answered.update(f.def_ids())
+        if not f.is_hard:
+            continue
+        if f.def_id:
+            answered.add(f.def_id)
         if f.name:
             answered.add(f.name)
             answered.add(normalize_name(f.name))
@@ -65,13 +68,13 @@ def _answer_kind(char: Characteristic) -> str:
     return "text_set" if str(char.kind) == "3" else "choice"
 
 
-def _choices(char: Characteristic) -> Optional[list]:
+def _choices(char: Characteristic, chars=None) -> Optional[list]:
     """Варианты ответа с числом кандидатов, которые каждый вариант оставляет."""
     kind = _answer_kind(char)
     if kind not in ("choice", "boolean"):
         return None
     seen, out = set(), []
-    for a in char.alternatives:
+    for a in [a for c in (chars or [char]) for a in c.alternatives]:
         label = a.text if a.kind == "text" else a.describe()
         key = (label or "").strip().lower()
         if key and key not in seen:
@@ -115,11 +118,7 @@ def next_question(pool: list, answered: set, index: KtruIndex, *,
             choices=[{"value": p.name, "code": p.code, "candidates": None} for p in pool[:5]],
         )
 
-    if len(pool) == 1:
-        return Question(reason="splits_candidates", answer_kind="text",
-                        candidates_before=1, stop_reason="already_unique")
-
-    if len({p.structure_hash() for p in pool}) == 1:
+    if len(pool) > 1 and len({p.structure_hash() for p in pool}) == 1:
         return Question(
             reason="meaningful_difference", answer_kind="text", candidates_before=len(pool),
             buckets=1, worst_case=len(pool), stop_reason="value_indistinguishable",
@@ -168,10 +167,12 @@ def next_question(pool: list, answered: set, index: KtruIndex, *,
              "expected_effect": {"buckets": b, "worst_case": w, "applicable": a}}
             for _, n, c, b, w, a in splitting[1:1 + MAX_ALTERNATIVES]
         ]
+        here = [p.char_by_name(name) for p in pool if p.char_by_name(name)]
+        units = {(a.unit_code, a.unit_text) for c in here for a in c.alternatives}
         return Question(
             def_id=char.code, name=name, reason="splits_candidates", answer_kind=_answer_kind(char),
-            unit=_unit_of(char), choices=_choices(char), bounds=_bounds(char),
-            candidates_before=len(pool), buckets=buckets, worst_case=worst_bucket, alternatives=alternatives,
+            unit=_unit_of(char) if len(units) == 1 else None, choices=_choices(char, here), bounds=None,
+            candidates_before=len(pool), buckets=buckets, worst_case=worst_bucket + len(pool) - applicable, alternatives=alternatives,
         )
 
     if fill_required:
@@ -186,10 +187,10 @@ def next_question(pool: list, answered: set, index: KtruIndex, *,
                 char = here[0]
                 return Question(
                     def_id=char.code, name=name, reason="fills_required", answer_kind=_answer_kind(char),
-                    unit=_unit_of(char), choices=_choices(char), bounds=_bounds(char),
+                    unit=_unit_of(char), choices=_choices(char, here), bounds=_bounds(char) if len(here) == 1 else None,
                     candidates_before=len(pool),
                     buckets=len({_bucket_key(c) for c in here}), worst_case=len(pool),
                 )
 
     return Question(reason="splits_candidates", answer_kind="text", candidates_before=len(pool),
-                    stop_reason="no_splitting_property")
+                    stop_reason="already_unique" if len(pool) == 1 else "no_splitting_property")

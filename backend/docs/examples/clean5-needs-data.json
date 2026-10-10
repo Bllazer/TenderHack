@@ -56,5 +56,5 @@
   },
   "selected_ktru_code": null,
   "catalog_version": "clean5-578e29f99d1a803c",
-  "engine_version": "stateless-pipeline-v1"
+  "engine_version": "stateless-pipeline-v2-cd-gated"
 }

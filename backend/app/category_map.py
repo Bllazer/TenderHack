@@ -37,6 +37,7 @@ from pathlib import Path
 
 from app.catalog import Catalog, Category, Snapshot, digest
 from app.clean_supply import load_clean_supply
+from app.synonyms import search_part
 
 # Поисковая запись должна укладываться в 512 токенов E5; prepare это проверяет
 # и падает, поэтому обрезаем заранее и детерминированно.
@@ -55,6 +56,13 @@ def _parts(head, children, raw: dict, description_chars: int) -> list[str]:
     parts: list[str] = []
     if (head.name or "").strip():
         parts.append(head.name.strip())
+    # Назначение и синонимы класса идут сразу после названия: это поисковая
+    # формулировка, ради которой запись и существует, и она должна выживать при
+    # обрезке до лимита токенов. Слой ничего не знает о кодах КТРУ — только о
+    # классах товаров (app/synonyms.py).
+    purpose = search_part(head.name or "")
+    if purpose:
+        parts.append(purpose)
     okpd = raw.get("okpd2") or {}
     if okpd.get("name"):
         parts.append(str(okpd["name"]))

@@ -3,6 +3,7 @@ from app.catalog import Snapshot
 from app.components import Components, ExistingSearcher, SearchInput, existing_components
 from app.extraction import MEASUREMENT, apply_inputs, normalize
 from app.questions import property_question_id
+from app.correction_flow import resolve_suggestions
 from app.schemas import AnalysisCreate, AnalysisOut, Correction, Fact, Fragment, Issue, Scope, Verification
 
 
@@ -56,6 +57,8 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
                                                 explanation="Явная правка пользователя; новые значения проверяются заново"))
     replaced = {item.replaces for item in body.attributes if item.replaces}
     result.unparsed = [fragment for fragment in unparsed if fragment.id not in replaced]
+    pending, rejected, accepted = resolve_suggestions(category_id, positions, result.facts, body.answers)
+    result.corrections.extend(accepted)
     if search:
         finder = getattr(search, "find_state", ExistingSearcher(search).find_state)
         result.categories = finder(SearchInput(body.description, tuple(result.facts)))
@@ -89,6 +92,13 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
         candidate, issues, corrections = components.checker.evaluate(position, result.facts, data.resolve_unit)
         if candidate.ktru_code != position.code:
             raise ValueError("Component returned foreign candidate ID")
+        checks = {check.property_id: check for check in candidate.checks}
+        required_missing = [prop.name for prop in position.properties if prop.required is True and
+                            (prop.id not in checks or checks[prop.id].outcome != "compatible" or not checks[prop.id].fact_ids)]
+        if required_missing:
+            candidate.missing_required = sorted(set(candidate.missing_required) | set(required_missing))
+            if candidate.outcome == "compatible":
+                candidate.outcome = "unknown"
         unsupported = any(not prop.verified or not prop.allowed or prop.required is None or
                           prop.kind not in ("1", "2") or prop.unsupported_reasons for prop in position.properties)
         if not position.properties or unsupported or position.source_issues or position.resolve_blocked is True:
@@ -104,8 +114,11 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
     result.candidates = remaining[:body.candidate_limit]
     result.excluded = excluded[:body.candidate_limit]
     active_issues = [issue for issue in all_issues if issue.candidate_code in {candidate.ktru_code for candidate in remaining}]
+    result.corrections = [correction for correction in result.corrections
+                          if not (correction.kind == "proposed_text_fix" and correction.fact_id in rejected)]
     if not remaining:
         active_issues = all_issues + [Issue(code="no_compatible_candidate", explanation="В выбранной области нет совместимых позиций")]
+    active_issues.extend(item[2] for item in pending)
     if body.confirmed_ktru_code:
         confirmed = next((candidate for candidate in remaining if candidate.ktru_code == body.confirmed_ktru_code), None)
         if confirmed is None:
@@ -122,14 +135,16 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
     if any(candidate.outcome == "unknown" for candidate in remaining):
         active_issues.append(Issue(code="verification_incomplete", explanation="Есть непроверенные факты, обязательные поля или ограничения"))
     unique = len(remaining) == 1
-    value_verified = unique and remaining[0].outcome == "compatible"
+    value_verified = unique and remaining[0].outcome == "compatible" and not pending
     fields_complete = unique and not remaining[0].missing_required
     blocking = any(issue.severity == "error" for issue in active_issues)
     ready = unique and value_verified and fields_complete and scope_complete and not blocking
     result.next_question, indistinguishable = components.questions(category_id, result.categories, positions, remaining,
                                                            result.facts, active_issues, answered, ready, body.confirmed_ktru_code)
+    if pending:
+        result.next_question, indistinguishable = pending[0][1], False
     result.verification = Verification(type_verified=bool(category_id and data.categories[category_id].link_verified),
-                                      ktru_unique=unique, fields_complete=fields_complete, value_verified=value_verified,
+                                      ktru_unique=unique and value_verified, fields_complete=fields_complete, value_verified=value_verified,
                                       catalog_scope_complete=scope_complete, value_indistinguishable=indistinguishable,
                                       confirmed_by_user=bool(body.confirmed_ktru_code), blocking_issues=blocking)
     result.issues = list({issue.model_dump_json(): issue for issue in active_issues}.values())
