@@ -27,8 +27,6 @@ function App() {
   const [error, setError] = useState('')
   const [copied, setCopied] = useState(false)
   const busy = useRef(false)
-  const descriptionTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const recheckDescription = useRef(false)
   const sequence = useRef(0)
   const controller = useRef<AbortController | null>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
@@ -36,8 +34,8 @@ function App() {
   const canConfirm = !!result && result.status === 'needs_input' && question?.kind === 'code' && result.candidates.length === 1 && result.candidate_count === 1 && result.verification.type_verified && result.verification.ktru_unique
     && result.verification.fields_complete && result.verification.value_verified && result.verification.catalog_scope_complete && !result.verification.blocking_issues && question.options.some(option => option.value === result.candidates[0].ktru_code)
 
-  function invalidate() { busy.current = false; if (descriptionTimer.current) clearTimeout(descriptionTimer.current); sequence.current++; controller.current?.abort(); setLoading(false); setError(''); setCopied(false) }
-  useEffect(() => () => { if (descriptionTimer.current) clearTimeout(descriptionTimer.current); sequence.current++; controller.current?.abort() }, [])
+  function invalidate() { busy.current = false; sequence.current++; controller.current?.abort(); setLoading(false); setError(''); setCopied(false) }
+  useEffect(() => () => { sequence.current++; controller.current?.abort() }, [])
   useEffect(() => { titleRef.current?.focus({ preventScroll: true }) }, [stage, question?.id])
 
   async function submit(next: Draft) {
@@ -61,7 +59,7 @@ function App() {
   }
 
   function changeDescription() {
-    invalidate(); recheckDescription.current = true; setResult(null)
+    invalidate(); setResult(null)
     setDraft(current => ({ ...current, confirmed_ktru_code: null })); setStage('input')
   }
   function editDescription(value: string) {
@@ -69,7 +67,6 @@ function App() {
     const next: Draft = { ...draft, description: value, attributes: draft.attributes.map(item => ({ ...item, replaces: null })),
       confirmed_category_id: null, confirmed_ktru_code: null, answers: [] }
     setDraft(next)
-    if (recheckDescription.current && value.trim()) descriptionTimer.current = setTimeout(() => void submit(next), 700)
   }
   function back() {
     invalidate()
@@ -104,7 +101,7 @@ function App() {
     try { await navigator.clipboard.writeText(result.selected_ktru_code); setCopied(true) }
     catch { setError('Выделите код и скопируйте его вручную.') }
   }
-  function reset() { invalidate(); recheckDescription.current = false; setDraft(emptyDraft()); setResult(null); setStage('input'); setHistory([]) }
+  function reset() { invalidate(); setDraft(emptyDraft()); setResult(null); setStage('input'); setHistory([]) }
   const title = stage === 'input' ? 'Описание товара' : stage === 'question' ? question?.title || 'Уточните сведения'
     : stage === 'correction' ? 'Исправьте характеристику' : stage === 'done' ? 'Подбор завершён' : question?.title || 'Проверьте результат'
   const currentStep = stage === 'input' ? 0 : stage === 'question' || stage === 'correction' ? 1 : 2

@@ -100,7 +100,7 @@ test('needs_data preserves full state and retry sends it unchanged', async ({ pa
   await expect(page.getByRole('heading', { name: 'Подбор завершён' })).toHaveCount(0)
 })
 
-test('editing resolved description cancels code and starts a fresh analysis', async ({ page }) => {
+test('editing description waits for explicit submit, including pauses and examples', async ({ page }) => {
   await page.goto('/')
   await page.getByLabel('Описание товара', { exact: true }).fill('Стол; Высота: 750 мм')
   await page.getByRole('button', { name: 'Подобрать КТРУ' }).click()
@@ -109,8 +109,18 @@ test('editing resolved description cancels code and starts a fresh analysis', as
   await page.getByRole('button', { name: 'Подтвердить код' }).click()
   await expect(page.getByRole('heading', { name: 'Подбор завершён' })).toBeVisible()
   await page.getByRole('button', { name: 'Изменить описание' }).click()
-  const request = page.waitForRequest(r => r.url().endsWith('/api/v1/analyses'))
+  let analysisRequests = 0
+  page.on('request', r => { if (r.url().endsWith('/api/v1/analyses')) analysisRequests++ })
+  await page.getByLabel('Описание товара', { exact: true }).fill('Др')
+  await page.waitForTimeout(1100)
+  expect(analysisRequests).toBe(0)
+  await expect(page.getByLabel('Описание товара', { exact: true })).toHaveValue('Др')
+  await page.getByRole('button', { name: 'Инструмент', exact: true }).click()
+  await page.waitForTimeout(1100)
+  expect(analysisRequests).toBe(0)
   await page.getByLabel('Описание товара', { exact: true }).fill('Дрель; Мощность: 650 Вт')
+  const request = page.waitForRequest(r => r.url().endsWith('/api/v1/analyses'))
+  await page.getByRole('button', { name: 'Подобрать КТРУ' }).click()
   expect((await request).postDataJSON()).toMatchObject({ confirmed_category_id: null, confirmed_ktru_code: null, answers: [] })
   await expect(page.getByRole('radio', { name: 'Дрели электрические' })).toBeVisible()
   await expect(page.getByRole('heading', { name: 'Подбор завершён' })).toHaveCount(0)
