@@ -1,0 +1,194 @@
+<ns0:position xmlns:ns0="http://zakupki.gov.ru/oos/types/1" xmlns:ns1="http://zakupki.gov.ru/oos/common/1">
+    <ns0:data>
+        <ns0:code>32.50.13.190-00244</ns0:code>
+        <ns0:versionCode>32.50.13.190-002441</ns0:versionCode>
+        <ns0:version>1</ns0:version>
+        <ns0:inclusionDate>2017-11-23T09:49:46+03:00</ns0:inclusionDate>
+        <ns0:publishDate>2017-11-23T09:49:46+03:00</ns0:publishDate>
+        <ns0:updateDate>2025-01-30T18:21:19+03:00</ns0:updateDate>
+        <ns0:name>Набор для системы замораживания эритроцитов донорской крови</ns0:name>
+        <ns0:OKPD2>
+            <ns0:code>32.50.13.190</ns0:code>
+            <ns0:name>Инструменты и приспособления, применяемые в медицинских целях, прочие, не включенные в другие группировки</ns0:name>
+        </ns0:OKPD2>
+        <ns0:status>ACTIVE</ns0:status>
+        <ns0:applicationDateStart>2018-01-01T00:00:00+03:00</ns0:applicationDateStart>
+        <ns0:OKEIs>
+            <ns0:OKEI>
+                <ns0:code>796</ns0:code>
+                <ns0:name>Штука</ns0:name>
+            </ns0:OKEI>
+        </ns0:OKEIs>
+        <ns0:NSI>
+            <ns0:classifiers>
+                <ns0:classifier>
+                    <ns0:name>НОМЕНКЛАТУРНАЯ КЛАССИФИКАЦИЯ МЕДИЦИНСКИХ ИЗДЕЛИЙ ПО ВИДАМ</ns0:name>
+                    <ns0:NSIcode>nsiNKMI</ns0:NSIcode>
+                    <ns0:code>b49f180b-7</ns0:code>
+                    <ns0:source>M</ns0:source>
+                    <ns0:values>
+                        <ns0:value>
+                            <ns0:code>143970</ns0:code>
+                            <ns0:name>Набор для системы замораживания/размораживания эритроцитов донорской крови</ns0:name>
+                            <ns0:descriptionValue>Набор разовых изделий для системы обработки крови, используемый для подготовки эритроцитарной массы к заморозке и хранению (глицеринизации) или деглицеринизации и промывке после размораживания (может также промывать свежие эритроциты). Изделие обычно состоит из бактериологического фильтра, растворных линий, соединительных портов и контейнеров-сборников. Изделие одноразового использования.</ns0:descriptionValue>
+                        </ns0:value>
+                    </ns0:values>
+                </ns0:classifier>
+                <ns0:classifier>
+                    <ns0:name>Общероссийский классификатор продукции по видам экономической деятельности (ОКПД2)</ns0:name>
+                    <ns0:NSIcode>nsiOKPD2</ns0:NSIcode>
+                    <ns0:code>OKPD2</ns0:code>
+                    <ns0:source>N_OKPD2</ns0:source>
+                    <ns0:values>
+                        <ns0:value>
+                            <ns0:code>32.50.13.190</ns0:code>
+                            <ns0:name>Инструменты и приспособления, применяемые в медицинских целях, прочие, не включенные в другие группировки</ns0:name>
+                        </ns0:value>
+                    </ns0:values>
+                </ns0:classifier>
+            </ns0:classifiers>
+        </ns0:NSI>
+        <ns0:characteristics>
+            <ns0:characteristic>
+                <ns0:code>04c12867-b</ns0:code>
+                <ns0:name>Объем растворов дополнительных контейнеров</ns0:name>
+                <ns0:type>2</ns0:type>
+                <ns0:kind>1</ns0:kind>
+                <ns0:actual>true</ns0:actual>
+                <ns0:isRequired>true</ns0:isRequired>
+                <ns0:choiceType>1</ns0:choiceType>
+                <ns0:values>
+                    <ns0:value>
+                        <ns0:valueCode>c6250d8b-f</ns0:valueCode>
+                        <ns0:OKEI>
+                            <ns0:code>111</ns0:code>
+                            <ns0:name>Кубический сантиметр; миллилитр</ns0:name>
+                        </ns0:OKEI>
+                        <ns0:rangeSet>
+                            <ns0:valueRange>
+                                <ns0:minMathNotation>greaterOrEqual</ns0:minMathNotation>
+                                <ns0:min>100</ns0:min>
+                                <ns0:maxMathNotation>lessOrEqual</ns0:maxMathNotation>
+                                <ns0:max>400</ns0:max>
+                            </ns0:valueRange>
+                        </ns0:rangeSet>
+                    </ns0:value>
+                </ns0:values>
+            </ns0:characteristic>
+            <ns0:characteristic>
+                <ns0:code>4400ad53-e</ns0:code>
+                <ns0:name>раствор для глицеролизации</ns0:name>
+                <ns0:type>1</ns0:type>
+                <ns0:kind>1</ns0:kind>
+                <ns0:actual>true</ns0:actual>
+                <ns0:isRequired>true</ns0:isRequired>
+                <ns0:choiceType>1</ns0:choiceType>
+                <ns0:values>
+                    <ns0:value>
+                        <ns0:valueCode>f9955455-c</ns0:valueCode>
+                        <ns0:qualityDescription>есть</ns0:qualityDescription>
+                    </ns0:value>
+                </ns0:values>
+            </ns0:characteristic>
+            <ns0:characteristic>
+                <ns0:code>84154767-d</ns0:code>
+                <ns0:name>Длина магистрали</ns0:name>
+                <ns0:type>2</ns0:type>
+                <ns0:kind>1</ns0:kind>
+                <ns0:actual>true</ns0:actual>
+                <ns0:isRequired>true</ns0:isRequired>
+                <ns0:choiceType>1</ns0:choiceType>
+                <ns0:values>
+                    <ns0:value>
+                        <ns0:valueCode>ea532fb5-3</ns0:valueCode>
+                        <ns0:OKEI>
+                            <ns0:code>003</ns0:code>
+                            <ns0:name>Миллиметр</ns0:name>
+                        </ns0:OKEI>
+                        <ns0:rangeSet>
+                            <ns0:valueRange>
+                                <ns0:minMathNotation>greaterOrEqual</ns0:minMathNotation>
+                                <ns0:min>1000</ns0:min>
+                                <ns0:maxMathNotation>lessOrEqual</ns0:maxMathNotation>
+                                <ns0:max>1225</ns0:max>
+                            </ns0:valueRange>
+                        </ns0:rangeSet>
+                    </ns0:value>
+                </ns0:values>
+            </ns0:characteristic>
+            <ns0:characteristic>
+                <ns0:code>7a7ace3d-4</ns0:code>
+                <ns0:name>Количество контейнеров в наборе</ns0:name>
+                <ns0:type>2</ns0:type>
+                <ns0:kind>1</ns0:kind>
+                <ns0:actual>true</ns0:actual>
+                <ns0:isRequired>true</ns0:isRequired>
+                <ns0:choiceType>1</ns0:choiceType>
+                <ns0:values>
+                    <ns0:value>
+                        <ns0:valueCode>a8ab478c-8</ns0:valueCode>
+                        <ns0:OKEI>
+                            <ns0:code>796</ns0:code>
+                            <ns0:name>Штука</ns0:name>
+                        </ns0:OKEI>
+                        <ns0:rangeSet>
+                            <ns0:valueRange>
+                                <ns0:minMathNotation>greaterOrEqual</ns0:minMathNotation>
+                                <ns0:min>0</ns0:min>
+                                <ns0:maxMathNotation>lessOrEqual</ns0:maxMathNotation>
+                                <ns0:max>5</ns0:max>
+                            </ns0:valueRange>
+                        </ns0:rangeSet>
+                    </ns0:value>
+                </ns0:values>
+            </ns0:characteristic>
+            <ns0:characteristic>
+                <ns0:code>1eb8c461-d</ns0:code>
+                <ns0:name>Объем основного контейнера</ns0:name>
+                <ns0:type>2</ns0:type>
+                <ns0:kind>1</ns0:kind>
+                <ns0:actual>true</ns0:actual>
+                <ns0:isRequired>true</ns0:isRequired>
+                <ns0:choiceType>1</ns0:choiceType>
+                <ns0:values>
+                    <ns0:value>
+                        <ns0:valueCode>fa73d5e4-8</ns0:valueCode>
+                        <ns0:OKEI>
+                            <ns0:code>111</ns0:code>
+                            <ns0:name>Кубический сантиметр; миллилитр</ns0:name>
+                        </ns0:OKEI>
+                        <ns0:rangeSet>
+                            <ns0:valueRange>
+                                <ns0:minMathNotation>greaterOrEqual</ns0:minMathNotation>
+                                <ns0:min>600</ns0:min>
+                                <ns0:maxMathNotation>lessOrEqual</ns0:maxMathNotation>
+                                <ns0:max>750</ns0:max>
+                            </ns0:valueRange>
+                        </ns0:rangeSet>
+                    </ns0:value>
+                </ns0:values>
+            </ns0:characteristic>
+        </ns0:characteristics>
+        <ns0:rubricators>
+            <ns0:rubricatorInfo>
+                <ns0:code>100</ns0:code>
+                <ns0:name>Медицинские изделия</ns0:name>
+            </ns0:rubricatorInfo>
+        </ns0:rubricators>
+        <ns0:nsiDescription>Набор разовых изделий для системы обработки крови, используемый для подготовки эритроцитарной массы к заморозке и хранению (глицеролизации) или деглицеролизации и промывке после размораживания (может также промывать свежие эритроциты). Изделие обычно состоит из бактериологического фильтра, растворных линий, соединительных портов и контейнеров-сборников. Изделие одноразового использования.</ns0:nsiDescription>
+        <ns0:isTemplate>false</ns0:isTemplate>
+        <ns0:parentPositionInfo>
+            <ns0:code>32.50.13.190-00013</ns0:code>
+            <ns0:version>2</ns0:version>
+            <ns0:externalCode>3a8bb156-c5bd-4229-8692-160d7c18a952</ns0:externalCode>
+        </ns0:parentPositionInfo>
+        <ns0:externalCode>3a8bb156-c5bd-4229-8692-160d7c18a952</ns0:externalCode>
+        <ns0:noNewFeatures>false</ns0:noNewFeatures>
+    </ns0:data>
+    <ns0:printForm>
+        <ns1:url>https://zakupki.gov.ru/epz/ktru/position/printForm.html?dsUid=DEA92BA907314AF09EABF0A4D4BCC42D</ns1:url>
+        <ns1:signatureInfo>
+            <ns1:dsUid>A86CEF108F9C4C10A0C8060EAF6C00A3</ns1:dsUid>
+        </ns1:signatureInfo>
+    </ns0:printForm>
+</ns0:position>

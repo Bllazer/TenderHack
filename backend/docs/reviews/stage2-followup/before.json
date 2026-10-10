@@ -1,0 +1,5746 @@
+[
+  {
+    "scenario": "text + structured ['Верхнее']",
+    "request": {
+      "description": "Лопата; Крепление черенка: Верхнее",
+      "confirmed_category_id": "25.99.29.120-00004",
+      "candidate_limit": 100,
+      "attributes": [
+        {
+          "id": "mount",
+          "name": "Крепление черенка",
+          "values": [
+            "Верхнее"
+          ]
+        }
+      ]
+    },
+    "http_status": 200,
+    "response": {
+      "status": "needs_input",
+      "original_text": "Лопата; Крепление черенка: Верхнее",
+      "normalized_text": "Лопата; Крепление черенка: Верхнее",
+      "original_facts": [
+        {
+          "id": "text:7:34:0",
+          "name": "Крепление черенка",
+          "value": "Верхнее",
+          "values": null,
+          "unit": null,
+          "raw": " Крепление черенка: Верхнее",
+          "span": [
+            7,
+            34
+          ],
+          "source": "text",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": null,
+          "normalized_unit": null,
+          "mappings": []
+        }
+      ],
+      "facts": [
+        {
+          "id": "text:7:34:0",
+          "name": "Крепление черенка",
+          "value": "Верхнее",
+          "values": null,
+          "unit": null,
+          "raw": " Крепление черенка: Верхнее",
+          "span": [
+            7,
+            34
+          ],
+          "source": "text",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": null,
+          "normalized_unit": null,
+          "mappings": [
+            "25.99.29.120-00000003/e27882bd-c"
+          ]
+        },
+        {
+          "id": "mount",
+          "name": "Крепление черенка",
+          "value": "",
+          "values": [
+            "Верхнее"
+          ],
+          "unit": null,
+          "raw": "[\"Верхнее\"]",
+          "span": null,
+          "source": "input",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": null,
+          "normalized_unit": null,
+          "mappings": [
+            "25.99.29.120-00000003/e27882bd-c"
+          ]
+        }
+      ],
+      "unparsed": [
+        {
+          "id": "fragment:0:7",
+          "raw": "Лопата;",
+          "span": [
+            0,
+            7
+          ]
+        }
+      ],
+      "additional": [],
+      "categories": [
+        {
+          "id": "25.99.29.120-00004",
+          "name": "Лопата",
+          "rank": 1,
+          "rank_score": 0.04498200719712116,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.30.11.121-00000007",
+          "name": "Крепления для лыж",
+          "rank": 2,
+          "rank_score": 0.02623004235907462,
+          "reasons": [
+            "BM25",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "14.13.90.000-00000001",
+          "name": "Услуги по производству верхней одежды",
+          "rank": 3,
+          "rank_score": 0.025774005972025775,
+          "reasons": [
+            "BM25",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "14.13.90.000-00000002",
+          "name": "Услуги по производству верхней одежды",
+          "rank": 4,
+          "rank_score": 0.02542892156862745,
+          "reasons": [
+            "BM25",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "28.49.20.000-00000001",
+          "name": "Оправки для крепления инструмента",
+          "rank": 5,
+          "rank_score": 0.02388888888888889,
+          "reasons": [
+            "BM25",
+            "CHAR"
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "ktru_code": "25.99.29.120-00000001",
+          "name": "Лопата",
+          "okpd2": "25.99.29.120",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "2db9da2a-6",
+              "name": "Тип лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "33fcf4a4-7",
+              "name": "Вид лопаты по конструкции полотна",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "ac823472-e",
+              "name": "Тип черенка лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "76eefff8-1",
+              "name": "Тип тулейки",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "535b63e0-b",
+              "name": "Конструктивные особенности",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d52e53e0-0",
+              "name": "Материал черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "3a3036fd-a",
+              "name": "Материал деревянного черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "a578f540-d",
+              "name": "Диаметр черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d69e3b8f-b",
+              "name": "Длина черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "8909bef7-b",
+              "name": "Материал полотна лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d089ec57-9",
+              "name": "Вид стали",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b0eb04f8-c",
+              "name": "Толщина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4d64dbfe-1",
+              "name": "Длина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "595476ea-b",
+              "name": "Ширина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Вид лопаты по конструкции полотна",
+            "Материал полотна лопаты",
+            "Тип лопаты"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        },
+        {
+          "ktru_code": "25.99.29.120-00000002",
+          "name": "Лопата",
+          "okpd2": "25.99.29.120",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "2db9da2a-6",
+              "name": "Тип лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "33fcf4a4-7",
+              "name": "Вид лопаты по конструкции полотна",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "ac823472-e",
+              "name": "Тип черенка лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "76eefff8-1",
+              "name": "Тип тулейки",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "535b63e0-b",
+              "name": "Конструктивные особенности",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d52e53e0-0",
+              "name": "Материал черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "3a3036fd-a",
+              "name": "Материал деревянного черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "a578f540-d",
+              "name": "Диаметр черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d69e3b8f-b",
+              "name": "Длина черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "8909bef7-b",
+              "name": "Материал полотна лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d089ec57-9",
+              "name": "Вид стали",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b0eb04f8-c",
+              "name": "Толщина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4d64dbfe-1",
+              "name": "Длина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "595476ea-b",
+              "name": "Ширина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Вид лопаты по конструкции полотна",
+            "Материал полотна лопаты",
+            "Тип лопаты"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        },
+        {
+          "ktru_code": "25.99.29.120-00000003",
+          "name": "Лопата",
+          "okpd2": "25.99.29.120",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "2db9da2a-6",
+              "name": "Тип лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "e27882bd-c",
+              "name": "Крепление черенка",
+              "outcome": "unknown",
+              "reason": "conflicting_facts",
+              "fact_ids": [
+                "text:7:34:0",
+                "mount"
+              ],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "535b63e0-b",
+              "name": "Конструктивные особенности",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d52e53e0-0",
+              "name": "Материал черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "3a3036fd-a",
+              "name": "Материал деревянного черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "a578f540-d",
+              "name": "Диаметр черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d69e3b8f-b",
+              "name": "Длина черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "8909bef7-b",
+              "name": "Материал полотна лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d089ec57-9",
+              "name": "Вид стали",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "883bc469-e",
+              "name": "Вид пластика",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b0eb04f8-c",
+              "name": "Толщина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4d64dbfe-1",
+              "name": "Длина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "595476ea-b",
+              "name": "Ширина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "372218d3-6",
+              "name": "Количество бортов",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "dcc501a9-e",
+              "name": "Количество ребер жесткости",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "ea1a632d-9",
+              "name": "Климатические условия применения (максимальный нижний предел температуры)",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Материал полотна лопаты",
+            "Тип лопаты"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        }
+      ],
+      "excluded": [],
+      "candidate_count": 3,
+      "excluded_count": 0,
+      "scope": {
+        "category_id": "25.99.29.120-00004",
+        "position_count": 3,
+        "evaluated_count": 3,
+        "complete": true
+      },
+      "issues": [
+        {
+          "code": "conflicting_facts",
+          "severity": "error",
+          "explanation": "Для «Крепление черенка» указаны противоречащие значения: Верхнее, ",
+          "fact_id": "text:7:34:0",
+          "property_id": "e27882bd-c",
+          "candidate_code": "25.99.29.120-00000003",
+          "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:59616#25.99.29.120-00000003@2",
+          "suggested_action": "Исправьте конкретный факт или исходное описание",
+          "confirmation_required": true
+        },
+        {
+          "code": "verification_incomplete",
+          "severity": "error",
+          "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+          "fact_id": null,
+          "property_id": null,
+          "candidate_code": null,
+          "rule_source": null,
+          "suggested_action": "Проверьте исходные сведения",
+          "confirmation_required": false
+        }
+      ],
+      "corrections": [],
+      "next_question": {
+        "id": "conflict:text:7:34:0",
+        "kind": "conflict",
+        "title": "Исправьте противоречащие сведения",
+        "reason": "Для «Крепление черенка» указаны противоречащие значения: Верхнее, ",
+        "property_name": null,
+        "options": [],
+        "unit": null,
+        "allow_unknown": false,
+        "multiple": false
+      },
+      "next_steps": [
+        "Исправьте противоречащие сведения"
+      ],
+      "verification": {
+        "type_verified": true,
+        "ktru_unique": false,
+        "fields_complete": false,
+        "value_verified": false,
+        "catalog_scope_complete": true,
+        "value_indistinguishable": false,
+        "confirmed_by_user": false,
+        "blocking_issues": true
+      },
+      "selected_ktru_code": null,
+      "catalog_version": "clean5-7331f0732bc0ff5c",
+      "engine_version": "stateless-pipeline-v4-ktru-multiselect-applicability"
+    }
+  },
+  {
+    "scenario": "text + structured ['Верхнее', 'Верхнее']",
+    "request": {
+      "description": "Лопата; Крепление черенка: Верхнее",
+      "confirmed_category_id": "25.99.29.120-00004",
+      "candidate_limit": 100,
+      "attributes": [
+        {
+          "id": "mount",
+          "name": "Крепление черенка",
+          "values": [
+            "Верхнее",
+            "Верхнее"
+          ]
+        }
+      ]
+    },
+    "http_status": 200,
+    "response": {
+      "status": "needs_input",
+      "original_text": "Лопата; Крепление черенка: Верхнее",
+      "normalized_text": "Лопата; Крепление черенка: Верхнее",
+      "original_facts": [
+        {
+          "id": "text:7:34:0",
+          "name": "Крепление черенка",
+          "value": "Верхнее",
+          "values": null,
+          "unit": null,
+          "raw": " Крепление черенка: Верхнее",
+          "span": [
+            7,
+            34
+          ],
+          "source": "text",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": null,
+          "normalized_unit": null,
+          "mappings": []
+        }
+      ],
+      "facts": [
+        {
+          "id": "text:7:34:0",
+          "name": "Крепление черенка",
+          "value": "Верхнее",
+          "values": null,
+          "unit": null,
+          "raw": " Крепление черенка: Верхнее",
+          "span": [
+            7,
+            34
+          ],
+          "source": "text",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": null,
+          "normalized_unit": null,
+          "mappings": [
+            "25.99.29.120-00000003/e27882bd-c"
+          ]
+        },
+        {
+          "id": "mount",
+          "name": "Крепление черенка",
+          "value": "",
+          "values": [
+            "Верхнее",
+            "Верхнее"
+          ],
+          "unit": null,
+          "raw": "[\"Верхнее\", \"Верхнее\"]",
+          "span": null,
+          "source": "input",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": null,
+          "normalized_unit": null,
+          "mappings": [
+            "25.99.29.120-00000003/e27882bd-c"
+          ]
+        }
+      ],
+      "unparsed": [
+        {
+          "id": "fragment:0:7",
+          "raw": "Лопата;",
+          "span": [
+            0,
+            7
+          ]
+        }
+      ],
+      "additional": [],
+      "categories": [
+        {
+          "id": "25.99.29.120-00004",
+          "name": "Лопата",
+          "rank": 1,
+          "rank_score": 0.04498200719712116,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.30.11.121-00000007",
+          "name": "Крепления для лыж",
+          "rank": 2,
+          "rank_score": 0.02623004235907462,
+          "reasons": [
+            "BM25",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "14.13.90.000-00000001",
+          "name": "Услуги по производству верхней одежды",
+          "rank": 3,
+          "rank_score": 0.025774005972025775,
+          "reasons": [
+            "BM25",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "14.13.90.000-00000002",
+          "name": "Услуги по производству верхней одежды",
+          "rank": 4,
+          "rank_score": 0.02542892156862745,
+          "reasons": [
+            "BM25",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "28.49.20.000-00000001",
+          "name": "Оправки для крепления инструмента",
+          "rank": 5,
+          "rank_score": 0.02388888888888889,
+          "reasons": [
+            "BM25",
+            "CHAR"
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "ktru_code": "25.99.29.120-00000001",
+          "name": "Лопата",
+          "okpd2": "25.99.29.120",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "2db9da2a-6",
+              "name": "Тип лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "33fcf4a4-7",
+              "name": "Вид лопаты по конструкции полотна",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "ac823472-e",
+              "name": "Тип черенка лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "76eefff8-1",
+              "name": "Тип тулейки",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "535b63e0-b",
+              "name": "Конструктивные особенности",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d52e53e0-0",
+              "name": "Материал черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "3a3036fd-a",
+              "name": "Материал деревянного черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "a578f540-d",
+              "name": "Диаметр черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d69e3b8f-b",
+              "name": "Длина черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "8909bef7-b",
+              "name": "Материал полотна лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d089ec57-9",
+              "name": "Вид стали",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b0eb04f8-c",
+              "name": "Толщина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4d64dbfe-1",
+              "name": "Длина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "595476ea-b",
+              "name": "Ширина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Вид лопаты по конструкции полотна",
+            "Материал полотна лопаты",
+            "Тип лопаты"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        },
+        {
+          "ktru_code": "25.99.29.120-00000002",
+          "name": "Лопата",
+          "okpd2": "25.99.29.120",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "2db9da2a-6",
+              "name": "Тип лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "33fcf4a4-7",
+              "name": "Вид лопаты по конструкции полотна",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "ac823472-e",
+              "name": "Тип черенка лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "76eefff8-1",
+              "name": "Тип тулейки",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "535b63e0-b",
+              "name": "Конструктивные особенности",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d52e53e0-0",
+              "name": "Материал черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "3a3036fd-a",
+              "name": "Материал деревянного черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "a578f540-d",
+              "name": "Диаметр черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d69e3b8f-b",
+              "name": "Длина черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "8909bef7-b",
+              "name": "Материал полотна лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d089ec57-9",
+              "name": "Вид стали",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b0eb04f8-c",
+              "name": "Толщина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4d64dbfe-1",
+              "name": "Длина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "595476ea-b",
+              "name": "Ширина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Вид лопаты по конструкции полотна",
+            "Материал полотна лопаты",
+            "Тип лопаты"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        },
+        {
+          "ktru_code": "25.99.29.120-00000003",
+          "name": "Лопата",
+          "okpd2": "25.99.29.120",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "2db9da2a-6",
+              "name": "Тип лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "e27882bd-c",
+              "name": "Крепление черенка",
+              "outcome": "unknown",
+              "reason": "conflicting_facts",
+              "fact_ids": [
+                "text:7:34:0",
+                "mount"
+              ],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "535b63e0-b",
+              "name": "Конструктивные особенности",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d52e53e0-0",
+              "name": "Материал черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "3a3036fd-a",
+              "name": "Материал деревянного черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "a578f540-d",
+              "name": "Диаметр черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d69e3b8f-b",
+              "name": "Длина черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "8909bef7-b",
+              "name": "Материал полотна лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d089ec57-9",
+              "name": "Вид стали",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "883bc469-e",
+              "name": "Вид пластика",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b0eb04f8-c",
+              "name": "Толщина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4d64dbfe-1",
+              "name": "Длина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "595476ea-b",
+              "name": "Ширина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "372218d3-6",
+              "name": "Количество бортов",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "dcc501a9-e",
+              "name": "Количество ребер жесткости",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "ea1a632d-9",
+              "name": "Климатические условия применения (максимальный нижний предел температуры)",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Материал полотна лопаты",
+            "Тип лопаты"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        }
+      ],
+      "excluded": [],
+      "candidate_count": 3,
+      "excluded_count": 0,
+      "scope": {
+        "category_id": "25.99.29.120-00004",
+        "position_count": 3,
+        "evaluated_count": 3,
+        "complete": true
+      },
+      "issues": [
+        {
+          "code": "conflicting_facts",
+          "severity": "error",
+          "explanation": "Для «Крепление черенка» указаны противоречащие значения: Верхнее, ",
+          "fact_id": "text:7:34:0",
+          "property_id": "e27882bd-c",
+          "candidate_code": "25.99.29.120-00000003",
+          "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:59616#25.99.29.120-00000003@2",
+          "suggested_action": "Исправьте конкретный факт или исходное описание",
+          "confirmation_required": true
+        },
+        {
+          "code": "verification_incomplete",
+          "severity": "error",
+          "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+          "fact_id": null,
+          "property_id": null,
+          "candidate_code": null,
+          "rule_source": null,
+          "suggested_action": "Проверьте исходные сведения",
+          "confirmation_required": false
+        }
+      ],
+      "corrections": [],
+      "next_question": {
+        "id": "conflict:text:7:34:0",
+        "kind": "conflict",
+        "title": "Исправьте противоречащие сведения",
+        "reason": "Для «Крепление черенка» указаны противоречащие значения: Верхнее, ",
+        "property_name": null,
+        "options": [],
+        "unit": null,
+        "allow_unknown": false,
+        "multiple": false
+      },
+      "next_steps": [
+        "Исправьте противоречащие сведения"
+      ],
+      "verification": {
+        "type_verified": true,
+        "ktru_unique": false,
+        "fields_complete": false,
+        "value_verified": false,
+        "catalog_scope_complete": true,
+        "value_indistinguishable": false,
+        "confirmed_by_user": false,
+        "blocking_issues": true
+      },
+      "selected_ktru_code": null,
+      "catalog_version": "clean5-7331f0732bc0ff5c",
+      "engine_version": "stateless-pipeline-v4-ktru-multiselect-applicability"
+    }
+  },
+  {
+    "scenario": "text + structured ['Нижнее']",
+    "request": {
+      "description": "Лопата; Крепление черенка: Верхнее",
+      "confirmed_category_id": "25.99.29.120-00004",
+      "candidate_limit": 100,
+      "attributes": [
+        {
+          "id": "mount",
+          "name": "Крепление черенка",
+          "values": [
+            "Нижнее"
+          ]
+        }
+      ]
+    },
+    "http_status": 200,
+    "response": {
+      "status": "needs_input",
+      "original_text": "Лопата; Крепление черенка: Верхнее",
+      "normalized_text": "Лопата; Крепление черенка: Верхнее",
+      "original_facts": [
+        {
+          "id": "text:7:34:0",
+          "name": "Крепление черенка",
+          "value": "Верхнее",
+          "values": null,
+          "unit": null,
+          "raw": " Крепление черенка: Верхнее",
+          "span": [
+            7,
+            34
+          ],
+          "source": "text",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": null,
+          "normalized_unit": null,
+          "mappings": []
+        }
+      ],
+      "facts": [
+        {
+          "id": "text:7:34:0",
+          "name": "Крепление черенка",
+          "value": "Верхнее",
+          "values": null,
+          "unit": null,
+          "raw": " Крепление черенка: Верхнее",
+          "span": [
+            7,
+            34
+          ],
+          "source": "text",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": null,
+          "normalized_unit": null,
+          "mappings": [
+            "25.99.29.120-00000003/e27882bd-c"
+          ]
+        },
+        {
+          "id": "mount",
+          "name": "Крепление черенка",
+          "value": "",
+          "values": [
+            "Нижнее"
+          ],
+          "unit": null,
+          "raw": "[\"Нижнее\"]",
+          "span": null,
+          "source": "input",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": null,
+          "normalized_unit": null,
+          "mappings": [
+            "25.99.29.120-00000003/e27882bd-c"
+          ]
+        }
+      ],
+      "unparsed": [
+        {
+          "id": "fragment:0:7",
+          "raw": "Лопата;",
+          "span": [
+            0,
+            7
+          ]
+        }
+      ],
+      "additional": [],
+      "categories": [
+        {
+          "id": "25.99.29.120-00004",
+          "name": "Лопата",
+          "rank": 1,
+          "rank_score": 0.04498200719712116,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.30.11.121-00000007",
+          "name": "Крепления для лыж",
+          "rank": 2,
+          "rank_score": 0.02623004235907462,
+          "reasons": [
+            "BM25",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "14.13.90.000-00000001",
+          "name": "Услуги по производству верхней одежды",
+          "rank": 3,
+          "rank_score": 0.025774005972025775,
+          "reasons": [
+            "BM25",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "14.13.90.000-00000002",
+          "name": "Услуги по производству верхней одежды",
+          "rank": 4,
+          "rank_score": 0.02542892156862745,
+          "reasons": [
+            "BM25",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "28.49.20.000-00000001",
+          "name": "Оправки для крепления инструмента",
+          "rank": 5,
+          "rank_score": 0.02388888888888889,
+          "reasons": [
+            "BM25",
+            "CHAR"
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "ktru_code": "25.99.29.120-00000001",
+          "name": "Лопата",
+          "okpd2": "25.99.29.120",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "2db9da2a-6",
+              "name": "Тип лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "33fcf4a4-7",
+              "name": "Вид лопаты по конструкции полотна",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "ac823472-e",
+              "name": "Тип черенка лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "76eefff8-1",
+              "name": "Тип тулейки",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "535b63e0-b",
+              "name": "Конструктивные особенности",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d52e53e0-0",
+              "name": "Материал черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "3a3036fd-a",
+              "name": "Материал деревянного черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "a578f540-d",
+              "name": "Диаметр черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d69e3b8f-b",
+              "name": "Длина черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "8909bef7-b",
+              "name": "Материал полотна лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d089ec57-9",
+              "name": "Вид стали",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b0eb04f8-c",
+              "name": "Толщина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4d64dbfe-1",
+              "name": "Длина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "595476ea-b",
+              "name": "Ширина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Вид лопаты по конструкции полотна",
+            "Материал полотна лопаты",
+            "Тип лопаты"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        },
+        {
+          "ktru_code": "25.99.29.120-00000002",
+          "name": "Лопата",
+          "okpd2": "25.99.29.120",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "2db9da2a-6",
+              "name": "Тип лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "33fcf4a4-7",
+              "name": "Вид лопаты по конструкции полотна",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "ac823472-e",
+              "name": "Тип черенка лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "76eefff8-1",
+              "name": "Тип тулейки",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "535b63e0-b",
+              "name": "Конструктивные особенности",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d52e53e0-0",
+              "name": "Материал черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "3a3036fd-a",
+              "name": "Материал деревянного черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "a578f540-d",
+              "name": "Диаметр черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d69e3b8f-b",
+              "name": "Длина черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "8909bef7-b",
+              "name": "Материал полотна лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d089ec57-9",
+              "name": "Вид стали",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b0eb04f8-c",
+              "name": "Толщина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4d64dbfe-1",
+              "name": "Длина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "595476ea-b",
+              "name": "Ширина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Вид лопаты по конструкции полотна",
+            "Материал полотна лопаты",
+            "Тип лопаты"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        },
+        {
+          "ktru_code": "25.99.29.120-00000003",
+          "name": "Лопата",
+          "okpd2": "25.99.29.120",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "2db9da2a-6",
+              "name": "Тип лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "e27882bd-c",
+              "name": "Крепление черенка",
+              "outcome": "unknown",
+              "reason": "conflicting_facts",
+              "fact_ids": [
+                "text:7:34:0",
+                "mount"
+              ],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "535b63e0-b",
+              "name": "Конструктивные особенности",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d52e53e0-0",
+              "name": "Материал черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "3a3036fd-a",
+              "name": "Материал деревянного черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "a578f540-d",
+              "name": "Диаметр черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d69e3b8f-b",
+              "name": "Длина черенка",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "8909bef7-b",
+              "name": "Материал полотна лопаты",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "d089ec57-9",
+              "name": "Вид стали",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "883bc469-e",
+              "name": "Вид пластика",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b0eb04f8-c",
+              "name": "Толщина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4d64dbfe-1",
+              "name": "Длина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "595476ea-b",
+              "name": "Ширина полотна лопаты",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "372218d3-6",
+              "name": "Количество бортов",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "dcc501a9-e",
+              "name": "Количество ребер жесткости",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "ea1a632d-9",
+              "name": "Климатические условия применения (максимальный нижний предел температуры)",
+              "outcome": "unknown",
+              "reason": "not_provided",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Материал полотна лопаты",
+            "Тип лопаты"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        }
+      ],
+      "excluded": [],
+      "candidate_count": 3,
+      "excluded_count": 0,
+      "scope": {
+        "category_id": "25.99.29.120-00004",
+        "position_count": 3,
+        "evaluated_count": 3,
+        "complete": true
+      },
+      "issues": [
+        {
+          "code": "conflicting_facts",
+          "severity": "error",
+          "explanation": "Для «Крепление черенка» указаны противоречащие значения: Верхнее, ",
+          "fact_id": "text:7:34:0",
+          "property_id": "e27882bd-c",
+          "candidate_code": "25.99.29.120-00000003",
+          "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:59616#25.99.29.120-00000003@2",
+          "suggested_action": "Исправьте конкретный факт или исходное описание",
+          "confirmation_required": true
+        },
+        {
+          "code": "verification_incomplete",
+          "severity": "error",
+          "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+          "fact_id": null,
+          "property_id": null,
+          "candidate_code": null,
+          "rule_source": null,
+          "suggested_action": "Проверьте исходные сведения",
+          "confirmation_required": false
+        }
+      ],
+      "corrections": [],
+      "next_question": {
+        "id": "conflict:text:7:34:0",
+        "kind": "conflict",
+        "title": "Исправьте противоречащие сведения",
+        "reason": "Для «Крепление черенка» указаны противоречащие значения: Верхнее, ",
+        "property_name": null,
+        "options": [],
+        "unit": null,
+        "allow_unknown": false,
+        "multiple": false
+      },
+      "next_steps": [
+        "Исправьте противоречащие сведения"
+      ],
+      "verification": {
+        "type_verified": true,
+        "ktru_unique": false,
+        "fields_complete": false,
+        "value_verified": false,
+        "catalog_scope_complete": true,
+        "value_indistinguishable": false,
+        "confirmed_by_user": false,
+        "blocking_issues": true
+      },
+      "selected_ktru_code": null,
+      "catalog_version": "clean5-7331f0732bc0ff5c",
+      "engine_version": "stateless-pipeline-v4-ktru-multiselect-applicability"
+    }
+  },
+  {
+    "scenario": "Количество контейнеров в наборе '1' шт",
+    "request": {
+      "description": "Набор для системы замораживания эритроцитов донорской крови",
+      "confirmed_category_id": "32.50.13.190-00013",
+      "candidate_limit": 100,
+      "attributes": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "unit": "шт",
+          "value": "1"
+        }
+      ]
+    },
+    "http_status": 200,
+    "response": {
+      "status": "needs_input",
+      "original_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "normalized_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "original_facts": [],
+      "facts": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "value": "1",
+          "values": null,
+          "unit": "шт",
+          "raw": "1",
+          "span": null,
+          "source": "input",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": "1",
+          "normalized_unit": "шт",
+          "mappings": [
+            "32.50.13.190-00243/eac0ab88-2",
+            "32.50.13.190-00244/7a7ace3d-4"
+          ]
+        }
+      ],
+      "unparsed": [
+        {
+          "id": "fragment:0:59",
+          "raw": "Набор для системы замораживания эритроцитов донорской крови",
+          "span": [
+            0,
+            59
+          ]
+        }
+      ],
+      "additional": [],
+      "categories": [
+        {
+          "id": "32.50.13.190-00013",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "rank": 1,
+          "rank_score": 0.04918032786885246,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00012",
+          "name": "Набор для системы размораживания эритроцитов донорской крови",
+          "rank": 2,
+          "rank_score": 0.04838709677419355,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00007065",
+          "name": "Набор для донорской крови, многокамерный",
+          "rank": 3,
+          "rank_score": 0.04547574626865672,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00006398",
+          "name": "Раствор криопротектор для замораживания эритроцитов ИВД",
+          "rank": 4,
+          "rank_score": 0.04482363597612958,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00010411",
+          "name": "Раствор для оттаивания эритроцитов ИВД",
+          "rank": 5,
+          "rank_score": 0.04446778711484593,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "ktru_code": "32.50.13.190-00243",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "e07bbee6-6",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b19c5f7f-d",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "13060ac7-8",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "eac0ab88-2",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "compatible",
+              "reason": "allowed_range",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [
+                "9a0ea18f-a"
+              ],
+              "elements": []
+            },
+            {
+              "property_id": "3a0543c4-1",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        },
+        {
+          "ktru_code": "32.50.13.190-00244",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "04c12867-b",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4400ad53-e",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "84154767-d",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "7a7ace3d-4",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "compatible",
+              "reason": "allowed_range",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [
+                "a8ab478c-8"
+              ],
+              "elements": []
+            },
+            {
+              "property_id": "1eb8c461-d",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        }
+      ],
+      "excluded": [],
+      "candidate_count": 2,
+      "excluded_count": 0,
+      "scope": {
+        "category_id": "32.50.13.190-00013",
+        "position_count": 2,
+        "evaluated_count": 2,
+        "complete": true
+      },
+      "issues": [
+        {
+          "code": "verification_incomplete",
+          "severity": "error",
+          "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+          "fact_id": null,
+          "property_id": null,
+          "candidate_code": null,
+          "rule_source": null,
+          "suggested_action": "Проверьте исходные сведения",
+          "confirmation_required": false
+        }
+      ],
+      "corrections": [],
+      "next_question": {
+        "id": "property:1467e53d98e330b5c065c795",
+        "kind": "property",
+        "title": "Укажите: Длина магистрали",
+        "reason": "Нужно для проверки обязательного поля или единицы",
+        "property_name": "Длина магистрали",
+        "options": [],
+        "unit": "мм",
+        "allow_unknown": true,
+        "multiple": false
+      },
+      "next_steps": [
+        "Укажите: Длина магистрали"
+      ],
+      "verification": {
+        "type_verified": true,
+        "ktru_unique": false,
+        "fields_complete": false,
+        "value_verified": false,
+        "catalog_scope_complete": true,
+        "value_indistinguishable": false,
+        "confirmed_by_user": false,
+        "blocking_issues": true
+      },
+      "selected_ktru_code": null,
+      "catalog_version": "clean5-7331f0732bc0ff5c",
+      "engine_version": "stateless-pipeline-v4-ktru-multiselect-applicability"
+    }
+  },
+  {
+    "scenario": "Количество контейнеров в наборе '1.5' шт",
+    "request": {
+      "description": "Набор для системы замораживания эритроцитов донорской крови",
+      "confirmed_category_id": "32.50.13.190-00013",
+      "candidate_limit": 100,
+      "attributes": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "unit": "шт",
+          "value": "1.5"
+        }
+      ]
+    },
+    "http_status": 200,
+    "response": {
+      "status": "needs_input",
+      "original_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "normalized_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "original_facts": [],
+      "facts": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "value": "1.5",
+          "values": null,
+          "unit": "шт",
+          "raw": "1.5",
+          "span": null,
+          "source": "input",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": "1.5",
+          "normalized_unit": "шт",
+          "mappings": [
+            "32.50.13.190-00243/eac0ab88-2",
+            "32.50.13.190-00244/7a7ace3d-4"
+          ]
+        }
+      ],
+      "unparsed": [
+        {
+          "id": "fragment:0:59",
+          "raw": "Набор для системы замораживания эритроцитов донорской крови",
+          "span": [
+            0,
+            59
+          ]
+        }
+      ],
+      "additional": [],
+      "categories": [
+        {
+          "id": "32.50.13.190-00013",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "rank": 1,
+          "rank_score": 0.04918032786885246,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00012",
+          "name": "Набор для системы размораживания эритроцитов донорской крови",
+          "rank": 2,
+          "rank_score": 0.04838709677419355,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00007065",
+          "name": "Набор для донорской крови, многокамерный",
+          "rank": 3,
+          "rank_score": 0.04547574626865672,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00006398",
+          "name": "Раствор криопротектор для замораживания эритроцитов ИВД",
+          "rank": 4,
+          "rank_score": 0.04482363597612958,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00010411",
+          "name": "Раствор для оттаивания эритроцитов ИВД",
+          "rank": 5,
+          "rank_score": 0.04446778711484593,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "ktru_code": "32.50.13.190-00243",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "e07bbee6-6",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b19c5f7f-d",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "13060ac7-8",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "eac0ab88-2",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "compatible",
+              "reason": "allowed_range",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [
+                "9a0ea18f-a"
+              ],
+              "elements": []
+            },
+            {
+              "property_id": "3a0543c4-1",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        },
+        {
+          "ktru_code": "32.50.13.190-00244",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "04c12867-b",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4400ad53-e",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "84154767-d",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "7a7ace3d-4",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "compatible",
+              "reason": "allowed_range",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [
+                "a8ab478c-8"
+              ],
+              "elements": []
+            },
+            {
+              "property_id": "1eb8c461-d",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        }
+      ],
+      "excluded": [],
+      "candidate_count": 2,
+      "excluded_count": 0,
+      "scope": {
+        "category_id": "32.50.13.190-00013",
+        "position_count": 2,
+        "evaluated_count": 2,
+        "complete": true
+      },
+      "issues": [
+        {
+          "code": "verification_incomplete",
+          "severity": "error",
+          "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+          "fact_id": null,
+          "property_id": null,
+          "candidate_code": null,
+          "rule_source": null,
+          "suggested_action": "Проверьте исходные сведения",
+          "confirmation_required": false
+        }
+      ],
+      "corrections": [],
+      "next_question": {
+        "id": "property:1467e53d98e330b5c065c795",
+        "kind": "property",
+        "title": "Укажите: Длина магистрали",
+        "reason": "Нужно для проверки обязательного поля или единицы",
+        "property_name": "Длина магистрали",
+        "options": [],
+        "unit": "мм",
+        "allow_unknown": true,
+        "multiple": false
+      },
+      "next_steps": [
+        "Укажите: Длина магистрали"
+      ],
+      "verification": {
+        "type_verified": true,
+        "ktru_unique": false,
+        "fields_complete": false,
+        "value_verified": false,
+        "catalog_scope_complete": true,
+        "value_indistinguishable": false,
+        "confirmed_by_user": false,
+        "blocking_issues": true
+      },
+      "selected_ktru_code": null,
+      "catalog_version": "clean5-7331f0732bc0ff5c",
+      "engine_version": "stateless-pipeline-v4-ktru-multiselect-applicability"
+    }
+  },
+  {
+    "scenario": "Количество контейнеров в наборе ['1.5'] шт",
+    "request": {
+      "description": "Набор для системы замораживания эритроцитов донорской крови",
+      "confirmed_category_id": "32.50.13.190-00013",
+      "candidate_limit": 100,
+      "attributes": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "unit": "шт",
+          "values": [
+            "1.5"
+          ]
+        }
+      ]
+    },
+    "http_status": 200,
+    "response": {
+      "status": "needs_input",
+      "original_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "normalized_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "original_facts": [],
+      "facts": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "value": "",
+          "values": [
+            "1.5"
+          ],
+          "unit": "шт",
+          "raw": "[\"1.5\"]",
+          "span": null,
+          "source": "input",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": null,
+          "normalized_unit": null,
+          "mappings": [
+            "32.50.13.190-00243/eac0ab88-2",
+            "32.50.13.190-00244/7a7ace3d-4"
+          ]
+        }
+      ],
+      "unparsed": [
+        {
+          "id": "fragment:0:59",
+          "raw": "Набор для системы замораживания эритроцитов донорской крови",
+          "span": [
+            0,
+            59
+          ]
+        }
+      ],
+      "additional": [],
+      "categories": [
+        {
+          "id": "32.50.13.190-00013",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "rank": 1,
+          "rank_score": 0.04918032786885246,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00012",
+          "name": "Набор для системы размораживания эритроцитов донорской крови",
+          "rank": 2,
+          "rank_score": 0.04838709677419355,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00007065",
+          "name": "Набор для донорской крови, многокамерный",
+          "rank": 3,
+          "rank_score": 0.04547574626865672,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00006398",
+          "name": "Раствор криопротектор для замораживания эритроцитов ИВД",
+          "rank": 4,
+          "rank_score": 0.04482363597612958,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00010411",
+          "name": "Раствор для оттаивания эритроцитов ИВД",
+          "rank": 5,
+          "rank_score": 0.04446778711484593,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "ktru_code": "32.50.13.190-00243",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "e07bbee6-6",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b19c5f7f-d",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "13060ac7-8",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "eac0ab88-2",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "compatible",
+              "reason": "allowed_range",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [
+                "9a0ea18f-a"
+              ],
+              "elements": [
+                {
+                  "value": "1.5",
+                  "outcome": "compatible",
+                  "reason": "allowed_range",
+                  "value_codes": [
+                    "9a0ea18f-a"
+                  ]
+                }
+              ]
+            },
+            {
+              "property_id": "3a0543c4-1",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        },
+        {
+          "ktru_code": "32.50.13.190-00244",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "04c12867-b",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4400ad53-e",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "84154767-d",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "7a7ace3d-4",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "compatible",
+              "reason": "allowed_range",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [
+                "a8ab478c-8"
+              ],
+              "elements": [
+                {
+                  "value": "1.5",
+                  "outcome": "compatible",
+                  "reason": "allowed_range",
+                  "value_codes": [
+                    "a8ab478c-8"
+                  ]
+                }
+              ]
+            },
+            {
+              "property_id": "1eb8c461-d",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        }
+      ],
+      "excluded": [],
+      "candidate_count": 2,
+      "excluded_count": 0,
+      "scope": {
+        "category_id": "32.50.13.190-00013",
+        "position_count": 2,
+        "evaluated_count": 2,
+        "complete": true
+      },
+      "issues": [
+        {
+          "code": "verification_incomplete",
+          "severity": "error",
+          "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+          "fact_id": null,
+          "property_id": null,
+          "candidate_code": null,
+          "rule_source": null,
+          "suggested_action": "Проверьте исходные сведения",
+          "confirmation_required": false
+        }
+      ],
+      "corrections": [],
+      "next_question": {
+        "id": "property:1467e53d98e330b5c065c795",
+        "kind": "property",
+        "title": "Укажите: Длина магистрали",
+        "reason": "Нужно для проверки обязательного поля или единицы",
+        "property_name": "Длина магистрали",
+        "options": [],
+        "unit": "мм",
+        "allow_unknown": true,
+        "multiple": false
+      },
+      "next_steps": [
+        "Укажите: Длина магистрали"
+      ],
+      "verification": {
+        "type_verified": true,
+        "ktru_unique": false,
+        "fields_complete": false,
+        "value_verified": false,
+        "catalog_scope_complete": true,
+        "value_indistinguishable": false,
+        "confirmed_by_user": false,
+        "blocking_issues": true
+      },
+      "selected_ktru_code": null,
+      "catalog_version": "clean5-7331f0732bc0ff5c",
+      "engine_version": "stateless-pipeline-v4-ktru-multiselect-applicability"
+    }
+  },
+  {
+    "scenario": "Количество контейнеров в наборе ['1', '1'] шт",
+    "request": {
+      "description": "Набор для системы замораживания эритроцитов донорской крови",
+      "confirmed_category_id": "32.50.13.190-00013",
+      "candidate_limit": 100,
+      "attributes": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "unit": "шт",
+          "values": [
+            "1",
+            "1"
+          ]
+        }
+      ]
+    },
+    "http_status": 200,
+    "response": {
+      "status": "needs_input",
+      "original_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "normalized_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "original_facts": [],
+      "facts": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "value": "",
+          "values": [
+            "1",
+            "1"
+          ],
+          "unit": "шт",
+          "raw": "[\"1\", \"1\"]",
+          "span": null,
+          "source": "input",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": null,
+          "normalized_unit": null,
+          "mappings": [
+            "32.50.13.190-00243/eac0ab88-2",
+            "32.50.13.190-00244/7a7ace3d-4"
+          ]
+        }
+      ],
+      "unparsed": [
+        {
+          "id": "fragment:0:59",
+          "raw": "Набор для системы замораживания эритроцитов донорской крови",
+          "span": [
+            0,
+            59
+          ]
+        }
+      ],
+      "additional": [],
+      "categories": [
+        {
+          "id": "32.50.13.190-00013",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "rank": 1,
+          "rank_score": 0.04918032786885246,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00012",
+          "name": "Набор для системы размораживания эритроцитов донорской крови",
+          "rank": 2,
+          "rank_score": 0.04838709677419355,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00007065",
+          "name": "Набор для донорской крови, многокамерный",
+          "rank": 3,
+          "rank_score": 0.04547574626865672,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00006398",
+          "name": "Раствор криопротектор для замораживания эритроцитов ИВД",
+          "rank": 4,
+          "rank_score": 0.04482363597612958,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00010411",
+          "name": "Раствор для оттаивания эритроцитов ИВД",
+          "rank": 5,
+          "rank_score": 0.04446778711484593,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "ktru_code": "32.50.13.190-00243",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "e07bbee6-6",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b19c5f7f-d",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "13060ac7-8",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "eac0ab88-2",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "compatible",
+              "reason": "allowed_range",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [
+                "9a0ea18f-a"
+              ],
+              "elements": [
+                {
+                  "value": "1",
+                  "outcome": "compatible",
+                  "reason": "allowed_range",
+                  "value_codes": [
+                    "9a0ea18f-a"
+                  ]
+                },
+                {
+                  "value": "1",
+                  "outcome": "compatible",
+                  "reason": "allowed_range",
+                  "value_codes": [
+                    "9a0ea18f-a"
+                  ]
+                }
+              ]
+            },
+            {
+              "property_id": "3a0543c4-1",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        },
+        {
+          "ktru_code": "32.50.13.190-00244",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "04c12867-b",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4400ad53-e",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "84154767-d",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "7a7ace3d-4",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "compatible",
+              "reason": "allowed_range",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [
+                "a8ab478c-8"
+              ],
+              "elements": [
+                {
+                  "value": "1",
+                  "outcome": "compatible",
+                  "reason": "allowed_range",
+                  "value_codes": [
+                    "a8ab478c-8"
+                  ]
+                },
+                {
+                  "value": "1",
+                  "outcome": "compatible",
+                  "reason": "allowed_range",
+                  "value_codes": [
+                    "a8ab478c-8"
+                  ]
+                }
+              ]
+            },
+            {
+              "property_id": "1eb8c461-d",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        }
+      ],
+      "excluded": [],
+      "candidate_count": 2,
+      "excluded_count": 0,
+      "scope": {
+        "category_id": "32.50.13.190-00013",
+        "position_count": 2,
+        "evaluated_count": 2,
+        "complete": true
+      },
+      "issues": [
+        {
+          "code": "verification_incomplete",
+          "severity": "error",
+          "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+          "fact_id": null,
+          "property_id": null,
+          "candidate_code": null,
+          "rule_source": null,
+          "suggested_action": "Проверьте исходные сведения",
+          "confirmation_required": false
+        }
+      ],
+      "corrections": [],
+      "next_question": {
+        "id": "property:1467e53d98e330b5c065c795",
+        "kind": "property",
+        "title": "Укажите: Длина магистрали",
+        "reason": "Нужно для проверки обязательного поля или единицы",
+        "property_name": "Длина магистрали",
+        "options": [],
+        "unit": "мм",
+        "allow_unknown": true,
+        "multiple": false
+      },
+      "next_steps": [
+        "Укажите: Длина магистрали"
+      ],
+      "verification": {
+        "type_verified": true,
+        "ktru_unique": false,
+        "fields_complete": false,
+        "value_verified": false,
+        "catalog_scope_complete": true,
+        "value_indistinguishable": false,
+        "confirmed_by_user": false,
+        "blocking_issues": true
+      },
+      "selected_ktru_code": null,
+      "catalog_version": "clean5-7331f0732bc0ff5c",
+      "engine_version": "stateless-pipeline-v4-ktru-multiselect-applicability"
+    }
+  },
+  {
+    "scenario": "Количество контейнеров в наборе '0.001' тыс. шт",
+    "request": {
+      "description": "Набор для системы замораживания эритроцитов донорской крови",
+      "confirmed_category_id": "32.50.13.190-00013",
+      "candidate_limit": 100,
+      "attributes": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "unit": "тыс. шт",
+          "value": "0.001"
+        }
+      ]
+    },
+    "http_status": 200,
+    "response": {
+      "status": "needs_input",
+      "original_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "normalized_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "original_facts": [],
+      "facts": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "value": "0.001",
+          "values": null,
+          "unit": "тыс. шт",
+          "raw": "0.001",
+          "span": null,
+          "source": "input",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": null,
+          "normalized_unit": null,
+          "mappings": [
+            "32.50.13.190-00243/eac0ab88-2",
+            "32.50.13.190-00244/7a7ace3d-4"
+          ]
+        }
+      ],
+      "unparsed": [
+        {
+          "id": "fragment:0:59",
+          "raw": "Набор для системы замораживания эритроцитов донорской крови",
+          "span": [
+            0,
+            59
+          ]
+        }
+      ],
+      "additional": [],
+      "categories": [
+        {
+          "id": "32.50.13.190-00013",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "rank": 1,
+          "rank_score": 0.04918032786885246,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00012",
+          "name": "Набор для системы размораживания эритроцитов донорской крови",
+          "rank": 2,
+          "rank_score": 0.04838709677419355,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00007065",
+          "name": "Набор для донорской крови, многокамерный",
+          "rank": 3,
+          "rank_score": 0.04547574626865672,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00006398",
+          "name": "Раствор криопротектор для замораживания эритроцитов ИВД",
+          "rank": 4,
+          "rank_score": 0.04482363597612958,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00010411",
+          "name": "Раствор для оттаивания эритроцитов ИВД",
+          "rank": 5,
+          "rank_score": 0.04446778711484593,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "ktru_code": "32.50.13.190-00243",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "e07bbee6-6",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b19c5f7f-d",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "13060ac7-8",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "eac0ab88-2",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "unknown",
+              "reason": "unit_unknown",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "3a0543c4-1",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Количество контейнеров в наборе",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        },
+        {
+          "ktru_code": "32.50.13.190-00244",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "04c12867-b",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4400ad53-e",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "84154767-d",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "7a7ace3d-4",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "unknown",
+              "reason": "unit_unknown",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "1eb8c461-d",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Количество контейнеров в наборе",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        }
+      ],
+      "excluded": [],
+      "candidate_count": 2,
+      "excluded_count": 0,
+      "scope": {
+        "category_id": "32.50.13.190-00013",
+        "position_count": 2,
+        "evaluated_count": 2,
+        "complete": true
+      },
+      "issues": [
+        {
+          "code": "unit_unknown",
+          "severity": "error",
+          "explanation": "Количество контейнеров в наборе: «0.001 тыс. шт» — единица не распознана. Допустимо: ≥ 0 и ≤ 5 шт.",
+          "fact_id": "quantity",
+          "property_id": "eac0ab88-2",
+          "candidate_code": "32.50.13.190-00243",
+          "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:377#32.50.13.190-00243@1",
+          "suggested_action": "Уточните значение или единицу по правилу позиции",
+          "confirmation_required": false
+        },
+        {
+          "code": "unit_unknown",
+          "severity": "error",
+          "explanation": "Количество контейнеров в наборе: «0.001 тыс. шт» — единица не распознана. Допустимо: ≥ 0 и ≤ 5 шт.",
+          "fact_id": "quantity",
+          "property_id": "7a7ace3d-4",
+          "candidate_code": "32.50.13.190-00244",
+          "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:376#32.50.13.190-00244@1",
+          "suggested_action": "Уточните значение или единицу по правилу позиции",
+          "confirmation_required": false
+        },
+        {
+          "code": "verification_incomplete",
+          "severity": "error",
+          "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+          "fact_id": null,
+          "property_id": null,
+          "candidate_code": null,
+          "rule_source": null,
+          "suggested_action": "Проверьте исходные сведения",
+          "confirmation_required": false
+        }
+      ],
+      "corrections": [],
+      "next_question": {
+        "id": "property:1467e53d98e330b5c065c795",
+        "kind": "property",
+        "title": "Укажите: Длина магистрали",
+        "reason": "Нужно для проверки обязательного поля или единицы",
+        "property_name": "Длина магистрали",
+        "options": [],
+        "unit": "мм",
+        "allow_unknown": true,
+        "multiple": false
+      },
+      "next_steps": [
+        "Укажите: Длина магистрали"
+      ],
+      "verification": {
+        "type_verified": true,
+        "ktru_unique": false,
+        "fields_complete": false,
+        "value_verified": false,
+        "catalog_scope_complete": true,
+        "value_indistinguishable": false,
+        "confirmed_by_user": false,
+        "blocking_issues": true
+      },
+      "selected_ktru_code": null,
+      "catalog_version": "clean5-7331f0732bc0ff5c",
+      "engine_version": "stateless-pipeline-v4-ktru-multiselect-applicability"
+    }
+  },
+  {
+    "scenario": "Количество контейнеров в наборе '0.0015' тыс. шт",
+    "request": {
+      "description": "Набор для системы замораживания эритроцитов донорской крови",
+      "confirmed_category_id": "32.50.13.190-00013",
+      "candidate_limit": 100,
+      "attributes": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "unit": "тыс. шт",
+          "value": "0.0015"
+        }
+      ]
+    },
+    "http_status": 200,
+    "response": {
+      "status": "needs_input",
+      "original_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "normalized_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "original_facts": [],
+      "facts": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "value": "0.0015",
+          "values": null,
+          "unit": "тыс. шт",
+          "raw": "0.0015",
+          "span": null,
+          "source": "input",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": null,
+          "normalized_unit": null,
+          "mappings": [
+            "32.50.13.190-00243/eac0ab88-2",
+            "32.50.13.190-00244/7a7ace3d-4"
+          ]
+        }
+      ],
+      "unparsed": [
+        {
+          "id": "fragment:0:59",
+          "raw": "Набор для системы замораживания эритроцитов донорской крови",
+          "span": [
+            0,
+            59
+          ]
+        }
+      ],
+      "additional": [],
+      "categories": [
+        {
+          "id": "32.50.13.190-00013",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "rank": 1,
+          "rank_score": 0.04918032786885246,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00012",
+          "name": "Набор для системы размораживания эритроцитов донорской крови",
+          "rank": 2,
+          "rank_score": 0.04838709677419355,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00007065",
+          "name": "Набор для донорской крови, многокамерный",
+          "rank": 3,
+          "rank_score": 0.04547574626865672,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00006398",
+          "name": "Раствор криопротектор для замораживания эритроцитов ИВД",
+          "rank": 4,
+          "rank_score": 0.04482363597612958,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00010411",
+          "name": "Раствор для оттаивания эритроцитов ИВД",
+          "rank": 5,
+          "rank_score": 0.04446778711484593,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "ktru_code": "32.50.13.190-00243",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "e07bbee6-6",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b19c5f7f-d",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "13060ac7-8",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "eac0ab88-2",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "unknown",
+              "reason": "unit_unknown",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "3a0543c4-1",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Количество контейнеров в наборе",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        },
+        {
+          "ktru_code": "32.50.13.190-00244",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "04c12867-b",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4400ad53-e",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "84154767-d",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "7a7ace3d-4",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "unknown",
+              "reason": "unit_unknown",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "1eb8c461-d",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Количество контейнеров в наборе",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        }
+      ],
+      "excluded": [],
+      "candidate_count": 2,
+      "excluded_count": 0,
+      "scope": {
+        "category_id": "32.50.13.190-00013",
+        "position_count": 2,
+        "evaluated_count": 2,
+        "complete": true
+      },
+      "issues": [
+        {
+          "code": "unit_unknown",
+          "severity": "error",
+          "explanation": "Количество контейнеров в наборе: «0.0015 тыс. шт» — единица не распознана. Допустимо: ≥ 0 и ≤ 5 шт.",
+          "fact_id": "quantity",
+          "property_id": "eac0ab88-2",
+          "candidate_code": "32.50.13.190-00243",
+          "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:377#32.50.13.190-00243@1",
+          "suggested_action": "Уточните значение или единицу по правилу позиции",
+          "confirmation_required": false
+        },
+        {
+          "code": "unit_unknown",
+          "severity": "error",
+          "explanation": "Количество контейнеров в наборе: «0.0015 тыс. шт» — единица не распознана. Допустимо: ≥ 0 и ≤ 5 шт.",
+          "fact_id": "quantity",
+          "property_id": "7a7ace3d-4",
+          "candidate_code": "32.50.13.190-00244",
+          "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:376#32.50.13.190-00244@1",
+          "suggested_action": "Уточните значение или единицу по правилу позиции",
+          "confirmation_required": false
+        },
+        {
+          "code": "verification_incomplete",
+          "severity": "error",
+          "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+          "fact_id": null,
+          "property_id": null,
+          "candidate_code": null,
+          "rule_source": null,
+          "suggested_action": "Проверьте исходные сведения",
+          "confirmation_required": false
+        }
+      ],
+      "corrections": [],
+      "next_question": {
+        "id": "property:1467e53d98e330b5c065c795",
+        "kind": "property",
+        "title": "Укажите: Длина магистрали",
+        "reason": "Нужно для проверки обязательного поля или единицы",
+        "property_name": "Длина магистрали",
+        "options": [],
+        "unit": "мм",
+        "allow_unknown": true,
+        "multiple": false
+      },
+      "next_steps": [
+        "Укажите: Длина магистрали"
+      ],
+      "verification": {
+        "type_verified": true,
+        "ktru_unique": false,
+        "fields_complete": false,
+        "value_verified": false,
+        "catalog_scope_complete": true,
+        "value_indistinguishable": false,
+        "confirmed_by_user": false,
+        "blocking_issues": true
+      },
+      "selected_ktru_code": null,
+      "catalog_version": "clean5-7331f0732bc0ff5c",
+      "engine_version": "stateless-pipeline-v4-ktru-multiselect-applicability"
+    }
+  },
+  {
+    "scenario": "Количество контейнеров в наборе '[0;5]' шт",
+    "request": {
+      "description": "Набор для системы замораживания эритроцитов донорской крови",
+      "confirmed_category_id": "32.50.13.190-00013",
+      "candidate_limit": 100,
+      "attributes": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "unit": "шт",
+          "value": "[0;5]"
+        }
+      ]
+    },
+    "http_status": 200,
+    "response": {
+      "status": "needs_input",
+      "original_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "normalized_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "original_facts": [],
+      "facts": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "value": "[0;5]",
+          "values": null,
+          "unit": "шт",
+          "raw": "[0;5]",
+          "span": null,
+          "source": "input",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": "[0; 5]",
+          "normalized_unit": "шт",
+          "mappings": [
+            "32.50.13.190-00243/eac0ab88-2",
+            "32.50.13.190-00244/7a7ace3d-4"
+          ]
+        }
+      ],
+      "unparsed": [
+        {
+          "id": "fragment:0:59",
+          "raw": "Набор для системы замораживания эритроцитов донорской крови",
+          "span": [
+            0,
+            59
+          ]
+        }
+      ],
+      "additional": [],
+      "categories": [
+        {
+          "id": "32.50.13.190-00013",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "rank": 1,
+          "rank_score": 0.04918032786885246,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00012",
+          "name": "Набор для системы размораживания эритроцитов донорской крови",
+          "rank": 2,
+          "rank_score": 0.04838709677419355,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00007065",
+          "name": "Набор для донорской крови, многокамерный",
+          "rank": 3,
+          "rank_score": 0.04547574626865672,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00006398",
+          "name": "Раствор криопротектор для замораживания эритроцитов ИВД",
+          "rank": 4,
+          "rank_score": 0.04482363597612958,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00010411",
+          "name": "Раствор для оттаивания эритроцитов ИВД",
+          "rank": 5,
+          "rank_score": 0.04446778711484593,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "ktru_code": "32.50.13.190-00243",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "e07bbee6-6",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b19c5f7f-d",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "13060ac7-8",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "eac0ab88-2",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "compatible",
+              "reason": "allowed_range",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [
+                "9a0ea18f-a"
+              ],
+              "elements": []
+            },
+            {
+              "property_id": "3a0543c4-1",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        },
+        {
+          "ktru_code": "32.50.13.190-00244",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "04c12867-b",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4400ad53-e",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "84154767-d",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "7a7ace3d-4",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "compatible",
+              "reason": "allowed_range",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [
+                "a8ab478c-8"
+              ],
+              "elements": []
+            },
+            {
+              "property_id": "1eb8c461-d",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        }
+      ],
+      "excluded": [],
+      "candidate_count": 2,
+      "excluded_count": 0,
+      "scope": {
+        "category_id": "32.50.13.190-00013",
+        "position_count": 2,
+        "evaluated_count": 2,
+        "complete": true
+      },
+      "issues": [
+        {
+          "code": "verification_incomplete",
+          "severity": "error",
+          "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+          "fact_id": null,
+          "property_id": null,
+          "candidate_code": null,
+          "rule_source": null,
+          "suggested_action": "Проверьте исходные сведения",
+          "confirmation_required": false
+        }
+      ],
+      "corrections": [
+        {
+          "fact_id": "quantity",
+          "kind": "auto_normalization",
+          "original": "[0;5] шт",
+          "normalized": "[0; 5] шт",
+          "explanation": "Безопасное преобразование в совместимой размерности",
+          "confirmation_required": false
+        }
+      ],
+      "next_question": {
+        "id": "property:1467e53d98e330b5c065c795",
+        "kind": "property",
+        "title": "Укажите: Длина магистрали",
+        "reason": "Нужно для проверки обязательного поля или единицы",
+        "property_name": "Длина магистрали",
+        "options": [],
+        "unit": "мм",
+        "allow_unknown": true,
+        "multiple": false
+      },
+      "next_steps": [
+        "Укажите: Длина магистрали"
+      ],
+      "verification": {
+        "type_verified": true,
+        "ktru_unique": false,
+        "fields_complete": false,
+        "value_verified": false,
+        "catalog_scope_complete": true,
+        "value_indistinguishable": false,
+        "confirmed_by_user": false,
+        "blocking_issues": true
+      },
+      "selected_ktru_code": null,
+      "catalog_version": "clean5-7331f0732bc0ff5c",
+      "engine_version": "stateless-pipeline-v4-ktru-multiselect-applicability"
+    }
+  },
+  {
+    "scenario": "Количество контейнеров в наборе '(0;5)' шт",
+    "request": {
+      "description": "Набор для системы замораживания эритроцитов донорской крови",
+      "confirmed_category_id": "32.50.13.190-00013",
+      "candidate_limit": 100,
+      "attributes": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "unit": "шт",
+          "value": "(0;5)"
+        }
+      ]
+    },
+    "http_status": 200,
+    "response": {
+      "status": "needs_input",
+      "original_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "normalized_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "original_facts": [],
+      "facts": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "value": "(0;5)",
+          "values": null,
+          "unit": "шт",
+          "raw": "(0;5)",
+          "span": null,
+          "source": "input",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": "(0; 5)",
+          "normalized_unit": "шт",
+          "mappings": [
+            "32.50.13.190-00243/eac0ab88-2",
+            "32.50.13.190-00244/7a7ace3d-4"
+          ]
+        }
+      ],
+      "unparsed": [
+        {
+          "id": "fragment:0:59",
+          "raw": "Набор для системы замораживания эритроцитов донорской крови",
+          "span": [
+            0,
+            59
+          ]
+        }
+      ],
+      "additional": [],
+      "categories": [
+        {
+          "id": "32.50.13.190-00013",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "rank": 1,
+          "rank_score": 0.04918032786885246,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00012",
+          "name": "Набор для системы размораживания эритроцитов донорской крови",
+          "rank": 2,
+          "rank_score": 0.04838709677419355,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00007065",
+          "name": "Набор для донорской крови, многокамерный",
+          "rank": 3,
+          "rank_score": 0.04547574626865672,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00006398",
+          "name": "Раствор криопротектор для замораживания эритроцитов ИВД",
+          "rank": 4,
+          "rank_score": 0.04482363597612958,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00010411",
+          "name": "Раствор для оттаивания эритроцитов ИВД",
+          "rank": 5,
+          "rank_score": 0.04446778711484593,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "ktru_code": "32.50.13.190-00243",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "e07bbee6-6",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b19c5f7f-d",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "13060ac7-8",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "eac0ab88-2",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "compatible",
+              "reason": "allowed_range",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [
+                "9a0ea18f-a"
+              ],
+              "elements": []
+            },
+            {
+              "property_id": "3a0543c4-1",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        },
+        {
+          "ktru_code": "32.50.13.190-00244",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "04c12867-b",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4400ad53-e",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "84154767-d",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "7a7ace3d-4",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "compatible",
+              "reason": "allowed_range",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [
+                "a8ab478c-8"
+              ],
+              "elements": []
+            },
+            {
+              "property_id": "1eb8c461-d",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        }
+      ],
+      "excluded": [],
+      "candidate_count": 2,
+      "excluded_count": 0,
+      "scope": {
+        "category_id": "32.50.13.190-00013",
+        "position_count": 2,
+        "evaluated_count": 2,
+        "complete": true
+      },
+      "issues": [
+        {
+          "code": "verification_incomplete",
+          "severity": "error",
+          "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+          "fact_id": null,
+          "property_id": null,
+          "candidate_code": null,
+          "rule_source": null,
+          "suggested_action": "Проверьте исходные сведения",
+          "confirmation_required": false
+        }
+      ],
+      "corrections": [
+        {
+          "fact_id": "quantity",
+          "kind": "auto_normalization",
+          "original": "(0;5) шт",
+          "normalized": "(0; 5) шт",
+          "explanation": "Безопасное преобразование в совместимой размерности",
+          "confirmation_required": false
+        }
+      ],
+      "next_question": {
+        "id": "property:1467e53d98e330b5c065c795",
+        "kind": "property",
+        "title": "Укажите: Длина магистрали",
+        "reason": "Нужно для проверки обязательного поля или единицы",
+        "property_name": "Длина магистрали",
+        "options": [],
+        "unit": "мм",
+        "allow_unknown": true,
+        "multiple": false
+      },
+      "next_steps": [
+        "Укажите: Длина магистрали"
+      ],
+      "verification": {
+        "type_verified": true,
+        "ktru_unique": false,
+        "fields_complete": false,
+        "value_verified": false,
+        "catalog_scope_complete": true,
+        "value_indistinguishable": false,
+        "confirmed_by_user": false,
+        "blocking_issues": true
+      },
+      "selected_ktru_code": null,
+      "catalog_version": "clean5-7331f0732bc0ff5c",
+      "engine_version": "stateless-pipeline-v4-ktru-multiselect-applicability"
+    }
+  },
+  {
+    "scenario": "Количество контейнеров в наборе '(5;5)' шт",
+    "request": {
+      "description": "Набор для системы замораживания эритроцитов донорской крови",
+      "confirmed_category_id": "32.50.13.190-00013",
+      "candidate_limit": 100,
+      "attributes": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "unit": "шт",
+          "value": "(5;5)"
+        }
+      ]
+    },
+    "http_status": 200,
+    "response": {
+      "status": "needs_input",
+      "original_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "normalized_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "original_facts": [],
+      "facts": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "value": "(5;5)",
+          "values": null,
+          "unit": "шт",
+          "raw": "(5;5)",
+          "span": null,
+          "source": "input",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": null,
+          "normalized_unit": null,
+          "mappings": [
+            "32.50.13.190-00243/eac0ab88-2",
+            "32.50.13.190-00244/7a7ace3d-4"
+          ]
+        }
+      ],
+      "unparsed": [
+        {
+          "id": "fragment:0:59",
+          "raw": "Набор для системы замораживания эритроцитов донорской крови",
+          "span": [
+            0,
+            59
+          ]
+        }
+      ],
+      "additional": [],
+      "categories": [
+        {
+          "id": "32.50.13.190-00013",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "rank": 1,
+          "rank_score": 0.04918032786885246,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00012",
+          "name": "Набор для системы размораживания эритроцитов донорской крови",
+          "rank": 2,
+          "rank_score": 0.04838709677419355,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00007065",
+          "name": "Набор для донорской крови, многокамерный",
+          "rank": 3,
+          "rank_score": 0.04547574626865672,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00006398",
+          "name": "Раствор криопротектор для замораживания эритроцитов ИВД",
+          "rank": 4,
+          "rank_score": 0.04482363597612958,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00010411",
+          "name": "Раствор для оттаивания эритроцитов ИВД",
+          "rank": 5,
+          "rank_score": 0.04446778711484593,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        }
+      ],
+      "candidates": [],
+      "excluded": [
+        {
+          "ktru_code": "32.50.13.190-00243",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "incompatible",
+          "checks": [
+            {
+              "property_id": "e07bbee6-6",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b19c5f7f-d",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "13060ac7-8",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "eac0ab88-2",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "incompatible",
+              "reason": "invalid_number",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "3a0543c4-1",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Количество контейнеров в наборе",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": [
+            {
+              "code": "invalid_number",
+              "severity": "error",
+              "explanation": "Количество контейнеров в наборе: «(5;5) шт» — ожидается число, сравнение или поддерживаемый интервал. Допустимо: ≥ 0 и ≤ 5 шт.",
+              "fact_id": "quantity",
+              "property_id": "eac0ab88-2",
+              "candidate_code": "32.50.13.190-00243",
+              "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:377#32.50.13.190-00243@1",
+              "suggested_action": "Уточните значение или единицу по правилу позиции",
+              "confirmation_required": false
+            }
+          ]
+        },
+        {
+          "ktru_code": "32.50.13.190-00244",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "incompatible",
+          "checks": [
+            {
+              "property_id": "04c12867-b",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4400ad53-e",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "84154767-d",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "7a7ace3d-4",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "incompatible",
+              "reason": "invalid_number",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "1eb8c461-d",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Количество контейнеров в наборе",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": [
+            {
+              "code": "invalid_number",
+              "severity": "error",
+              "explanation": "Количество контейнеров в наборе: «(5;5) шт» — ожидается число, сравнение или поддерживаемый интервал. Допустимо: ≥ 0 и ≤ 5 шт.",
+              "fact_id": "quantity",
+              "property_id": "7a7ace3d-4",
+              "candidate_code": "32.50.13.190-00244",
+              "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:376#32.50.13.190-00244@1",
+              "suggested_action": "Уточните значение или единицу по правилу позиции",
+              "confirmation_required": false
+            }
+          ]
+        }
+      ],
+      "candidate_count": 0,
+      "excluded_count": 2,
+      "scope": {
+        "category_id": "32.50.13.190-00013",
+        "position_count": 2,
+        "evaluated_count": 2,
+        "complete": true
+      },
+      "issues": [
+        {
+          "code": "invalid_number",
+          "severity": "error",
+          "explanation": "Количество контейнеров в наборе: «(5;5) шт» — ожидается число, сравнение или поддерживаемый интервал. Допустимо: ≥ 0 и ≤ 5 шт.",
+          "fact_id": "quantity",
+          "property_id": "eac0ab88-2",
+          "candidate_code": "32.50.13.190-00243",
+          "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:377#32.50.13.190-00243@1",
+          "suggested_action": "Уточните значение или единицу по правилу позиции",
+          "confirmation_required": false
+        },
+        {
+          "code": "invalid_number",
+          "severity": "error",
+          "explanation": "Количество контейнеров в наборе: «(5;5) шт» — ожидается число, сравнение или поддерживаемый интервал. Допустимо: ≥ 0 и ≤ 5 шт.",
+          "fact_id": "quantity",
+          "property_id": "7a7ace3d-4",
+          "candidate_code": "32.50.13.190-00244",
+          "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:376#32.50.13.190-00244@1",
+          "suggested_action": "Уточните значение или единицу по правилу позиции",
+          "confirmation_required": false
+        },
+        {
+          "code": "no_compatible_candidate",
+          "severity": "error",
+          "explanation": "В выбранной области нет совместимых позиций",
+          "fact_id": null,
+          "property_id": null,
+          "candidate_code": null,
+          "rule_source": null,
+          "suggested_action": "Проверьте исходные сведения",
+          "confirmation_required": false
+        }
+      ],
+      "corrections": [],
+      "next_question": null,
+      "next_steps": [
+        "Проверьте замечания и уточните исходные сведения; неизвестное не считается подтверждённым"
+      ],
+      "verification": {
+        "type_verified": true,
+        "ktru_unique": false,
+        "fields_complete": false,
+        "value_verified": false,
+        "catalog_scope_complete": true,
+        "value_indistinguishable": false,
+        "confirmed_by_user": false,
+        "blocking_issues": true
+      },
+      "selected_ktru_code": null,
+      "catalog_version": "clean5-7331f0732bc0ff5c",
+      "engine_version": "stateless-pipeline-v4-ktru-multiselect-applicability"
+    }
+  },
+  {
+    "scenario": "Количество контейнеров в наборе '[5;0]' шт",
+    "request": {
+      "description": "Набор для системы замораживания эритроцитов донорской крови",
+      "confirmed_category_id": "32.50.13.190-00013",
+      "candidate_limit": 100,
+      "attributes": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "unit": "шт",
+          "value": "[5;0]"
+        }
+      ]
+    },
+    "http_status": 200,
+    "response": {
+      "status": "needs_input",
+      "original_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "normalized_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "original_facts": [],
+      "facts": [
+        {
+          "id": "quantity",
+          "name": "Количество контейнеров в наборе",
+          "value": "[5;0]",
+          "values": null,
+          "unit": "шт",
+          "raw": "[5;0]",
+          "span": null,
+          "source": "input",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": null,
+          "normalized_unit": null,
+          "mappings": [
+            "32.50.13.190-00243/eac0ab88-2",
+            "32.50.13.190-00244/7a7ace3d-4"
+          ]
+        }
+      ],
+      "unparsed": [
+        {
+          "id": "fragment:0:59",
+          "raw": "Набор для системы замораживания эритроцитов донорской крови",
+          "span": [
+            0,
+            59
+          ]
+        }
+      ],
+      "additional": [],
+      "categories": [
+        {
+          "id": "32.50.13.190-00013",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "rank": 1,
+          "rank_score": 0.04918032786885246,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00012",
+          "name": "Набор для системы размораживания эритроцитов донорской крови",
+          "rank": 2,
+          "rank_score": 0.04838709677419355,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00007065",
+          "name": "Набор для донорской крови, многокамерный",
+          "rank": 3,
+          "rank_score": 0.04547574626865672,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00006398",
+          "name": "Раствор криопротектор для замораживания эритроцитов ИВД",
+          "rank": 4,
+          "rank_score": 0.04482363597612958,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00010411",
+          "name": "Раствор для оттаивания эритроцитов ИВД",
+          "rank": 5,
+          "rank_score": 0.04446778711484593,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        }
+      ],
+      "candidates": [],
+      "excluded": [
+        {
+          "ktru_code": "32.50.13.190-00243",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "incompatible",
+          "checks": [
+            {
+              "property_id": "e07bbee6-6",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "b19c5f7f-d",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "13060ac7-8",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "eac0ab88-2",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "incompatible",
+              "reason": "invalid_number",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "3a0543c4-1",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Количество контейнеров в наборе",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": [
+            {
+              "code": "invalid_number",
+              "severity": "error",
+              "explanation": "Количество контейнеров в наборе: «[5;0] шт» — ожидается число, сравнение или поддерживаемый интервал. Допустимо: ≥ 0 и ≤ 5 шт.",
+              "fact_id": "quantity",
+              "property_id": "eac0ab88-2",
+              "candidate_code": "32.50.13.190-00243",
+              "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:377#32.50.13.190-00243@1",
+              "suggested_action": "Уточните значение или единицу по правилу позиции",
+              "confirmation_required": false
+            }
+          ]
+        },
+        {
+          "ktru_code": "32.50.13.190-00244",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "incompatible",
+          "checks": [
+            {
+              "property_id": "04c12867-b",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "4400ad53-e",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "84154767-d",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "7a7ace3d-4",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "incompatible",
+              "reason": "invalid_number",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "1eb8c461-d",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Количество контейнеров в наборе",
+            "Объем основного контейнера",
+            "Объем растворов дополнительных контейнеров",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": [
+            {
+              "code": "invalid_number",
+              "severity": "error",
+              "explanation": "Количество контейнеров в наборе: «[5;0] шт» — ожидается число, сравнение или поддерживаемый интервал. Допустимо: ≥ 0 и ≤ 5 шт.",
+              "fact_id": "quantity",
+              "property_id": "7a7ace3d-4",
+              "candidate_code": "32.50.13.190-00244",
+              "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:376#32.50.13.190-00244@1",
+              "suggested_action": "Уточните значение или единицу по правилу позиции",
+              "confirmation_required": false
+            }
+          ]
+        }
+      ],
+      "candidate_count": 0,
+      "excluded_count": 2,
+      "scope": {
+        "category_id": "32.50.13.190-00013",
+        "position_count": 2,
+        "evaluated_count": 2,
+        "complete": true
+      },
+      "issues": [
+        {
+          "code": "invalid_number",
+          "severity": "error",
+          "explanation": "Количество контейнеров в наборе: «[5;0] шт» — ожидается число, сравнение или поддерживаемый интервал. Допустимо: ≥ 0 и ≤ 5 шт.",
+          "fact_id": "quantity",
+          "property_id": "eac0ab88-2",
+          "candidate_code": "32.50.13.190-00243",
+          "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:377#32.50.13.190-00243@1",
+          "suggested_action": "Уточните значение или единицу по правилу позиции",
+          "confirmation_required": false
+        },
+        {
+          "code": "invalid_number",
+          "severity": "error",
+          "explanation": "Количество контейнеров в наборе: «[5;0] шт» — ожидается число, сравнение или поддерживаемый интервал. Допустимо: ≥ 0 и ≤ 5 шт.",
+          "fact_id": "quantity",
+          "property_id": "7a7ace3d-4",
+          "candidate_code": "32.50.13.190-00244",
+          "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:376#32.50.13.190-00244@1",
+          "suggested_action": "Уточните значение или единицу по правилу позиции",
+          "confirmation_required": false
+        },
+        {
+          "code": "no_compatible_candidate",
+          "severity": "error",
+          "explanation": "В выбранной области нет совместимых позиций",
+          "fact_id": null,
+          "property_id": null,
+          "candidate_code": null,
+          "rule_source": null,
+          "suggested_action": "Проверьте исходные сведения",
+          "confirmation_required": false
+        }
+      ],
+      "corrections": [],
+      "next_question": null,
+      "next_steps": [
+        "Проверьте замечания и уточните исходные сведения; неизвестное не считается подтверждённым"
+      ],
+      "verification": {
+        "type_verified": true,
+        "ktru_unique": false,
+        "fields_complete": false,
+        "value_verified": false,
+        "catalog_scope_complete": true,
+        "value_indistinguishable": false,
+        "confirmed_by_user": false,
+        "blocking_issues": true
+      },
+      "selected_ktru_code": null,
+      "catalog_version": "clean5-7331f0732bc0ff5c",
+      "engine_version": "stateless-pipeline-v4-ktru-multiselect-applicability"
+    }
+  },
+  {
+    "scenario": "Объем растворов дополнительных контейнеров '150.5' мл",
+    "request": {
+      "description": "Набор для системы замораживания эритроцитов донорской крови",
+      "confirmed_category_id": "32.50.13.190-00013",
+      "candidate_limit": 100,
+      "attributes": [
+        {
+          "id": "quantity",
+          "name": "Объем растворов дополнительных контейнеров",
+          "unit": "мл",
+          "value": "150.5"
+        }
+      ]
+    },
+    "http_status": 200,
+    "response": {
+      "status": "needs_input",
+      "original_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "normalized_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "original_facts": [],
+      "facts": [
+        {
+          "id": "quantity",
+          "name": "Объем растворов дополнительных контейнеров",
+          "value": "150.5",
+          "values": null,
+          "unit": "мл",
+          "raw": "150.5",
+          "span": null,
+          "source": "input",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": "150.5",
+          "normalized_unit": "мл",
+          "mappings": [
+            "32.50.13.190-00243/e07bbee6-6",
+            "32.50.13.190-00244/04c12867-b"
+          ]
+        }
+      ],
+      "unparsed": [
+        {
+          "id": "fragment:0:59",
+          "raw": "Набор для системы замораживания эритроцитов донорской крови",
+          "span": [
+            0,
+            59
+          ]
+        }
+      ],
+      "additional": [],
+      "categories": [
+        {
+          "id": "32.50.13.190-00013",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "rank": 1,
+          "rank_score": 0.04918032786885246,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00012",
+          "name": "Набор для системы размораживания эритроцитов донорской крови",
+          "rank": 2,
+          "rank_score": 0.04838709677419355,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00007065",
+          "name": "Набор для донорской крови, многокамерный",
+          "rank": 3,
+          "rank_score": 0.04547574626865672,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00006398",
+          "name": "Раствор криопротектор для замораживания эритроцитов ИВД",
+          "rank": 4,
+          "rank_score": 0.04482363597612958,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00010411",
+          "name": "Раствор для оттаивания эритроцитов ИВД",
+          "rank": 5,
+          "rank_score": 0.04446778711484593,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "ktru_code": "32.50.13.190-00243",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "e07bbee6-6",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "compatible",
+              "reason": "allowed_range",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [
+                "83d4946e-e"
+              ],
+              "elements": []
+            },
+            {
+              "property_id": "b19c5f7f-d",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "13060ac7-8",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "eac0ab88-2",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "3a0543c4-1",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Количество контейнеров в наборе",
+            "Объем основного контейнера",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        },
+        {
+          "ktru_code": "32.50.13.190-00244",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "04c12867-b",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "compatible",
+              "reason": "allowed_range",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [
+                "c6250d8b-f"
+              ],
+              "elements": []
+            },
+            {
+              "property_id": "4400ad53-e",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "84154767-d",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "7a7ace3d-4",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "1eb8c461-d",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Количество контейнеров в наборе",
+            "Объем основного контейнера",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        }
+      ],
+      "excluded": [],
+      "candidate_count": 2,
+      "excluded_count": 0,
+      "scope": {
+        "category_id": "32.50.13.190-00013",
+        "position_count": 2,
+        "evaluated_count": 2,
+        "complete": true
+      },
+      "issues": [
+        {
+          "code": "verification_incomplete",
+          "severity": "error",
+          "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+          "fact_id": null,
+          "property_id": null,
+          "candidate_code": null,
+          "rule_source": null,
+          "suggested_action": "Проверьте исходные сведения",
+          "confirmation_required": false
+        }
+      ],
+      "corrections": [],
+      "next_question": {
+        "id": "property:1467e53d98e330b5c065c795",
+        "kind": "property",
+        "title": "Укажите: Длина магистрали",
+        "reason": "Нужно для проверки обязательного поля или единицы",
+        "property_name": "Длина магистрали",
+        "options": [],
+        "unit": "мм",
+        "allow_unknown": true,
+        "multiple": false
+      },
+      "next_steps": [
+        "Укажите: Длина магистрали"
+      ],
+      "verification": {
+        "type_verified": true,
+        "ktru_unique": false,
+        "fields_complete": false,
+        "value_verified": false,
+        "catalog_scope_complete": true,
+        "value_indistinguishable": false,
+        "confirmed_by_user": false,
+        "blocking_issues": true
+      },
+      "selected_ktru_code": null,
+      "catalog_version": "clean5-7331f0732bc0ff5c",
+      "engine_version": "stateless-pipeline-v4-ktru-multiselect-applicability"
+    }
+  },
+  {
+    "scenario": "Объем растворов дополнительных контейнеров ['150.5'] мл",
+    "request": {
+      "description": "Набор для системы замораживания эритроцитов донорской крови",
+      "confirmed_category_id": "32.50.13.190-00013",
+      "candidate_limit": 100,
+      "attributes": [
+        {
+          "id": "quantity",
+          "name": "Объем растворов дополнительных контейнеров",
+          "unit": "мл",
+          "values": [
+            "150.5"
+          ]
+        }
+      ]
+    },
+    "http_status": 200,
+    "response": {
+      "status": "needs_input",
+      "original_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "normalized_text": "Набор для системы замораживания эритроцитов донорской крови",
+      "original_facts": [],
+      "facts": [
+        {
+          "id": "quantity",
+          "name": "Объем растворов дополнительных контейнеров",
+          "value": "",
+          "values": [
+            "150.5"
+          ],
+          "unit": "мл",
+          "raw": "[\"150.5\"]",
+          "span": null,
+          "source": "input",
+          "subject": "product",
+          "negated": false,
+          "unknown": false,
+          "normalized_value": null,
+          "normalized_unit": null,
+          "mappings": [
+            "32.50.13.190-00243/e07bbee6-6",
+            "32.50.13.190-00244/04c12867-b"
+          ]
+        }
+      ],
+      "unparsed": [
+        {
+          "id": "fragment:0:59",
+          "raw": "Набор для системы замораживания эритроцитов донорской крови",
+          "span": [
+            0,
+            59
+          ]
+        }
+      ],
+      "additional": [],
+      "categories": [
+        {
+          "id": "32.50.13.190-00013",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "rank": 1,
+          "rank_score": 0.04918032786885246,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00012",
+          "name": "Набор для системы размораживания эритроцитов донорской крови",
+          "rank": 2,
+          "rank_score": 0.04838709677419355,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "32.50.13.190-00007065",
+          "name": "Набор для донорской крови, многокамерный",
+          "rank": 3,
+          "rank_score": 0.04547574626865672,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00006398",
+          "name": "Раствор криопротектор для замораживания эритроцитов ИВД",
+          "rank": 4,
+          "rank_score": 0.04482363597612958,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        },
+        {
+          "id": "21.20.23.110-00010411",
+          "name": "Раствор для оттаивания эритроцитов ИВД",
+          "rank": 5,
+          "rank_score": 0.04446778711484593,
+          "reasons": [
+            "BM25",
+            "E5",
+            "CHAR"
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "ktru_code": "32.50.13.190-00243",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "e07bbee6-6",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "compatible",
+              "reason": "allowed_range",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [
+                "83d4946e-e"
+              ],
+              "elements": [
+                {
+                  "value": "150.5",
+                  "outcome": "compatible",
+                  "reason": "allowed_range",
+                  "value_codes": [
+                    "83d4946e-e"
+                  ]
+                }
+              ]
+            },
+            {
+              "property_id": "b19c5f7f-d",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "13060ac7-8",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "eac0ab88-2",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "3a0543c4-1",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Количество контейнеров в наборе",
+            "Объем основного контейнера",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        },
+        {
+          "ktru_code": "32.50.13.190-00244",
+          "name": "Набор для системы замораживания эритроцитов донорской крови",
+          "okpd2": "32.50.13.190",
+          "outcome": "unknown",
+          "checks": [
+            {
+              "property_id": "04c12867-b",
+              "name": "Объем растворов дополнительных контейнеров",
+              "outcome": "compatible",
+              "reason": "allowed_range",
+              "fact_ids": [
+                "quantity"
+              ],
+              "value_codes": [
+                "c6250d8b-f"
+              ],
+              "elements": [
+                {
+                  "value": "150.5",
+                  "outcome": "compatible",
+                  "reason": "allowed_range",
+                  "value_codes": [
+                    "c6250d8b-f"
+                  ]
+                }
+              ]
+            },
+            {
+              "property_id": "4400ad53-e",
+              "name": "раствор для глицеролизации",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "84154767-d",
+              "name": "Длина магистрали",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "7a7ace3d-4",
+              "name": "Количество контейнеров в наборе",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            },
+            {
+              "property_id": "1eb8c461-d",
+              "name": "Объем основного контейнера",
+              "outcome": "unknown",
+              "reason": "missing_required",
+              "fact_ids": [],
+              "value_codes": [],
+              "elements": []
+            }
+          ],
+          "missing_required": [
+            "Длина магистрали",
+            "Количество контейнеров в наборе",
+            "Объем основного контейнера",
+            "раствор для глицеролизации"
+          ],
+          "has_characteristics": true,
+          "blocking_reasons": [],
+          "exclusion_reasons": []
+        }
+      ],
+      "excluded": [],
+      "candidate_count": 2,
+      "excluded_count": 0,
+      "scope": {
+        "category_id": "32.50.13.190-00013",
+        "position_count": 2,
+        "evaluated_count": 2,
+        "complete": true
+      },
+      "issues": [
+        {
+          "code": "verification_incomplete",
+          "severity": "error",
+          "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+          "fact_id": null,
+          "property_id": null,
+          "candidate_code": null,
+          "rule_source": null,
+          "suggested_action": "Проверьте исходные сведения",
+          "confirmation_required": false
+        }
+      ],
+      "corrections": [],
+      "next_question": {
+        "id": "property:1467e53d98e330b5c065c795",
+        "kind": "property",
+        "title": "Укажите: Длина магистрали",
+        "reason": "Нужно для проверки обязательного поля или единицы",
+        "property_name": "Длина магистрали",
+        "options": [],
+        "unit": "мм",
+        "allow_unknown": true,
+        "multiple": false
+      },
+      "next_steps": [
+        "Укажите: Длина магистрали"
+      ],
+      "verification": {
+        "type_verified": true,
+        "ktru_unique": false,
+        "fields_complete": false,
+        "value_verified": false,
+        "catalog_scope_complete": true,
+        "value_indistinguishable": false,
+        "confirmed_by_user": false,
+        "blocking_issues": true
+      },
+      "selected_ktru_code": null,
+      "catalog_version": "clean5-7331f0732bc0ff5c",
+      "engine_version": "stateless-pipeline-v4-ktru-multiselect-applicability"
+    }
+  }
+]

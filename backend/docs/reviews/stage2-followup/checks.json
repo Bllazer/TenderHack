@@ -1,0 +1,32 @@
+{
+  "pytest": {
+    "passed": 372,
+    "skipped": 0,
+    "seconds": 68.7,
+    "resource_flags": {
+      "RUN_E5_TESTS": "1",
+      "RUN_CLEAN_SUPPLY_TESTS": "1",
+      "CLEAN_SUPPLY_DIR": "../ktru_clean"
+    },
+    "basetemp": ".tools/pytest-followup-complete"
+  },
+  "algorithm_validation": {
+    "passed": 28,
+    "total": 28
+  },
+  "browser": {
+    "full_suite_passed": 11,
+    "total": 11,
+    "trace_full_passed": 11,
+    "retry_repeat_after_passed": 10,
+    "retry_repeat_before_trace_passed": 10,
+    "new_disposed_failure_reproduced": false
+  },
+  "frontend_build": "passed",
+  "docker_build_up": "passed",
+  "real_followup_post": 22,
+  "real_stage2_post": 83,
+  "real_edges_post": 21,
+  "stage1_scenarios": 5,
+  "source_xml_positions_verified": 2
+}

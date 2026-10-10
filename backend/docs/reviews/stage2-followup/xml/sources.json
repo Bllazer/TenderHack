@@ -1,0 +1,270 @@
+{
+  "archive_sha256": "4ebf16535e453433dfd690c01a107a187ffe619f5b8554147baff6950bf7171c",
+  "positions": {
+    "32.50.13.190-00244": {
+      "member": "КТРУ/162_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_002.xml",
+      "sha256": "53d7280516bb82b10b4bae3f227cd6b0de3f87382bee459f248be8984c9167cf",
+      "fields": {
+        "code": "32.50.13.190-00244",
+        "versionCode": "32.50.13.190-002441",
+        "version": "1",
+        "inclusionDate": "2017-11-23T09:49:46+03:00",
+        "publishDate": "2017-11-23T09:49:46+03:00",
+        "updateDate": "2025-01-30T18:21:19+03:00",
+        "name": "Набор для системы замораживания эритроцитов донорской крови",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2018-01-01T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "nsiDescription": "Набор разовых изделий для системы обработки крови, используемый для подготовки эритроцитарной массы к заморозке и хранению (глицеролизации) или деглицеролизации и промывке после размораживания (может также промывать свежие эритроциты). Изделие обычно состоит из бактериологического фильтра, растворных линий, соединительных портов и контейнеров-сборников. Изделие одноразового использования.",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "externalCode": "3a8bb156-c5bd-4229-8692-160d7c18a952",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "04c12867-b",
+          "name": "Объем растворов дополнительных контейнеров",
+          "type": "2",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "4400ad53-e",
+          "name": "раствор для глицеролизации",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "84154767-d",
+          "name": "Длина магистрали",
+          "type": "2",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "7a7ace3d-4",
+          "name": "Количество контейнеров в наборе",
+          "type": "2",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "1eb8c461-d",
+          "name": "Объем основного контейнера",
+          "type": "2",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.99.29.120-00000003": {
+      "member": "КТРУ/241_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_081.xml",
+      "sha256": "c2c3f265441ad9498732dfebaee56d5bb09616521d7eee26b25a8d0a4291fce4",
+      "fields": {
+        "code": "25.99.29.120-00000003",
+        "version": "2",
+        "inclusionDate": "2026-05-12T13:53:01+03:00",
+        "publishDate": "2026-05-21T11:08:04+03:00",
+        "updateDate": "2026-05-21T11:08:05+03:00",
+        "name": "Лопата",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-07-25T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "2db9da2a-6",
+          "name": "Тип лопаты",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "e27882bd-c",
+          "name": "Крепление черенка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "535b63e0-b",
+          "name": "Конструктивные особенности",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d52e53e0-0",
+          "name": "Материал черенка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "3a3036fd-a",
+          "name": "Материал деревянного черенка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "a578f540-d",
+          "name": "Диаметр черенка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d69e3b8f-b",
+          "name": "Длина черенка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8909bef7-b",
+          "name": "Материал полотна лопаты",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d089ec57-9",
+          "name": "Вид стали",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "883bc469-e",
+          "name": "Вид пластика",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "b0eb04f8-c",
+          "name": "Толщина полотна лопаты",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "4d64dbfe-1",
+          "name": "Длина полотна лопаты",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "595476ea-b",
+          "name": "Ширина полотна лопаты",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "372218d3-6",
+          "name": "Количество бортов",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "dcc501a9-e",
+          "name": "Количество ребер жесткости",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ea1a632d-9",
+          "name": "Климатические условия применения (максимальный нижний предел температуры)",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    }
+  },
+  "missing": []
+}

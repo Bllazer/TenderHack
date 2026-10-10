@@ -85,8 +85,18 @@ test('needs_data preserves full state and retry sends it unchanged', async ({ pa
   await page.getByRole('button', { name: 'Подобрать КТРУ' }).click()
   await expect(page.getByText('Поисковый индекс недоступен', { exact: false })).toBeVisible()
   const retry = page.waitForRequest(r => r.url().endsWith('/api/v1/analyses'))
+  const retryResponse = page.waitForResponse(r => r.url().endsWith('/api/v1/analyses') && r.request().method() === 'POST')
   await page.getByRole('button', { name: 'Повторить проверку' }).click()
   expect((await retry).postDataJSON()).toMatchObject({ description: 'Дрель; Мощность: 650 Вт', attributes: [], additional: [], answers: [], confirmed_category_id: null, confirmed_ktru_code: null })
+  // The request event precedes route.fetch()/json()/fulfill(). Wait for the
+  // retry response and its rendering before Playwright disposes the context.
+  const response = await retryResponse
+  expect(response.status()).toBe(200)
+  await response.finished()
+  expect((await response.json()).status).toBe('needs_data')
+  await expect(page.getByRole('region', { name: 'Подбор кода КТРУ' })).toHaveAttribute('aria-busy', 'false')
+  await expect(page.getByText('Поисковый индекс недоступен', { exact: false })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Повторить проверку' })).toBeEnabled()
   await expect(page.getByRole('heading', { name: 'Подбор завершён' })).toHaveCount(0)
 })
 

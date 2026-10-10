@@ -87,13 +87,22 @@ def subset(query: Interval, allowed: list[Interval]) -> bool:
 
 
 def signature(fact: Fact, prop: Property, unit_resolver=None):
-    if fact.values is not None:
-        return tuple(sorted({canon(v) for v in fact.values})), canon(fact.unit or "")
-    if prop.value_type == "number":
-        parsed, unit = number(fact.value), unit_resolver(prop, fact.unit) if unit_resolver else get_unit(fact.unit)
+    # Canonical comparison is independent of the wire representation. Keep the
+    # original fact (including array order, repetitions and provenance) intact.
+    values = set()
+    unit = unit_resolver(prop, fact.unit) if unit_resolver else get_unit(fact.unit)
+    for value in selected_values(prop, fact):
+        parsed = number(value) if prop.value_type == "number" else None
         if parsed:
-            return parsed.scaled(unit.factor) if unit else parsed, unit.dimension if unit else fact.unit
-    return canon(fact.value), canon(fact.unit or "")
+            dimension = (unit.dimension if unit else "count"
+                         if not fact.unit and prop.numeric_semantics == "count"
+                         and prop.numeric_semantics_evidence and all(not item.unit for item in prop.allowed)
+                         else canon(fact.unit or ""))
+            values.add((parsed.scaled(unit.factor) if unit else parsed,
+                        dimension))
+        else:
+            values.add((canon(value), canon(fact.unit or "")))
+    return frozenset(values)
 
 
 def check_fact(prop: Property, fact: Fact, unit_resolver=None):
@@ -106,7 +115,7 @@ def check_fact(prop: Property, fact: Fact, unit_resolver=None):
         return "unknown", "no_supported_constraints", [], None
     values = selected_values(prop, fact)
     if fact.values is not None or len(values) > 1:
-        if prop.kind != "3" and len({canon(v) for v in values}) > 1:
+        if prop.kind != "3" and len(signature(fact, prop, unit_resolver)) > 1:
             return "incompatible", "multiple_values_not_allowed", [], None
         results = [check_fact(prop, fact.model_copy(update={"value": v, "values": None}), unit_resolver) for v in values]
         outcome = "incompatible" if any(r[0] == "incompatible" for r in results) else "unknown" if any(r[0] == "unknown" for r in results) else "compatible"
@@ -157,10 +166,13 @@ def check_fact(prop: Property, fact: Fact, unit_resolver=None):
     input_dimension = supplied.dimension if supplied else expected_dimension if bare else "dimensionless"
     if input_dimension != expected_dimension:
         return "incompatible", "unit_mismatch", [], None
-    if bare and prop.numeric_semantics == "count" and any(bound.is_finite() and bound != bound.to_integral_value()
-                                                         for bound in (parsed.lower, parsed.upper)):
-        return "incompatible", "invalid_count", [], None
     physical = parsed.scaled(supplied.factor if supplied else Decimal(1))
+    if prop.numeric_semantics == "count":
+        if not prop.numeric_semantics_evidence:
+            return "unknown", "numeric_semantics_unknown", [], None
+        if any(bound.is_finite() and bound != bound.to_integral_value()
+               for bound in (physical.lower, physical.upper)):
+            return "incompatible", "invalid_count", [], None
     intervals = [allowed_interval(item).scaled(unit.factor if unit else Decimal(1)) for item, unit in zip(prop.allowed, units)]
     accepted = subset(physical, intervals)
     if not accepted:

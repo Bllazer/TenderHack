@@ -1,0 +1,35 @@
+{
+  "manifest": {
+    "catalog_version": "clean5-7331f0732bc0ff5c",
+    "analyzer_version": "nfc-pymorphy3-v2",
+    "model_id": "intfloat/multilingual-e5-small",
+    "model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "sha256": {
+      "catalog.json": "cdac359dac58bb7800e9dcc35c7174d21c7d9cc18bca5091dece9613138cc5d6",
+      "vectors.npy": "90f2b326277872a7cd83b7f7e74e8b2046ec1d11e846cd1cb8c3c4b66f260ae9",
+      "tokens.json": "52d648a955547b9d16472fcdcee5c78ef03f03b274293b890188a5560e0033b7"
+    },
+    "reused_from_catalog_sha256": "946d9ff59a19dd254c2c8120d01496b4705198faaaabc785e31514def2a1ee25",
+    "ordered_search_documents_unchanged": true
+  },
+  "actual_sha256": {
+    "catalog.json": "cdac359dac58bb7800e9dcc35c7174d21c7d9cc18bca5091dece9613138cc5d6",
+    "vectors.npy": "90f2b326277872a7cd83b7f7e74e8b2046ec1d11e846cd1cb8c3c4b66f260ae9",
+    "tokens.json": "52d648a955547b9d16472fcdcee5c78ef03f03b274293b890188a5560e0033b7"
+  },
+  "unchanged_from": "fe578f6674e9b6200630520056961554dfdeb9a5",
+  "model": {
+    "model_id": "intfloat/multilingual-e5-small",
+    "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "sha256": {
+      ".gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "config.json": "69137736cab8b8903a07fe8afaafdda25aac55415a12a55d1bffa9f581abf959",
+      "model.safetensors": "1a55775f53449dac10a2bcbc312469fac40b96d53198c407081a831f81c98477",
+      "sentencepiece.bpe.model": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+      "special_tokens_map.json": "d05497f1da52c5e09554c0cd874037a083e1dc1b9cfd48034d1c717f1afc07a7",
+      "tokenizer.json": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39",
+      "tokenizer_config.json": "a1d6bc8734a6f635dc158508bef000f8e2e5a759c7d92f984b2c86e5ff53425b"
+    }
+  },
+  "source_sha256": "2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c"
+}

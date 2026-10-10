@@ -2,7 +2,7 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from app.catalog import Position
 
-ENGINE_VERSION = "stateless-pipeline-v4-ktru-multiselect-applicability"
+ENGINE_VERSION = "stateless-pipeline-v4.1-canonical-count"
 
 SelectedValues = Annotated[list[Annotated[str, Field(min_length=1, max_length=512)]], Field(min_length=1, max_length=50)]
 

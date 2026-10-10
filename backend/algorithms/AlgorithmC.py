@@ -99,9 +99,13 @@ DIMENSIONS = {
     "percent": ("%", {"%": 1, "процент": 1, "проц": 1, "ppm": 1e-4}),
     # дБ — логарифмическая величина: универсального перевода в доли не существует
     "level": ("дБ", {"дб": 1, "децибел": 1}),
-    "count": ("шт", {"шт": 1, "штука": 1, "штук": 1, "штуки": 1, "пар": 2, "пара": 2,
+    # A count of pairs is indivisible in pairs. Do not silently turn half a
+    # pair into one piece; backend uses the same separate source dimension.
+    "pair_count": ("пар", {"пар": 1, "пара": 1}),
+    "count": ("шт", {"шт": 1, "штука": 1, "штук": 1, "штуки": 1,
                      "компл": 1, "комплект": 1, "набор": 1, "упак": 1, "упаковка": 1,
-                     "тыс": 1000, "тысяча": 1000, "рул": 1, "рулон": 1, "лист": 1}),
+                     "тыс": 1000, "тысяча": 1000, "тыс. шт": 1000, "тыс шт": 1000,
+                     "тыс.шт": 1000, "тысяча штук": 1000, "рул": 1, "рулон": 1, "лист": 1}),
     "density_area": ("кг/м2", {"кг/м2": 1, "г/м2": 1e-3, "г/кв.м": 1e-3, "гр/м2": 1e-3}),
     "density_linear": ("кг/м", {"кг/м": 1, "г/м": 1e-3, "текс": 1e-6, "г/км": 1e-6}),
     "concentration": ("мг/м3", {"мг/м3": 1, "мкг/м3": 1e-3, "г/м3": 1e3, "мг/л": 1e3, "г/л": 1e6}),
@@ -417,6 +421,10 @@ def _resolve_number(units: Units, char: Characteristic, value: float, fact: Fact
                 src = units.resolve_text(fact.unit.text)
             if src.dimension not in (None, "count", "ratio", "percent", "length"):
                 return _Resolution(None, "unit_dimension_unsupported")
+            if char.numeric_semantics == "count" and char.numeric_semantics_evidence and src.dimension == "count":
+                return _Resolution(float(Decimal(str(value)) * Decimal(str(src.factor))), None, "dim:count")
+        elif char.numeric_semantics == "count" and char.numeric_semantics_evidence:
+            return _Resolution(value, None, "dim:count")
         return _Resolution(value, None, None)
 
     if not fact.unit or not (fact.unit.code or fact.unit.text):
@@ -494,10 +502,8 @@ def check_number(units: Units, char: Characteristic, value: float, fact: Fact):
         if fact.unit and (fact.unit.code or fact.unit.text):
             if src is None or src.dimension is None:
                 return "unknown", "user_unit_unknown"
-            if char.numeric_semantics != "count" or src.dimension != "count" or src.factor != 1:
+            if char.numeric_semantics != "count" or src.dimension != "count":
                 return "incompatible", "unit_mismatch"
-        if char.numeric_semantics == "count" and float(value) != int(value):
-            return "incompatible", "invalid_count"
     if with_unit and (src is None or src.dimension is None):
         if not fact.unit or not (fact.unit.code or fact.unit.text):
             return "unknown", "user_unit_missing"
@@ -505,6 +511,15 @@ def check_number(units: Units, char: Characteristic, value: float, fact: Fact):
     if not with_unit and fact.unit and (fact.unit.code or fact.unit.text):
         if src is not None and src.dimension not in (None, "count", "ratio", "percent", "length"):
             return "unknown", "unit_dimension_unsupported"
+
+    if char.numeric_semantics == "count":
+        if not char.numeric_semantics_evidence:
+            return "unknown", "numeric_semantics_unknown"
+        counted = Decimal(str(value)) * Decimal(str(src.factor if src and src.factor else 1))
+        if counted != counted.to_integral_value():
+            return "incompatible", "invalid_count"
+        if not with_unit:
+            value = float(counted)
 
     unknown_reason = None
     checked_any = False
@@ -651,12 +666,11 @@ def check_range(units: Units, char: Characteristic, lo, hi, fact: Fact,
         if fact.unit and (fact.unit.code or fact.unit.text):
             if src is None or src.dimension is None:
                 return "unknown", "user_unit_unknown"
-            if char.numeric_semantics != "count" or src.dimension != "count" or src.factor != 1:
+            if char.numeric_semantics != "count" or src.dimension != "count":
                 return "incompatible", "unit_mismatch"
-        if char.numeric_semantics == "count" and any(v is not None and float(v) != int(v) for v in (lo, hi)):
-            return "incompatible", "invalid_count"
         canonical = None
-        user_lo, user_hi = lo, hi
+        factor = src.factor if src and src.factor else 1
+        user_lo, user_hi = [float(Decimal(str(v)) * Decimal(str(factor))) if v is not None else None for v in (lo, hi)]
         segments: list = [seg for alt, _ in alt_units for seg in _alt_segments(alt)]
     else:
         canonical = _canonical_unit(next(iter(dimensions)))
@@ -683,6 +697,11 @@ def check_range(units: Units, char: Characteristic, lo, hi, fact: Fact,
             if segment is not None:
                 segments.append(segment)
 
+    if char.numeric_semantics == "count":
+        if not char.numeric_semantics_evidence:
+            return "unknown", "numeric_semantics_unknown"
+        if any(v is not None and Decimal(str(v)) != Decimal(str(v)).to_integral_value() for v in (user_lo, user_hi)):
+            return "incompatible", "invalid_count"
     if segments_cover(user_lo, user_hi, lo_strict, hi_strict, segments):
         return "compatible", None
     if unknown:
@@ -721,7 +740,7 @@ def check_fact(units: Units, char: Characteristic, fact: Fact):
 
     kind = fact.kind
     if kind in ("number_set", "text_set") and str(char.kind) != "3":
-        if len({str(v).strip().casefold() for v in fact.value or []}) > 1:
+        if _canonical_value(units, char, fact)[0] == "set":
             return "incompatible", {"reason": "multiple_values_not_allowed"}
 
     if kind == "number" and fact.operator in (">", ">=", "<", "<="):
@@ -1044,13 +1063,18 @@ def _facts_conflict(facts: list, units: Units, pool=None) -> bool:
 
 def _canonical_value(units: Units, char, fact: Fact):
     """Значение факта в каноническом виде для сравнения: единица приводится, если возможно."""
+    if fact.kind in ("text_set", "number_set"):
+        kind = "text" if fact.kind == "text_set" else "number"
+        selected = {_canonical_value(units, char, Fact(kind=kind, value=v, unit=fact.unit))
+                    for v in fact.value or []}
+        return next(iter(selected)) if len(selected) == 1 else ("set", frozenset(selected))
     if fact.kind == "number" and isinstance(fact.value, (int, float)) and not isinstance(fact.value, bool):
         value = float(fact.value)
         if char is not None:
             res = _resolve_number(units, char, value, fact)
             if res.reason is None:
-                value = res.value
-        return ("number", value)
+                return ("number", res.value, res.unit_group)
+        return ("number", value, (fact.unit.code, fact.unit.text) if fact.unit else None)
     if fact.kind == "range" and isinstance(fact.value, dict):
         lo, hi = fact.value.get("min"), fact.value.get("max")
         lo_v = float(lo) if lo is not None else None
@@ -1058,20 +1082,10 @@ def _canonical_value(units: Units, char, fact: Fact):
         if char is not None:
             to_first = [_canonical_scalar(units, char, x, fact) for x in (lo_v, hi_v)]
             lo_v, hi_v = to_first
-        return ("range", lo_v, hi_v)
+        return ("range", lo_v, hi_v, bool(fact.value.get("min_inclusive", True)),
+                bool(fact.value.get("max_inclusive", True)))
     if fact.kind == "text":
         return ("text", normalize_text(fact.value))
-    if fact.kind == "text_set":
-        return ("text_set", tuple(sorted(normalize_text(v) for v in (fact.value or []))))
-    if fact.kind == "number_set":
-        out = []
-        for v in fact.value or []:
-            if char is not None:
-                res = _resolve_number(units, char, float(v), fact)
-                out.append(round(res.value, 9) if res.reason is None else float(v))
-            else:
-                out.append(round(float(v), 9))
-        return ("number_set", tuple(sorted(out)))
     return ("other", str(fact.value))
 
 

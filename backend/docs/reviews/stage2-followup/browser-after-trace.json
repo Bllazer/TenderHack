@@ -1,0 +1,109 @@
+{
+  "trace_sha256": "351b3fb3892e985b0b968a660fddbfd393464dc01f514ee696b445cc77fa0d04",
+  "events": [
+    {
+      "method": "click",
+      "start": 21800.199,
+      "end": 21854.261,
+      "selector": "internal:role=button[name=\"Подобрать КТРУ\"i]",
+      "expression": null,
+      "event": null
+    },
+    {
+      "method": "fetch",
+      "start": 21852.939,
+      "end": 21868.467,
+      "selector": null,
+      "expression": null,
+      "event": null
+    },
+    {
+      "method": "fulfill",
+      "start": 21874.2,
+      "end": 21875.383,
+      "selector": null,
+      "expression": null,
+      "event": null
+    },
+    {
+      "method": "expect",
+      "start": 21863.03,
+      "end": 21981.489,
+      "selector": "internal:text=\"Поисковый индекс недоступен\"i",
+      "expression": "to.be.visible",
+      "event": null
+    },
+    {
+      "method": "waitForEventInfo",
+      "start": 21989.218,
+      "end": 22059.334,
+      "selector": null,
+      "expression": null,
+      "event": "request"
+    },
+    {
+      "method": "click",
+      "start": 21990.564,
+      "end": 22066.303,
+      "selector": "internal:role=button[name=\"Повторить проверку\"i]",
+      "expression": null,
+      "event": null
+    },
+    {
+      "method": "fetch",
+      "start": 22060.235,
+      "end": 22072.296,
+      "selector": null,
+      "expression": null,
+      "event": null
+    },
+    {
+      "method": "fulfill",
+      "start": 22075.501,
+      "end": 22077.181,
+      "selector": null,
+      "expression": null,
+      "event": null
+    },
+    {
+      "method": "waitForEventInfo",
+      "start": 21990.009,
+      "end": 22082.089,
+      "selector": null,
+      "expression": null,
+      "event": "response"
+    },
+    {
+      "method": "expect",
+      "start": 22091.94,
+      "end": 22101.385,
+      "selector": "internal:role=region[name=\"Подбор кода КТРУ\"i]",
+      "expression": "to.have.attribute.value",
+      "event": null
+    },
+    {
+      "method": "expect",
+      "start": 22107.523,
+      "end": 22112.35,
+      "selector": "internal:text=\"Поисковый индекс недоступен\"i",
+      "expression": "to.be.visible",
+      "event": null
+    },
+    {
+      "method": "expect",
+      "start": 22123.924,
+      "end": 22129.16,
+      "selector": "internal:role=button[name=\"Повторить проверку\"i]",
+      "expression": "to.be.enabled",
+      "event": null
+    },
+    {
+      "method": "expect",
+      "start": 22144.755,
+      "end": 22153.181,
+      "selector": "internal:role=heading[name=\"Подбор завершён\"i]",
+      "expression": "to.have.count",
+      "event": null
+    }
+  ]
+}

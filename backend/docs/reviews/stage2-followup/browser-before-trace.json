@@ -1,0 +1,622 @@
+[
+  {
+    "trace_sha256": "fbdc117240af6472a5b23ff6e281cad5626438fa420bac886e8f1abeec3ae914",
+    "run": "flow-needs-data-preserves--7a177-nd-retry-sends-it-unchanged",
+    "events": [
+      {
+        "method": "click",
+        "start": 8360.547,
+        "end": 8417.314,
+        "selector": "internal:role=button[name=\"Подобрать КТРУ\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 8414.198,
+        "end": 8506.37,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 8510.33,
+        "end": 8512.197,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 8439.659,
+        "end": 8555.789,
+        "selector": "internal:text=\"Поисковый индекс недоступен\"i",
+        "expression": "to.be.visible"
+      },
+      {
+        "method": "click",
+        "start": 8564.156,
+        "end": 8609.11,
+        "selector": "internal:role=button[name=\"Повторить проверку\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 8608.259,
+        "end": 8618.114,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 8622.129,
+        "end": 8623.721,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 8618.586,
+        "end": 8626.737,
+        "selector": "internal:role=heading[name=\"Подбор завершён\"i]",
+        "expression": "to.have.count"
+      }
+    ]
+  },
+  {
+    "trace_sha256": "54714a5f8c849c30ec8a4b893d59dadb82430c51e3d4d486d9cbafad463f7d1e",
+    "run": "flow-needs-data-preserves--7a177-nd-retry-sends-it-unchanged-repeat1",
+    "events": [
+      {
+        "method": "click",
+        "start": 11101.075,
+        "end": 11165.172,
+        "selector": "internal:role=button[name=\"Подобрать КТРУ\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 11161.338,
+        "end": 11196.975,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 11205.487,
+        "end": 11208.483,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 11198.481,
+        "end": 11226.381,
+        "selector": "internal:text=\"Поисковый индекс недоступен\"i",
+        "expression": "to.be.visible"
+      },
+      {
+        "method": "click",
+        "start": 11239.489,
+        "end": 11293.71,
+        "selector": "internal:role=button[name=\"Повторить проверку\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 11289.728,
+        "end": 11303.931,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 11307.61,
+        "end": 11310.028,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 11304.604,
+        "end": 11311.949,
+        "selector": "internal:role=heading[name=\"Подбор завершён\"i]",
+        "expression": "to.have.count"
+      }
+    ]
+  },
+  {
+    "trace_sha256": "9b01df0f8d4e8086652e1d2aaf08449ba4eae88970cdbb543f69171ed148f58c",
+    "run": "flow-needs-data-preserves--7a177-nd-retry-sends-it-unchanged-repeat2",
+    "events": [
+      {
+        "method": "click",
+        "start": 14067.366,
+        "end": 14138.669,
+        "selector": "internal:role=button[name=\"Подобрать КТРУ\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 14120.947,
+        "end": 14159.705,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 14167.541,
+        "end": 14170.983,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 14161.15,
+        "end": 14187.109,
+        "selector": "internal:text=\"Поисковый индекс недоступен\"i",
+        "expression": "to.be.visible"
+      },
+      {
+        "method": "click",
+        "start": 14199.486,
+        "end": 14258.985,
+        "selector": "internal:role=button[name=\"Повторить проверку\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 14258.142,
+        "end": 14269.633,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 14272.867,
+        "end": 14274.975,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 14270.155,
+        "end": 14283.6,
+        "selector": "internal:role=heading[name=\"Подбор завершён\"i]",
+        "expression": "to.have.count"
+      }
+    ]
+  },
+  {
+    "trace_sha256": "367cb2888710f3701392953ebf18d98f32a06dc9c51cb26192c337610c88c53a",
+    "run": "flow-needs-data-preserves--7a177-nd-retry-sends-it-unchanged-repeat3",
+    "events": [
+      {
+        "method": "click",
+        "start": 16943.314,
+        "end": 16982.704,
+        "selector": "internal:role=button[name=\"Подобрать КТРУ\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 16980.363,
+        "end": 17000.801,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 17013.27,
+        "end": 17017.677,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 17006.697,
+        "end": 17035.875,
+        "selector": "internal:text=\"Поисковый индекс недоступен\"i",
+        "expression": "to.be.visible"
+      },
+      {
+        "method": "click",
+        "start": 17045.652,
+        "end": 17096.287,
+        "selector": "internal:role=button[name=\"Повторить проверку\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 17092.103,
+        "end": 17105.777,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 17111.847,
+        "end": 17114.407,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 17106.537,
+        "end": 17116.561,
+        "selector": "internal:role=heading[name=\"Подбор завершён\"i]",
+        "expression": "to.have.count"
+      }
+    ]
+  },
+  {
+    "trace_sha256": "9a2548599625e82954dd9adee6fd7e5558856c49dc90e8db0229b02b00008553",
+    "run": "flow-needs-data-preserves--7a177-nd-retry-sends-it-unchanged-repeat4",
+    "events": [
+      {
+        "method": "click",
+        "start": 19576.2,
+        "end": 19632.969,
+        "selector": "internal:role=button[name=\"Подобрать КТРУ\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 19630.872,
+        "end": 19654.915,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 19662.53,
+        "end": 19665.622,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 19655.738,
+        "end": 19681.913,
+        "selector": "internal:text=\"Поисковый индекс недоступен\"i",
+        "expression": "to.be.visible"
+      },
+      {
+        "method": "click",
+        "start": 19691.496,
+        "end": 19744.324,
+        "selector": "internal:role=button[name=\"Повторить проверку\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 19743.417,
+        "end": 19753.056,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 19756.208,
+        "end": 19759.622,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 19753.479,
+        "end": 19761.83,
+        "selector": "internal:role=heading[name=\"Подбор завершён\"i]",
+        "expression": "to.have.count"
+      }
+    ]
+  },
+  {
+    "trace_sha256": "f8d7aa9a73d16c385822b392119afdf749ad6a2b124b2d4323eaca66f1e7c990",
+    "run": "flow-needs-data-preserves--7a177-nd-retry-sends-it-unchanged-repeat5",
+    "events": [
+      {
+        "method": "click",
+        "start": 22213.127,
+        "end": 22268.134,
+        "selector": "internal:role=button[name=\"Подобрать КТРУ\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 22265.49,
+        "end": 22294.763,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 22301.014,
+        "end": 22303.957,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 22295.689,
+        "end": 22322.657,
+        "selector": "internal:text=\"Поисковый индекс недоступен\"i",
+        "expression": "to.be.visible"
+      },
+      {
+        "method": "click",
+        "start": 22336.82,
+        "end": 22394.564,
+        "selector": "internal:role=button[name=\"Повторить проверку\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 22393.675,
+        "end": 22403.729,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 22407.589,
+        "end": 22410.126,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 22404.14,
+        "end": 22412.204,
+        "selector": "internal:role=heading[name=\"Подбор завершён\"i]",
+        "expression": "to.have.count"
+      }
+    ]
+  },
+  {
+    "trace_sha256": "271a32af7969bb67ea79d53a0d8e9796cdfa1f173d3b5cea252b94f85bfec359",
+    "run": "flow-needs-data-preserves--7a177-nd-retry-sends-it-unchanged-repeat6",
+    "events": [
+      {
+        "method": "click",
+        "start": 24769.242,
+        "end": 24829.21,
+        "selector": "internal:role=button[name=\"Подобрать КТРУ\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 24826.978,
+        "end": 24850.79,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 24856.706,
+        "end": 24860.127,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 24851.571,
+        "end": 24872.969,
+        "selector": "internal:text=\"Поисковый индекс недоступен\"i",
+        "expression": "to.be.visible"
+      },
+      {
+        "method": "click",
+        "start": 24882.236,
+        "end": 24940.314,
+        "selector": "internal:role=button[name=\"Повторить проверку\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 24939.315,
+        "end": 24948.621,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 24951.95,
+        "end": 24954.095,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 24949.236,
+        "end": 24957.118,
+        "selector": "internal:role=heading[name=\"Подбор завершён\"i]",
+        "expression": "to.have.count"
+      }
+    ]
+  },
+  {
+    "trace_sha256": "7a92c104503650ae45d5d4bf42ec3a57ba203bac854da731f26b0f00c9971b8e",
+    "run": "flow-needs-data-preserves--7a177-nd-retry-sends-it-unchanged-repeat7",
+    "events": [
+      {
+        "method": "click",
+        "start": 27262.457,
+        "end": 27315.139,
+        "selector": "internal:role=button[name=\"Подобрать КТРУ\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 27312.689,
+        "end": 27341.788,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 27347.076,
+        "end": 27350.323,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 27342.756,
+        "end": 27371.632,
+        "selector": "internal:text=\"Поисковый индекс недоступен\"i",
+        "expression": "to.be.visible"
+      },
+      {
+        "method": "click",
+        "start": 27383.081,
+        "end": 27445.151,
+        "selector": "internal:role=button[name=\"Повторить проверку\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 27438.169,
+        "end": 27457.561,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 27462.498,
+        "end": 27464.857,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 27458.335,
+        "end": 27467.387,
+        "selector": "internal:role=heading[name=\"Подбор завершён\"i]",
+        "expression": "to.have.count"
+      }
+    ]
+  },
+  {
+    "trace_sha256": "7a3f226c63e48c6137fee4c5cbbc3371e9851e6415e6fd0beb1cd0b2d7f37c76",
+    "run": "flow-needs-data-preserves--7a177-nd-retry-sends-it-unchanged-repeat8",
+    "events": [
+      {
+        "method": "click",
+        "start": 29859.45,
+        "end": 29919.285,
+        "selector": "internal:role=button[name=\"Подобрать КТРУ\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 29915.689,
+        "end": 29944.645,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 29950.236,
+        "end": 29954.555,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 29945.64,
+        "end": 29971.247,
+        "selector": "internal:text=\"Поисковый индекс недоступен\"i",
+        "expression": "to.be.visible"
+      },
+      {
+        "method": "click",
+        "start": 29980.923,
+        "end": 30042.964,
+        "selector": "internal:role=button[name=\"Повторить проверку\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 30041.361,
+        "end": 30055.242,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 30059.223,
+        "end": 30061.567,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 30056.123,
+        "end": 30065.551,
+        "selector": "internal:role=heading[name=\"Подбор завершён\"i]",
+        "expression": "to.have.count"
+      }
+    ]
+  },
+  {
+    "trace_sha256": "6b74ccb40b38f0327a00de4dc5d7569e32d5b9382052137379701a4c42671e8a",
+    "run": "flow-needs-data-preserves--7a177-nd-retry-sends-it-unchanged-repeat9",
+    "events": [
+      {
+        "method": "click",
+        "start": 32491.958,
+        "end": 32547.653,
+        "selector": "internal:role=button[name=\"Подобрать КТРУ\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 32545.226,
+        "end": 32570.363,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 32575.48,
+        "end": 32578.574,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 32571.246,
+        "end": 32592.484,
+        "selector": "internal:text=\"Поисковый индекс недоступен\"i",
+        "expression": "to.be.visible"
+      },
+      {
+        "method": "click",
+        "start": 32604.209,
+        "end": 32659.016,
+        "selector": "internal:role=button[name=\"Повторить проверку\"i]",
+        "expression": null
+      },
+      {
+        "method": "fetch",
+        "start": 32657.756,
+        "end": 32669.281,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "fulfill",
+        "start": 32673.896,
+        "end": 32676.177,
+        "selector": null,
+        "expression": null
+      },
+      {
+        "method": "expect",
+        "start": 32669.934,
+        "end": 32678.695,
+        "selector": "internal:role=heading[name=\"Подбор завершён\"i]",
+        "expression": "to.have.count"
+      }
+    ]
+  }
+]
