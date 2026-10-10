@@ -80,7 +80,7 @@ DIMENSIONS = {
         "ммвод.ст.": 9.80665, "кгс/см2": 98066.5, "кгс/м2": 9.80665, "psi": 6894.757293168,
     }),
     "temperature": ("°C", {"°c": 1, "c": 1, "градc": 1, "градусцельсия": 1, "цельсий": 1,
-                           "[0*]с": 1, "к": 1, "кельвин": 1}),
+                           "[0*]с": 1, "к": 1, "кельвин": 1, "k": 1, "°k": 1}),
     "power": ("Вт", {"вт": 1, "ватт": 1, "квт": 1e3, "киловатт": 1e3, "мвт": 1e6, "мегаватт": 1e6,
                      "л.с.": 735.49875, "лс": 735.49875, "лошадинаясила": 735.49875}),
     "voltage": ("В", {"в": 1, "вольт": 1, "кв": 1e3, "киловольт": 1e3, "мв": 1e-3, "милливольт": 1e-3}),
@@ -521,23 +521,61 @@ def check_number(units: Units, char: Characteristic, value: float, fact: Fact):
     return "incompatible", "out_of_range_or_set"
 
 
-def _alt_unit_key(units: Units, alt) -> str:
-    """Ключ единичной группы альтернативы.
-
-    Группировать по размерности нельзя: миллиметр и сантиметр — обе «длина», но
-    требование «50 мм» должно сравниваться с каждой альтернативой в её собственной
-    единице, а не в общей. Ключ — сама физическая единица (размерность и множитель),
-    поэтому код ОКЕИ и написание одной и той же единицы попадают в одну группу.
-    """
-    dst = units.resolve_code(alt.unit_code) if alt.unit_code else None
-    if dst is not None and dst.dimension:
-        return "unit:%s:%s" % (dst.dimension, dst.factor)
-    dst = units.resolve_text(alt.unit_text) if alt.unit_text else None
-    if dst is not None and dst.dimension:
-        return "unit:%s:%s" % (dst.dimension, dst.factor)
+def _alt_unit(units: Units, alt):
+    """Единица альтернативы как ResolvedUnit или None, если единицы у неё нет."""
     if alt.unit_code:
-        return "code:" + str(alt.unit_code)
-    return "unknown:" + _norm_unit(alt.unit_text)
+        dst = units.resolve_code(alt.unit_code)
+        if dst is not None and dst.dimension:
+            return dst
+    if alt.unit_text:
+        dst = units.resolve_text(alt.unit_text)
+        if dst is not None and dst.dimension:
+            return dst
+    return None
+
+
+def _canonical_unit(dimension: str):
+    """Каноническая единица размерности: базовая единица таблицы с множителем 1.
+
+    Для температуры базовая единица — °C, поэтому сдвиг учитывается: 300 K при
+    приведении даёт 26,85 °C, а не 300 °C. Без этого альтернативы «[0;10] °C» и
+    «[300;310] K» складывались бы как сырые числа разных шкал.
+    """
+    base = DIMENSIONS.get(dimension)
+    if not base:
+        return None
+    return ResolvedUnit(None, base[0], dimension, 1.0)
+
+
+def _to_canonical(units: Units, source, target, value):
+    """Перевести значение в каноническую единицу. Возвращает (значение, причина)."""
+    if value is None:
+        return None, None
+    try:
+        return units.convert(float(value), source, target), None
+    except UnitError:
+        return None, "unit_dimension_unsupported"
+
+
+def _canonical_segment(units: Units, alt, alt_unit, canonical):
+    """Отрезок альтернативы в канонической единице. Возвращает (отрезок, причина).
+
+    Строгость границ переносится как есть: множитель и сдвиг — монотонные
+    преобразования, они не меняют открытость границы.
+    """
+    if alt.kind == "number" and alt.number is not None:
+        value, why = _to_canonical(units, alt_unit, canonical, alt.number)
+        if why:
+            return None, why
+        return (value, value, False, False), None
+    if alt.kind != "range":
+        return None, None
+    lo, why_lo = _to_canonical(units, alt_unit, canonical, alt.lo)
+    hi, why_hi = _to_canonical(units, alt_unit, canonical, alt.hi)
+    why = why_lo or why_hi
+    if why:
+        return None, why
+    return _norm_bounds(lo, hi, alt.lo_strict, alt.hi_strict), None
 
 
 def _operator_regions(value, op, unit_group):
@@ -577,58 +615,63 @@ def check_range(units: Units, char: Characteristic, lo, hi, fact: Fact,
     if not numeric:
         return "unknown", "range_against_text_characteristic"
 
+    # Единица требования.
     src = None
     if fact.unit and (fact.unit.code or fact.unit.text):
         src = units.resolve_code(fact.unit.code) if fact.unit.code else units.resolve_text(fact.unit.text)
         if src.dimension is None and fact.unit.text:
             src = units.resolve_text(fact.unit.text)
 
-    groups: dict = {}
-    order: list = []
-    for a in numeric:
-        key = _alt_unit_key(units, a) if (a.unit_code or a.unit_text) else None
-        groups.setdefault(key, []).append(a)
-        if key not in order:
-            order.append(key)
+    # Все числовые альтернативы должны жить в ОДНОЙ размерности: только тогда их
+    # можно свести к общей единице и объединить. Сырые числа разных единиц (или
+    # безразмерное рядом с размерным) складывать нельзя.
+    alt_units = [(a, _alt_unit(units, a)) for a in numeric]
+    dimensions = {unit.dimension for _, unit in alt_units if unit is not None}
+    has_unit = any(unit is not None for _, unit in alt_units)
+    has_bare = any(unit is None for _, unit in alt_units)
+    if has_unit and has_bare:
+        return "unknown", "value_units_ambiguous"
+    if len(dimensions) > 1:
+        return "unknown", "value_units_ambiguous"
 
     unknown: list = []
-    covered_any = False
-    for key in order:
-        alts = groups[key]
-        if key is None:
-            # у альтернатив нет единицы: значения сравниваются как есть, но требование,
-            # выраженное в единице измерения, с безразмерной характеристикой несопоставимо
-            if fact.unit and (fact.unit.code or fact.unit.text):
-                if src is None or src.dimension is None:
-                    unknown.append("user_unit_unknown")
-                    continue
-                if src.dimension not in (None, "count", "ratio", "percent", "length"):
-                    unknown.append("unit_dimension_unsupported")
-                    continue
-            group_lo, group_hi = lo, hi
-        else:
+    if not has_unit:
+        # Безразмерные альтернативы: значения сравниваются как есть, но требование,
+        # выраженное в единице измерения, с безразмерной характеристикой несопоставимо.
+        if fact.unit and (fact.unit.code or fact.unit.text):
             if src is None or src.dimension is None:
-                unknown.append("user_unit_missing"
+                return "unknown", "user_unit_unknown"
+            if src.dimension not in (None, "count", "ratio", "percent", "length"):
+                return "unknown", "unit_dimension_unsupported"
+        canonical = None
+        user_lo, user_hi = lo, hi
+        segments: list = [seg for alt, _ in alt_units for seg in _alt_segments(alt)]
+    else:
+        canonical = _canonical_unit(next(iter(dimensions)))
+        if canonical is None:
+            return "unknown", "position_unit_unknown"
+        if src is None or src.dimension is None:
+            return "unknown", ("user_unit_missing"
                                if not (fact.unit and (fact.unit.code or fact.unit.text))
                                else "user_unit_unknown")
+        user_lo, why_lo = _to_canonical(units, src, canonical, lo)
+        user_hi, why_hi = _to_canonical(units, src, canonical, hi)
+        why = why_lo or why_hi
+        if why:
+            return "unknown", why
+        # Каждая альтернатива приводится к общей единице ДО объединения, строгость
+        # сохраняется. Затем проверяется объединение всех альтернатив, а не каждая
+        # группа по отдельности: [0;1] см и [10;30] мм вместе покрывают [5;25] мм.
+        segments = []
+        for alt, alt_unit in alt_units:
+            segment, segment_why = _canonical_segment(units, alt, alt_unit, canonical)
+            if segment_why:
+                unknown.append(segment_why)
                 continue
-            first = alts[0]
-            target = units.resolve_code(first.unit_code) if first.unit_code else None
-            if target is None or target.dimension is None:
-                target = units.resolve_text(first.unit_text) if first.unit_text else None
-            group_lo, why_lo = _convert_point(units, src, target, lo) if lo is not None else (None, None)
-            group_hi, why_hi = _convert_point(units, src, target, hi) if hi is not None else (None, None)
-            why = why_lo or why_hi
-            if why:
-                unknown.append(why)
-                continue
-        segments: list = []
-        for a in alts:
-            segments.extend(_alt_segments(a))
-        if segments_cover(group_lo, group_hi, lo_strict, hi_strict, segments):
-            covered_any = True
-            break
-    if covered_any:
+            if segment is not None:
+                segments.append(segment)
+
+    if segments_cover(user_lo, user_hi, lo_strict, hi_strict, segments):
         return "compatible", None
     if unknown:
         return "unknown", unknown[0]

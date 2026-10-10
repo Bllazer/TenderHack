@@ -89,3 +89,49 @@ def test_http_open_range_against_strict_catalog_bound_does_not_dead_end(catalog_
             "description": "Стол; Высота: (700;800] мм", "confirmed_category_id": "furniture"}).json()
         assert unconfirmed["status"] == "needs_input"
         assert unconfirmed["next_question"] is not None
+
+
+def or_units_catalog(catalog_data):
+    """Каталог, у которого высота задана двумя интервалами в разных единицах: [0;1] см OR [10;30] мм."""
+    table = next(p for p in catalog_data.positions if p.code == "TEST-TABLE")
+    base = next(prop for prop in table.properties if prop.name == "Высота").allowed[0]
+    centimetres = base.model_copy(update={"lower": "0", "upper": "1", "unit": "см", "okei_code": None})
+    millimetres = base.model_copy(update={"lower": "10", "upper": "30", "unit": "мм", "okei_code": None})
+    table = table.model_copy(update={"properties": tuple(
+        prop.model_copy(update={"allowed": (centimetres, millimetres)}) if prop.name == "Высота" else prop
+        for prop in table.properties)})
+    return catalog_data.model_copy(update={"positions": tuple(
+        table if p.code == "TEST-TABLE" else p for p in catalog_data.positions)})
+
+
+def test_http_or_alternatives_in_different_units_resolve_after_confirmations(catalog_data, monkeypatch):
+    """[0;1] см OR [10;30] мм: требование [5;25] мм подтверждается объединением веток.
+
+    Ни одна ветка по отдельности его не покрывает (0…1 см — это ровно 0…10 мм),
+    поэтому проверка обязана идти по объединению, приведённому к общей единице.
+    """
+    import app.main as main
+    from fastapi.testclient import TestClient
+    monkeypatch.setattr(main, "resources", lambda: runtime(or_units_catalog(catalog_data)))
+    with TestClient(main.app) as api:
+        description = "Стол; Высота: [5;25] мм"
+        first = api.post("/api/v1/analyses", json={"description": description}).json()
+        assert first["status"] == "needs_input" and first["next_question"] is not None
+
+        confirmed_category = api.post("/api/v1/analyses", json={
+            "description": description, "confirmed_category_id": "furniture"}).json()
+        assert confirmed_category["status"] == "needs_input"
+        assert confirmed_category["next_question"] is not None
+
+        final = api.post("/api/v1/analyses", json={
+            "description": description, "confirmed_category_id": "furniture",
+            "confirmed_ktru_code": "TEST-TABLE"}).json()
+        assert final["status"] == "resolved", final
+        assert final["selected_ktru_code"] == "TEST-TABLE"
+        assert final["verification"]["value_verified"]
+
+        # Требование, выходящее за объединение веток, не подтверждается.
+        outside = api.post("/api/v1/analyses", json={
+            "description": "Стол; Высота: [25;35] мм", "confirmed_category_id": "furniture",
+            "confirmed_ktru_code": "TEST-TABLE"})
+        assert outside.status_code == 422, outside.text

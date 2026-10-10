@@ -144,3 +144,73 @@ def test_empty_catalogue_interval_blocks_the_whole_rule():
     """Пустая альтернатива в OR не «спасается» соседней исправной."""
     broken = characteristic(interval(750, 750, False, True), interval(0, 1000))
     assert check_fact(Units(), broken, fact("number", 750))[0] == "unknown"
+
+
+# ---------------------------------------- OR-альтернативы в разных единицах
+def given(bounds, unit="mm"):
+    return Fact(kind="range", value=bounds, name="Size", def_id="size",
+                unit=Unit(text=unit) if unit else None, fact_id="fact")
+
+
+def span(low, high, lc=True, hc=True):
+    return {"min": low, "max": high, "min_inclusive": lc, "max_inclusive": hc}
+
+
+def test_or_alternatives_in_different_units_are_not_merged_raw_temperature():
+    """[0;10] °C OR [300;310] K: Кельвин приводится к Цельсию ДО объединения.
+
+    Без сдвига температуры 300…310 K складывались бы с 0…10 °C как сырые числа, и
+    требование [300;305] °C «подтверждалось» бы чужими значениями.
+    """
+    char = characteristic(interval(0, 10, unit_code=None, unit_text="°C"),
+                          interval(300, 310, unit_code=None, unit_text="K"))
+    # 300…310 K — это 26,85…36,85 °C, поэтому требование на 300 °C не подтверждается
+    assert check_fact(Units(), char, given(span(300, 305), "°C"))[0] == "incompatible"
+    # значение внутри кельвиновой ветки подтверждается именно после сдвига
+    assert check_fact(Units(), char, given(span(27, 36), "°C"))[0] == "compatible"
+    # разрыв между ветками (10…26,85 °C) не покрыт
+    assert check_fact(Units(), char, given(span(11, 26), "°C"))[0] == "incompatible"
+    # собственная ветка продолжает работать
+    assert check_fact(Units(), char, given(span(5, 8), "°C"))[0] == "compatible"
+
+
+def test_or_units_temperature_refusal_selects_nothing():
+    """Отказ по такому OR не даёт выбрать код."""
+    char = characteristic(interval(0, 10, unit_code=None, unit_text="°C"),
+                          interval(300, 310, unit_code=None, unit_text="K"))
+    result = run(position("one", char), facts=[given(span(300, 305), "°C")])
+    assert result.candidates[0].verdict == "incompatible"
+    assert result.selected_ktru_code is None
+
+
+def test_or_alternatives_cover_together_after_canonicalisation():
+    """[0;1] см OR [10;30] мм покрывают [5;25] мм только вместе.
+
+    Каждая ветка по отдельности требование не покрывает: 0…1 см — это 0…10 мм,
+    ровно до начала второй ветки. Проверять группы порознь нельзя.
+    """
+    char = characteristic(interval(0, 1, unit_code=None, unit_text="см"),
+                          interval(10, 30, unit_code=None, unit_text="мм"))
+    assert check_fact(Units(), char, given(span(5, 25), "мм"))[0] == "compatible"
+    assert check_fact(Units(), char, given(span(0, 30), "мм"))[0] == "compatible"
+    assert check_fact(Units(), char, given(span(5, 25, False, False), "мм"))[0] == "compatible"
+    # на конце объединения подтверждения нет
+    assert check_fact(Units(), char, given(span(25, 35), "мм"))[0] == "incompatible"
+
+
+def test_strict_boundary_at_the_junction_is_preserved():
+    """[0;1) см OR (10;30] мм: точка 10 мм исключена обеими ветками — дыра не зарастает."""
+    char = characteristic(interval(0, 1, True, False, unit_code=None, unit_text="см"),
+                          interval(10, 30, False, True, unit_code=None, unit_text="мм"))
+    assert check_fact(Units(), char, given(span(5, 25), "мм"))[0] == "incompatible"
+    assert check_fact(Units(), char, given(span(10, 25), "мм"))[0] == "incompatible"
+    assert check_fact(Units(), char, given(span(11, 25), "мм"))[0] == "compatible"
+
+
+@pytest.mark.parametrize("second,expected", [
+    (Alternative("number", number=5), "unknown"),                    # безразмерная рядом с размерной
+    (interval(10, 30, unit_code=None, unit_text="Вт"), "unknown"),   # другая размерность
+])
+def test_incomparable_or_alternatives_are_not_merged(second, expected):
+    char = characteristic(interval(0, 1, unit_code=None, unit_text="см"), second)
+    assert check_fact(Units(), char, given(span(5, 6), "мм"))[0] == expected
