@@ -116,6 +116,7 @@ def main() -> int:
 
     for query in args.queries:
         report(search, data, query, args.top, args.show_pool)
+    progress("подсказка: запустите без аргументов — режим диалога без перезагрузки каталога")
     return 0
 
 
