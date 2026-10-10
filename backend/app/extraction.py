@@ -202,9 +202,77 @@ def enum_dictionary(properties):
                  for item in prop.allowed if item.kind == "enum" and item.value)
 
 
+#: Служебные слова: они тоже бывают началом значения («Для пола»), но характеристикой
+#: не являются — иначе «для» в любом описании становилось бы значением перечисления.
+STOP_WORDS = frozenset({"для", "или", "при", "без", "нет", "из", "от", "на", "по", "под",
+                        "над", "про", "как", "что", "это", "все", "его", "ее", "их", "тип",
+                        "вид", "шт", "мм", "см", "кг", "Вт", "В", "А", "м"})
+
+
+def abbreviated_enum_values(text: str, scoped_properties, facts: list, covered: list) -> None:
+    """Сокращения значений перечислений: «муж» → «Мужское», «аккум» → «От аккумулятора».
+
+    Реальный ввод «пальто муж 48»: пол написан сокращённо, и без этой ступени система
+    переспрашивала его, хотя ответ в тексте есть.
+
+    Правила подобраны по независимому набору проверок перечислений:
+
+    * слово не короче трёх букв и не служебное;
+    * это **строгое** начало слова значения (короче самого слова) — точное слово
+      разбирает обычное окно перечислений, а не эта ступень;
+    * начало ПЕРВОГО слова годится только для однословных значений: «муж» → «Мужское»,
+      но «искусственный» НЕ становится значением «Искусственный утеплитель» (там нужен
+      весь оборот «искусственный утеплитель», иначе значение приписывается по одному
+      слову);
+    * сокращение должно подходить ровно одному значению ровно одного свойства области.
+    """
+    if not scoped_properties:
+        return
+    options: dict[tuple[str, str], list[tuple]] = {}
+    for prop, target, wanted in enum_dictionary(tuple(scoped_properties)):
+        if prop.value_type not in ("text", "boolean"):
+            continue
+        key = (prop.semantic_key or prop.id, prop.subject)
+        options.setdefault(key, []).append((prop, target, wanted.split()))
+    if not options:
+        return
+    for _lemma, left, right in token_spans(text):
+        # Сравниваем НАПИСАНИЕ, а не лемму: «жен» лемматизируется в «жена», «аккум» —
+        # в «аккума», и сокращение переставало быть началом значения.
+        token = canon(text[left:right])
+        if len(token) < 3 or token in STOP_WORDS:
+            continue
+        if any(begin <= left < finish for begin, finish in covered):
+            continue
+        matches = []
+        for (prop_key, prop_subject), items in options.items():
+            for prop, target, words in items:
+                single = len(words) == 1
+                if any(word.startswith(token) and len(token) < len(word) and (single or position)
+                       for position, word in enumerate(words)):
+                    matches.append((prop, target))
+        unique = {(prop.semantic_key or prop.id, prop.subject, target): (prop, target)
+                  for prop, target in matches}
+        if len(unique) != 1:
+            continue
+        prop, target = next(iter(unique.values()))
+        fact = make_fact(prop.name, target, None, text[left:right], (left, right), len(facts))
+        fact.subject = prop.subject
+        fact.extraction_evidence = [prop.evidence]
+        facts.append(fact)
+        covered.append((left, right))
+
+
 def enum_targets(properties, value: str, name: str = "", subject: str | None = None):
-    """Scope-only suggestions; similarity is never verification."""
-    exact, close = {}, {}
+    """Scope-only suggestions; similarity is never verification.
+
+    Кроме точного совпадения и похожести принимается **сокращение**: «муж» → «Мужское»,
+    «аккум» → «От аккумулятора». Это реальный ввод («пальто муж 48»), и без такого
+    правила система переспрашивала пол, хотя он написан. Сокращение берётся, только
+    если оно однозначно: если под него подходят два значения перечисления, выбор
+    оставляем пользователю.
+    """
+    exact, close, shortened = {}, {}, {}
     supplied = canon(value)
     for prop, target, wanted in enum_dictionary(tuple(properties)):
         if subject and prop.subject != subject:
@@ -214,8 +282,17 @@ def enum_targets(properties, value: str, name: str = "", subject: str | None = N
         key = (prop.semantic_key or prop.id, prop.subject, prop.name, target)
         if wanted == supplied or lemmas(wanted) == lemmas(supplied):
             exact[key] = (prop, target)
+        elif 3 <= len(supplied) < len(wanted) and wanted.startswith(supplied):
+            shortened.setdefault((prop.semantic_key or prop.name, prop.subject), []).append((prop, target, wanted))
         elif len(supplied) >= 5 and len(wanted) >= 5 and SequenceMatcher(None, supplied, wanted).ratio() >= .85:
             close[key] = (prop, target)
+    # Сокращение годится, только если под него подходит ровно одно значение свойства:
+    # «муж» — да (мужское), «м» — нет (мужское и женское начинаются по-разному, но
+    # короткие обрубки слишком общи).
+    for (prop_key, prop_subject), items in shortened.items():
+        if len(items) == 1:
+            prop, target, _ = items[0]
+            exact[(prop.semantic_key or prop.id, prop_subject, prop.name, target)] = (prop, target)
     return list(exact.values()), list(close.values())
 
 
@@ -943,6 +1020,7 @@ def extract(text: str, names: tuple[str, ...], *, scoped_properties=(), lexicon=
         facts.append(fact)
         covered.append(match.span())
     canonicalize_facts(facts, scoped_properties, lexicon)
+    abbreviated_enum_values(text, scoped_properties, facts, covered)
     unparsed: list[Fragment] = []
     cursor = 0
     for start, end in sorted(covered):

@@ -51,7 +51,7 @@ def test_hybrid_search_uses_raw_text_when_extraction_fails(catalog_data):
     assert search.find("Зимняя рабочая куртка")[0].id == "clothes"
     result = search.find("Электрическая дрель")
     assert result[0].id == "tools"
-    assert {"BM25", "E5"} <= set(result[0].reasons) <= {"BM25", "E5", "CHAR"}
+    assert {"BM25", "E5"} <= set(result[0].reasons) <= {"BM25", "E5", "CHAR", "PREFIX"}   # PREFIX — четвёртый канал
     assert result[0].rank_score == pytest.approx(len(result[0].reasons) / 61)
 
 

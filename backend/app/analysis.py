@@ -126,6 +126,16 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
         result.status = "needs_input"
         result.next_question, _ = components.questions(None, result.categories, (), [], result.facts, [], answered, False, None)
         result.next_steps = ["Подтвердите категорию; совпадение чисел не доказывает тип товара"]
+        if not result.categories:
+            # Поиск не нашёл значимых совпадений: показывать «пять похожих» нельзя,
+            # иначе на товар, которого в КТРУ нет, выводился случайный набор.
+            active = [issue for issue in result.issues if issue.code != "no_similar_products"]
+            result.issues = [*active, Issue(code="no_similar_products", severity="warning",
+                                            explanation="Похожих типов товара в КТРУ не найдено",
+                                            suggested_action="Уточните описание: укажите тип товара другими словами "
+                                                             "или добавьте существенные характеристики")]
+            result.next_question = None
+            result.next_steps = ["Ничего похожего не найдено — уточните описание товара"]
         if body.confirmed_ktru_code:
             result.issues.append(Issue(code="type_unconfirmed", explanation="Сначала подтвердите категорию товара"))
         return result
