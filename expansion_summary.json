@@ -1,0 +1,19 @@
+{
+  "added": 598,
+  "total": 738,
+  "groups": {
+    "source_all_boundaries": 373,
+    "source_enum_alternative": 193,
+    "source_equivalent_duplicates": 16,
+    "source_unit_equivalence": 16
+  },
+  "oracle": "Independent XML union arithmetic, latest ACTIVE positions in six source-labeled families",
+  "csv_sha256": "5806ff65be8b0295529061b50b9072c79901d6c8c55f61d1023adb5b3af5befd",
+  "manual_cases": 27,
+  "counts": {
+    "PASS": 667,
+    "FAIL": 30,
+    "BLOCKED": 0,
+    "REVIEW": 41
+  }
+}

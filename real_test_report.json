@@ -1,0 +1,5356 @@
+{
+  "ready": {
+    "status": "ok",
+    "catalog_version": "clean5-7331f0732bc0ff5c",
+    "engine_version": "stateless-pipeline-v4.1-canonical-count"
+  },
+  "stages": {
+    "retrieval": {
+      "PASS": 30
+    },
+    "source_constraints": {
+      "PASS": 23,
+      "NOT_LABELED": 7
+    },
+    "natural_language": {
+      "PASS": 16,
+      "FAIL": 7
+    },
+    "clarification_funnel": {
+      "PASS": 11
+    },
+    "unique_code_confirmation": {
+      "PASS": 6
+    },
+    "jury_unique_incomplete": {
+      "FAIL": 1
+    }
+  },
+  "records": [
+    {
+      "case_id": "REAL-001",
+      "source_ref": "Инструменты.xlsx!sheet1 row=5 STE=1160210",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 2,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-001",
+      "source_ref": "Инструменты.xlsx!sheet1 row=5 STE=1160210",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 3,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-001",
+      "source_ref": "Инструменты.xlsx!sheet1 row=5 STE=1160210",
+      "stage": "natural_language",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 3,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-001",
+      "source_ref": "Инструменты.xlsx!sheet1 row=5 STE=1160210",
+      "stage": "clarification_funnel",
+      "status": "PASS",
+      "detail": [
+        {
+          "facts": 1,
+          "remaining": 2
+        },
+        {
+          "facts": 2,
+          "remaining": 2
+        }
+      ]
+    },
+    {
+      "case_id": "REAL-002",
+      "source_ref": "Инструменты.xlsx!sheet1 row=6 STE=1160212",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 3,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-002",
+      "source_ref": "Инструменты.xlsx!sheet1 row=6 STE=1160212",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 3,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-002",
+      "source_ref": "Инструменты.xlsx!sheet1 row=6 STE=1160212",
+      "stage": "natural_language",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 3,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-002",
+      "source_ref": "Инструменты.xlsx!sheet1 row=6 STE=1160212",
+      "stage": "clarification_funnel",
+      "status": "PASS",
+      "detail": [
+        {
+          "facts": 1,
+          "remaining": 2
+        },
+        {
+          "facts": 2,
+          "remaining": 2
+        }
+      ]
+    },
+    {
+      "case_id": "REAL-003",
+      "source_ref": "Инструменты.xlsx!sheet1 row=37 STE=1160256",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-003",
+      "source_ref": "Инструменты.xlsx!sheet1 row=37 STE=1160256",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 3,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-003",
+      "source_ref": "Инструменты.xlsx!sheet1 row=37 STE=1160256",
+      "stage": "natural_language",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 3,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-003",
+      "source_ref": "Инструменты.xlsx!sheet1 row=37 STE=1160256",
+      "stage": "clarification_funnel",
+      "status": "PASS",
+      "detail": [
+        {
+          "facts": 1,
+          "remaining": 2
+        },
+        {
+          "facts": 2,
+          "remaining": 2
+        }
+      ]
+    },
+    {
+      "case_id": "REAL-004",
+      "source_ref": "Инструменты.xlsx!sheet1 row=49 STE=1160282",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 2,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-004",
+      "source_ref": "Инструменты.xlsx!sheet1 row=49 STE=1160282",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 5,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-004",
+      "source_ref": "Инструменты.xlsx!sheet1 row=49 STE=1160282",
+      "stage": "natural_language",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 5,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-004",
+      "source_ref": "Инструменты.xlsx!sheet1 row=49 STE=1160282",
+      "stage": "clarification_funnel",
+      "status": "PASS",
+      "detail": [
+        {
+          "facts": 1,
+          "remaining": 2
+        },
+        {
+          "facts": 2,
+          "remaining": 2
+        },
+        {
+          "facts": 3,
+          "remaining": 2
+        }
+      ]
+    },
+    {
+      "case_id": "REAL-005",
+      "source_ref": "Инструменты.xlsx!sheet1 row=54 STE=1160287",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-005",
+      "source_ref": "Инструменты.xlsx!sheet1 row=54 STE=1160287",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 5,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-005",
+      "source_ref": "Инструменты.xlsx!sheet1 row=54 STE=1160287",
+      "stage": "natural_language",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 5,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-005",
+      "source_ref": "Инструменты.xlsx!sheet1 row=54 STE=1160287",
+      "stage": "clarification_funnel",
+      "status": "PASS",
+      "detail": [
+        {
+          "facts": 1,
+          "remaining": 2
+        },
+        {
+          "facts": 2,
+          "remaining": 2
+        },
+        {
+          "facts": 3,
+          "remaining": 2
+        }
+      ]
+    },
+    {
+      "case_id": "REAL-006",
+      "source_ref": "Мебель.xlsx!sheet1 row=448 STE=1226390",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-006",
+      "source_ref": "Мебель.xlsx!sheet1 row=448 STE=1226390",
+      "stage": "source_constraints",
+      "status": "NOT_LABELED",
+      "detail": "No explicit source-property mapping; retrieval only. No invented final-code gold."
+    },
+    {
+      "case_id": "REAL-007",
+      "source_ref": "Мебель.xlsx!sheet1 row=449 STE=1226391",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-007",
+      "source_ref": "Мебель.xlsx!sheet1 row=449 STE=1226391",
+      "stage": "source_constraints",
+      "status": "NOT_LABELED",
+      "detail": "No explicit source-property mapping; retrieval only. No invented final-code gold."
+    },
+    {
+      "case_id": "REAL-008",
+      "source_ref": "Мебель.xlsx!sheet1 row=450 STE=1226392",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-008",
+      "source_ref": "Мебель.xlsx!sheet1 row=450 STE=1226392",
+      "stage": "source_constraints",
+      "status": "NOT_LABELED",
+      "detail": "No explicit source-property mapping; retrieval only. No invented final-code gold."
+    },
+    {
+      "case_id": "REAL-009",
+      "source_ref": "Мебель.xlsx!sheet1 row=451 STE=1226393",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-009",
+      "source_ref": "Мебель.xlsx!sheet1 row=451 STE=1226393",
+      "stage": "source_constraints",
+      "status": "NOT_LABELED",
+      "detail": "No explicit source-property mapping; retrieval only. No invented final-code gold."
+    },
+    {
+      "case_id": "REAL-010",
+      "source_ref": "Мебель.xlsx!sheet1 row=452 STE=1226394",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-010",
+      "source_ref": "Мебель.xlsx!sheet1 row=452 STE=1226394",
+      "stage": "source_constraints",
+      "status": "NOT_LABELED",
+      "detail": "No explicit source-property mapping; retrieval only. No invented final-code gold."
+    },
+    {
+      "case_id": "REAL-011",
+      "source_ref": "Мебель.xlsx!sheet1 row=1947 STE=16590864",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-011",
+      "source_ref": "Мебель.xlsx!sheet1 row=1947 STE=16590864",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 8,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-011",
+      "source_ref": "Мебель.xlsx!sheet1 row=1947 STE=16590864",
+      "stage": "natural_language",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 8,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-011",
+      "source_ref": "Мебель.xlsx!sheet1 row=1947 STE=16590864",
+      "stage": "clarification_funnel",
+      "status": "PASS",
+      "detail": [
+        {
+          "facts": 1,
+          "remaining": 2
+        },
+        {
+          "facts": 2,
+          "remaining": 2
+        }
+      ]
+    },
+    {
+      "case_id": "REAL-012",
+      "source_ref": "Мебель.xlsx!sheet1 row=2022 STE=16874111",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-012",
+      "source_ref": "Мебель.xlsx!sheet1 row=2022 STE=16874111",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 4,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-012",
+      "source_ref": "Мебель.xlsx!sheet1 row=2022 STE=16874111",
+      "stage": "natural_language",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 4,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-013",
+      "source_ref": "Мебель.xlsx!sheet1 row=5592 STE=23323199",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-013",
+      "source_ref": "Мебель.xlsx!sheet1 row=5592 STE=23323199",
+      "stage": "source_constraints",
+      "status": "NOT_LABELED",
+      "detail": "No explicit source-property mapping; retrieval only. No invented final-code gold."
+    },
+    {
+      "case_id": "REAL-014",
+      "source_ref": "Мебель.xlsx!sheet1 row=7002 STE=32825106",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-014",
+      "source_ref": "Мебель.xlsx!sheet1 row=7002 STE=32825106",
+      "stage": "source_constraints",
+      "status": "NOT_LABELED",
+      "detail": "No explicit source-property mapping; retrieval only. No invented final-code gold."
+    },
+    {
+      "case_id": "REAL-015",
+      "source_ref": "Мебель.xlsx!sheet1 row=7003 STE=32825438",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 2,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-015",
+      "source_ref": "Мебель.xlsx!sheet1 row=7003 STE=32825438",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 4,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-015",
+      "source_ref": "Мебель.xlsx!sheet1 row=7003 STE=32825438",
+      "stage": "natural_language",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 4,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-016",
+      "source_ref": "Одежда.xlsx!sheet1 row=3291 STE=1249832",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-016",
+      "source_ref": "Одежда.xlsx!sheet1 row=3291 STE=1249832",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-016",
+      "source_ref": "Одежда.xlsx!sheet1 row=3291 STE=1249832",
+      "stage": "natural_language",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-016",
+      "source_ref": "Одежда.xlsx!sheet1 row=3291 STE=1249832",
+      "stage": "unique_code_confirmation",
+      "status": "PASS",
+      "detail": {
+        "selected_code": "14.14.30.110-00000002",
+        "fields_complete": true
+      }
+    },
+    {
+      "case_id": "REAL-017",
+      "source_ref": "Одежда.xlsx!sheet1 row=3656 STE=1255590",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-017",
+      "source_ref": "Одежда.xlsx!sheet1 row=3656 STE=1255590",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-017",
+      "source_ref": "Одежда.xlsx!sheet1 row=3656 STE=1255590",
+      "stage": "natural_language",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-017",
+      "source_ref": "Одежда.xlsx!sheet1 row=3656 STE=1255590",
+      "stage": "unique_code_confirmation",
+      "status": "PASS",
+      "detail": {
+        "selected_code": "14.14.30.110-00000002",
+        "fields_complete": true
+      }
+    },
+    {
+      "case_id": "REAL-018",
+      "source_ref": "Одежда.xlsx!sheet1 row=3657 STE=1255591",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-018",
+      "source_ref": "Одежда.xlsx!sheet1 row=3657 STE=1255591",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-018",
+      "source_ref": "Одежда.xlsx!sheet1 row=3657 STE=1255591",
+      "stage": "natural_language",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-018",
+      "source_ref": "Одежда.xlsx!sheet1 row=3657 STE=1255591",
+      "stage": "unique_code_confirmation",
+      "status": "PASS",
+      "detail": {
+        "selected_code": "14.14.30.110-00000002",
+        "fields_complete": true
+      }
+    },
+    {
+      "case_id": "REAL-019",
+      "source_ref": "Одежда.xlsx!sheet1 row=3658 STE=1255592",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-019",
+      "source_ref": "Одежда.xlsx!sheet1 row=3658 STE=1255592",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-019",
+      "source_ref": "Одежда.xlsx!sheet1 row=3658 STE=1255592",
+      "stage": "natural_language",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-019",
+      "source_ref": "Одежда.xlsx!sheet1 row=3658 STE=1255592",
+      "stage": "unique_code_confirmation",
+      "status": "PASS",
+      "detail": {
+        "selected_code": "14.14.30.110-00000002",
+        "fields_complete": true
+      }
+    },
+    {
+      "case_id": "REAL-020",
+      "source_ref": "Одежда.xlsx!sheet1 row=3772 STE=1255854",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-020",
+      "source_ref": "Одежда.xlsx!sheet1 row=3772 STE=1255854",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-020",
+      "source_ref": "Одежда.xlsx!sheet1 row=3772 STE=1255854",
+      "stage": "natural_language",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-020",
+      "source_ref": "Одежда.xlsx!sheet1 row=3772 STE=1255854",
+      "stage": "unique_code_confirmation",
+      "status": "PASS",
+      "detail": {
+        "selected_code": "14.14.30.110-00000002",
+        "fields_complete": true
+      }
+    },
+    {
+      "case_id": "REAL-021",
+      "source_ref": "Одежда.xlsx!sheet1 row=25700 STE=35234171",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-021",
+      "source_ref": "Одежда.xlsx!sheet1 row=25700 STE=35234171",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 6,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-021",
+      "source_ref": "Одежда.xlsx!sheet1 row=25700 STE=35234171",
+      "stage": "natural_language",
+      "status": "FAIL",
+      "detail": "14.14.10.000-00000007/99adcc4e-d: expected compatible, actual unknown; 14.14.10.000-00000006/99adcc4e-d: expected compatible, actual unknown",
+      "actual_response": {
+        "status": "needs_input",
+        "original_text": "Халат детский махровый белый с рисунком, рост 110 сантиметров; Вид застежки Петли | Вид застежки Молния | Вид кармана Набедренный | Вид мягкого инвентаря Халат детский | Вид продукции Товары | Вид товаров Одежда | Виды одежды (включая форменную), головных уборов, одежды специальной Одежда для детей | Виды одежды для детей Халат | Наличие застежки Да  | Наличие кармана Да  | Наличие пояса Да  | Половой признак Для девочки | Рост 110.00000 см | Способ поставки товара Единовременно | Тип ткани/трикотажного полотна Смесовая | Цвет Белый  | Цвет Белый с детским рисунком | Цвет Цветной с детским рисунком",
+        "normalized_text": "Халат детский махровый белый с рисунком, рост 110 сантиметров; Вид застежки Петли | Вид застежки Молния | Вид кармана Набедренный | Вид мягкого инвентаря Халат детский | Вид продукции Товары | Вид товаров Одежда | Виды одежды (включая форменную), головных уборов, одежды специальной Одежда для детей | Виды одежды для детей Халат | Наличие застежки Да | Наличие кармана Да | Наличие пояса Да | Половой признак Для девочки | Рост 110.00000 см | Способ поставки товара Единовременно | Тип ткани/трикотажного полотна Смесовая | Цвет Белый | Цвет Белый с детским рисунком | Цвет Цветной с детским рисунком",
+        "original_facts": [
+          {
+            "id": "text:41:61:0",
+            "name": "Рост",
+            "value": "110",
+            "values": null,
+            "unit": "сантиметров",
+            "raw": "рост 110 сантиметров",
+            "span": [
+              41,
+              61
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:397:424:1",
+            "name": "Половой признак",
+            "value": "Для девочки",
+            "values": null,
+            "unit": null,
+            "raw": "Половой признак Для девочки",
+            "span": [
+              397,
+              424
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:427:444:2",
+            "name": "Рост",
+            "value": "110.00000",
+            "values": null,
+            "unit": "см",
+            "raw": "Рост 110.00000 см",
+            "span": [
+              427,
+              444
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:486:525:3",
+            "name": "Тип ткани/трикотажного полотна",
+            "value": "Смесовая",
+            "values": null,
+            "unit": null,
+            "raw": "Тип ткани/трикотажного полотна Смесовая",
+            "span": [
+              486,
+              525
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          }
+        ],
+        "facts": [
+          {
+            "id": "text:41:61:0",
+            "name": "Рост",
+            "value": "110",
+            "values": null,
+            "unit": "сантиметров",
+            "raw": "рост 110 сантиметров",
+            "span": [
+              41,
+              61
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.14.10.000-00000006/99adcc4e-d",
+              "14.14.10.000-00000007/99adcc4e-d"
+            ]
+          },
+          {
+            "id": "text:397:424:1",
+            "name": "Половой признак",
+            "value": "Для девочки",
+            "values": null,
+            "unit": null,
+            "raw": "Половой признак Для девочки",
+            "span": [
+              397,
+              424
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.14.10.000-00000006/6b7558e5-9",
+              "14.14.10.000-00000007/6b7558e5-9"
+            ]
+          },
+          {
+            "id": "text:427:444:2",
+            "name": "Рост",
+            "value": "110.00000",
+            "values": null,
+            "unit": "см",
+            "raw": "Рост 110.00000 см",
+            "span": [
+              427,
+              444
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.14.10.000-00000006/99adcc4e-d",
+              "14.14.10.000-00000007/99adcc4e-d"
+            ]
+          },
+          {
+            "id": "text:486:525:3",
+            "name": "Тип ткани/трикотажного полотна",
+            "value": "Смесовая",
+            "values": null,
+            "unit": null,
+            "raw": "Тип ткани/трикотажного полотна Смесовая",
+            "span": [
+              486,
+              525
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.14.10.000-00000006/959b9366-1",
+              "14.14.10.000-00000007/959b9366-1"
+            ]
+          }
+        ],
+        "unparsed": [
+          {
+            "id": "fragment:0:41",
+            "raw": "Халат детский махровый белый с рисунком, ",
+            "span": [
+              0,
+              41
+            ]
+          },
+          {
+            "id": "fragment:61:397",
+            "raw": "; Вид застежки Петли | Вид застежки Молния | Вид кармана Набедренный | Вид мягкого инвентаря Халат детский | Вид продукции Товары | Вид товаров Одежда | Виды одежды (включая форменную), головных уборов, одежды специальной Одежда для детей | Виды одежды для детей Халат | Наличие застежки Да  | Наличие кармана Да  | Наличие пояса Да  | ",
+            "span": [
+              61,
+              397
+            ]
+          },
+          {
+            "id": "fragment:444:486",
+            "raw": " | Способ поставки товара Единовременно | ",
+            "span": [
+              444,
+              486
+            ]
+          },
+          {
+            "id": "fragment:525:605",
+            "raw": " | Цвет Белый  | Цвет Белый с детским рисунком | Цвет Цветной с детским рисунком",
+            "span": [
+              525,
+              605
+            ]
+          }
+        ],
+        "additional": [],
+        "categories": [
+          {
+            "id": "14.14.10.000-00000008",
+            "name": "Халат детский",
+            "rank": 1,
+            "rank_score": 0.04918032786885246,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.14.10.000-00000005",
+            "name": "Халат",
+            "rank": 2,
+            "rank_score": 0.04451067477014181,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.13.10.000-00000022",
+            "name": "Ветровка детская",
+            "rank": 3,
+            "rank_score": 0.04114078409853058,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.130-00000003",
+            "name": "Халат производственный",
+            "rank": 4,
+            "rank_score": 0.04080760106618195,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.19.42.160-00000003",
+            "name": "Шапка-шлем детская",
+            "rank": 5,
+            "rank_score": 0.0315136476426799,
+            "reasons": [
+              "BM25",
+              "E5"
+            ]
+          }
+        ],
+        "candidates": [
+          {
+            "ktru_code": "14.14.10.000-00000006",
+            "name": "Халат детский",
+            "okpd2": "14.14.1",
+            "outcome": "unknown",
+            "checks": [
+              {
+                "property_id": "6b7558e5-9",
+                "name": "Половой признак",
+                "outcome": "compatible",
+                "reason": "allowed_value",
+                "fact_ids": [
+                  "text:397:424:1"
+                ],
+                "value_codes": [
+                  "eb716eba-8"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "99adcc4e-d",
+                "name": "Рост",
+                "outcome": "unknown",
+                "reason": "conflicting_facts",
+                "fact_ids": [
+                  "text:41:61:0",
+                  "text:427:444:2"
+                ],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "959b9366-1",
+                "name": "Тип ткани/трикотажного полотна",
+                "outcome": "compatible",
+                "reason": "allowed_value",
+                "fact_ids": [
+                  "text:486:525:3"
+                ],
+                "value_codes": [
+                  "0c2ca2be-b"
+                ],
+                "elements": []
+              }
+            ],
+            "missing_required": [
+              "Рост"
+            ],
+            "has_characteristics": true,
+            "blocking_reasons": [],
+            "exclusion_reasons": []
+          }
+        ],
+        "excluded": [
+          {
+            "ktru_code": "14.14.10.000-00000007",
+            "name": "Халат детский",
+            "okpd2": "14.14.1",
+            "outcome": "incompatible",
+            "checks": [
+              {
+                "property_id": "6b7558e5-9",
+                "name": "Половой признак",
+                "outcome": "incompatible",
+                "reason": "invalid_value",
+                "fact_ids": [
+                  "text:397:424:1"
+                ],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "99adcc4e-d",
+                "name": "Рост",
+                "outcome": "unknown",
+                "reason": "conflicting_facts",
+                "fact_ids": [
+                  "text:41:61:0",
+                  "text:427:444:2"
+                ],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "959b9366-1",
+                "name": "Тип ткани/трикотажного полотна",
+                "outcome": "compatible",
+                "reason": "allowed_value",
+                "fact_ids": [
+                  "text:486:525:3"
+                ],
+                "value_codes": [
+                  "0c2ca2be-b"
+                ],
+                "elements": []
+              }
+            ],
+            "missing_required": [
+              "Половой признак",
+              "Рост"
+            ],
+            "has_characteristics": true,
+            "blocking_reasons": [],
+            "exclusion_reasons": [
+              {
+                "code": "invalid_value",
+                "severity": "error",
+                "explanation": "Половой признак: «Для девочки » — значение не входит в разрешённые варианты. Допустимо: Для мальчика.",
+                "fact_id": "text:397:424:1",
+                "property_id": "6b7558e5-9",
+                "candidate_code": "14.14.10.000-00000007",
+                "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:43384#14.14.10.000-00000007@2",
+                "suggested_action": "Уточните значение или единицу по правилу позиции",
+                "confirmation_required": false
+              }
+            ]
+          }
+        ],
+        "candidate_count": 1,
+        "excluded_count": 1,
+        "scope": {
+          "category_id": "14.14.10.000-00000008",
+          "position_count": 2,
+          "evaluated_count": 2,
+          "complete": true
+        },
+        "issues": [
+          {
+            "code": "conflicting_facts",
+            "severity": "error",
+            "explanation": "Для «Рост» указаны противоречащие значения: 110, 110.00000",
+            "fact_id": "text:41:61:0",
+            "property_id": "99adcc4e-d",
+            "candidate_code": "14.14.10.000-00000006",
+            "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:43385#14.14.10.000-00000006@2",
+            "suggested_action": "Исправьте конкретный факт или исходное описание",
+            "confirmation_required": true
+          },
+          {
+            "code": "verification_incomplete",
+            "severity": "error",
+            "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+            "fact_id": null,
+            "property_id": null,
+            "candidate_code": null,
+            "rule_source": null,
+            "suggested_action": "Проверьте исходные сведения",
+            "confirmation_required": false
+          }
+        ],
+        "corrections": [],
+        "next_question": {
+          "id": "conflict:text:41:61:0",
+          "kind": "conflict",
+          "title": "Исправьте противоречащие сведения",
+          "reason": "Для «Рост» указаны противоречащие значения: 110, 110.00000",
+          "property_name": null,
+          "options": [],
+          "unit": null,
+          "allow_unknown": false,
+          "multiple": false
+        },
+        "next_steps": [
+          "Исправьте противоречащие сведения"
+        ],
+        "verification": {
+          "type_verified": true,
+          "ktru_unique": false,
+          "fields_complete": false,
+          "value_verified": false,
+          "catalog_scope_complete": true,
+          "value_indistinguishable": false,
+          "confirmed_by_user": false,
+          "blocking_issues": true
+        },
+        "selected_ktru_code": null,
+        "catalog_version": "clean5-7331f0732bc0ff5c",
+        "engine_version": "stateless-pipeline-v4.1-canonical-count"
+      }
+    },
+    {
+      "case_id": "REAL-021",
+      "source_ref": "Одежда.xlsx!sheet1 row=25700 STE=35234171",
+      "stage": "unique_code_confirmation",
+      "status": "PASS",
+      "detail": {
+        "selected_code": "14.14.10.000-00000006",
+        "fields_complete": true
+      }
+    },
+    {
+      "case_id": "REAL-021",
+      "source_ref": "Одежда.xlsx!sheet1 row=25700 STE=35234171",
+      "stage": "jury_unique_incomplete",
+      "status": "FAIL",
+      "detail": "Jury requirement: unique code blocked by missing mandatory fields",
+      "actual_response": {
+        "status": "needs_input",
+        "original_text": "Халат детский",
+        "normalized_text": "Халат детский",
+        "original_facts": [],
+        "facts": [
+          {
+            "id": "gold:0",
+            "name": "Половой признак",
+            "value": "Для девочки",
+            "values": null,
+            "unit": null,
+            "raw": "Для девочки",
+            "span": null,
+            "source": "input",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.14.10.000-00000006/6b7558e5-9",
+              "14.14.10.000-00000007/6b7558e5-9"
+            ]
+          }
+        ],
+        "unparsed": [
+          {
+            "id": "fragment:0:13",
+            "raw": "Халат детский",
+            "span": [
+              0,
+              13
+            ]
+          }
+        ],
+        "additional": [],
+        "categories": [
+          {
+            "id": "14.14.10.000-00000008",
+            "name": "Халат детский",
+            "rank": 1,
+            "rank_score": 0.04918032786885246,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.130-00000003",
+            "name": "Халат производственный",
+            "rank": 2,
+            "rank_score": 0.04690554740957967,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.14.10.000-00000005",
+            "name": "Халат",
+            "rank": 3,
+            "rank_score": 0.046543778801843315,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.190-00000005",
+            "name": "Халат операционный, одноразового использования",
+            "rank": 4,
+            "rank_score": 0.04308752486501847,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.190-00000028",
+            "name": "Халат для пациента, одноразового использования",
+            "rank": 5,
+            "rank_score": 0.04241657885493502,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          }
+        ],
+        "candidates": [
+          {
+            "ktru_code": "14.14.10.000-00000006",
+            "name": "Халат детский",
+            "okpd2": "14.14.1",
+            "outcome": "unknown",
+            "checks": [
+              {
+                "property_id": "6b7558e5-9",
+                "name": "Половой признак",
+                "outcome": "compatible",
+                "reason": "allowed_value",
+                "fact_ids": [
+                  "gold:0"
+                ],
+                "value_codes": [
+                  "eb716eba-8"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "99adcc4e-d",
+                "name": "Рост",
+                "outcome": "unknown",
+                "reason": "missing_required",
+                "fact_ids": [],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "959b9366-1",
+                "name": "Тип ткани/трикотажного полотна",
+                "outcome": "unknown",
+                "reason": "not_provided",
+                "fact_ids": [],
+                "value_codes": [],
+                "elements": []
+              }
+            ],
+            "missing_required": [
+              "Рост"
+            ],
+            "has_characteristics": true,
+            "blocking_reasons": [],
+            "exclusion_reasons": []
+          }
+        ],
+        "excluded": [
+          {
+            "ktru_code": "14.14.10.000-00000007",
+            "name": "Халат детский",
+            "okpd2": "14.14.1",
+            "outcome": "incompatible",
+            "checks": [
+              {
+                "property_id": "6b7558e5-9",
+                "name": "Половой признак",
+                "outcome": "incompatible",
+                "reason": "invalid_value",
+                "fact_ids": [
+                  "gold:0"
+                ],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "99adcc4e-d",
+                "name": "Рост",
+                "outcome": "unknown",
+                "reason": "missing_required",
+                "fact_ids": [],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "959b9366-1",
+                "name": "Тип ткани/трикотажного полотна",
+                "outcome": "unknown",
+                "reason": "not_provided",
+                "fact_ids": [],
+                "value_codes": [],
+                "elements": []
+              }
+            ],
+            "missing_required": [
+              "Половой признак",
+              "Рост"
+            ],
+            "has_characteristics": true,
+            "blocking_reasons": [],
+            "exclusion_reasons": [
+              {
+                "code": "invalid_value",
+                "severity": "error",
+                "explanation": "Половой признак: «Для девочки » — значение не входит в разрешённые варианты. Допустимо: Для мальчика.",
+                "fact_id": "gold:0",
+                "property_id": "6b7558e5-9",
+                "candidate_code": "14.14.10.000-00000007",
+                "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:43384#14.14.10.000-00000007@2",
+                "suggested_action": "Уточните значение или единицу по правилу позиции",
+                "confirmation_required": false
+              }
+            ]
+          }
+        ],
+        "candidate_count": 1,
+        "excluded_count": 1,
+        "scope": {
+          "category_id": "14.14.10.000-00000008",
+          "position_count": 2,
+          "evaluated_count": 2,
+          "complete": true
+        },
+        "issues": [
+          {
+            "code": "verification_incomplete",
+            "severity": "error",
+            "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+            "fact_id": null,
+            "property_id": null,
+            "candidate_code": null,
+            "rule_source": null,
+            "suggested_action": "Проверьте исходные сведения",
+            "confirmation_required": false
+          }
+        ],
+        "corrections": [],
+        "next_question": {
+          "id": "property:705271bc32229846749300f9",
+          "kind": "property",
+          "title": "Укажите: Рост",
+          "reason": "Нужно для проверки обязательного поля",
+          "property_name": "Рост",
+          "options": [],
+          "unit": "см",
+          "allow_unknown": true,
+          "multiple": false
+        },
+        "next_steps": [
+          "Укажите: Рост"
+        ],
+        "verification": {
+          "type_verified": true,
+          "ktru_unique": false,
+          "fields_complete": false,
+          "value_verified": false,
+          "catalog_scope_complete": true,
+          "value_indistinguishable": false,
+          "confirmed_by_user": true,
+          "blocking_issues": true
+        },
+        "selected_ktru_code": null,
+        "catalog_version": "clean5-7331f0732bc0ff5c",
+        "engine_version": "stateless-pipeline-v4.1-canonical-count"
+      }
+    },
+    {
+      "case_id": "REAL-021",
+      "source_ref": "Одежда.xlsx!sheet1 row=25700 STE=35234171",
+      "stage": "clarification_funnel",
+      "status": "PASS",
+      "detail": [
+        {
+          "facts": 1,
+          "remaining": 1
+        },
+        {
+          "facts": 2,
+          "remaining": 1
+        },
+        {
+          "facts": 3,
+          "remaining": 1
+        }
+      ]
+    },
+    {
+      "case_id": "REAL-022",
+      "source_ref": "Одежда.xlsx!sheet1 row=46150 STE=36219221",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-022",
+      "source_ref": "Одежда.xlsx!sheet1 row=46150 STE=36219221",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 4,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-022",
+      "source_ref": "Одежда.xlsx!sheet1 row=46150 STE=36219221",
+      "stage": "natural_language",
+      "status": "FAIL",
+      "detail": "14.12.30.130-00000002/7f45f94d-d: expected compatible, actual unknown; 14.12.30.130-00000001/7f45f94d-d: expected compatible, actual unknown",
+      "actual_response": {
+        "status": "needs_input",
+        "original_text": "Халат производственный тип2 (р. 108/176, цвет: синий, ткань: бязь); В составе комплекта (костюма) Нет | Вид фурнитуры Пуговицы | Диапазон роста 176 см | Класс защиты одежды в зависимости от устойчивости к действию растворов кислот различной концентрации 1 (К 20) | Наличие дополнительных элементов на одежду Накладные карманы | Наличие защитной пропитки Да | Наличие карманов Да | Наличие нарукавников Нет | Обхват груди 108 см | Плотность 130 гр/м2 | Половая принадлежность Женский | Расположение застежки Спереди | Способ поставки товара Единовременно | Тип ткани Бязь | Цвет синий",
+        "normalized_text": "Халат производственный тип2 (р. 108/176, цвет: синий, ткань: бязь); В составе комплекта (костюма) Нет | Вид фурнитуры Пуговицы | Диапазон роста 176 см | Класс защиты одежды в зависимости от устойчивости к действию растворов кислот различной концентрации 1 (К 20) | Наличие дополнительных элементов на одежду Накладные карманы | Наличие защитной пропитки Да | Наличие карманов Да | Наличие нарукавников Нет | Обхват груди 108 см | Плотность 130 гр/м2 | Половая принадлежность Женский | Расположение застежки Спереди | Способ поставки товара Единовременно | Тип ткани Бязь | Цвет синий",
+        "original_facts": [
+          {
+            "id": "text:0:66:0",
+            "name": "Халат производственный тип2 (р. 108/176, цвет",
+            "value": "синий, ткань: бязь)",
+            "values": null,
+            "unit": null,
+            "raw": "Халат производственный тип2 (р. 108/176, цвет: синий, ткань: бязь)",
+            "span": [
+              0,
+              66
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:138:150:1",
+            "name": "Рост",
+            "value": "176",
+            "values": null,
+            "unit": "см",
+            "raw": "роста 176 см",
+            "span": [
+              138,
+              150
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:359:378:2",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Наличие карманов Да",
+            "span": [
+              359,
+              378
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:408:427:3",
+            "name": "Обхват груди",
+            "value": "108",
+            "values": null,
+            "unit": "см",
+            "raw": "Обхват груди 108 см",
+            "span": [
+              408,
+              427
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:556:570:4",
+            "name": "Тип ткани",
+            "value": "Бязь",
+            "values": null,
+            "unit": null,
+            "raw": "Тип ткани Бязь",
+            "span": [
+              556,
+              570
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:67:102:5",
+            "name": "Наличие карманов",
+            "value": "Нет",
+            "values": null,
+            "unit": null,
+            "raw": " В составе комплекта (костюма) Нет ",
+            "span": [
+              67,
+              102
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": true,
+            "unknown": true,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:354:356:6",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Да",
+            "span": [
+              354,
+              356
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:380:406:7",
+            "name": "Наличие карманов",
+            "value": "Нет",
+            "values": null,
+            "unit": null,
+            "raw": " Наличие нарукавников Нет ",
+            "span": [
+              380,
+              406
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": true,
+            "unknown": true,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:475:482:8",
+            "name": "Половой признак",
+            "value": "Женский",
+            "values": null,
+            "unit": null,
+            "raw": "Женский",
+            "span": [
+              475,
+              482
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          }
+        ],
+        "facts": [
+          {
+            "id": "text:0:66:0",
+            "name": "Халат производственный тип2 (р. 108/176, цвет",
+            "value": "синий, ткань: бязь)",
+            "values": null,
+            "unit": null,
+            "raw": "Халат производственный тип2 (р. 108/176, цвет: синий, ткань: бязь)",
+            "span": [
+              0,
+              66
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:138:150:1",
+            "name": "Рост",
+            "value": "176",
+            "values": null,
+            "unit": "см",
+            "raw": "роста 176 см",
+            "span": [
+              138,
+              150
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": "176",
+            "normalized_unit": "см",
+            "mappings": [
+              "14.12.30.130-00000001/bd4d8f50-e",
+              "14.12.30.130-00000002/bd4d8f50-e"
+            ]
+          },
+          {
+            "id": "text:359:378:2",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Наличие карманов Да",
+            "span": [
+              359,
+              378
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/7f45f94d-d",
+              "14.12.30.130-00000002/7f45f94d-d"
+            ]
+          },
+          {
+            "id": "text:408:427:3",
+            "name": "Обхват груди",
+            "value": "108",
+            "values": null,
+            "unit": "см",
+            "raw": "Обхват груди 108 см",
+            "span": [
+              408,
+              427
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": "108",
+            "normalized_unit": "см",
+            "mappings": [
+              "14.12.30.130-00000001/44d1beed-0",
+              "14.12.30.130-00000002/44d1beed-0"
+            ]
+          },
+          {
+            "id": "text:556:570:4",
+            "name": "Тип ткани",
+            "value": "Бязь",
+            "values": null,
+            "unit": null,
+            "raw": "Тип ткани Бязь",
+            "span": [
+              556,
+              570
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/12633aee-2",
+              "14.12.30.130-00000002/12633aee-2"
+            ]
+          },
+          {
+            "id": "text:67:102:5",
+            "name": "Наличие карманов",
+            "value": "Нет",
+            "values": null,
+            "unit": null,
+            "raw": " В составе комплекта (костюма) Нет ",
+            "span": [
+              67,
+              102
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": true,
+            "unknown": true,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/7f45f94d-d",
+              "14.12.30.130-00000002/7f45f94d-d"
+            ]
+          },
+          {
+            "id": "text:354:356:6",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Да",
+            "span": [
+              354,
+              356
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/7f45f94d-d",
+              "14.12.30.130-00000002/7f45f94d-d"
+            ]
+          },
+          {
+            "id": "text:380:406:7",
+            "name": "Наличие карманов",
+            "value": "Нет",
+            "values": null,
+            "unit": null,
+            "raw": " Наличие нарукавников Нет ",
+            "span": [
+              380,
+              406
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": true,
+            "unknown": true,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/7f45f94d-d",
+              "14.12.30.130-00000002/7f45f94d-d"
+            ]
+          },
+          {
+            "id": "text:475:482:8",
+            "name": "Половой признак",
+            "value": "Женский",
+            "values": null,
+            "unit": null,
+            "raw": "Женский",
+            "span": [
+              475,
+              482
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/8e0aa39b-b",
+              "14.12.30.130-00000002/8e0aa39b-b"
+            ]
+          }
+        ],
+        "unparsed": [
+          {
+            "id": "fragment:66:98",
+            "raw": "; В составе комплекта (костюма) ",
+            "span": [
+              66,
+              98
+            ]
+          },
+          {
+            "id": "fragment:101:138",
+            "raw": " | Вид фурнитуры Пуговицы | Диапазон ",
+            "span": [
+              101,
+              138
+            ]
+          },
+          {
+            "id": "fragment:150:354",
+            "raw": " | Класс защиты одежды в зависимости от устойчивости к действию растворов кислот различной концентрации 1 (К 20) | Наличие дополнительных элементов на одежду Накладные карманы | Наличие защитной пропитки ",
+            "span": [
+              150,
+              354
+            ]
+          },
+          {
+            "id": "fragment:378:402",
+            "raw": " | Наличие нарукавников ",
+            "span": [
+              378,
+              402
+            ]
+          },
+          {
+            "id": "fragment:427:475",
+            "raw": " | Плотность 130 гр/м2 | Половая принадлежность ",
+            "span": [
+              427,
+              475
+            ]
+          },
+          {
+            "id": "fragment:482:556",
+            "raw": " | Расположение застежки Спереди | Способ поставки товара Единовременно | ",
+            "span": [
+              482,
+              556
+            ]
+          },
+          {
+            "id": "fragment:570:583",
+            "raw": " | Цвет синий",
+            "span": [
+              570,
+              583
+            ]
+          }
+        ],
+        "additional": [
+          {
+            "id": null,
+            "raw": "Халат производственный тип2 (р. 108/176, цвет: синий, ткань: бязь)",
+            "span": [
+              0,
+              66
+            ]
+          }
+        ],
+        "categories": [
+          {
+            "id": "14.12.30.130-00000003",
+            "name": "Халат производственный",
+            "rank": 1,
+            "rank_score": 0.047072599531615925,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000240",
+            "name": "Одежда специальная для защиты от нетоксичной пыли",
+            "rank": 2,
+            "rank_score": 0.03994360902255639,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000321",
+            "name": "Одежда специальная для защиты от общих производственных загрязнений и механических воздействий",
+            "rank": 3,
+            "rank_score": 0.03758259284575074,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000001",
+            "name": "Одежда специальная для защиты от воды",
+            "rank": 4,
+            "rank_score": 0.035908535908535905,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000340",
+            "name": "Одежда специальная для защиты от пониженных температур",
+            "rank": 5,
+            "rank_score": 0.0345188473267291,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          }
+        ],
+        "candidates": [],
+        "excluded": [
+          {
+            "ktru_code": "14.12.30.130-00000001",
+            "name": "Халат производственный",
+            "okpd2": "14.12.30.130",
+            "outcome": "incompatible",
+            "checks": [
+              {
+                "property_id": "8e0aa39b-b",
+                "name": "Половой признак",
+                "outcome": "compatible",
+                "reason": "allowed_value",
+                "fact_ids": [
+                  "text:475:482:8"
+                ],
+                "value_codes": [
+                  "2a5d9fa3-e"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "bd4d8f50-e",
+                "name": "Рост",
+                "outcome": "compatible",
+                "reason": "allowed_range",
+                "fact_ids": [
+                  "text:138:150:1"
+                ],
+                "value_codes": [
+                  "10ea1a77-a",
+                  "ed93d3f3-0"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "44d1beed-0",
+                "name": "Обхват груди",
+                "outcome": "compatible",
+                "reason": "allowed_range",
+                "fact_ids": [
+                  "text:408:427:3"
+                ],
+                "value_codes": [
+                  "08a7cf3a-6",
+                  "721afc4e-c"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "7f45f94d-d",
+                "name": "Наличие карманов",
+                "outcome": "unknown",
+                "reason": "unknown_fact",
+                "fact_ids": [
+                  "text:359:378:2",
+                  "text:67:102:5",
+                  "text:354:356:6",
+                  "text:380:406:7"
+                ],
+                "value_codes": [
+                  "0fa7f8a5-d"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "12633aee-2",
+                "name": "Тип ткани",
+                "outcome": "incompatible",
+                "reason": "invalid_value",
+                "fact_ids": [
+                  "text:556:570:4"
+                ],
+                "value_codes": [],
+                "elements": []
+              }
+            ],
+            "missing_required": [],
+            "has_characteristics": true,
+            "blocking_reasons": [],
+            "exclusion_reasons": [
+              {
+                "code": "invalid_value",
+                "severity": "error",
+                "explanation": "Тип ткани: «Бязь » — значение не входит в разрешённые варианты. Допустимо: Натуральная или Синтетическая или Смесовая.",
+                "fact_id": "text:556:570:4",
+                "property_id": "12633aee-2",
+                "candidate_code": "14.12.30.130-00000001",
+                "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:44444#14.12.30.130-00000001@4",
+                "suggested_action": "Уточните значение или единицу по правилу позиции",
+                "confirmation_required": false
+              }
+            ]
+          },
+          {
+            "ktru_code": "14.12.30.130-00000002",
+            "name": "Халат производственный",
+            "okpd2": "14.12.30.130",
+            "outcome": "incompatible",
+            "checks": [
+              {
+                "property_id": "8e0aa39b-b",
+                "name": "Половой признак",
+                "outcome": "incompatible",
+                "reason": "invalid_value",
+                "fact_ids": [
+                  "text:475:482:8"
+                ],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "bd4d8f50-e",
+                "name": "Рост",
+                "outcome": "compatible",
+                "reason": "allowed_range",
+                "fact_ids": [
+                  "text:138:150:1"
+                ],
+                "value_codes": [
+                  "10ea1a77-a",
+                  "ed93d3f3-0"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "44d1beed-0",
+                "name": "Обхват груди",
+                "outcome": "compatible",
+                "reason": "allowed_range",
+                "fact_ids": [
+                  "text:408:427:3"
+                ],
+                "value_codes": [
+                  "08a7cf3a-6",
+                  "721afc4e-c"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "7f45f94d-d",
+                "name": "Наличие карманов",
+                "outcome": "unknown",
+                "reason": "unknown_fact",
+                "fact_ids": [
+                  "text:359:378:2",
+                  "text:67:102:5",
+                  "text:354:356:6",
+                  "text:380:406:7"
+                ],
+                "value_codes": [
+                  "0fa7f8a5-d"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "12633aee-2",
+                "name": "Тип ткани",
+                "outcome": "incompatible",
+                "reason": "invalid_value",
+                "fact_ids": [
+                  "text:556:570:4"
+                ],
+                "value_codes": [],
+                "elements": []
+              }
+            ],
+            "missing_required": [
+              "Половой признак"
+            ],
+            "has_characteristics": true,
+            "blocking_reasons": [],
+            "exclusion_reasons": [
+              {
+                "code": "invalid_value",
+                "severity": "error",
+                "explanation": "Половой признак: «Женский » — значение не входит в разрешённые варианты. Допустимо: Мужской.",
+                "fact_id": "text:475:482:8",
+                "property_id": "8e0aa39b-b",
+                "candidate_code": "14.12.30.130-00000002",
+                "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:44443#14.12.30.130-00000002@4",
+                "suggested_action": "Уточните значение или единицу по правилу позиции",
+                "confirmation_required": false
+              },
+              {
+                "code": "invalid_value",
+                "severity": "error",
+                "explanation": "Тип ткани: «Бязь » — значение не входит в разрешённые варианты. Допустимо: Натуральная или Синтетическая или Смесовая.",
+                "fact_id": "text:556:570:4",
+                "property_id": "12633aee-2",
+                "candidate_code": "14.12.30.130-00000002",
+                "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:44443#14.12.30.130-00000002@4",
+                "suggested_action": "Уточните значение или единицу по правилу позиции",
+                "confirmation_required": false
+              }
+            ]
+          }
+        ],
+        "candidate_count": 0,
+        "excluded_count": 2,
+        "scope": {
+          "category_id": "14.12.30.130-00000003",
+          "position_count": 2,
+          "evaluated_count": 2,
+          "complete": true
+        },
+        "issues": [
+          {
+            "code": "invalid_value",
+            "severity": "error",
+            "explanation": "Тип ткани: «Бязь » — значение не входит в разрешённые варианты. Допустимо: Натуральная или Синтетическая или Смесовая.",
+            "fact_id": "text:556:570:4",
+            "property_id": "12633aee-2",
+            "candidate_code": "14.12.30.130-00000001",
+            "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:44444#14.12.30.130-00000001@4",
+            "suggested_action": "Уточните значение или единицу по правилу позиции",
+            "confirmation_required": false
+          },
+          {
+            "code": "invalid_value",
+            "severity": "error",
+            "explanation": "Половой признак: «Женский » — значение не входит в разрешённые варианты. Допустимо: Мужской.",
+            "fact_id": "text:475:482:8",
+            "property_id": "8e0aa39b-b",
+            "candidate_code": "14.12.30.130-00000002",
+            "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:44443#14.12.30.130-00000002@4",
+            "suggested_action": "Уточните значение или единицу по правилу позиции",
+            "confirmation_required": false
+          },
+          {
+            "code": "invalid_value",
+            "severity": "error",
+            "explanation": "Тип ткани: «Бязь » — значение не входит в разрешённые варианты. Допустимо: Натуральная или Синтетическая или Смесовая.",
+            "fact_id": "text:556:570:4",
+            "property_id": "12633aee-2",
+            "candidate_code": "14.12.30.130-00000002",
+            "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:44443#14.12.30.130-00000002@4",
+            "suggested_action": "Уточните значение или единицу по правилу позиции",
+            "confirmation_required": false
+          },
+          {
+            "code": "no_compatible_candidate",
+            "severity": "error",
+            "explanation": "В выбранной области нет совместимых позиций",
+            "fact_id": null,
+            "property_id": null,
+            "candidate_code": null,
+            "rule_source": null,
+            "suggested_action": "Проверьте исходные сведения",
+            "confirmation_required": false
+          }
+        ],
+        "corrections": [],
+        "next_question": null,
+        "next_steps": [
+          "Проверьте замечания и уточните исходные сведения; неизвестное не считается подтверждённым"
+        ],
+        "verification": {
+          "type_verified": true,
+          "ktru_unique": false,
+          "fields_complete": false,
+          "value_verified": false,
+          "catalog_scope_complete": true,
+          "value_indistinguishable": false,
+          "confirmed_by_user": false,
+          "blocking_issues": true
+        },
+        "selected_ktru_code": null,
+        "catalog_version": "clean5-7331f0732bc0ff5c",
+        "engine_version": "stateless-pipeline-v4.1-canonical-count"
+      }
+    },
+    {
+      "case_id": "REAL-022",
+      "source_ref": "Одежда.xlsx!sheet1 row=46150 STE=36219221",
+      "stage": "clarification_funnel",
+      "status": "PASS",
+      "detail": [
+        {
+          "facts": 1,
+          "remaining": 2
+        },
+        {
+          "facts": 2,
+          "remaining": 2
+        }
+      ]
+    },
+    {
+      "case_id": "REAL-023",
+      "source_ref": "Одежда.xlsx!sheet1 row=46155 STE=36219267",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-023",
+      "source_ref": "Одежда.xlsx!sheet1 row=46155 STE=36219267",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 4,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-023",
+      "source_ref": "Одежда.xlsx!sheet1 row=46155 STE=36219267",
+      "stage": "natural_language",
+      "status": "FAIL",
+      "detail": "14.12.30.130-00000002/7f45f94d-d: expected compatible, actual unknown; 14.12.30.130-00000001/7f45f94d-d: expected compatible, actual unknown",
+      "actual_response": {
+        "status": "needs_input",
+        "original_text": "Халат производственный тип3(р.100/176, цвет: белый, ткань: смесовая(240г/м2)); В составе комплекта (костюма) Нет | Вид фурнитуры Пуговицы | Класс защиты одежды в зависимости от устойчивости к действию растворов кислот различной концентрации 1 (К 20) | Наличие дополнительных элементов на одежду Накладные карманы | Наличие защитной пропитки Да | Наличие карманов Да | Плотность 140 гр/м2 | Половая принадлежность Женский | Размер 100/178 | Расположение застежки Спереди | Способ поставки товара Единовременно | Тип ткани Смесовая | Цвет белый",
+        "normalized_text": "Халат производственный тип3(р.100/176, цвет: белый, ткань: смесовая(240г/м2)); В составе комплекта (костюма) Нет | Вид фурнитуры Пуговицы | Класс защиты одежды в зависимости от устойчивости к действию растворов кислот различной концентрации 1 (К 20) | Наличие дополнительных элементов на одежду Накладные карманы | Наличие защитной пропитки Да | Наличие карманов Да | Плотность 140 гр/м2 | Половая принадлежность Женский | Размер 100/178 | Расположение застежки Спереди | Способ поставки товара Единовременно | Тип ткани Смесовая | Цвет белый",
+        "original_facts": [
+          {
+            "id": "text:0:77:0",
+            "name": "Халат производственный тип3(р.100/176, цвет",
+            "value": "белый, ткань: смесовая(240г/м2))",
+            "values": null,
+            "unit": null,
+            "raw": "Халат производственный тип3(р.100/176, цвет: белый, ткань: смесовая(240г/м2))",
+            "span": [
+              0,
+              77
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:346:365:1",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Наличие карманов Да",
+            "span": [
+              346,
+              365
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:511:529:2",
+            "name": "Тип ткани",
+            "value": "Смесовая",
+            "values": null,
+            "unit": null,
+            "raw": "Тип ткани Смесовая",
+            "span": [
+              511,
+              529
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:78:113:3",
+            "name": "Наличие карманов",
+            "value": "Нет",
+            "values": null,
+            "unit": null,
+            "raw": " В составе комплекта (костюма) Нет ",
+            "span": [
+              78,
+              113
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": true,
+            "unknown": true,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:341:343:4",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Да",
+            "span": [
+              341,
+              343
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:413:420:5",
+            "name": "Половой признак",
+            "value": "Женский",
+            "values": null,
+            "unit": null,
+            "raw": "Женский",
+            "span": [
+              413,
+              420
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          }
+        ],
+        "facts": [
+          {
+            "id": "text:0:77:0",
+            "name": "Халат производственный тип3(р.100/176, цвет",
+            "value": "белый, ткань: смесовая(240г/м2))",
+            "values": null,
+            "unit": null,
+            "raw": "Халат производственный тип3(р.100/176, цвет: белый, ткань: смесовая(240г/м2))",
+            "span": [
+              0,
+              77
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:346:365:1",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Наличие карманов Да",
+            "span": [
+              346,
+              365
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/7f45f94d-d",
+              "14.12.30.130-00000002/7f45f94d-d"
+            ]
+          },
+          {
+            "id": "text:511:529:2",
+            "name": "Тип ткани",
+            "value": "Смесовая",
+            "values": null,
+            "unit": null,
+            "raw": "Тип ткани Смесовая",
+            "span": [
+              511,
+              529
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/12633aee-2",
+              "14.12.30.130-00000002/12633aee-2"
+            ]
+          },
+          {
+            "id": "text:78:113:3",
+            "name": "Наличие карманов",
+            "value": "Нет",
+            "values": null,
+            "unit": null,
+            "raw": " В составе комплекта (костюма) Нет ",
+            "span": [
+              78,
+              113
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": true,
+            "unknown": true,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/7f45f94d-d",
+              "14.12.30.130-00000002/7f45f94d-d"
+            ]
+          },
+          {
+            "id": "text:341:343:4",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Да",
+            "span": [
+              341,
+              343
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/7f45f94d-d",
+              "14.12.30.130-00000002/7f45f94d-d"
+            ]
+          },
+          {
+            "id": "text:413:420:5",
+            "name": "Половой признак",
+            "value": "Женский",
+            "values": null,
+            "unit": null,
+            "raw": "Женский",
+            "span": [
+              413,
+              420
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/8e0aa39b-b",
+              "14.12.30.130-00000002/8e0aa39b-b"
+            ]
+          }
+        ],
+        "unparsed": [
+          {
+            "id": "fragment:77:109",
+            "raw": "; В составе комплекта (костюма) ",
+            "span": [
+              77,
+              109
+            ]
+          },
+          {
+            "id": "fragment:112:341",
+            "raw": " | Вид фурнитуры Пуговицы | Класс защиты одежды в зависимости от устойчивости к действию растворов кислот различной концентрации 1 (К 20) | Наличие дополнительных элементов на одежду Накладные карманы | Наличие защитной пропитки ",
+            "span": [
+              112,
+              341
+            ]
+          },
+          {
+            "id": "fragment:365:413",
+            "raw": " | Плотность 140 гр/м2 | Половая принадлежность ",
+            "span": [
+              365,
+              413
+            ]
+          },
+          {
+            "id": "fragment:420:511",
+            "raw": " | Размер 100/178 | Расположение застежки Спереди | Способ поставки товара Единовременно | ",
+            "span": [
+              420,
+              511
+            ]
+          },
+          {
+            "id": "fragment:529:542",
+            "raw": " | Цвет белый",
+            "span": [
+              529,
+              542
+            ]
+          }
+        ],
+        "additional": [
+          {
+            "id": null,
+            "raw": "Халат производственный тип3(р.100/176, цвет: белый, ткань: смесовая(240г/м2))",
+            "span": [
+              0,
+              77
+            ]
+          }
+        ],
+        "categories": [
+          {
+            "id": "14.12.30.130-00000003",
+            "name": "Халат производственный",
+            "rank": 1,
+            "rank_score": 0.045592078599080404,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000240",
+            "name": "Одежда специальная для защиты от нетоксичной пыли",
+            "rank": 2,
+            "rank_score": 0.04265696347031964,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000001",
+            "name": "Одежда специальная для защиты от воды",
+            "rank": 3,
+            "rank_score": 0.039972899728997285,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000321",
+            "name": "Одежда специальная для защиты от общих производственных загрязнений и механических воздействий",
+            "rank": 4,
+            "rank_score": 0.039631793753513965,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000340",
+            "name": "Одежда специальная для защиты от пониженных температур",
+            "rank": 5,
+            "rank_score": 0.036592403030759196,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          }
+        ],
+        "candidates": [
+          {
+            "ktru_code": "14.12.30.130-00000001",
+            "name": "Халат производственный",
+            "okpd2": "14.12.30.130",
+            "outcome": "unknown",
+            "checks": [
+              {
+                "property_id": "8e0aa39b-b",
+                "name": "Половой признак",
+                "outcome": "compatible",
+                "reason": "allowed_value",
+                "fact_ids": [
+                  "text:413:420:5"
+                ],
+                "value_codes": [
+                  "2a5d9fa3-e"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "bd4d8f50-e",
+                "name": "Рост",
+                "outcome": "unknown",
+                "reason": "missing_required",
+                "fact_ids": [],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "44d1beed-0",
+                "name": "Обхват груди",
+                "outcome": "unknown",
+                "reason": "missing_required",
+                "fact_ids": [],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "7f45f94d-d",
+                "name": "Наличие карманов",
+                "outcome": "unknown",
+                "reason": "unknown_fact",
+                "fact_ids": [
+                  "text:346:365:1",
+                  "text:78:113:3",
+                  "text:341:343:4"
+                ],
+                "value_codes": [
+                  "0fa7f8a5-d"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "12633aee-2",
+                "name": "Тип ткани",
+                "outcome": "compatible",
+                "reason": "allowed_value",
+                "fact_ids": [
+                  "text:511:529:2"
+                ],
+                "value_codes": [
+                  "69b565a5-c"
+                ],
+                "elements": []
+              }
+            ],
+            "missing_required": [
+              "Обхват груди",
+              "Рост"
+            ],
+            "has_characteristics": true,
+            "blocking_reasons": [],
+            "exclusion_reasons": []
+          }
+        ],
+        "excluded": [
+          {
+            "ktru_code": "14.12.30.130-00000002",
+            "name": "Халат производственный",
+            "okpd2": "14.12.30.130",
+            "outcome": "incompatible",
+            "checks": [
+              {
+                "property_id": "8e0aa39b-b",
+                "name": "Половой признак",
+                "outcome": "incompatible",
+                "reason": "invalid_value",
+                "fact_ids": [
+                  "text:413:420:5"
+                ],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "bd4d8f50-e",
+                "name": "Рост",
+                "outcome": "unknown",
+                "reason": "missing_required",
+                "fact_ids": [],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "44d1beed-0",
+                "name": "Обхват груди",
+                "outcome": "unknown",
+                "reason": "missing_required",
+                "fact_ids": [],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "7f45f94d-d",
+                "name": "Наличие карманов",
+                "outcome": "unknown",
+                "reason": "unknown_fact",
+                "fact_ids": [
+                  "text:346:365:1",
+                  "text:78:113:3",
+                  "text:341:343:4"
+                ],
+                "value_codes": [
+                  "0fa7f8a5-d"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "12633aee-2",
+                "name": "Тип ткани",
+                "outcome": "compatible",
+                "reason": "allowed_value",
+                "fact_ids": [
+                  "text:511:529:2"
+                ],
+                "value_codes": [
+                  "69b565a5-c"
+                ],
+                "elements": []
+              }
+            ],
+            "missing_required": [
+              "Обхват груди",
+              "Половой признак",
+              "Рост"
+            ],
+            "has_characteristics": true,
+            "blocking_reasons": [],
+            "exclusion_reasons": [
+              {
+                "code": "invalid_value",
+                "severity": "error",
+                "explanation": "Половой признак: «Женский » — значение не входит в разрешённые варианты. Допустимо: Мужской.",
+                "fact_id": "text:413:420:5",
+                "property_id": "8e0aa39b-b",
+                "candidate_code": "14.12.30.130-00000002",
+                "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:44443#14.12.30.130-00000002@4",
+                "suggested_action": "Уточните значение или единицу по правилу позиции",
+                "confirmation_required": false
+              }
+            ]
+          }
+        ],
+        "candidate_count": 1,
+        "excluded_count": 1,
+        "scope": {
+          "category_id": "14.12.30.130-00000003",
+          "position_count": 2,
+          "evaluated_count": 2,
+          "complete": true
+        },
+        "issues": [
+          {
+            "code": "verification_incomplete",
+            "severity": "error",
+            "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+            "fact_id": null,
+            "property_id": null,
+            "candidate_code": null,
+            "rule_source": null,
+            "suggested_action": "Проверьте исходные сведения",
+            "confirmation_required": false
+          }
+        ],
+        "corrections": [],
+        "next_question": {
+          "id": "property:929ff54858a4b3a83c254403",
+          "kind": "property",
+          "title": "Укажите: Рост",
+          "reason": "Нужно для проверки обязательного поля",
+          "property_name": "Рост",
+          "options": [],
+          "unit": "см",
+          "allow_unknown": true,
+          "multiple": false
+        },
+        "next_steps": [
+          "Укажите: Рост"
+        ],
+        "verification": {
+          "type_verified": true,
+          "ktru_unique": false,
+          "fields_complete": false,
+          "value_verified": false,
+          "catalog_scope_complete": true,
+          "value_indistinguishable": false,
+          "confirmed_by_user": false,
+          "blocking_issues": true
+        },
+        "selected_ktru_code": null,
+        "catalog_version": "clean5-7331f0732bc0ff5c",
+        "engine_version": "stateless-pipeline-v4.1-canonical-count"
+      }
+    },
+    {
+      "case_id": "REAL-023",
+      "source_ref": "Одежда.xlsx!sheet1 row=46155 STE=36219267",
+      "stage": "clarification_funnel",
+      "status": "PASS",
+      "detail": [
+        {
+          "facts": 1,
+          "remaining": 2
+        },
+        {
+          "facts": 2,
+          "remaining": 2
+        }
+      ]
+    },
+    {
+      "case_id": "REAL-024",
+      "source_ref": "Одежда.xlsx!sheet1 row=46156 STE=36219288",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-024",
+      "source_ref": "Одежда.xlsx!sheet1 row=46156 STE=36219288",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 6,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-024",
+      "source_ref": "Одежда.xlsx!sheet1 row=46156 STE=36219288",
+      "stage": "natural_language",
+      "status": "FAIL",
+      "detail": "14.12.30.130-00000002/7f45f94d-d: expected compatible, actual unknown; 14.12.30.130-00000001/7f45f94d-d: expected compatible, actual unknown",
+      "actual_response": {
+        "status": "needs_input",
+        "original_text": "Халат производственный тип 5, синий, размер 96/176; В составе комплекта (костюма) Нет | Вид фурнитуры Пуговицы | Диапазон роста 176 см | Класс защиты одежды в зависимости от устойчивости к действию растворов кислот различной концентрации 1 (К 20) | Наличие дополнительных элементов на одежду Накладные карманы | Наличие защитной пропитки Да | Наличие карманов Да | Обхват груди 96.00000 см | Половая принадлежность Женский | Расположение застежки Спереди | Способ поставки товара Единовременно | Тип ткани Смесовая | Цвет синий",
+        "normalized_text": "Халат производственный тип 5, синий, размер 96/176; В составе комплекта (костюма) Нет | Вид фурнитуры Пуговицы | Диапазон роста 176 см | Класс защиты одежды в зависимости от устойчивости к действию растворов кислот различной концентрации 1 (К 20) | Наличие дополнительных элементов на одежду Накладные карманы | Наличие защитной пропитки Да | Наличие карманов Да | Обхват груди 96.00000 см | Половая принадлежность Женский | Расположение застежки Спереди | Способ поставки товара Единовременно | Тип ткани Смесовая | Цвет синий",
+        "original_facts": [
+          {
+            "id": "text:122:134:0",
+            "name": "Рост",
+            "value": "176",
+            "values": null,
+            "unit": "см",
+            "raw": "роста 176 см",
+            "span": [
+              122,
+              134
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:343:362:1",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Наличие карманов Да",
+            "span": [
+              343,
+              362
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:365:389:2",
+            "name": "Обхват груди",
+            "value": "96.00000",
+            "values": null,
+            "unit": "см",
+            "raw": "Обхват груди 96.00000 см",
+            "span": [
+              365,
+              389
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:496:514:3",
+            "name": "Тип ткани",
+            "value": "Смесовая",
+            "values": null,
+            "unit": null,
+            "raw": "Тип ткани Смесовая",
+            "span": [
+              496,
+              514
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:51:86:4",
+            "name": "Наличие карманов",
+            "value": "Нет",
+            "values": null,
+            "unit": null,
+            "raw": " В составе комплекта (костюма) Нет ",
+            "span": [
+              51,
+              86
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": true,
+            "unknown": true,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:338:340:5",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Да",
+            "span": [
+              338,
+              340
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:415:422:6",
+            "name": "Половой признак",
+            "value": "Женский",
+            "values": null,
+            "unit": null,
+            "raw": "Женский",
+            "span": [
+              415,
+              422
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          }
+        ],
+        "facts": [
+          {
+            "id": "text:122:134:0",
+            "name": "Рост",
+            "value": "176",
+            "values": null,
+            "unit": "см",
+            "raw": "роста 176 см",
+            "span": [
+              122,
+              134
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": "176",
+            "normalized_unit": "см",
+            "mappings": [
+              "14.12.30.130-00000001/bd4d8f50-e",
+              "14.12.30.130-00000002/bd4d8f50-e"
+            ]
+          },
+          {
+            "id": "text:343:362:1",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Наличие карманов Да",
+            "span": [
+              343,
+              362
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/7f45f94d-d",
+              "14.12.30.130-00000002/7f45f94d-d"
+            ]
+          },
+          {
+            "id": "text:365:389:2",
+            "name": "Обхват груди",
+            "value": "96.00000",
+            "values": null,
+            "unit": "см",
+            "raw": "Обхват груди 96.00000 см",
+            "span": [
+              365,
+              389
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": "96",
+            "normalized_unit": "см",
+            "mappings": [
+              "14.12.30.130-00000001/44d1beed-0",
+              "14.12.30.130-00000002/44d1beed-0"
+            ]
+          },
+          {
+            "id": "text:496:514:3",
+            "name": "Тип ткани",
+            "value": "Смесовая",
+            "values": null,
+            "unit": null,
+            "raw": "Тип ткани Смесовая",
+            "span": [
+              496,
+              514
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/12633aee-2",
+              "14.12.30.130-00000002/12633aee-2"
+            ]
+          },
+          {
+            "id": "text:51:86:4",
+            "name": "Наличие карманов",
+            "value": "Нет",
+            "values": null,
+            "unit": null,
+            "raw": " В составе комплекта (костюма) Нет ",
+            "span": [
+              51,
+              86
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": true,
+            "unknown": true,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/7f45f94d-d",
+              "14.12.30.130-00000002/7f45f94d-d"
+            ]
+          },
+          {
+            "id": "text:338:340:5",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Да",
+            "span": [
+              338,
+              340
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/7f45f94d-d",
+              "14.12.30.130-00000002/7f45f94d-d"
+            ]
+          },
+          {
+            "id": "text:415:422:6",
+            "name": "Половой признак",
+            "value": "Женский",
+            "values": null,
+            "unit": null,
+            "raw": "Женский",
+            "span": [
+              415,
+              422
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/8e0aa39b-b",
+              "14.12.30.130-00000002/8e0aa39b-b"
+            ]
+          }
+        ],
+        "unparsed": [
+          {
+            "id": "fragment:0:82",
+            "raw": "Халат производственный тип 5, синий, размер 96/176; В составе комплекта (костюма) ",
+            "span": [
+              0,
+              82
+            ]
+          },
+          {
+            "id": "fragment:85:122",
+            "raw": " | Вид фурнитуры Пуговицы | Диапазон ",
+            "span": [
+              85,
+              122
+            ]
+          },
+          {
+            "id": "fragment:134:338",
+            "raw": " | Класс защиты одежды в зависимости от устойчивости к действию растворов кислот различной концентрации 1 (К 20) | Наличие дополнительных элементов на одежду Накладные карманы | Наличие защитной пропитки ",
+            "span": [
+              134,
+              338
+            ]
+          },
+          {
+            "id": "fragment:389:415",
+            "raw": " | Половая принадлежность ",
+            "span": [
+              389,
+              415
+            ]
+          },
+          {
+            "id": "fragment:422:496",
+            "raw": " | Расположение застежки Спереди | Способ поставки товара Единовременно | ",
+            "span": [
+              422,
+              496
+            ]
+          },
+          {
+            "id": "fragment:514:527",
+            "raw": " | Цвет синий",
+            "span": [
+              514,
+              527
+            ]
+          }
+        ],
+        "additional": [],
+        "categories": [
+          {
+            "id": "14.12.30.130-00000003",
+            "name": "Халат производственный",
+            "rank": 1,
+            "rank_score": 0.0474478480153437,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000240",
+            "name": "Одежда специальная для защиты от нетоксичной пыли",
+            "rank": 2,
+            "rank_score": 0.04102844917606907,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000321",
+            "name": "Одежда специальная для защиты от общих производственных загрязнений и механических воздействий",
+            "rank": 3,
+            "rank_score": 0.03730484441838751,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000001",
+            "name": "Одежда специальная для защиты от воды",
+            "rank": 4,
+            "rank_score": 0.03673701298701299,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000340",
+            "name": "Одежда специальная для защиты от пониженных температур",
+            "rank": 5,
+            "rank_score": 0.03494924951992789,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          }
+        ],
+        "candidates": [
+          {
+            "ktru_code": "14.12.30.130-00000001",
+            "name": "Халат производственный",
+            "okpd2": "14.12.30.130",
+            "outcome": "unknown",
+            "checks": [
+              {
+                "property_id": "8e0aa39b-b",
+                "name": "Половой признак",
+                "outcome": "compatible",
+                "reason": "allowed_value",
+                "fact_ids": [
+                  "text:415:422:6"
+                ],
+                "value_codes": [
+                  "2a5d9fa3-e"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "bd4d8f50-e",
+                "name": "Рост",
+                "outcome": "compatible",
+                "reason": "allowed_range",
+                "fact_ids": [
+                  "text:122:134:0"
+                ],
+                "value_codes": [
+                  "10ea1a77-a",
+                  "ed93d3f3-0"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "44d1beed-0",
+                "name": "Обхват груди",
+                "outcome": "compatible",
+                "reason": "allowed_range",
+                "fact_ids": [
+                  "text:365:389:2"
+                ],
+                "value_codes": [
+                  "c5a385c9-5",
+                  "f5542880-8"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "7f45f94d-d",
+                "name": "Наличие карманов",
+                "outcome": "unknown",
+                "reason": "unknown_fact",
+                "fact_ids": [
+                  "text:343:362:1",
+                  "text:51:86:4",
+                  "text:338:340:5"
+                ],
+                "value_codes": [
+                  "0fa7f8a5-d"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "12633aee-2",
+                "name": "Тип ткани",
+                "outcome": "compatible",
+                "reason": "allowed_value",
+                "fact_ids": [
+                  "text:496:514:3"
+                ],
+                "value_codes": [
+                  "69b565a5-c"
+                ],
+                "elements": []
+              }
+            ],
+            "missing_required": [],
+            "has_characteristics": true,
+            "blocking_reasons": [],
+            "exclusion_reasons": []
+          }
+        ],
+        "excluded": [
+          {
+            "ktru_code": "14.12.30.130-00000002",
+            "name": "Халат производственный",
+            "okpd2": "14.12.30.130",
+            "outcome": "incompatible",
+            "checks": [
+              {
+                "property_id": "8e0aa39b-b",
+                "name": "Половой признак",
+                "outcome": "incompatible",
+                "reason": "invalid_value",
+                "fact_ids": [
+                  "text:415:422:6"
+                ],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "bd4d8f50-e",
+                "name": "Рост",
+                "outcome": "compatible",
+                "reason": "allowed_range",
+                "fact_ids": [
+                  "text:122:134:0"
+                ],
+                "value_codes": [
+                  "10ea1a77-a",
+                  "ed93d3f3-0"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "44d1beed-0",
+                "name": "Обхват груди",
+                "outcome": "compatible",
+                "reason": "allowed_range",
+                "fact_ids": [
+                  "text:365:389:2"
+                ],
+                "value_codes": [
+                  "c5a385c9-5",
+                  "f5542880-8"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "7f45f94d-d",
+                "name": "Наличие карманов",
+                "outcome": "unknown",
+                "reason": "unknown_fact",
+                "fact_ids": [
+                  "text:343:362:1",
+                  "text:51:86:4",
+                  "text:338:340:5"
+                ],
+                "value_codes": [
+                  "0fa7f8a5-d"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "12633aee-2",
+                "name": "Тип ткани",
+                "outcome": "compatible",
+                "reason": "allowed_value",
+                "fact_ids": [
+                  "text:496:514:3"
+                ],
+                "value_codes": [
+                  "69b565a5-c"
+                ],
+                "elements": []
+              }
+            ],
+            "missing_required": [
+              "Половой признак"
+            ],
+            "has_characteristics": true,
+            "blocking_reasons": [],
+            "exclusion_reasons": [
+              {
+                "code": "invalid_value",
+                "severity": "error",
+                "explanation": "Половой признак: «Женский » — значение не входит в разрешённые варианты. Допустимо: Мужской.",
+                "fact_id": "text:415:422:6",
+                "property_id": "8e0aa39b-b",
+                "candidate_code": "14.12.30.130-00000002",
+                "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:44443#14.12.30.130-00000002@4",
+                "suggested_action": "Уточните значение или единицу по правилу позиции",
+                "confirmation_required": false
+              }
+            ]
+          }
+        ],
+        "candidate_count": 1,
+        "excluded_count": 1,
+        "scope": {
+          "category_id": "14.12.30.130-00000003",
+          "position_count": 2,
+          "evaluated_count": 2,
+          "complete": true
+        },
+        "issues": [
+          {
+            "code": "verification_incomplete",
+            "severity": "error",
+            "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+            "fact_id": null,
+            "property_id": null,
+            "candidate_code": null,
+            "rule_source": null,
+            "suggested_action": "Проверьте исходные сведения",
+            "confirmation_required": false
+          }
+        ],
+        "corrections": [
+          {
+            "fact_id": "text:365:389:2",
+            "kind": "auto_normalization",
+            "original": "96.00000 см",
+            "normalized": "96 см",
+            "explanation": "Безопасное преобразование в совместимой размерности",
+            "confirmation_required": false
+          }
+        ],
+        "next_question": null,
+        "next_steps": [
+          "Проверьте замечания и уточните исходные сведения; неизвестное не считается подтверждённым"
+        ],
+        "verification": {
+          "type_verified": true,
+          "ktru_unique": false,
+          "fields_complete": true,
+          "value_verified": false,
+          "catalog_scope_complete": true,
+          "value_indistinguishable": false,
+          "confirmed_by_user": false,
+          "blocking_issues": true
+        },
+        "selected_ktru_code": null,
+        "catalog_version": "clean5-7331f0732bc0ff5c",
+        "engine_version": "stateless-pipeline-v4.1-canonical-count"
+      }
+    },
+    {
+      "case_id": "REAL-024",
+      "source_ref": "Одежда.xlsx!sheet1 row=46156 STE=36219288",
+      "stage": "clarification_funnel",
+      "status": "PASS",
+      "detail": [
+        {
+          "facts": 1,
+          "remaining": 2
+        },
+        {
+          "facts": 2,
+          "remaining": 2
+        },
+        {
+          "facts": 3,
+          "remaining": 2
+        }
+      ]
+    },
+    {
+      "case_id": "REAL-025",
+      "source_ref": "Одежда.xlsx!sheet1 row=46160 STE=36219328",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-025",
+      "source_ref": "Одежда.xlsx!sheet1 row=46160 STE=36219328",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 2,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-025",
+      "source_ref": "Одежда.xlsx!sheet1 row=46160 STE=36219328",
+      "stage": "natural_language",
+      "status": "FAIL",
+      "detail": "14.12.30.130-00000002/7f45f94d-d: expected compatible, actual unknown; 14.12.30.130-00000001/7f45f94d-d: expected compatible, actual unknown",
+      "actual_response": {
+        "status": "needs_input",
+        "original_text": "Халат производственный тип2 (р.100/176, цвет: синий); В составе комплекта (костюма) Нет | Вид фурнитуры Пуговицы | Класс защиты одежды в зависимости от устойчивости к действию растворов кислот различной концентрации 1 (К 20) | Наличие дополнительных элементов на одежду Накладной карман | Наличие защитной пропитки Да | Наличие карманов Да | Плотность 130 гр/м2 | Половая принадлежность Женский | Размер 100/176 | Расположение застежки Спереди | Способ поставки товара Единовременно | Тип ткани Бязь | Цвет синий",
+        "normalized_text": "Халат производственный тип2 (р.100/176, цвет: синий); В составе комплекта (костюма) Нет | Вид фурнитуры Пуговицы | Класс защиты одежды в зависимости от устойчивости к действию растворов кислот различной концентрации 1 (К 20) | Наличие дополнительных элементов на одежду Накладной карман | Наличие защитной пропитки Да | Наличие карманов Да | Плотность 130 гр/м2 | Половая принадлежность Женский | Размер 100/176 | Расположение застежки Спереди | Способ поставки товара Единовременно | Тип ткани Бязь | Цвет синий",
+        "original_facts": [
+          {
+            "id": "text:0:52:0",
+            "name": "Халат производственный тип2 (р.100/176, цвет",
+            "value": "синий)",
+            "values": null,
+            "unit": null,
+            "raw": "Халат производственный тип2 (р.100/176, цвет: синий)",
+            "span": [
+              0,
+              52
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:320:339:1",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Наличие карманов Да",
+            "span": [
+              320,
+              339
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:485:499:2",
+            "name": "Тип ткани",
+            "value": "Бязь",
+            "values": null,
+            "unit": null,
+            "raw": "Тип ткани Бязь",
+            "span": [
+              485,
+              499
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:53:88:3",
+            "name": "Наличие карманов",
+            "value": "Нет",
+            "values": null,
+            "unit": null,
+            "raw": " В составе комплекта (костюма) Нет ",
+            "span": [
+              53,
+              88
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": true,
+            "unknown": true,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:315:317:4",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Да",
+            "span": [
+              315,
+              317
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:387:394:5",
+            "name": "Половой признак",
+            "value": "Женский",
+            "values": null,
+            "unit": null,
+            "raw": "Женский",
+            "span": [
+              387,
+              394
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          }
+        ],
+        "facts": [
+          {
+            "id": "text:0:52:0",
+            "name": "Халат производственный тип2 (р.100/176, цвет",
+            "value": "синий)",
+            "values": null,
+            "unit": null,
+            "raw": "Халат производственный тип2 (р.100/176, цвет: синий)",
+            "span": [
+              0,
+              52
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:320:339:1",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Наличие карманов Да",
+            "span": [
+              320,
+              339
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/7f45f94d-d",
+              "14.12.30.130-00000002/7f45f94d-d"
+            ]
+          },
+          {
+            "id": "text:485:499:2",
+            "name": "Тип ткани",
+            "value": "Бязь",
+            "values": null,
+            "unit": null,
+            "raw": "Тип ткани Бязь",
+            "span": [
+              485,
+              499
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/12633aee-2",
+              "14.12.30.130-00000002/12633aee-2"
+            ]
+          },
+          {
+            "id": "text:53:88:3",
+            "name": "Наличие карманов",
+            "value": "Нет",
+            "values": null,
+            "unit": null,
+            "raw": " В составе комплекта (костюма) Нет ",
+            "span": [
+              53,
+              88
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": true,
+            "unknown": true,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/7f45f94d-d",
+              "14.12.30.130-00000002/7f45f94d-d"
+            ]
+          },
+          {
+            "id": "text:315:317:4",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Да",
+            "span": [
+              315,
+              317
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/7f45f94d-d",
+              "14.12.30.130-00000002/7f45f94d-d"
+            ]
+          },
+          {
+            "id": "text:387:394:5",
+            "name": "Половой признак",
+            "value": "Женский",
+            "values": null,
+            "unit": null,
+            "raw": "Женский",
+            "span": [
+              387,
+              394
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/8e0aa39b-b",
+              "14.12.30.130-00000002/8e0aa39b-b"
+            ]
+          }
+        ],
+        "unparsed": [
+          {
+            "id": "fragment:52:84",
+            "raw": "; В составе комплекта (костюма) ",
+            "span": [
+              52,
+              84
+            ]
+          },
+          {
+            "id": "fragment:87:315",
+            "raw": " | Вид фурнитуры Пуговицы | Класс защиты одежды в зависимости от устойчивости к действию растворов кислот различной концентрации 1 (К 20) | Наличие дополнительных элементов на одежду Накладной карман | Наличие защитной пропитки ",
+            "span": [
+              87,
+              315
+            ]
+          },
+          {
+            "id": "fragment:339:387",
+            "raw": " | Плотность 130 гр/м2 | Половая принадлежность ",
+            "span": [
+              339,
+              387
+            ]
+          },
+          {
+            "id": "fragment:394:485",
+            "raw": " | Размер 100/176 | Расположение застежки Спереди | Способ поставки товара Единовременно | ",
+            "span": [
+              394,
+              485
+            ]
+          },
+          {
+            "id": "fragment:499:512",
+            "raw": " | Цвет синий",
+            "span": [
+              499,
+              512
+            ]
+          }
+        ],
+        "additional": [
+          {
+            "id": null,
+            "raw": "Халат производственный тип2 (р.100/176, цвет: синий)",
+            "span": [
+              0,
+              52
+            ]
+          }
+        ],
+        "categories": [
+          {
+            "id": "14.12.30.130-00000003",
+            "name": "Халат производственный",
+            "rank": 1,
+            "rank_score": 0.04648394036050739,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000240",
+            "name": "Одежда специальная для защиты от нетоксичной пыли",
+            "rank": 2,
+            "rank_score": 0.04151404151404151,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000321",
+            "name": "Одежда специальная для защиты от общих производственных загрязнений и механических воздействий",
+            "rank": 3,
+            "rank_score": 0.04001992159886897,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000001",
+            "name": "Одежда специальная для защиты от воды",
+            "rank": 4,
+            "rank_score": 0.03889665527596562,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000340",
+            "name": "Одежда специальная для защиты от пониженных температур",
+            "rank": 5,
+            "rank_score": 0.03656249216991026,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          }
+        ],
+        "candidates": [],
+        "excluded": [
+          {
+            "ktru_code": "14.12.30.130-00000001",
+            "name": "Халат производственный",
+            "okpd2": "14.12.30.130",
+            "outcome": "incompatible",
+            "checks": [
+              {
+                "property_id": "8e0aa39b-b",
+                "name": "Половой признак",
+                "outcome": "compatible",
+                "reason": "allowed_value",
+                "fact_ids": [
+                  "text:387:394:5"
+                ],
+                "value_codes": [
+                  "2a5d9fa3-e"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "bd4d8f50-e",
+                "name": "Рост",
+                "outcome": "unknown",
+                "reason": "missing_required",
+                "fact_ids": [],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "44d1beed-0",
+                "name": "Обхват груди",
+                "outcome": "unknown",
+                "reason": "missing_required",
+                "fact_ids": [],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "7f45f94d-d",
+                "name": "Наличие карманов",
+                "outcome": "unknown",
+                "reason": "unknown_fact",
+                "fact_ids": [
+                  "text:320:339:1",
+                  "text:53:88:3",
+                  "text:315:317:4"
+                ],
+                "value_codes": [
+                  "0fa7f8a5-d"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "12633aee-2",
+                "name": "Тип ткани",
+                "outcome": "incompatible",
+                "reason": "invalid_value",
+                "fact_ids": [
+                  "text:485:499:2"
+                ],
+                "value_codes": [],
+                "elements": []
+              }
+            ],
+            "missing_required": [
+              "Обхват груди",
+              "Рост"
+            ],
+            "has_characteristics": true,
+            "blocking_reasons": [],
+            "exclusion_reasons": [
+              {
+                "code": "invalid_value",
+                "severity": "error",
+                "explanation": "Тип ткани: «Бязь » — значение не входит в разрешённые варианты. Допустимо: Натуральная или Синтетическая или Смесовая.",
+                "fact_id": "text:485:499:2",
+                "property_id": "12633aee-2",
+                "candidate_code": "14.12.30.130-00000001",
+                "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:44444#14.12.30.130-00000001@4",
+                "suggested_action": "Уточните значение или единицу по правилу позиции",
+                "confirmation_required": false
+              }
+            ]
+          },
+          {
+            "ktru_code": "14.12.30.130-00000002",
+            "name": "Халат производственный",
+            "okpd2": "14.12.30.130",
+            "outcome": "incompatible",
+            "checks": [
+              {
+                "property_id": "8e0aa39b-b",
+                "name": "Половой признак",
+                "outcome": "incompatible",
+                "reason": "invalid_value",
+                "fact_ids": [
+                  "text:387:394:5"
+                ],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "bd4d8f50-e",
+                "name": "Рост",
+                "outcome": "unknown",
+                "reason": "missing_required",
+                "fact_ids": [],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "44d1beed-0",
+                "name": "Обхват груди",
+                "outcome": "unknown",
+                "reason": "missing_required",
+                "fact_ids": [],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "7f45f94d-d",
+                "name": "Наличие карманов",
+                "outcome": "unknown",
+                "reason": "unknown_fact",
+                "fact_ids": [
+                  "text:320:339:1",
+                  "text:53:88:3",
+                  "text:315:317:4"
+                ],
+                "value_codes": [
+                  "0fa7f8a5-d"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "12633aee-2",
+                "name": "Тип ткани",
+                "outcome": "incompatible",
+                "reason": "invalid_value",
+                "fact_ids": [
+                  "text:485:499:2"
+                ],
+                "value_codes": [],
+                "elements": []
+              }
+            ],
+            "missing_required": [
+              "Обхват груди",
+              "Половой признак",
+              "Рост"
+            ],
+            "has_characteristics": true,
+            "blocking_reasons": [],
+            "exclusion_reasons": [
+              {
+                "code": "invalid_value",
+                "severity": "error",
+                "explanation": "Половой признак: «Женский » — значение не входит в разрешённые варианты. Допустимо: Мужской.",
+                "fact_id": "text:387:394:5",
+                "property_id": "8e0aa39b-b",
+                "candidate_code": "14.12.30.130-00000002",
+                "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:44443#14.12.30.130-00000002@4",
+                "suggested_action": "Уточните значение или единицу по правилу позиции",
+                "confirmation_required": false
+              },
+              {
+                "code": "invalid_value",
+                "severity": "error",
+                "explanation": "Тип ткани: «Бязь » — значение не входит в разрешённые варианты. Допустимо: Натуральная или Синтетическая или Смесовая.",
+                "fact_id": "text:485:499:2",
+                "property_id": "12633aee-2",
+                "candidate_code": "14.12.30.130-00000002",
+                "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:44443#14.12.30.130-00000002@4",
+                "suggested_action": "Уточните значение или единицу по правилу позиции",
+                "confirmation_required": false
+              }
+            ]
+          }
+        ],
+        "candidate_count": 0,
+        "excluded_count": 2,
+        "scope": {
+          "category_id": "14.12.30.130-00000003",
+          "position_count": 2,
+          "evaluated_count": 2,
+          "complete": true
+        },
+        "issues": [
+          {
+            "code": "invalid_value",
+            "severity": "error",
+            "explanation": "Тип ткани: «Бязь » — значение не входит в разрешённые варианты. Допустимо: Натуральная или Синтетическая или Смесовая.",
+            "fact_id": "text:485:499:2",
+            "property_id": "12633aee-2",
+            "candidate_code": "14.12.30.130-00000001",
+            "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:44444#14.12.30.130-00000001@4",
+            "suggested_action": "Уточните значение или единицу по правилу позиции",
+            "confirmation_required": false
+          },
+          {
+            "code": "invalid_value",
+            "severity": "error",
+            "explanation": "Половой признак: «Женский » — значение не входит в разрешённые варианты. Допустимо: Мужской.",
+            "fact_id": "text:387:394:5",
+            "property_id": "8e0aa39b-b",
+            "candidate_code": "14.12.30.130-00000002",
+            "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:44443#14.12.30.130-00000002@4",
+            "suggested_action": "Уточните значение или единицу по правилу позиции",
+            "confirmation_required": false
+          },
+          {
+            "code": "invalid_value",
+            "severity": "error",
+            "explanation": "Тип ткани: «Бязь » — значение не входит в разрешённые варианты. Допустимо: Натуральная или Синтетическая или Смесовая.",
+            "fact_id": "text:485:499:2",
+            "property_id": "12633aee-2",
+            "candidate_code": "14.12.30.130-00000002",
+            "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:44443#14.12.30.130-00000002@4",
+            "suggested_action": "Уточните значение или единицу по правилу позиции",
+            "confirmation_required": false
+          },
+          {
+            "code": "no_compatible_candidate",
+            "severity": "error",
+            "explanation": "В выбранной области нет совместимых позиций",
+            "fact_id": null,
+            "property_id": null,
+            "candidate_code": null,
+            "rule_source": null,
+            "suggested_action": "Проверьте исходные сведения",
+            "confirmation_required": false
+          }
+        ],
+        "corrections": [],
+        "next_question": null,
+        "next_steps": [
+          "Проверьте замечания и уточните исходные сведения; неизвестное не считается подтверждённым"
+        ],
+        "verification": {
+          "type_verified": true,
+          "ktru_unique": false,
+          "fields_complete": false,
+          "value_verified": false,
+          "catalog_scope_complete": true,
+          "value_indistinguishable": false,
+          "confirmed_by_user": false,
+          "blocking_issues": true
+        },
+        "selected_ktru_code": null,
+        "catalog_version": "clean5-7331f0732bc0ff5c",
+        "engine_version": "stateless-pipeline-v4.1-canonical-count"
+      }
+    },
+    {
+      "case_id": "REAL-026",
+      "source_ref": "Одежда.xlsx!sheet1 row=46163 STE=36219358",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-026",
+      "source_ref": "Одежда.xlsx!sheet1 row=46163 STE=36219358",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 8,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-026",
+      "source_ref": "Одежда.xlsx!sheet1 row=46163 STE=36219358",
+      "stage": "natural_language",
+      "status": "FAIL",
+      "detail": "14.12.30.130-00000002/7f45f94d-d: expected compatible, actual unknown; 14.12.30.130-00000001/7f45f94d-d: expected compatible, actual unknown",
+      "actual_response": {
+        "status": "needs_input",
+        "original_text": "Халат производственный р.112/176, цвет белый, плотность 240гр/м2; В составе комплекта (костюма) Нет | Вид фурнитуры Пуговицы | Класс защиты одежды в зависимости от устойчивости к действию растворов кислот различной концентрации 1 (К 20) | Наличие дополнительных элементов на одежду Накладной карман | Наличие защитной пропитки Да | Наличие карманов Да | Обхват груди 112.00000 см | Плотность 240 гр/м2 | Половая принадлежность Женский | Расположение застежки Спереди | Рост 176.00000 см | Способ поставки товара Единовременно | Тип ткани Смесовая | Цвет белый",
+        "normalized_text": "Халат производственный р.112/176, цвет белый, плотность 240гр/м2; В составе комплекта (костюма) Нет | Вид фурнитуры Пуговицы | Класс защиты одежды в зависимости от устойчивости к действию растворов кислот различной концентрации 1 (К 20) | Наличие дополнительных элементов на одежду Накладной карман | Наличие защитной пропитки Да | Наличие карманов Да | Обхват груди 112.00000 см | Плотность 240 гр/м2 | Половая принадлежность Женский | Расположение застежки Спереди | Рост 176.00000 см | Способ поставки товара Единовременно | Тип ткани Смесовая | Цвет белый",
+        "original_facts": [
+          {
+            "id": "text:332:351:0",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Наличие карманов Да",
+            "span": [
+              332,
+              351
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:354:379:1",
+            "name": "Обхват груди",
+            "value": "112.00000",
+            "values": null,
+            "unit": "см",
+            "raw": "Обхват груди 112.00000 см",
+            "span": [
+              354,
+              379
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:469:486:2",
+            "name": "Рост",
+            "value": "176.00000",
+            "values": null,
+            "unit": "см",
+            "raw": "Рост 176.00000 см",
+            "span": [
+              469,
+              486
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:528:546:3",
+            "name": "Тип ткани",
+            "value": "Смесовая",
+            "values": null,
+            "unit": null,
+            "raw": "Тип ткани Смесовая",
+            "span": [
+              528,
+              546
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:65:100:4",
+            "name": "Наличие карманов",
+            "value": "Нет",
+            "values": null,
+            "unit": null,
+            "raw": " В составе комплекта (костюма) Нет ",
+            "span": [
+              65,
+              100
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": true,
+            "unknown": true,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:327:329:5",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Да",
+            "span": [
+              327,
+              329
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:427:434:6",
+            "name": "Половой признак",
+            "value": "Женский",
+            "values": null,
+            "unit": null,
+            "raw": "Женский",
+            "span": [
+              427,
+              434
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          }
+        ],
+        "facts": [
+          {
+            "id": "text:332:351:0",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Наличие карманов Да",
+            "span": [
+              332,
+              351
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/7f45f94d-d",
+              "14.12.30.130-00000002/7f45f94d-d"
+            ]
+          },
+          {
+            "id": "text:354:379:1",
+            "name": "Обхват груди",
+            "value": "112.00000",
+            "values": null,
+            "unit": "см",
+            "raw": "Обхват груди 112.00000 см",
+            "span": [
+              354,
+              379
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": "112",
+            "normalized_unit": "см",
+            "mappings": [
+              "14.12.30.130-00000001/44d1beed-0",
+              "14.12.30.130-00000002/44d1beed-0"
+            ]
+          },
+          {
+            "id": "text:469:486:2",
+            "name": "Рост",
+            "value": "176.00000",
+            "values": null,
+            "unit": "см",
+            "raw": "Рост 176.00000 см",
+            "span": [
+              469,
+              486
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": "176",
+            "normalized_unit": "см",
+            "mappings": [
+              "14.12.30.130-00000001/bd4d8f50-e",
+              "14.12.30.130-00000002/bd4d8f50-e"
+            ]
+          },
+          {
+            "id": "text:528:546:3",
+            "name": "Тип ткани",
+            "value": "Смесовая",
+            "values": null,
+            "unit": null,
+            "raw": "Тип ткани Смесовая",
+            "span": [
+              528,
+              546
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/12633aee-2",
+              "14.12.30.130-00000002/12633aee-2"
+            ]
+          },
+          {
+            "id": "text:65:100:4",
+            "name": "Наличие карманов",
+            "value": "Нет",
+            "values": null,
+            "unit": null,
+            "raw": " В составе комплекта (костюма) Нет ",
+            "span": [
+              65,
+              100
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": true,
+            "unknown": true,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/7f45f94d-d",
+              "14.12.30.130-00000002/7f45f94d-d"
+            ]
+          },
+          {
+            "id": "text:327:329:5",
+            "name": "Наличие карманов",
+            "value": "Да",
+            "values": null,
+            "unit": null,
+            "raw": "Да",
+            "span": [
+              327,
+              329
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/7f45f94d-d",
+              "14.12.30.130-00000002/7f45f94d-d"
+            ]
+          },
+          {
+            "id": "text:427:434:6",
+            "name": "Половой признак",
+            "value": "Женский",
+            "values": null,
+            "unit": null,
+            "raw": "Женский",
+            "span": [
+              427,
+              434
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.12.30.130-00000001/8e0aa39b-b",
+              "14.12.30.130-00000002/8e0aa39b-b"
+            ]
+          }
+        ],
+        "unparsed": [
+          {
+            "id": "fragment:0:96",
+            "raw": "Халат производственный р.112/176, цвет белый, плотность 240гр/м2; В составе комплекта (костюма) ",
+            "span": [
+              0,
+              96
+            ]
+          },
+          {
+            "id": "fragment:99:327",
+            "raw": " | Вид фурнитуры Пуговицы | Класс защиты одежды в зависимости от устойчивости к действию растворов кислот различной концентрации 1 (К 20) | Наличие дополнительных элементов на одежду Накладной карман | Наличие защитной пропитки ",
+            "span": [
+              99,
+              327
+            ]
+          },
+          {
+            "id": "fragment:379:427",
+            "raw": " | Плотность 240 гр/м2 | Половая принадлежность ",
+            "span": [
+              379,
+              427
+            ]
+          },
+          {
+            "id": "fragment:434:469",
+            "raw": " | Расположение застежки Спереди | ",
+            "span": [
+              434,
+              469
+            ]
+          },
+          {
+            "id": "fragment:486:528",
+            "raw": " | Способ поставки товара Единовременно | ",
+            "span": [
+              486,
+              528
+            ]
+          },
+          {
+            "id": "fragment:546:559",
+            "raw": " | Цвет белый",
+            "span": [
+              546,
+              559
+            ]
+          }
+        ],
+        "additional": [],
+        "categories": [
+          {
+            "id": "14.12.30.130-00000003",
+            "name": "Халат производственный",
+            "rank": 1,
+            "rank_score": 0.04722835723395652,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000240",
+            "name": "Одежда специальная для защиты от нетоксичной пыли",
+            "rank": 2,
+            "rank_score": 0.040776942355889724,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000001",
+            "name": "Одежда специальная для защиты от воды",
+            "rank": 3,
+            "rank_score": 0.03845034900635223,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000321",
+            "name": "Одежда специальная для защиты от общих производственных загрязнений и механических воздействий",
+            "rank": 4,
+            "rank_score": 0.038193771402726624,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.160-00000340",
+            "name": "Одежда специальная для защиты от пониженных температур",
+            "rank": 5,
+            "rank_score": 0.035167578987803705,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          }
+        ],
+        "candidates": [
+          {
+            "ktru_code": "14.12.30.130-00000001",
+            "name": "Халат производственный",
+            "okpd2": "14.12.30.130",
+            "outcome": "unknown",
+            "checks": [
+              {
+                "property_id": "8e0aa39b-b",
+                "name": "Половой признак",
+                "outcome": "compatible",
+                "reason": "allowed_value",
+                "fact_ids": [
+                  "text:427:434:6"
+                ],
+                "value_codes": [
+                  "2a5d9fa3-e"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "bd4d8f50-e",
+                "name": "Рост",
+                "outcome": "compatible",
+                "reason": "allowed_range",
+                "fact_ids": [
+                  "text:469:486:2"
+                ],
+                "value_codes": [
+                  "10ea1a77-a",
+                  "ed93d3f3-0"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "44d1beed-0",
+                "name": "Обхват груди",
+                "outcome": "compatible",
+                "reason": "allowed_range",
+                "fact_ids": [
+                  "text:354:379:1"
+                ],
+                "value_codes": [
+                  "721afc4e-c",
+                  "9fc0dba4-d"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "7f45f94d-d",
+                "name": "Наличие карманов",
+                "outcome": "unknown",
+                "reason": "unknown_fact",
+                "fact_ids": [
+                  "text:332:351:0",
+                  "text:65:100:4",
+                  "text:327:329:5"
+                ],
+                "value_codes": [
+                  "0fa7f8a5-d"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "12633aee-2",
+                "name": "Тип ткани",
+                "outcome": "compatible",
+                "reason": "allowed_value",
+                "fact_ids": [
+                  "text:528:546:3"
+                ],
+                "value_codes": [
+                  "69b565a5-c"
+                ],
+                "elements": []
+              }
+            ],
+            "missing_required": [],
+            "has_characteristics": true,
+            "blocking_reasons": [],
+            "exclusion_reasons": []
+          }
+        ],
+        "excluded": [
+          {
+            "ktru_code": "14.12.30.130-00000002",
+            "name": "Халат производственный",
+            "okpd2": "14.12.30.130",
+            "outcome": "incompatible",
+            "checks": [
+              {
+                "property_id": "8e0aa39b-b",
+                "name": "Половой признак",
+                "outcome": "incompatible",
+                "reason": "invalid_value",
+                "fact_ids": [
+                  "text:427:434:6"
+                ],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "bd4d8f50-e",
+                "name": "Рост",
+                "outcome": "compatible",
+                "reason": "allowed_range",
+                "fact_ids": [
+                  "text:469:486:2"
+                ],
+                "value_codes": [
+                  "10ea1a77-a",
+                  "ed93d3f3-0"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "44d1beed-0",
+                "name": "Обхват груди",
+                "outcome": "compatible",
+                "reason": "allowed_range",
+                "fact_ids": [
+                  "text:354:379:1"
+                ],
+                "value_codes": [
+                  "721afc4e-c",
+                  "9fc0dba4-d"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "7f45f94d-d",
+                "name": "Наличие карманов",
+                "outcome": "unknown",
+                "reason": "unknown_fact",
+                "fact_ids": [
+                  "text:332:351:0",
+                  "text:65:100:4",
+                  "text:327:329:5"
+                ],
+                "value_codes": [
+                  "0fa7f8a5-d"
+                ],
+                "elements": []
+              },
+              {
+                "property_id": "12633aee-2",
+                "name": "Тип ткани",
+                "outcome": "compatible",
+                "reason": "allowed_value",
+                "fact_ids": [
+                  "text:528:546:3"
+                ],
+                "value_codes": [
+                  "69b565a5-c"
+                ],
+                "elements": []
+              }
+            ],
+            "missing_required": [
+              "Половой признак"
+            ],
+            "has_characteristics": true,
+            "blocking_reasons": [],
+            "exclusion_reasons": [
+              {
+                "code": "invalid_value",
+                "severity": "error",
+                "explanation": "Половой признак: «Женский » — значение не входит в разрешённые варианты. Допустимо: Мужской.",
+                "fact_id": "text:427:434:6",
+                "property_id": "8e0aa39b-b",
+                "candidate_code": "14.12.30.130-00000002",
+                "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:44443#14.12.30.130-00000002@4",
+                "suggested_action": "Уточните значение или единицу по правилу позиции",
+                "confirmation_required": false
+              }
+            ]
+          }
+        ],
+        "candidate_count": 1,
+        "excluded_count": 1,
+        "scope": {
+          "category_id": "14.12.30.130-00000003",
+          "position_count": 2,
+          "evaluated_count": 2,
+          "complete": true
+        },
+        "issues": [
+          {
+            "code": "verification_incomplete",
+            "severity": "error",
+            "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+            "fact_id": null,
+            "property_id": null,
+            "candidate_code": null,
+            "rule_source": null,
+            "suggested_action": "Проверьте исходные сведения",
+            "confirmation_required": false
+          }
+        ],
+        "corrections": [
+          {
+            "fact_id": "text:469:486:2",
+            "kind": "auto_normalization",
+            "original": "176.00000 см",
+            "normalized": "176 см",
+            "explanation": "Безопасное преобразование в совместимой размерности",
+            "confirmation_required": false
+          },
+          {
+            "fact_id": "text:354:379:1",
+            "kind": "auto_normalization",
+            "original": "112.00000 см",
+            "normalized": "112 см",
+            "explanation": "Безопасное преобразование в совместимой размерности",
+            "confirmation_required": false
+          }
+        ],
+        "next_question": null,
+        "next_steps": [
+          "Проверьте замечания и уточните исходные сведения; неизвестное не считается подтверждённым"
+        ],
+        "verification": {
+          "type_verified": true,
+          "ktru_unique": false,
+          "fields_complete": true,
+          "value_verified": false,
+          "catalog_scope_complete": true,
+          "value_indistinguishable": false,
+          "confirmed_by_user": false,
+          "blocking_issues": true
+        },
+        "selected_ktru_code": null,
+        "catalog_version": "clean5-7331f0732bc0ff5c",
+        "engine_version": "stateless-pipeline-v4.1-canonical-count"
+      }
+    },
+    {
+      "case_id": "REAL-026",
+      "source_ref": "Одежда.xlsx!sheet1 row=46163 STE=36219358",
+      "stage": "clarification_funnel",
+      "status": "PASS",
+      "detail": [
+        {
+          "facts": 1,
+          "remaining": 2
+        },
+        {
+          "facts": 2,
+          "remaining": 2
+        },
+        {
+          "facts": 3,
+          "remaining": 2
+        },
+        {
+          "facts": 4,
+          "remaining": 2
+        }
+      ]
+    },
+    {
+      "case_id": "REAL-027",
+      "source_ref": "Одежда.xlsx!sheet1 row=49343 STE=36490768",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-027",
+      "source_ref": "Одежда.xlsx!sheet1 row=49343 STE=36490768",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 2,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-027",
+      "source_ref": "Одежда.xlsx!sheet1 row=49343 STE=36490768",
+      "stage": "natural_language",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 2,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-028",
+      "source_ref": "Одежда.xlsx!sheet1 row=49344 STE=36490770",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-028",
+      "source_ref": "Одежда.xlsx!sheet1 row=49344 STE=36490770",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 2,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-028",
+      "source_ref": "Одежда.xlsx!sheet1 row=49344 STE=36490770",
+      "stage": "natural_language",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 2,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-029",
+      "source_ref": "Одежда.xlsx!sheet1 row=49345 STE=36490771",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-029",
+      "source_ref": "Одежда.xlsx!sheet1 row=49345 STE=36490771",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 2,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-029",
+      "source_ref": "Одежда.xlsx!sheet1 row=49345 STE=36490771",
+      "stage": "natural_language",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 2,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-030",
+      "source_ref": "Одежда.xlsx!sheet1 row=49346 STE=36490773",
+      "stage": "retrieval",
+      "status": "PASS",
+      "detail": {
+        "rank": 1,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-030",
+      "source_ref": "Одежда.xlsx!sheet1 row=49346 STE=36490773",
+      "stage": "source_constraints",
+      "status": "PASS",
+      "detail": {
+        "independent_assertions": 2,
+        "status": "needs_input"
+      }
+    },
+    {
+      "case_id": "REAL-030",
+      "source_ref": "Одежда.xlsx!sheet1 row=49346 STE=36490773",
+      "stage": "natural_language",
+      "status": "FAIL",
+      "detail": "14.14.10.000-00000007/99adcc4e-d: expected incompatible, actual unknown; 14.14.10.000-00000006/99adcc4e-d: expected incompatible, actual unknown",
+      "actual_response": {
+        "status": "needs_input",
+        "original_text": "Халат детский зеленый Камелия, хлопок, размер 42, рост 142; Вид продукции Товары | Вид товаров Одежда | Виды одежды (включая форменную), головных уборов, одежды специальной Одежда для детей | Виды одежды для детей Халат | Карманы 2 шт | Плотность ткани 225 гр/м2 | Пояс 1 шт | Российский размер 42.00000 | Рост 142.00000 см | Рукав Длинный | Состав ткани Хлопок 100 % | Усадка после стирки 3 % | Цвет Зеленый",
+        "normalized_text": "Халат детский зеленый Камелия, хлопок, размер 42, рост 142; Вид продукции Товары | Вид товаров Одежда | Виды одежды (включая форменную), головных уборов, одежды специальной Одежда для детей | Виды одежды для детей Халат | Карманы 2 шт | Плотность ткани 225 гр/м2 | Пояс 1 шт | Российский размер 42.00000 | Рост 142.00000 см | Рукав Длинный | Состав ткани Хлопок 100 % | Усадка после стирки 3 % | Цвет Зеленый",
+        "original_facts": [
+          {
+            "id": "text:50:58:0",
+            "name": "Рост",
+            "value": "142",
+            "values": null,
+            "unit": null,
+            "raw": "рост 142",
+            "span": [
+              50,
+              58
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          },
+          {
+            "id": "text:306:323:1",
+            "name": "Рост",
+            "value": "142.00000",
+            "values": null,
+            "unit": "см",
+            "raw": "Рост 142.00000 см",
+            "span": [
+              306,
+              323
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": []
+          }
+        ],
+        "facts": [
+          {
+            "id": "text:50:58:0",
+            "name": "Рост",
+            "value": "142",
+            "values": null,
+            "unit": null,
+            "raw": "рост 142",
+            "span": [
+              50,
+              58
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.14.10.000-00000006/99adcc4e-d",
+              "14.14.10.000-00000007/99adcc4e-d"
+            ]
+          },
+          {
+            "id": "text:306:323:1",
+            "name": "Рост",
+            "value": "142.00000",
+            "values": null,
+            "unit": "см",
+            "raw": "Рост 142.00000 см",
+            "span": [
+              306,
+              323
+            ],
+            "source": "text",
+            "subject": "product",
+            "negated": false,
+            "unknown": false,
+            "normalized_value": null,
+            "normalized_unit": null,
+            "mappings": [
+              "14.14.10.000-00000006/99adcc4e-d",
+              "14.14.10.000-00000007/99adcc4e-d"
+            ]
+          }
+        ],
+        "unparsed": [
+          {
+            "id": "fragment:0:50",
+            "raw": "Халат детский зеленый Камелия, хлопок, размер 42, ",
+            "span": [
+              0,
+              50
+            ]
+          },
+          {
+            "id": "fragment:58:306",
+            "raw": "; Вид продукции Товары | Вид товаров Одежда | Виды одежды (включая форменную), головных уборов, одежды специальной Одежда для детей | Виды одежды для детей Халат | Карманы 2 шт | Плотность ткани 225 гр/м2 | Пояс 1 шт | Российский размер 42.00000 | ",
+            "span": [
+              58,
+              306
+            ]
+          },
+          {
+            "id": "fragment:323:408",
+            "raw": " | Рукав Длинный | Состав ткани Хлопок 100 % | Усадка после стирки 3 % | Цвет Зеленый",
+            "span": [
+              323,
+              408
+            ]
+          }
+        ],
+        "additional": [],
+        "categories": [
+          {
+            "id": "14.14.10.000-00000008",
+            "name": "Халат детский",
+            "rank": 1,
+            "rank_score": 0.045773898232914625,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.14.10.000-00000005",
+            "name": "Халат",
+            "rank": 2,
+            "rank_score": 0.04272954074684428,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.30.130-00000003",
+            "name": "Халат производственный",
+            "rank": 3,
+            "rank_score": 0.04013694074556628,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.19.40.000-00000037",
+            "name": "Головные уборы детские",
+            "rank": 4,
+            "rank_score": 0.038829340058848257,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          },
+          {
+            "id": "14.12.20.000-00000005",
+            "name": "Одежда санитарная женская",
+            "rank": 5,
+            "rank_score": 0.036137035459345025,
+            "reasons": [
+              "BM25",
+              "E5",
+              "CHAR"
+            ]
+          }
+        ],
+        "candidates": [
+          {
+            "ktru_code": "14.14.10.000-00000006",
+            "name": "Халат детский",
+            "okpd2": "14.14.1",
+            "outcome": "unknown",
+            "checks": [
+              {
+                "property_id": "6b7558e5-9",
+                "name": "Половой признак",
+                "outcome": "unknown",
+                "reason": "missing_required",
+                "fact_ids": [],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "99adcc4e-d",
+                "name": "Рост",
+                "outcome": "unknown",
+                "reason": "conflicting_facts",
+                "fact_ids": [
+                  "text:50:58:0",
+                  "text:306:323:1"
+                ],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "959b9366-1",
+                "name": "Тип ткани/трикотажного полотна",
+                "outcome": "unknown",
+                "reason": "not_provided",
+                "fact_ids": [],
+                "value_codes": [],
+                "elements": []
+              }
+            ],
+            "missing_required": [
+              "Половой признак",
+              "Рост"
+            ],
+            "has_characteristics": true,
+            "blocking_reasons": [],
+            "exclusion_reasons": []
+          },
+          {
+            "ktru_code": "14.14.10.000-00000007",
+            "name": "Халат детский",
+            "okpd2": "14.14.1",
+            "outcome": "unknown",
+            "checks": [
+              {
+                "property_id": "6b7558e5-9",
+                "name": "Половой признак",
+                "outcome": "unknown",
+                "reason": "missing_required",
+                "fact_ids": [],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "99adcc4e-d",
+                "name": "Рост",
+                "outcome": "unknown",
+                "reason": "conflicting_facts",
+                "fact_ids": [
+                  "text:50:58:0",
+                  "text:306:323:1"
+                ],
+                "value_codes": [],
+                "elements": []
+              },
+              {
+                "property_id": "959b9366-1",
+                "name": "Тип ткани/трикотажного полотна",
+                "outcome": "unknown",
+                "reason": "not_provided",
+                "fact_ids": [],
+                "value_codes": [],
+                "elements": []
+              }
+            ],
+            "missing_required": [
+              "Половой признак",
+              "Рост"
+            ],
+            "has_characteristics": true,
+            "blocking_reasons": [],
+            "exclusion_reasons": []
+          }
+        ],
+        "excluded": [],
+        "candidate_count": 2,
+        "excluded_count": 0,
+        "scope": {
+          "category_id": "14.14.10.000-00000008",
+          "position_count": 2,
+          "evaluated_count": 2,
+          "complete": true
+        },
+        "issues": [
+          {
+            "code": "conflicting_facts",
+            "severity": "error",
+            "explanation": "Для «Рост» указаны противоречащие значения: 142, 142.00000",
+            "fact_id": "text:50:58:0",
+            "property_id": "99adcc4e-d",
+            "candidate_code": "14.14.10.000-00000006",
+            "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:43385#14.14.10.000-00000006@2",
+            "suggested_action": "Исправьте конкретный факт или исходное описание",
+            "confirmation_required": true
+          },
+          {
+            "code": "conflicting_facts",
+            "severity": "error",
+            "explanation": "Для «Рост» указаны противоречащие значения: 142, 142.00000",
+            "fact_id": "text:50:58:0",
+            "property_id": "99adcc4e-d",
+            "candidate_code": "14.14.10.000-00000007",
+            "rule_source": "ktru_actual_all.jsonl.gz:sha256:2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c:line:43384#14.14.10.000-00000007@2",
+            "suggested_action": "Исправьте конкретный факт или исходное описание",
+            "confirmation_required": true
+          },
+          {
+            "code": "unmapped_measurement",
+            "severity": "error",
+            "explanation": "В исходном тексте осталось измерение без установленного свойства",
+            "fact_id": null,
+            "property_id": null,
+            "candidate_code": null,
+            "rule_source": null,
+            "suggested_action": "Добавьте характеристику с именем и единицей или уточните описание",
+            "confirmation_required": false
+          },
+          {
+            "code": "verification_incomplete",
+            "severity": "error",
+            "explanation": "Есть непроверенные факты, обязательные поля или ограничения",
+            "fact_id": null,
+            "property_id": null,
+            "candidate_code": null,
+            "rule_source": null,
+            "suggested_action": "Проверьте исходные сведения",
+            "confirmation_required": false
+          }
+        ],
+        "corrections": [],
+        "next_question": {
+          "id": "conflict:text:50:58:0",
+          "kind": "conflict",
+          "title": "Исправьте противоречащие сведения",
+          "reason": "Для «Рост» указаны противоречащие значения: 142, 142.00000",
+          "property_name": null,
+          "options": [],
+          "unit": null,
+          "allow_unknown": false,
+          "multiple": false
+        },
+        "next_steps": [
+          "Исправьте противоречащие сведения"
+        ],
+        "verification": {
+          "type_verified": true,
+          "ktru_unique": false,
+          "fields_complete": false,
+          "value_verified": false,
+          "catalog_scope_complete": true,
+          "value_indistinguishable": false,
+          "confirmed_by_user": false,
+          "blocking_issues": true
+        },
+        "selected_ktru_code": null,
+        "catalog_version": "clean5-7331f0732bc0ff5c",
+        "engine_version": "stateless-pipeline-v4.1-canonical-count"
+      }
+    }
+  ],
+  "limits": "Purposive sample, not population accuracy. Labels cover family and explicit source checks, not unconditional final code.",
+  "tested_git_commit": "bae204c06bb8f2f213f2a9f37cade80d36acefb4",
+  "note": "Recorded before remote stage3 changes; historical run"
+}
