@@ -1,4 +1,4 @@
-# algorithms2 — алгоритмы C и D
+# algorithms — алгоритмы C и D
 
 Два алгоритма поверх очищенного справочника КТРУ (`ktru_clean`). Зависимостей нет — только стандартная библиотека Python.
 
@@ -35,19 +35,19 @@
 
 ```bash
 # проверки (корпус не нужен, используется samples/ktru_mini_index.json)
-python -m algorithms2.validation_tests
+python -m algorithms.validation_tests
 
 # валидация: образец вывода модели + 120 карточек СТЕ по каждому направлению
-python -m algorithms2.validation_run --cards 120
+python -m algorithms.validation_run --cards 120
 
 # быстро и без полного корпуса
-python -m algorithms2.validation_run --fixture --cards 20
+python -m algorithms.validation_run --fixture --cards 20
 ```
 
 ## Использование
 
 ```python
-from algorithms2 import AlgorithmC, AlgorithmD, KtruIndex, Units, Fact, Unit
+from algorithms import AlgorithmC, AlgorithmD, KtruIndex, Units, Fact, Unit
 
 index = KtruIndex.load()          # ищет data/ktru_actual_all.jsonl.gz
 units = Units.load()

@@ -307,4 +307,4 @@ def find_corpus() -> str:
         if os.path.exists(c):
             return c
     raise FileNotFoundError(
-        "не найден ktru_actual_all.jsonl.gz; положите его в algorithms2/data/")
+        "не найден ktru_actual_all.jsonl.gz; положите его в algorithms/data/")

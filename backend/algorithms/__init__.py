@@ -1,6 +1,6 @@
 """Алгоритмы C и D поверх очищенного справочника КТРУ.
 
-    from algorithms2 import AlgorithmC, AlgorithmD, KtruIndex, Units, Fact, Unit
+    from algorithms import AlgorithmC, AlgorithmD, KtruIndex, Units, Fact, Unit
 
     index = KtruIndex.load()
     units = Units.load()

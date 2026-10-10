@@ -1,0 +1,5 @@
+﻿__pycache__/
+# корпус 14 МБ: README разрешает не коммитить
+data/ktru_actual_all.jsonl.gz
+# артефакт прогона, создаётся заново
+validation_report.json

@@ -1,6 +1,6 @@
 """Проверки AlgorithmC и AlgorithmD на фикстуре и на синтетических данных.
 
-Запуск: python -m algorithms2.validation_tests
+Запуск: python -m algorithms.validation_tests
         (корпус КТРУ не нужен — используется samples/ktru_mini_index.json)
 """
 from __future__ import annotations

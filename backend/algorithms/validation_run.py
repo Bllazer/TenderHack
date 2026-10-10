@@ -10,9 +10,9 @@
   5) печатает по каждому товару результат и агрегаты, сохраняет отчёт в validation_report.json.
 
 Запуск:
-    python -m algorithms2.validation_run                 # мини-фикстура + карточки СТЕ
-    python -m algorithms2.validation_run --full          # полный корпус КТРУ вместо фикстуры
-    python -m algorithms2.validation_run --cards 200     # сколько карточек СТЕ брать
+    python -m algorithms.validation_run                 # мини-фикстура + карточки СТЕ
+    python -m algorithms.validation_run --full          # полный корпус КТРУ вместо фикстуры
+    python -m algorithms.validation_run --cards 200     # сколько карточек СТЕ брать
 """
 from __future__ import annotations
 

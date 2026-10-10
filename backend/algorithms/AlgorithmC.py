@@ -237,7 +237,7 @@ def find_data_dir() -> str:
     for c in (os.path.join(here, "data"), os.path.join(os.path.dirname(here), "data")):
         if os.path.exists(os.path.join(c, "okei_units.json")):
             return c
-    raise FileNotFoundError("не найден okei_units.json; положите словари в algorithms2/data/")
+    raise FileNotFoundError("не найден okei_units.json; положите словари в algorithms/data/")
 
 
 # ============================================================ проверка ========
