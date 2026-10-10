@@ -95,7 +95,7 @@ class CharNgramIndex:
 
     N = 3
 
-    def __init__(self, names: list[str], min_df: int = 2):
+    def __init__(self, names: list[str], min_df: int = 1):
         postings: dict[str, list[tuple[int, int]]] = {}
         document_frequency: Counter = Counter()
         for index, name in enumerate(names):
@@ -221,7 +221,7 @@ class Search:
             return (-len(evidence), sum(rank for _, rank in evidence), categories[index].id)
 
         candidates = []
-        for rank, index in enumerate(sorted(ranks, key=quality)[:5], 1):
+        for rank, index in enumerate(sorted(ranks, key=lambda index: (-ranks[index], quality(index)))[:5], 1):
             evidence = order.get(index, [])
             candidates.append(CategoryCandidate(
                 id=categories[index].id, name=categories[index].name, rank=rank,

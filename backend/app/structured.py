@@ -93,7 +93,10 @@ def plain(value: str) -> str:
 
 def to_number(value: str) -> float | None:
     try:
-        return float(Decimal(plain(value).replace(",", ".")))
+        import math
+        number = Decimal(plain(value).replace(",", "."))
+        result = float(number)
+        return result if number.is_finite() and math.isfinite(result) else None
     except (InvalidOperation, ValueError):
         return None
 
@@ -116,7 +119,8 @@ def parse_range(value: str) -> dict | None:
     low, high = to_number(match.group(1)), to_number(match.group(2))
     if low is None or high is None:
         return None
-    return {"min": min(low, high), "max": max(low, high)}
+    return {"min": low, "max": high,
+            "min_inclusive": not candidate.startswith("("), "max_inclusive": not candidate.endswith(")")}
 
 
 def unit_ref(raw_unit: str | None) -> UnitRef | None:
@@ -145,10 +149,10 @@ def confidence(fact: Fact) -> float:
     0.50 — значение помечено как неизвестное (**ниже порога 0.6**, поэтому не исключает);
     минус 0.06 — сработал отрицательный оборот («без …»).
     """
-    if fact.source in ("input", "answer"):
-        return 1.0
     if fact.unknown:
         return 0.50
+    if fact.source in ("input", "answer"):
+        return 1.0
     score = 0.90 if fact.unit else 0.78
     if EXPLICIT_PAIR.match(fact.raw or ""):
         score = 0.86
@@ -177,8 +181,10 @@ def structure(fact: Fact, position: Position | None = None) -> StructuredFact:
     kind = "text"
     value: Any = (fact.value or "").strip()
     bounds = parse_range(remainder)
+    invalid_bounds = bool(bounds and (bounds["min"] > bounds["max"] or
+        bounds["min"] == bounds["max"] and not (bounds["min_inclusive"] and bounds["max_inclusive"])))
     number = to_number(remainder)
-    if bounds is not None:
+    if bounds is not None and not invalid_bounds:
         kind, value = "range", bounds
     elif number is not None:
         kind, value = "number", number
@@ -190,7 +196,7 @@ def structure(fact: Fact, position: Position | None = None) -> StructuredFact:
         def_id=def_id,
         unit=unit_ref(fact.unit),
         operator=operator if kind == "number" else None,
-        polarity="negated" if fact.negated else "affirmed",
+        polarity="uncertain" if fact.unknown or invalid_bounds else "negated" if fact.negated else "affirmed",
         negation=negation_marker(fact),
         span=list(fact.span) if fact.span else None,
         extraction_method=extract_method(fact),

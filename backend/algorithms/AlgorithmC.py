@@ -14,6 +14,9 @@ from __future__ import annotations
 import collections
 import json
 import os
+import math
+from dataclasses import replace
+from decimal import Decimal
 import unicodedata
 from typing import Optional
 
@@ -40,7 +43,7 @@ def _norm_unit(value) -> str:
 DIMENSIONS = {
     "length": ("м", {
         "м": 1, "метр": 1, "mm": 1e-3, "мм": 1e-3, "миллиметр": 1e-3, "см": 1e-2, "сантиметр": 1e-2,
-        "дм": 0.1, "км": 1e3, "километр": 1e3, "мкм": 1e-6, "микрометр": 1e-6, "микрон": 1e-6,
+        "cm": 1e-2, "m": 1, "дм": 0.1, "км": 1e3, "километр": 1e3, "мкм": 1e-6, "микрометр": 1e-6, "микрон": 1e-6,
         "нм": 1e-9, "дюйм": 0.0254, "дюймы": 0.0254, "in": 0.0254, "фут": 0.3048,
         "пог.м": 1, "погм": 1, "погонныйметр": 1, "п.м": 1, "пм": 1,
     }),
@@ -78,7 +81,7 @@ DIMENSIONS = {
         "ммвод.ст.": 9.80665, "кгс/см2": 98066.5, "кгс/м2": 9.80665, "psi": 6894.757293168,
     }),
     "temperature": ("°C", {"°c": 1, "c": 1, "градc": 1, "градусцельсия": 1, "цельсий": 1,
-                           "[0*]с": 1, "к": 1, "кельвин": 1}),
+                           "[0*]с": 1}),
     "power": ("Вт", {"вт": 1, "ватт": 1, "квт": 1e3, "киловатт": 1e3, "мвт": 1e6, "мегаватт": 1e6,
                      "л.с.": 735.49875, "лс": 735.49875, "лошадинаясила": 735.49875}),
     "voltage": ("В", {"в": 1, "вольт": 1, "кв": 1e3, "киловольт": 1e3, "мв": 1e-3, "милливольт": 1e-3}),
@@ -90,7 +93,7 @@ DIMENSIONS = {
     "torque": ("Н·м", {"н·м": 1, "нм": 1, "ньютонметр": 1, "кгс·м": 9.80665}),
     "data": ("байт", {"байт": 1, "б": 1, "кб": 1e3, "килобайт": 1e3, "мб": 1e6, "мегабайт": 1e6,
                       "гб": 1e9, "гигабайт": 1e9, "тб": 1e12, "терабайт": 1e12, "бит": 0.125}),
-    "ratio": ("1", {"%": 0.01, "процент": 0.01, "проц": 0.01, "ppm": 1e-6, "дб": 1, "децибел": 1,
+    "ratio": ("1", {"%": 0.01, "процент": 0.01, "проц": 0.01, "ppm": 1e-6,
                     "ед": 1, "единица": 1}),
     "count": ("шт", {"шт": 1, "штука": 1, "штук": 1, "штуки": 1, "пар": 2, "пара": 2,
                      "компл": 1, "комплект": 1, "набор": 1, "упак": 1, "упаковка": 1,
@@ -152,15 +155,6 @@ class Units:
             return (dim, next(iter(factors))) if len(factors) == 1 else (None, None)
         if len(exact) > 1:
             return None, None
-        long = collections.defaultdict(set)
-        for (dim, spelling), (base, factor) in self._lookup.items():
-            if len(spelling) >= 4 and spelling in key:
-                long[dim].add(factor)
-        if len(long) == 1:
-            dim = next(iter(long))
-            factors = long[dim]
-            if len(factors) == 1:
-                return dim, next(iter(factors))
         return None, None
 
     def resolve_code(self, code: Optional[str]):
@@ -169,8 +163,10 @@ class Units:
         u = self.by_code.get(str(code)) or self.by_code.get(str(code).zfill(3))
         if not u:
             return ResolvedUnit(str(code), None, None, None)
-        dim, factor = self._dimension_of_name(u.get("name"))
-        return ResolvedUnit(str(code), u.get("name"), dim, factor)
+        spellings = u.get("spellings") or []
+        name = u.get("name") or (spellings[0].get("name") if spellings else None)
+        dim, factor = self._dimension_of_name(name)
+        return ResolvedUnit(str(code), name, dim, factor)
 
     def _dimension_of_name(self, name):
         if not name:
@@ -214,7 +210,9 @@ class Units:
                 return fn(value)
         f_src = src.factor if src.factor is not None else 1.0
         f_dst = dst.factor if dst.factor is not None else 1.0
-        return value * f_src / f_dst
+        # Decimal conversion keeps exact decimal boundaries (0.7 m = 700 mm).
+        # A tolerance would incorrectly admit values across an open boundary.
+        return float(Decimal(str(value)) * Decimal(str(f_src)) / Decimal(str(f_dst)))
 
 
 class ResolvedUnit:
@@ -242,31 +240,43 @@ def find_data_dir() -> str:
 
 # ============================================================ проверка ========
 def value_in_range(value: float, alt) -> bool:
+    if not _valid_range(alt.lo, alt.hi, not alt.lo_strict, not alt.hi_strict):
+        return False
     if alt.lo is not None:
-        if value < alt.lo - TOL or (abs(value - alt.lo) <= TOL and alt.lo_strict):
+        if value < alt.lo or (value == alt.lo and alt.lo_strict):
             return False
     if alt.hi is not None:
-        if value > alt.hi + TOL or (abs(value - alt.hi) <= TOL and alt.hi_strict):
+        if value > alt.hi or (value == alt.hi and alt.hi_strict):
             return False
     return not (alt.lo is None and alt.hi is None)
 
 
-def range_inside(lo, hi, alt) -> bool:
-    """Пользовательский интервал целиком внутри каталожного; частичное пересечение — не подтверждение."""
+def _valid_range(lo, hi, lo_inclusive=True, hi_inclusive=True):
     if lo is None and hi is None:
         return False
-    if lo is not None:
-        if alt.lo is None or lo < alt.lo - TOL or (abs(lo - alt.lo) <= TOL and alt.lo_strict):
+    if any(isinstance(x, bool) or not isinstance(x, (int, float)) or not math.isfinite(x)
+           for x in (lo, hi) if x is not None):
+        return False
+    return lo is None or hi is None or lo < hi or (lo == hi and lo_inclusive and hi_inclusive)
+
+
+def range_inside(lo, hi, alt, lo_inclusive=True, hi_inclusive=True) -> bool:
+    """Пользовательский интервал целиком внутри каталожного; частичное пересечение — не подтверждение."""
+    if not _valid_range(lo, hi, lo_inclusive, hi_inclusive) or not _valid_range(
+            alt.lo, alt.hi, not alt.lo_strict, not alt.hi_strict):
+        return False
+    if alt.lo is not None:
+        if lo is None or lo < alt.lo or (lo == alt.lo and lo_inclusive and alt.lo_strict):
             return False
-    if hi is not None:
-        if alt.hi is None or hi > alt.hi + TOL or (abs(hi - alt.hi) <= TOL and alt.hi_strict):
+    if alt.hi is not None:
+        if hi is None or hi > alt.hi or (hi == alt.hi and hi_inclusive and alt.hi_strict):
             return False
     return True
 
 
 def to_target_unit(units: Units, char: Characteristic, value: float, fact: Fact):
     """Приводит число факта к единице характеристики. Возвращает (значение, причина_неизвестности)."""
-    targets = [a for a in char.alternatives if a.unit_code]
+    targets = [a for a in char.alternatives if a.unit_code or a.unit_text]
     src = units.resolve_code(fact.unit.code) if (fact.unit and fact.unit.code) else \
         units.resolve_text(fact.unit.text) if fact.unit else ResolvedUnit(None, None, None, None)
     if src.dimension is None and fact.unit and fact.unit.text:
@@ -275,9 +285,7 @@ def to_target_unit(units: Units, char: Characteristic, value: float, fact: Fact)
     if not targets:
         # единицы у характеристики нет: принимаем число как есть, но единица факта не должна
         # быть из другой физической величины — «5 кг» для длины не доказательство
-        if src.dimension not in (None, "count", "ratio", "length"):
-            return None, "unit_dimension_unsupported"
-        return value, None
+        return None, "position_unit_missing"
 
     if not fact.unit or not (fact.unit.code or fact.unit.text):
         return None, "user_unit_missing"          # «10» не превращаем в 10 мм
@@ -307,28 +315,45 @@ def check_fact(units: Units, char: Characteristic, fact: Fact):
     """Один факт против одной характеристики. Возвращает (verdict, detail)."""
     if not char.alternatives:
         return "unknown", {"reason": "position_has_no_allowed_values"}
+    if fact.problems():
+        return "unknown", {"reason": "invalid_format"}
+    if str(char.kind) not in ("1", "2"):
+        return "unknown", {"reason": "multiple_choice_not_supported"}
+    if any(a.kind == "range" and not _valid_range(a.lo, a.hi, not a.lo_strict, not a.hi_strict)
+           for a in char.alternatives):
+        return "unknown", {"reason": "invalid_catalog_interval"}
     if fact.polarity == "uncertain":
         return "unknown", {"reason": "uncertain_assertion"}
     if fact.polarity == "negated":
-        allowed = [a for a in char.alternatives if a.kind == "text"]
-        if allowed:
-            if any(normalize_text(a.text) in ("нет", "отсутствует", "не предусмотрено") for a in allowed):
-                return "compatible", None
-            return "unknown", {"reason": "negation_not_supported"}
         return "unknown", {"reason": "negation_not_supported"}
 
     kind = fact.kind
 
+    if kind == "number" and fact.operator in (">", ">=", "<", "<="):
+        lower = fact.operator in (">", ">=")
+        return check_fact(units, char, Fact(
+            kind="range", value={"min": fact.value if lower else None,
+                                 "max": None if lower else fact.value,
+                                 "min_inclusive": fact.operator != ">",
+                                 "max_inclusive": fact.operator != "<"}, unit=fact.unit,
+            polarity=fact.polarity, extraction_confidence=fact.extraction_confidence))
+    if fact.operator == "!=":
+        return "unknown", {"reason": "unsupported_operator"}
+
     if kind == "number" and isinstance(fact.value, (int, float)) and not isinstance(fact.value, bool):
-        value, why = to_target_unit(units, char, float(fact.value), fact)
-        if why:
-            return "unknown", {"reason": why}
+        unknown = []
         for a in char.alternatives:
-            if a.kind == "number" and a.number is not None and abs(a.number - value) <= max(TOL, abs(a.number) * 1e-9):
+            value, why = to_target_unit(units, replace(char, alternatives=[a]), float(fact.value), fact)
+            if why:
+                unknown.append(why)
+                continue
+            if a.kind == "number" and a.number is not None and a.number == value:
                 return "compatible", None
             if a.kind == "range" and value_in_range(value, a):
                 return "compatible", None
-        return "incompatible", {"reason": "out_of_range_or_set", "value": value}
+        if unknown:
+            return "unknown", {"reason": unknown[0]}
+        return "incompatible", {"reason": "out_of_range_or_set", "value": fact.value}
 
     if kind == "range" and isinstance(fact.value, dict):
         lo, hi = fact.value.get("min"), fact.value.get("max")
@@ -336,20 +361,46 @@ def check_fact(units: Units, char: Characteristic, fact: Fact):
         hi = float(hi) if hi is not None else None
         if not [a for a in char.alternatives if a.kind in ("number", "range")]:
             return "unknown", {"reason": "range_against_text_characteristic"}
-        if lo is not None:
-            lo, why = to_target_unit(units, char, lo, fact)
-            if why:
-                return "unknown", {"reason": why}
-        if hi is not None:
-            hi, why = to_target_unit(units, char, hi, fact)
-            if why:
-                return "unknown", {"reason": why}
-        for a in char.alternatives:
-            if a.kind == "number" and a.number is not None and lo is not None and hi is not None \
-                    and lo - TOL <= a.number <= hi + TOL:
+        low_closed = fact.value.get("min_inclusive", True)
+        high_closed = fact.value.get("max_inclusive", True)
+        if not _valid_range(lo, hi, low_closed, high_closed):
+            return "unknown", {"reason": "invalid_interval"}
+        unknown = []
+        alternatives = list(char.alternatives)
+        # Merge OR only when the source explicitly supplies the same unit.
+        for unit_key in {(a.unit_code, a.unit_text) for a in alternatives}:
+            group = [a for a in alternatives if (a.unit_code, a.unit_text) == unit_key
+                     and a.kind == "range"]
+            group.sort(key=lambda a: -math.inf if a.lo is None else a.lo)
+            merged = []
+            for a in group:
+                if merged and (merged[-1].hi is None or a.lo is None or a.lo < merged[-1].hi
+                               or (a.lo == merged[-1].hi and not (a.lo_strict and merged[-1].hi_strict))):
+                    previous = merged[-1]
+                    if previous.lo == a.lo:
+                        previous = replace(previous, lo_strict=previous.lo_strict and a.lo_strict)
+                    if previous.hi is not None and (a.hi is None or a.hi > previous.hi):
+                        previous = replace(previous, hi=a.hi, hi_strict=a.hi_strict)
+                    elif a.hi == previous.hi:
+                        previous = replace(previous, hi_strict=previous.hi_strict and a.hi_strict)
+                    merged[-1] = previous
+                else:
+                    merged.append(a)
+            alternatives.extend(merged)
+        for a in alternatives:
+            target = replace(char, alternatives=[a])
+            converted_lo, why_lo = to_target_unit(units, target, lo, fact) if lo is not None else (None, None)
+            converted_hi, why_hi = to_target_unit(units, target, hi, fact) if hi is not None else (None, None)
+            if why_lo or why_hi:
+                unknown.append(why_lo or why_hi)
+                continue
+            if a.kind == "number" and a.number is not None and low_closed and high_closed \
+                    and converted_lo == converted_hi == a.number:
                 return "compatible", None
-            if a.kind == "range" and range_inside(lo, hi, a):
+            if a.kind == "range" and range_inside(converted_lo, converted_hi, a, low_closed, high_closed):
                 return "compatible", None
+        if unknown:
+            return "unknown", {"reason": unknown[0]}
         return "incompatible", {"reason": "user_range_not_inside_catalogue_range"}
 
     if kind == "number_set":
@@ -451,7 +502,7 @@ def run_c(pool, facts, index: KtruIndex, units: Optional[Units] = None, *,
     soft_ids = {f.fact_id for f, _ in soft if f.fact_id}
 
     blocked = [p.code for p in pool if p.resolve_blocked]
-    usable = [p for p in pool if not p.resolve_blocked]
+    usable = [p for p in pool if not p.is_template]
 
     candidates = []
     checked_counts = {}
@@ -474,7 +525,7 @@ def run_c(pool, facts, index: KtruIndex, units: Optional[Units] = None, *,
 
     survivors = [c for c in candidates if c.verdict != "incompatible"]
     flags = _build_flags(candidates, survivors, evidence, soft, type_verified,
-                         catalog_scope_complete, checked_counts)
+                         catalog_scope_complete, checked_counts, units, usable)
     selected = survivors[0].code if (len(survivors) == 1 and flags.can_resolve()) else None
 
     ordered = sorted(candidates, key=lambda c: (c.verdict == "incompatible", c.code))
@@ -527,6 +578,9 @@ def _check_position(position: Position, facts: list, units: Units, scenario_date
                                              "matched_other_definition" if other else "not_defined_in_position"))
                 continue
             checked += 1
+            if not fact.is_hard:
+                unresolved.append(Unresolved(fact.fact_id, char.name, "uncertain_or_low_confidence_fact"))
+                continue
             if char.alternatives:
                 supported += 1
             verdict, detail = check_fact(units, char, fact)
@@ -542,13 +596,15 @@ def _check_position(position: Position, facts: list, units: Units, scenario_date
             else:
                 unresolved.append(Unresolved(fact.fact_id, char.name, (detail or {}).get("reason", "unknown")))
 
-    missing = _missing_required(position, facts)
+    missing = _missing_required(position, facts, units)
+    if position.resolve_blocked:
+        unresolved.append(Unresolved(None, None, "resolve_blocked"))
     future = bool(position.application_date_start
                   and position.application_date_start[:10] > scenario_date)
 
     if exclusions:
         verdict = "incompatible"
-    elif matched == 0:
+    elif unresolved or missing or matched == 0:
         # ни один факт не подтвердился: позиция не проверена, а не совместима
         verdict = "unknown"
     elif supported == 0:
@@ -564,9 +620,11 @@ def _check_position(position: Position, facts: list, units: Units, scenario_date
                        "structure_hash": position.structure_hash()}
 
 
-def _missing_required(position: Position, facts: list) -> list:
+def _missing_required(position: Position, facts: list, units: Units) -> list:
     answered = set()
     for f in facts:
+        if not f.is_hard:
+            continue
         char = position.char_by_def_id(f.def_id) if f.def_id else None
         if char is None:
             same = position.chars_by_name(f.name)
@@ -574,14 +632,13 @@ def _missing_required(position: Position, facts: list) -> list:
                 char = same[0]
             elif len(same) > 1:
                 # имя неоднозначно, но свойство с таким именем в позиции есть
-                answered.update(c.name for c in same)
                 continue
-        if char is not None:
+        if char is not None and check_fact(units, char, f)[0] == "compatible":
             answered.add(char.name)
     return sorted(n for n in position.required_names() if n not in answered)
 
 
-def _facts_conflict(facts: list) -> bool:
+def _facts_conflict(facts: list, units: Units | None = None) -> bool:
     """Противоречат ли факты друг другу.
 
     Противоречие — это разные значения ОДНОГО И ТОГО ЖЕ свойства: сравниваем по паре
@@ -590,21 +647,38 @@ def _facts_conflict(facts: list) -> bool:
     """
     grouped = {}
     for f in facts:
-        if f.polarity != "affirmed":
+        if not f.is_hard:
             continue
-        key = (f.def_id or "", normalize_name(f.name))
+        key = f.def_id or normalize_name(f.name)
         grouped.setdefault(key, []).append(f)
     for group in grouped.values():
+        if units and all(f.kind == "number" and not f.operator for f in group):
+            resolved = [units.resolve_code(f.unit.code) if f.unit and f.unit.code
+                        else units.resolve_text(f.unit.text) if f.unit else None for f in group]
+            resolved = [units.resolve_text(f.unit.text) if u and u.dimension is None and f.unit and f.unit.text
+                        else u for f, u in zip(group, resolved)]
+            if all(u and u.dimension is not None for u in resolved):
+                try:
+                    converted = [units.convert(f.value, u, resolved[0]) for f, u in zip(group, resolved)]
+                    if all(abs(v - converted[0]) <= TOL for v in converted):
+                        continue
+                except UnitError:
+                    pass
         if len(group) > 1 and len({describe_fact(f).strip().lower() for f in group}) > 1:
             return True
     return False
 
 
 def _build_flags(candidates, survivors, evidence, soft, type_verified,
-                 scope_complete, stats_by_code) -> FlagSet:
+                 scope_complete, stats_by_code, units=None, positions=()) -> FlagSet:
     scope = survivors or candidates
     blocking = []
-    if _facts_conflict(evidence):
+    if any(reason.startswith("invalid_format:") for _, reason in soft):
+        blocking.append("invalid_fact_format")
+    single_facts = [f for f in evidence if not any(
+        str(c.kind) == "3" and (c.code == f.def_id or normalize_name(c.name) == normalize_name(f.name))
+        for p in positions for c in p.characteristics)]
+    if _facts_conflict(single_facts, units or Units()):
         blocking.append("conflicting_facts")
     if any(c.resolve_blocked for c in scope):
         blocking.append("resolve_blocked")
@@ -618,6 +692,8 @@ def _build_flags(candidates, survivors, evidence, soft, type_verified,
 
     value_verified = bool(
         survivors
+        and not any(reason.startswith("invalid_format:") for _, reason in soft)
+        and all(c.verdict == "compatible" and not c.unresolved for c in survivors)
         and any(stats_by_code.get(c.code, {}).get("supported") for c in survivors)
         and any(stats_by_code.get(c.code, {}).get("checked") for c in survivors)
         and not any(c.exclusions for c in survivors)
@@ -626,7 +702,7 @@ def _build_flags(candidates, survivors, evidence, soft, type_verified,
     )
     return FlagSet(
         type_verified=bool(type_verified),
-        ktru_unique=len(survivors) == 1,
+        ktru_unique=len(survivors) == 1 and survivors[0].verdict == "compatible",
         fields_complete=bool(survivors) and all(not c.missing_required for c in survivors),
         value_verified=value_verified,
         catalog_scope_complete=bool(scope_complete),

@@ -70,7 +70,9 @@ class TestAlgorithmC(unittest.TestCase):
         self.index = FakeIndex([self.net, self.acc])
 
     def test_value_splits_pool(self):
-        res = run_c([self.net, self.acc], [Fact(kind="text", value="От сети", name="Тип питания")],
+        from .contract import Unit
+        res = run_c([self.net, self.acc], [Fact(kind="text", value="От сети", name="Тип питания"),
+                    Fact(kind="number", value=600, name="Мощность", unit=Unit(**WATT))],
                     self.index, self.units, type_verified=True)
         self.assertEqual(res.survivors, ["P-1"])
         self.assertTrue(res.flags.ktru_unique)
@@ -89,7 +91,8 @@ class TestAlgorithmC(unittest.TestCase):
 
     def test_value_inside_range(self):
         from .contract import Unit
-        res = run_c([self.net], [Fact(kind="number", value=600, name="Мощность", unit=Unit(**WATT))],
+        res = run_c([self.net], [Fact(kind="text", value="От сети", name="Тип питания"),
+                    Fact(kind="number", value=600, name="Мощность", unit=Unit(**WATT))],
                     self.index, self.units, type_verified=True)
         self.assertEqual(res.candidates[0].verdict, "compatible")
 
@@ -100,7 +103,8 @@ class TestAlgorithmC(unittest.TestCase):
 
     def test_units_converted(self):
         from .contract import Unit
-        res = run_c([self.net], [Fact(kind="number", value=0.6, name="Мощность",
+        res = run_c([self.net], [Fact(kind="text", value="От сети", name="Тип питания"),
+                    Fact(kind="number", value=0.6, name="Мощность",
                                       unit=Unit(code="2355", text="кВт"))],
                     self.index, self.units, type_verified=True)
         self.assertEqual(res.candidates[0].verdict, "compatible")   # 0,6 кВт = 600 Вт
@@ -128,14 +132,19 @@ class TestAlgorithmC(unittest.TestCase):
                     self.index, self.units, type_verified=True)
         self.assertEqual(len(res.survivors), 2)          # мягкий факт не исключает
         second = next(c for c in res.candidates if c.code == "P-2")
-        self.assertEqual(second.unresolved[0].reason, "low_confidence_fact")
+        self.assertEqual(second.unresolved[0].reason, "uncertain_or_low_confidence_fact")
+        self.assertEqual(second.verdict, "unknown")
+        self.assertFalse(res.flags.value_verified)
 
-    def test_blocked_position_excluded_and_counted(self):
+    def test_blocked_position_counted_but_retained_as_unknown_competitor(self):
         blocked = position("P-3", [], blocked=True)
         res = run_c([self.net, blocked], [Fact(kind="text", value="От сети", name="Тип питания")],
                     FakeIndex([self.net, blocked]), self.units, type_verified=True)
         self.assertEqual(res.counts["blocked_excluded"], 1)
-        self.assertEqual(res.survivors, ["P-1"])
+        self.assertEqual(set(res.survivors), {"P-1", "P-3"})
+        self.assertEqual(next(c for c in res.candidates if c.code == "P-3").verdict, "unknown")
+        self.assertFalse(res.flags.ktru_unique)
+        self.assertIsNone(res.selected_ktru_code)
 
     def test_no_resolution_without_type_verified(self):
         res = run_c([self.net, self.acc], [Fact(kind="text", value="От сети", name="Тип питания")],
@@ -201,7 +210,7 @@ class TestAlgorithmD(unittest.TestCase):
         self.assertEqual(q.reason, "confirms_type")
 
     def test_one_candidate_stops(self):
-        q = next_question([self.a], set(), self.index, type_verified=True)
+        q = next_question([self.a], {"d1"}, self.index, type_verified=True)
         self.assertEqual(q.stop_reason, "already_unique")
 
     def test_indistinguishable_stops(self):
@@ -223,12 +232,12 @@ class TestAlgorithmD(unittest.TestCase):
         q = next_question([self.a, c, d], set(), FakeIndex([self.a, c, d]), type_verified=True)
         self.assertIsNone(q.stop_reason)
 
-    def test_answered_keys_covers_alternatives(self):
+    def test_answered_keys_do_not_confirm_alternative_definitions(self):
         f = Fact(kind="text", value="x", def_id="a", name="Имя",
                  definition_alternatives=[{"def_id": "b"}])
         keys = answered_from_facts([f])
         self.assertIn("a", keys)
-        self.assertIn("b", keys)
+        self.assertNotIn("b", keys)
 
 
 class TestFixtureCorpus(unittest.TestCase):

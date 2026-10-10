@@ -1,6 +1,8 @@
 from typing import Annotated, Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+ENGINE_VERSION = "stateless-pipeline-v2-cd-gated"
+
 
 class InputModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -120,7 +122,7 @@ class QuestionOption(BaseModel):
 
 class Question(BaseModel):
     id: str
-    kind: Literal["conflict", "category", "property", "code"]
+    kind: Literal["conflict", "category", "property", "code", "correction"]
     title: str
     reason: str
     property_name: str | None = None
@@ -168,7 +170,7 @@ class AnalysisOut(BaseModel):
     verification: Verification = Field(default_factory=Verification)
     selected_ktru_code: str | None = None
     catalog_version: str
-    engine_version: str = "stateless-pipeline-v1"
+    engine_version: str = ENGINE_VERSION
 
 
 class ErrorDetail(BaseModel):

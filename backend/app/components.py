@@ -65,6 +65,15 @@ class ExistingChecker:
         return evaluate(position, facts, unit_resolver)
 
 
-def existing_components():
+def existing_components(data=None):
     from app.questions import next_question
+    if data is not None and data.categories:
+        try:
+            from app.algorithm_adapter import AlgorithmChecker, AlgorithmQuestions, make_index, make_units
+        except ModuleNotFoundError as exc:
+            if not (exc.name or "").startswith("algorithms"):
+                raise
+            return Components(ExistingExtractor(), None, None)
+        index = make_index(data)
+        return Components(ExistingExtractor(), AlgorithmChecker(index, make_units(data)), AlgorithmQuestions(index))
     return Components(ExistingExtractor(), ExistingChecker(), next_question)

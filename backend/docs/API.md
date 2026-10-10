@@ -51,12 +51,34 @@ additional: до 100 строк по 1024 символа. answers: до 100 об
 - Candidate: ktru_code/name/okpd2/outcome/checks/missing_required/has_characteristics. outcome: compatible/incompatible/unknown. Check: property_id/name/outcome/reason/fact_ids/value_codes. Шаблон не становится конечным кандидатом. Допустимые элементы сохраняют свои единицы и value_code в каталоге.
 - candidate_count/excluded_count — полные количества до лимита ответа. scope: category_id/position_count/evaluated_count/complete. Весь конечный пул выбранной области проверяется до ограничения UI.
 - Issue: code/severity/explanation/fact_id/property_id/candidate_code/rule_source/suggested_action/confirmation_required. severity: info/warning/error. Correction: fact_id/kind/original/normalized/explanation/confirmation_required; kind: auto_normalization/proposed_text_fix/proposed_fact_change. Безопасное преобразование единицы показывается; изменение факта требует пользовательского ввода.
-- next_question: null либо id/kind/title/reason/property_name/options/unit/allow_unknown; kind: conflict/category/property/code; options: value/label. По одному вопросу. Неизвестный ответ не подтверждает значение, уже отвеченный вопрос не повторяется бесконечно.
+- next_question: null либо id/kind/title/reason/property_name/options/unit/allow_unknown; kind: conflict/category/property/code/correction; options: value/label. По одному вопросу. Неизвестный ответ не подтверждает значение, уже отвеченный вопрос не повторяется бесконечно.
 
 Варианты вопроса свойства объединяются из проверенных правил всех оставшихся позиций той же семантики и объекта (товар/упаковка); правила разных объектов не смешиваются.
 - verification: type_verified/ktru_unique/fields_complete/value_verified/catalog_scope_complete/value_indistinguishable/confirmed_by_user/blocking_issues — boolean. confirmed_by_user отражает присланное явное подтверждение кода, а не успешность проверки.
 
 ## Статусы и подтверждение
+
+Версия движка: `stateless-pipeline-v2-cd-gated`. A использует действующие правила извлечения, B — существующий локальный Search. Для пригодного snapshot с категориями C/D подключены через algorithm_adapter и app.structured. C дополняет строгую проверку app.checks и не может самостоятельно разрешить подбор. Backend вычисляет verification и selected_ktru_code заново; флаги и selected из AlgorithmC не принимаются как доказательство.
+
+### Неподтверждённая правка имени характеристики
+
+Потенциально значимое несопоставленное имя (например «Мошность» рядом с правилом «Мощность») создаёт issue `unresolved_property_correction`, severity=error, confirmation_required=true. Ответ — needs_input, selected_ktru_code=null и next_question.kind=correction. Обычные additional/unparsed сами по себе не блокируют результат.
+
+Передайте ответ в существующем answers, сохранив полное состояние:
+
+```json
+{"description":"Дрель; Питание: от сети; Мощность:650 Вт; Мошность:900 Вт",
+ "confirmed_category_id":"tools","confirmed_ktru_code":"TEST-DRILL-MAINS",
+ "answers":[{"question_id":"<id из next_question>","value":"accept:Мощность","unknown":false}]}
+```
+
+Этот пример использует только синтетический тестовый каталог. Допустимые value копируйте из options: `accept:<имя>` подтверждает сопоставление, `reject` оставляет исходный факт дополнительным без назначения свойства. `unknown=true` оставляет проблему неразрешённой. При подтверждении значения и единицы не меняются: 900 Вт полностью перепроверяется вместе с 650 Вт, возникает conflicting_facts и завершение запрещено. Подтверждённая правка остаётся в corrections с confirmation_required=false; исходные raw/span/original_facts сохраняются.
+
+ID вопроса зависит от категории, факта, значения, единицы и предложения. После правки или смены категории старый ответ не действует. Явная правка через attributes.replaces остаётся доступной. Frontend-команде нужно поддержать новый kind=correction, показывать options и отправлять их value в answers; frontend в этом коммите не меняется.
+
+Issue `algorithm_verification_incomplete` означает, что C не подтвердил результат строгой проверки. Непроверенный конкурент остаётся unknown в полном пуле и не доказывает уникальность совместимого кода.
+
+ktru_unique=true требует единственного compatible, а не единственного unknown. Пока значимая правка не разрешена, value_verified=false. Сопоставление и предложение правки учитывают объект характеристики (товар/упаковка).
 
 `needs_data`: нет пригодного каталога/индекса/модели или недостаточно подтверждённых ограничений/покрытия. Поиск при недоступной модели может дать лексические предложения, но не успешный подбор. Пустой рабочий каталог отвечает needs_data, readiness — 503 catalog_empty.
 

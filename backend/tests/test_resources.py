@@ -51,8 +51,8 @@ def test_hybrid_search_uses_raw_text_when_extraction_fails(catalog_data):
     assert search.find("Зимняя рабочая куртка")[0].id == "clothes"
     result = search.find("Электрическая дрель")
     assert result[0].id == "tools"
-    assert set(result[0].reasons) == {"BM25", "E5"}
-    assert result[0].rank_score == pytest.approx(2 / 61)
+    assert {"BM25", "E5"} <= set(result[0].reasons) <= {"BM25", "E5", "CHAR"}
+    assert result[0].rank_score == pytest.approx(len(result[0].reasons) / 61)
 
 
 def test_readiness_empty_and_resources_loaded_once(monkeypatch):

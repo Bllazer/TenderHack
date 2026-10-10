@@ -5,6 +5,7 @@ RUN pip install --no-cache-dir uv==0.12.24
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --extra search --no-dev --no-install-project
 COPY app ./app
+COPY algorithms ./algorithms
 COPY resources ./resources
 RUN uv sync --frozen --extra search --no-dev
 ENV PATH="/srv/.venv/bin:$PATH"
