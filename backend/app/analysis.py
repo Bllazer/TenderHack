@@ -107,11 +107,16 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
         candidate.blocking_reasons = position_blockers(position)
         if candidate.blocking_reasons:
             catalog_blocked.add(position.code)
-            candidate.outcome = "unknown"
+            if candidate.outcome != "incompatible":
+                candidate.outcome = "unknown"
             issues.extend(Issue(code=reason.code, candidate_code=position.code,
                 property_id=reason.property_id, rule_source=reason.rule_source, explanation=reason.explanation,
                 suggested_action="Нужно поддержать семантику ограничения или уточнить источник; заполнение формы не снимает блокировку")
                 for reason in candidate.blocking_reasons)
+        contradictory = {check.property_id for check in candidate.checks if check.outcome == "incompatible"}
+        if candidate.outcome == "incompatible":
+            candidate.exclusion_reasons = [issue for issue in issues if issue.property_id in contradictory
+                                           and issue.candidate_code == position.code]
         all_candidates.append(candidate)
         all_issues.extend(issues)
         result.corrections.extend(corrections)

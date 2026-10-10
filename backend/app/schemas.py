@@ -134,6 +134,7 @@ class Candidate(BaseModel):
     missing_required: list[str]
     has_characteristics: bool
     blocking_reasons: list[BlockingReason] = Field(default_factory=list)
+    exclusion_reasons: list[Issue] = Field(default_factory=list)
 
 
 class QuestionOption(BaseModel):

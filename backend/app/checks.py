@@ -97,7 +97,7 @@ def check_fact(prop: Property, fact: Fact, unit_resolver=None):
     """outcome, reason, value_codes, optional safe normalization."""
     if fact.unknown:
         return "unknown", "unknown_fact", [], None
-    if not prop.verified or not prop.evidence or prop.required is None or prop.value_type == "unsupported" or prop.kind not in ("1", "2"):
+    if not prop.verified or prop.unsupported_reasons or not prop.evidence or prop.required is None or prop.value_type == "unsupported" or prop.kind not in ("1", "2"):
         return "unknown", "unsupported_constraint", [], None
     if not prop.allowed:
         return "unknown", "no_supported_constraints", [], None
@@ -215,7 +215,8 @@ def evaluate(position: Position, facts: list[Fact], unit_resolver=None):
                             rule_source=position.source_path, explanation="Позиция заблокирована источником для завершения подбора",
                             suggested_action="Уточните ограничения исходного КТРУ"))
         checks.append(Check(property_id="", name="Источник", outcome="unknown", reason="source_issue" if position.source_issues else "resolve_blocked"))
-        outcome = "unknown"
+        if outcome != "incompatible":
+            outcome = "unknown"
     return Candidate(ktru_code=position.code, name=position.name, okpd2=position.okpd2, outcome=outcome,
                      checks=checks, missing_required=missing, has_characteristics=bool(position.properties)), issues, corrections
 

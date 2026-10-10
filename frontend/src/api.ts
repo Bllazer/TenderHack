@@ -2,7 +2,10 @@ export type InputFact = { id: string; name: string; value: string; unit: string 
 export type Answer = { question_id: string; value: string | null; unit: string | null; unknown: boolean }
 export type Draft = { description: string; attributes: InputFact[]; additional: string[]; confirmed_category_id: string | null; answers: Answer[]; confirmed_ktru_code: string | null }
 export type Fact = { id: string; name: string; value: string; unit: string | null; raw: string; source: 'text' | 'input' | 'answer'; subject: string; unknown: boolean; normalized_value: string | null; normalized_unit: string | null }
-export type Candidate = { ktru_code: string; name: string; outcome: 'compatible' | 'incompatible' | 'unknown'; missing_required: string[]; checks: { name: string; outcome: string; reason: string }[] }
+export type Issue = { code: string; severity: 'info' | 'warning' | 'error'; explanation: string; suggested_action: string; fact_id: string | null; property_id: string | null; candidate_code: string | null; rule_source: string | null; confirmation_required: boolean }
+export type BlockingReason = { code: string; explanation: string; property_id: string | null; property_name: string | null; kind: string | null; units: (string | null)[]; unsupported_reasons: string[]; source_issues: string[]; resolve_blocked_reason: string[]; rule_source: string | null }
+// Excluded candidates retain proven contradictions; their diagnostics do not block remaining candidates.
+export type Candidate = { ktru_code: string; name: string; outcome: 'compatible' | 'incompatible' | 'unknown'; missing_required: string[]; checks: { name: string; outcome: string; reason: string }[]; blocking_reasons: BlockingReason[]; exclusion_reasons: Issue[] }
 export type Question = { id: string; kind: 'category' | 'property' | 'conflict' | 'code' | 'correction'; title: string; reason: string; property_name: string | null; options: { value: string; label: string }[]; unit: string | null; allow_unknown: boolean }
 export type Result = {
   status: 'needs_data' | 'needs_input' | 'ambiguous' | 'resolved'; original_text: string; normalized_text: string;

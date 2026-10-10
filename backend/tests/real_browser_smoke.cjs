@@ -83,7 +83,7 @@ const cases = JSON.parse(fs.readFileSync('.tools/real-runtime-http.json', 'utf8'
     ['ambiguity', 'Газ горючий природный (газ естественный); Назначение: Промышленное и коммунально-бытовое; Объем баллона: 11 л', '06.20.10.110-00000009', 'ambiguous'],
     ['no rules', 'Нефть сырая', '06.10.10.100-00000001', 'needs_data'],
     ['unsupported constraints', 'Контур дыхательный, одноразового использования', '32.50.13.190-00009', 'needs_data'],
-    ['wrong unit', 'Дрель ручная электрическая; Тип питания: От сети; Мощность: 650 кг', '28.24.11.000-00000003', 'needs_data'],
+    ['wrong unit', 'Дрель ручная электрическая; Тип питания: От сети; Мощность: 650 кг', '28.24.11.000-00000003', 'needs_input'],
   ]) {
     const response = await begin(description, category);
     if (response.status !== expected || response.selected_ktru_code !== null) throw new Error(JSON.stringify(response));

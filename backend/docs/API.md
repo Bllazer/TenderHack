@@ -110,7 +110,18 @@ missing_source_unit. Эти признаки не изменяются ради 
 - Fact: id/name/value/unit/raw/span/source/subject/negated/unknown/normalized_value/normalized_unit/mappings. source: text/input/answer. span — полуоткрытый диапазон символов исходного текста либо null. Нормализация не меняет исходный факт.
 - Fragment: id/raw/span. Нераспознанные и дополнительные сведения не теряются.
 - CategoryCandidate: id/name/rank/rank_score/reasons. rank_score — RRF, не вероятность. Предложение требует подтверждения типа пользователем.
-- Candidate: ktru_code/name/okpd2/outcome/checks/missing_required/has_characteristics/**blocking_reasons**. outcome: compatible/incompatible/unknown. Check: property_id/name/outcome/reason/fact_ids/value_codes. Шаблон не становится конечным кандидатом. Допустимые элементы сохраняют свои единицы и value_code в каталоге.
+- Candidate: ktru_code/name/okpd2/outcome/checks/missing_required/has_characteristics/**blocking_reasons**/**exclusion_reasons**. outcome: compatible/incompatible/unknown. Check: property_id/name/outcome/reason/fact_ids/value_codes. Шаблон не становится конечным кандидатом. Допустимые элементы сохраняют свои единицы и value_code в каталоге.
+
+Достоверный incompatible-check применимого проверенного правила исключает позицию,
+даже если другое правило неподдержано, не заполнено или источник запрещает resolved.
+Такая позиция находится в excluded, а не candidates; checks и blocking_reasons сохраняются.
+exclusion_reasons — массив Issue с исходным фактом, идентификатором/происхождением
+правила и объяснением противоречия. Для оставшихся позиций массив пуст.
+Эти диагностические ошибки исключённых позиций не блокируют проверку оставшегося пула.
+Правило verified=false, с unsupported_reasons или без доказанного происхождения
+не доказывает исключение. Отсутствие противоречий само по себе не даёт compatible:
+неподдержанные ограничения оставшейся позиции сохраняют unknown и запрет resolved.
+Подтверждение исключённого кода возвращает 422 incompatible_ktru_code.
 - candidate_count/excluded_count — полные количества до лимита ответа. scope: category_id/position_count/evaluated_count/complete. Весь конечный пул выбранной области проверяется до ограничения UI.
 - Issue: code/severity/explanation/fact_id/property_id/candidate_code/rule_source/suggested_action/confirmation_required. severity: info/warning/error. Correction: fact_id/kind/original/normalized/explanation/confirmation_required; kind: auto_normalization/proposed_text_fix/proposed_fact_change. Безопасное преобразование единицы показывается; изменение факта требует пользовательского ввода.
 - next_question: null либо id/kind/title/reason/property_name/options/unit/allow_unknown; kind: conflict/category/property/code/correction; options: value/label. По одному вопросу. Неизвестный ответ не подтверждает значение, уже отвеченный вопрос не повторяется бесконечно.
