@@ -176,7 +176,7 @@ answered_from_facts(facts) -> set
 * `verdict` — `compatible` | `incompatible` | `unknown`. **`unknown` не исключает позицию.**
 * `exclusions` — основание для сообщения пользователю: свойство, введённое значение, правило позиции.
 * `unresolved` — что не проверено и почему: `not_defined_in_position`, `unit_dimension_unsupported`,
-  `name_ambiguous_in_position`, `low_confidence_fact`, `user_unit_missing`, `unsupported_value_shape`.
+  `name_ambiguous_in_position`, `uncertain_or_low_confidence_fact`, `user_unit_missing`, `unsupported_value_shape`.
 * `missing_required` — обязательные свойства позиции, по которым нет факта (нужно для полноты карточки).
 * `selected_ktru_code` — заполняется только при `type_verified ∧ ktru_unique ∧ fields_complete ∧
   value_verified ∧ catalog_scope_complete` и отсутствии блокировок. Подтверждение пользователя не обходит ограничения.

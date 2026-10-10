@@ -46,3 +46,46 @@ def test_unverified_competitor_does_not_prove_uniqueness(catalog_data, monkeypat
             "confirmed_ktru_code":"TEST-TABLE"}).json()
         assert response["candidate_count"] == 2 and not response["verification"]["ktru_unique"]
         assert response["selected_ktru_code"] is None
+
+
+def strict_bound_catalog(catalog_data):
+    """Каталог, у которого нижняя граница высоты строгая: (700;800] мм."""
+    table = next(p for p in catalog_data.positions if p.code == "TEST-TABLE")
+    strict = next(prop for prop in table.properties if prop.name == "Высота").allowed[0].model_copy(
+        update={"lower_inclusive": False})
+    table = table.model_copy(update={"properties": tuple(
+        prop.model_copy(update={"allowed": (strict,)}) if prop.name == "Высота" else prop
+        for prop in table.properties)})
+    return catalog_data.model_copy(update={"positions": tuple(
+        table if p.code == "TEST-TABLE" else p for p in catalog_data.positions)})
+
+
+def test_http_open_range_against_strict_catalog_bound_does_not_dead_end(catalog_data, monkeypatch):
+    """Открытый диапазон против строгой границы справочника не должен упираться.
+
+    Раньше C не читал min_inclusive/max_inclusive, считал требование (700;800]
+    замкнутым [700;800], натыкался на строгую границу справочника и отвечал unknown.
+    Мост понижал подтверждённое значение до непроверенного, и HTTP возвращал
+    needs_input БЕЗ вопроса: пользователю нечего было уточнить.
+    """
+    import app.main as main
+    from fastapi.testclient import TestClient
+    monkeypatch.setattr(main, "resources", lambda: runtime(strict_bound_catalog(catalog_data)))
+    with TestClient(main.app) as api:
+        body = {"description": "Стол; Высота: (700;800] мм", "confirmed_category_id": "furniture",
+                "confirmed_ktru_code": "TEST-TABLE"}
+        response = api.post("/api/v1/analyses", json=body).json()
+        assert response["status"] == "resolved", response
+        assert response["selected_ktru_code"] == "TEST-TABLE"
+        assert response["verification"]["value_verified"]
+
+        # Строгость уважается и в обратную сторону: [700;800] включает 700,
+        # которое справочник исключает, — такое подтверждение отклоняется.
+        wrong = api.post("/api/v1/analyses", json={**body, "description": "Стол; Высота: [700;800] мм"})
+        assert wrong.status_code == 422, wrong.text
+
+        # Без подтверждённого кода пользователь получает вопрос, а не пустой ответ.
+        unconfirmed = api.post("/api/v1/analyses", json={
+            "description": "Стол; Высота: (700;800] мм", "confirmed_category_id": "furniture"}).json()
+        assert unconfirmed["status"] == "needs_input"
+        assert unconfirmed["next_question"] is not None

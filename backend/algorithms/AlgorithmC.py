@@ -16,6 +16,7 @@ import json
 import math
 import os
 import unicodedata
+from decimal import Decimal
 from typing import Optional
 
 from .contract import (
@@ -41,7 +42,7 @@ def _norm_unit(value) -> str:
 DIMENSIONS = {
     "length": ("м", {
         "м": 1, "метр": 1, "mm": 1e-3, "мм": 1e-3, "миллиметр": 1e-3, "см": 1e-2, "сантиметр": 1e-2,
-        "дм": 0.1, "км": 1e3, "километр": 1e3, "мкм": 1e-6, "микрометр": 1e-6, "микрон": 1e-6,
+        "cm": 1e-2, "m": 1, "дм": 0.1, "км": 1e3, "километр": 1e3, "мкм": 1e-6, "микрометр": 1e-6, "микрон": 1e-6,
         "нм": 1e-9, "дюйм": 0.0254, "дюймы": 0.0254, "in": 0.0254, "фут": 0.3048,
         "пог.м": 1, "погм": 1, "погонныйметр": 1, "п.м": 1, "пм": 1,
     }),
@@ -215,13 +216,18 @@ class Units:
                             % (src.name or src.code, src.dimension, dst.dimension))
         if src.dimension == "temperature":
             a, b = _temp_kind(src), _temp_kind(dst)
+            if a == b:
+                return value
             if a == "c" and b == "k":
-                return value + 273.15
+                return float(Decimal(str(value)) + Decimal("273.15"))
             if a == "k" and b == "c":
-                return value - 273.15
+                return float(Decimal(str(value)) - Decimal("273.15"))
         f_src = src.factor if src.factor is not None else 1.0
         f_dst = dst.factor if dst.factor is not None else 1.0
-        return value * f_src / f_dst
+        # Точный десятичный перевод: 0,7 м — это ровно 700 мм, а не 700.0000000000001.
+        # Иначе допуск размывает строгую границу, и значение, стоящее на открытой
+        # границе, проходит как допустимое (или наоборот).
+        return float(Decimal(str(value)) * Decimal(str(f_src)) / Decimal(str(f_dst)))
 
 
 def _temp_kind(u) -> str:
@@ -282,18 +288,6 @@ def _norm_bounds(lo, hi, lo_strict=False, hi_strict=False):
     return lo_v, hi_v, lo_s, hi_s
 
 
-def _in_segment(x, lo, hi, lo_s, hi_s):
-    if x < lo or x > hi:
-        return False
-    if lo == hi:
-        return abs(x - lo) <= TOL and not (lo_s or hi_s)
-    if abs(x - lo) <= TOL and lo_s:
-        return False
-    if abs(x - hi) <= TOL and hi_s:
-        return False
-    return True
-
-
 def _alt_segments(alt):
     """Допустимое множество одной альтернативы как список отрезков."""
     if alt.kind == "range" and not (alt.lo is None and alt.hi is None):
@@ -304,63 +298,80 @@ def _alt_segments(alt):
     return []
 
 
-def _points_cover(x, segments):
-    for lo, hi, lo_s, hi_s in segments:
-        if _in_segment(x, lo, hi, lo_s, hi_s):
-            return True
-        if lo == hi and abs(x - lo) <= TOL:
-            return True
-        if x < lo and abs(x - lo) <= TOL and not lo_s:
-            return True
-    return False
+def _valid_interval(lo, hi, lo_strict=False, hi_strict=False) -> bool:
+    """Непустой и непротиворечивый интервал.
 
-
-def _point_covered(x, segments):
-    for lo, hi, lo_s, hi_s in segments:
-        if lo == hi:
-            if abs(x - lo) <= TOL and not (lo_s or hi_s):
-                return True
-            continue
-        if _in_segment(x, lo, hi, lo_s, hi_s):
-            return True
-    return False
-
-
-def range_covered_by(user_lo, user_hi, segments) -> bool:
-    """Полное покрытие пользовательского диапазона объединением допустимых отрезков.
-
-    Проверяются все элементарные отрезки между точками разбиения и обе границы:
-    частичное пересечение покрытием не считается.
+    Односторонний интервал допустим. Перевёрнутый (lo > hi) и пустой (lo == hi при
+    строгой границе хотя бы с одной стороны) — нет: по такому ограничению нельзя
+    ничего доказать, поэтому проверка обязана вернуть unknown, а не «подходит».
     """
-    ulo, uhi, ulos, uhis = _norm_bounds(user_lo, user_hi, False, False)
-    if ulo > uhi:
+    if lo is None and hi is None:
         return False
+    for x in (lo, hi):
+        if x is not None and (isinstance(x, bool) or not isinstance(x, (int, float))
+                              or not math.isfinite(float(x))):
+            return False
+    if lo is None or hi is None:
+        return True
+    if float(lo) > float(hi):
+        return False
+    return not (float(lo) == float(hi) and (bool(lo_strict) or bool(hi_strict)))
+
+
+def _valid_alt(alt) -> bool:
+    """Годится ли альтернатива-диапазон как ограничение."""
+    if alt.kind != "range":
+        return True
+    return _valid_interval(alt.lo, alt.hi, bool(alt.lo_strict), bool(alt.hi_strict))
+
+
+def _merge_segments(segments: list) -> list:
+    """Слить пересекающиеся и соприкасающиеся отрезки одной единичной группы.
+
+    Соприкосновение дырой не считается, только если обе границы в этой точке
+    замкнуты: «[0;2] и [2;5]» — сплошное покрытие, «[0;2) и (2;5]» — дыра в точке 2,
+    и требование, включающее эту точку, покрытым не является.
+    """
+    merged: list = []
+    for lo, hi, lo_s, hi_s in sorted(segments):
+        if merged:
+            plo, phi, plo_s, phi_s = merged[-1]
+            if lo < phi or (lo == phi and not (lo_s and phi_s)):
+                if lo == plo:
+                    plo_s = plo_s and lo_s
+                if hi > phi:
+                    phi, phi_s = hi, hi_s
+                elif hi == phi:
+                    phi_s = phi_s and hi_s
+                merged[-1] = (plo, phi, plo_s, phi_s)
+                continue
+        merged.append((lo, hi, lo_s, hi_s))
+    return merged
+
+
+def _segment_contains(ulo, uhi, ulos, uhis, segment) -> bool:
+    """Лежит ли множество пользователя целиком внутри одного отрезка допустимых.
+
+    Границы канонические: None заменён бесконечностью. Одностороннее требование не
+    лежит внутри ограниченного отрезка («не менее 5» не подтверждается [0;10]), а
+    требование, включающее точку на строгой границе отрезка, не подтверждается
+    отрезком, который её исключает.
+    """
+    slo, shi, sls, shs = segment
+    if ulo < slo or (ulo == slo and not ulos and sls):
+        return False
+    if uhi > shi or (uhi == shi and not uhis and shs):
+        return False
+    return True
+
+
+def segments_cover(user_lo, user_hi, user_lo_strict, user_hi_strict, segments) -> bool:
+    """Полное покрытие требования объединением допустимых отрезков одной группы."""
     if not segments:
         return False
-    segs = sorted(segments)
-    points = {ulo, uhi}
-    for lo, hi, _, _ in segs:
-        for p in (lo, hi):
-            if ulo <= p <= uhi:
-                points.add(p)
-    pts = sorted(points)
-    for i in range(len(pts) - 1):
-        a, b = pts[i], pts[i + 1]
-        if b - a > TOL:
-            if not _point_covered((a + b) / 2.0, segs):
-                return False
-    for p in pts:
-        if not _point_covered(p, segs):
-            at_user = (abs(p - ulo) <= TOL and not ulos) or (abs(p - uhi) <= TOL and not uhis)
-            in_gap = False
-            for lo, hi, lo_s, hi_s in segs:
-                if abs(p - lo) <= TOL and lo_s and p > ulo + TOL:
-                    in_gap = True
-                if abs(p - hi) <= TOL and hi_s and p < uhi - TOL:
-                    in_gap = True
-            if not (at_user or in_gap):
-                return False
-    return True
+    ulo, uhi, ulos, uhis = _norm_bounds(user_lo, user_hi, user_lo_strict, user_hi_strict)
+    return any(_segment_contains(ulo, uhi, ulos, uhis, seg)
+               for seg in _merge_segments(segments))
 
 
 def _convert_point(units: Units, src, dst, value: float):
@@ -368,7 +379,7 @@ def _convert_point(units: Units, src, dst, value: float):
     if dst is None or dst.dimension is None:
         if src is None or src.dimension is None:
             return value, None
-        if src.dimension in ("count", "ratio"):
+        if src.dimension in ("count", "ratio", "percent"):
             return value, None
         return None, "position_unit_unknown"
     if src is None or src.dimension is None:
@@ -404,7 +415,7 @@ def _resolve_number(units: Units, char: Characteristic, value: float, fact: Fact
             src = units.resolve_code(fact.unit.code) if fact.unit.code else units.resolve_text(fact.unit.text)
             if src.dimension is None and fact.unit.text:
                 src = units.resolve_text(fact.unit.text)
-            if src.dimension not in (None, "count", "ratio", "length"):
+            if src.dimension not in (None, "count", "ratio", "percent", "length"):
                 return _Resolution(None, "unit_dimension_unsupported")
         return _Resolution(value, None, None)
 
@@ -482,7 +493,7 @@ def check_number(units: Units, char: Characteristic, value: float, fact: Fact):
             return "unknown", "user_unit_missing"
         return "unknown", "user_unit_unknown"
     if not with_unit and fact.unit and (fact.unit.code or fact.unit.text):
-        if src is not None and src.dimension not in (None, "count", "ratio", "length"):
+        if src is not None and src.dimension not in (None, "count", "ratio", "percent", "length"):
             return "unknown", "unit_dimension_unsupported"
 
     unknown_reason = None
@@ -511,12 +522,22 @@ def check_number(units: Units, char: Characteristic, value: float, fact: Fact):
 
 
 def _alt_unit_key(units: Units, alt) -> str:
+    """Ключ единичной группы альтернативы.
+
+    Группировать по размерности нельзя: миллиметр и сантиметр — обе «длина», но
+    требование «50 мм» должно сравниваться с каждой альтернативой в её собственной
+    единице, а не в общей. Ключ — сама физическая единица (размерность и множитель),
+    поэтому код ОКЕИ и написание одной и той же единицы попадают в одну группу.
+    """
     dst = units.resolve_code(alt.unit_code) if alt.unit_code else None
-    if dst is None or dst.dimension is None:
-        dst = units.resolve_text(alt.unit_text) if alt.unit_text else None
     if dst is not None and dst.dimension:
-        return "dim:" + dst.dimension
-    return "unknown:" + str(alt.unit_text)
+        return "unit:%s:%s" % (dst.dimension, dst.factor)
+    dst = units.resolve_text(alt.unit_text) if alt.unit_text else None
+    if dst is not None and dst.dimension:
+        return "unit:%s:%s" % (dst.dimension, dst.factor)
+    if alt.unit_code:
+        return "code:" + str(alt.unit_code)
+    return "unknown:" + _norm_unit(alt.unit_text)
 
 
 def _operator_regions(value, op, unit_group):
@@ -532,64 +553,15 @@ def _operator_regions(value, op, unit_group):
     return []
 
 
-def coverage_of_region(lo, hi, lo_s, hi_s, segments) -> str:
-    """covered | uncovered | boundary_unknown — полное покрытие области объединением."""
-    if lo > hi:
-        return "uncovered"
-    if not segments:
-        return "uncovered"
-    points = set()
-    if math.isfinite(lo):
-        points.add(lo)
-    if math.isfinite(hi):
-        points.add(hi)
-    for slo, shi, _, _ in segments:
-        for p in (slo, shi):
-            if math.isfinite(p) and lo <= p <= hi:
-                points.add(p)
-    pts = sorted(points)
-    for i in range(len(pts) - 1):
-        a, b = pts[i], pts[i + 1]
-        if b - a <= TOL:
-            continue
-        mid = (a + b) / 2.0
-        state = _point_state(mid, segments)
-        if state == "outside":
-            return "uncovered"
-        if state == "boundary":
-            return "boundary_unknown"
-    for p in pts:
-        if abs(p - lo) <= TOL and lo_s:
-            continue
-        if abs(p - hi) <= TOL and hi_s:
-            continue
-        state = _point_state(p, segments)
-        if state == "outside":
-            return "uncovered"
-        if state == "boundary":
-            return "boundary_unknown"
-    return "covered"
+def check_range(units: Units, char: Characteristic, lo, hi, fact: Fact,
+                lo_strict: bool = False, hi_strict: bool = False):
+    """Проверка диапазона, введённого пользователем.
 
-
-def _point_state(x, segments) -> str:
-    """inside | boundary | outside."""
-    strict_hit = False
-    for lo, hi, lo_s, hi_s in segments:
-        if lo == hi:
-            if abs(x - lo) <= TOL:
-                return "inside" if not (lo_s or hi_s) else "boundary"
-            continue
-        if x < lo - TOL or x > hi + TOL:
-            continue
-        if (abs(x - lo) <= TOL and lo_s) or (abs(x - hi) <= TOL and hi_s):
-            strict_hit = True
-            continue
-        return "inside"
-    return "boundary" if strict_hit else "outside"
-
-
-def check_range(units: Units, char: Characteristic, lo, hi, fact: Fact):
-    """Проверка диапазона, введённого пользователем."""
+    Строгость границ требования приходит из fact.value: min_inclusive/max_inclusive
+    (та же нотация, что в контракте и в индексе). Строгая граница обязана остаться
+    строгой при сравнении с альтернативой, иначе значение, стоящее ровно на открытой
+    границе, подтвердит код.
+    """
     if lo is not None and not _finite(lo):
         return "unknown", "non_finite_value"
     if hi is not None and not _finite(hi):
@@ -598,74 +570,68 @@ def check_range(units: Units, char: Characteristic, lo, hi, fact: Fact):
         return "unknown", "empty_user_range"
     if lo is not None and hi is not None and float(lo) > float(hi):
         return "unknown", "reversed_user_range"          # границы не переставляем молча
+    if not _valid_interval(lo, hi, lo_strict, hi_strict):
+        return "unknown", "empty_user_range"             # точка при строгой границе пуста
 
     numeric = [a for a in char.alternatives if a.kind in ("number", "range")]
     if not numeric:
         return "unknown", "range_against_text_characteristic"
 
-    with_unit = [a for a in numeric if a.unit_code or a.unit_text]
     src = None
     if fact.unit and (fact.unit.code or fact.unit.text):
         src = units.resolve_code(fact.unit.code) if fact.unit.code else units.resolve_text(fact.unit.text)
         if src.dimension is None and fact.unit.text:
             src = units.resolve_text(fact.unit.text)
 
-    def to_group(value):
-        """Приводит границу к первой единичной группе; возвращает (значение, ключ группы, причина)."""
-        if not with_unit:
-            return value, None, None
-        if src is None or src.dimension is None:
-            return None, None, ("user_unit_missing" if not fact.unit or not (fact.unit.text or fact.unit.code)
-                                else "user_unit_unknown")
-        key = _alt_unit_key(units, with_unit[0])
-        dst = units.resolve_code(with_unit[0].unit_code) if with_unit[0].unit_code else None
-        if dst is None or dst.dimension is None:
-            dst = units.resolve_text(with_unit[0].unit_text) if with_unit[0].unit_text else None
-        out, why = _convert_point(units, src, dst, value)
-        if why:
-            return None, None, why
-        return out, key, None
-
-    lo_v, key_lo, why_lo = to_group(lo) if lo is not None else (None, None, None)
-    hi_v, key_hi, why_hi = to_group(hi) if hi is not None else (None, None, None)
-    why = why_lo or why_hi
-    if why:
-        return "unknown", why
-
-    groups = {}
-    order = []
+    groups: dict = {}
+    order: list = []
     for a in numeric:
         key = _alt_unit_key(units, a) if (a.unit_code or a.unit_text) else None
         groups.setdefault(key, []).append(a)
         if key not in order:
             order.append(key)
 
-    if len([k for k in order if k is not None]) > 1:
-        # альтернативы в разных единицах: сырые границы относятся только к своей группе
-        if key_lo is None and with_unit:
-            return "unknown", "value_units_ambiguous"
-        use = [k for k in order if k == key_lo]
-    else:
-        use = order
-
+    unknown: list = []
     covered_any = False
-    boundary_unknown = False
-    for key in use:
-        segs = []
-        for a in groups[key]:
-            segs.extend(_alt_segments(a))
-        if not segs:
-            continue
-        state = coverage_of_region(lo_v, hi_v, False, False, segs)
-        if state == "covered":
+    for key in order:
+        alts = groups[key]
+        if key is None:
+            # у альтернатив нет единицы: значения сравниваются как есть, но требование,
+            # выраженное в единице измерения, с безразмерной характеристикой несопоставимо
+            if fact.unit and (fact.unit.code or fact.unit.text):
+                if src is None or src.dimension is None:
+                    unknown.append("user_unit_unknown")
+                    continue
+                if src.dimension not in (None, "count", "ratio", "percent", "length"):
+                    unknown.append("unit_dimension_unsupported")
+                    continue
+            group_lo, group_hi = lo, hi
+        else:
+            if src is None or src.dimension is None:
+                unknown.append("user_unit_missing"
+                               if not (fact.unit and (fact.unit.code or fact.unit.text))
+                               else "user_unit_unknown")
+                continue
+            first = alts[0]
+            target = units.resolve_code(first.unit_code) if first.unit_code else None
+            if target is None or target.dimension is None:
+                target = units.resolve_text(first.unit_text) if first.unit_text else None
+            group_lo, why_lo = _convert_point(units, src, target, lo) if lo is not None else (None, None)
+            group_hi, why_hi = _convert_point(units, src, target, hi) if hi is not None else (None, None)
+            why = why_lo or why_hi
+            if why:
+                unknown.append(why)
+                continue
+        segments: list = []
+        for a in alts:
+            segments.extend(_alt_segments(a))
+        if segments_cover(group_lo, group_hi, lo_strict, hi_strict, segments):
             covered_any = True
             break
-        if state == "boundary_unknown":
-            boundary_unknown = True
     if covered_any:
         return "compatible", None
-    if boundary_unknown:
-        return "unknown", "boundary_strictness_unknown"
+    if unknown:
+        return "unknown", unknown[0]
     return "incompatible", "user_range_not_covered"
 
 
@@ -680,6 +646,15 @@ def check_fact(units: Units, char: Characteristic, fact: Fact):
     """Один факт против одной характеристики. Возвращает (verdict, detail)."""
     if not char.alternatives:
         return "unknown", {"reason": "position_has_no_allowed_values"}
+    if fact.problems():
+        return "unknown", {"reason": "invalid_format"}
+    if str(char.kind) not in ("1", "2"):
+        # несколько допустимых значений — это не одно правило: сравнивать не с чем
+        return "unknown", {"reason": "multiple_choice_not_supported"}
+    if any(not _valid_alt(a) for a in char.alternatives):
+        # пустой или перевёрнутый интервал в самом справочнике: правило недостоверно
+        # ЦЕЛИКОМ, и соседняя исправная альтернатива (OR) его не «спасает»
+        return "unknown", {"reason": "invalid_catalog_interval"}
     if fact.polarity == "uncertain":
         return "unknown", {"reason": "uncertain_assertion"}
     if fact.polarity == "negated":
@@ -692,6 +667,23 @@ def check_fact(units: Units, char: Characteristic, fact: Fact):
 
     kind = fact.kind
 
+    if kind == "number" and fact.operator in (">", ">=", "<", "<="):
+        # Оператор задаёт ГРАНИЦУ требования, а не измеренное значение. Подставить
+        # границу как точку значило бы подтвердить код по значению, которого
+        # пользователь не называл, поэтому требование проверяется как область:
+        # «не менее 5» — это [5; ∞).
+        lower = fact.operator in (">", ">=")
+        return check_fact(units, char, Fact(
+            kind="range",
+            value={"min": fact.value if lower else None,
+                   "max": None if lower else fact.value,
+                   "min_inclusive": fact.operator != ">",
+                   "max_inclusive": fact.operator != "<"},
+            unit=fact.unit, polarity=fact.polarity,
+            extraction_confidence=fact.extraction_confidence))
+    if fact.operator == "!=":
+        return "unknown", {"reason": "unsupported_operator"}
+
     if kind == "number":
         if not isinstance(fact.value, (int, float)) or isinstance(fact.value, bool):
             return "unknown", {"reason": "unsupported_value_shape"}
@@ -699,7 +691,10 @@ def check_fact(units: Units, char: Characteristic, fact: Fact):
         return verdict, ({"reason": reason} if reason else None)
 
     if kind == "range" and isinstance(fact.value, dict):
-        verdict, reason = check_range(units, char, fact.value.get("min"), fact.value.get("max"), fact)
+        verdict, reason = check_range(
+            units, char, fact.value.get("min"), fact.value.get("max"), fact,
+            lo_strict=not bool(fact.value.get("min_inclusive", True)),
+            hi_strict=not bool(fact.value.get("max_inclusive", True)))
         return verdict, ({"reason": reason} if reason else None)
 
     if kind == "number_set":
@@ -800,8 +795,13 @@ def run_c(pool, facts, index: KtruIndex, units: Optional[Units] = None, *,
         evidence.append(f)
     soft_ids = {f.fact_id for f, _ in soft if f.fact_id}
 
+    templates = [p for p in pool if p.is_template]
     blocked = [p for p in pool if p.resolve_blocked and not p.is_template]
-    usable = [p for p in pool if not p.resolve_blocked]
+    # Шаблон исключается ВСЕГДА, независимо от resolve_blocked: это не итоговый код
+    # и он не должен попасть ни в кандидаты, ни в выбор. А заблокированная КОНЕЧНАЯ
+    # позиция остаётся кандидатом-неизвестным: её несовместимость не доказана, и она
+    # обязана удерживать уникальность другого кода.
+    usable = [p for p in pool if not p.is_template]
 
     # Шаблон из ответа исключается всегда (он не итоговый код). Но конечная позиция,
     # которую нельзя проверить из-за дефекта источника, — это НЕ доказательство её
@@ -856,7 +856,8 @@ def _check_position(position: Position, facts: list, units: Units, scenario_date
     """Возвращает (Candidate, статистика проверки по позиции).
 
     Факты из soft_ids (низкая уверенность, неполный формат) проверяются, но НЕ исключают
-    позицию: они идут в unresolved с причиной low_confidence_fact, а решение принимает
+    позицию и НИЧЕГО не подтверждают: они идут в unresolved с причиной
+    uncertain_or_low_confidence_fact, а решение принимает
     пользователь или повторное извлечение.
     """
     exclusions, unresolved = [], []
@@ -887,12 +888,20 @@ def _check_position(position: Position, facts: list, units: Units, scenario_date
             if char.alternatives:
                 supported += 1
             verdict, detail = check_fact(units, char, fact)
+            soft = fact.fact_id in soft_ids
             if verdict == "compatible":
-                matched += 1
-                verified_names.add(char.name)          # значение доказано проверено
+                if soft:
+                    # Мягкий факт проверен, но это не доказательство: он не закрывает
+                    # обязательное поле и не участвует в подтверждении значения.
+                    unresolved.append(Unresolved(fact.fact_id, char.name,
+                                                 "uncertain_or_low_confidence_fact"))
+                else:
+                    matched += 1
+                    verified_names.add(char.name)      # значение доказано проверено
             elif verdict == "incompatible":
-                if fact.fact_id in soft_ids:
-                    unresolved.append(Unresolved(fact.fact_id, char.name, "low_confidence_fact"))
+                if soft:
+                    unresolved.append(Unresolved(fact.fact_id, char.name,
+                                                 "uncertain_or_low_confidence_fact"))
                 else:
                     exclusions.append(Exclusion(
                         fact_id=fact.fact_id, property=char.name, actual=describe_fact(fact),
@@ -1036,7 +1045,8 @@ def _build_flags(candidates, survivors, evidence, soft, type_verified,
     # факты и НИ ОДНОГО непроверенного значения, включая пропуски обязательных полей
     unverified_reasons = {"unit_dimension_unsupported", "unsupported_value_shape", "value_units_ambiguous",
                           "user_unit_missing", "user_unit_unknown", "non_finite_value",
-                          "operator_not_confirmable", "uncertain_assertion", "low_confidence_fact",
+                          "operator_not_confirmable", "uncertain_assertion",
+                          "uncertain_or_low_confidence_fact", "low_confidence_fact",
                           "reversed_user_range", "empty_user_range", "boundary_strictness_unknown"}
     has_verified = any(stats_by_code.get(c.code, {}).get("verified") for c in survivors)
     no_unverified = not any(u.reason in unverified_reasons for c in survivors for u in c.unresolved)
