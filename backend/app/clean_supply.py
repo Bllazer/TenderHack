@@ -8,10 +8,17 @@ from app.catalog import (AllowedValue, Catalog, Position, Property, UnitAlias, U
                          digest, snapshot, validate_allowed)
 
 # Explicit supported physical conversions only. Unknown OKEI stays unsupported.
-OKEI_SUPPORTED = {"003": "мм", "004": "см", "006": "м", "050": "см²", "055": "м²", "111": "мл",
-                  "112": "л", "113": "м³", "163": "г", "166": "кг", "212": "Вт", "214": "кВт",
-                  "222": "В", "271": "Ом", "280": "°C", "331": "об/мин", "354": "с", "355": "мин",
-                  "642": "ед", "715": "пар", "744": "%", "796": "шт"}
+# Codes verified against the ОКЕИ reference. Two of them were wrong and silently
+# accepted: 050 is the square millimetre, not the square centimetre (051), and 271
+# is the joule, not the ohm (274). Both mapped onto a name app.units knows, so the
+# value passed as verified while carrying a unit of the wrong dimension or scale.
+# Every name here must resolve in app.units.get_unit, otherwise the value is blocked
+# as unit_unknown, which is why 050 and 271 required matching entries there too.
+OKEI_SUPPORTED = {"003": "мм", "004": "см", "006": "м", "050": "мм²", "051": "см²", "055": "м²",
+                  "111": "мл", "112": "л", "113": "м³", "163": "г", "166": "кг", "212": "Вт",
+                  "214": "кВт", "222": "В", "271": "Дж", "274": "Ом", "280": "°C",
+                  "331": "об/мин", "354": "с", "355": "мин", "642": "ед", "715": "пар",
+                  "744": "%", "796": "шт"}
 
 
 def encode(value):

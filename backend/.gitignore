@@ -8,3 +8,7 @@ __pycache__/
 *.egg-info/
 resources/model/*
 !resources/model/.gitkeep
+
+# Оффлайн-сборка ML-артефактов: генерируется, не версионируется.
+resources/catalog-build/
+

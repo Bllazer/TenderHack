@@ -6,14 +6,25 @@ from app.schemas import Fact, Issue, Correction
 from app.search import canon
 
 
+def match_properties(position: Position, name: str, subject: str) -> list[Property]:
+    """Свойства позиции, чьё имя или алиас совпадает с именем факта в том же субъекте.
+
+    Сопоставление по нормализованному имени: лексическое совпадение — только
+    подсказка, идентичность свойства контекстна. Используется и привязкой фактов,
+    и разрешением def_id в app.structured.
+    """
+    target = canon(name)
+    return [prop for prop in position.properties if subject == prop.subject
+            and target in {canon(prop.name), *(canon(alias) for alias in prop.aliases)}]
+
+
 def map_facts(position: Position, facts: list[Fact]):
     groups: dict[str, list[Fact]] = {prop.id: [] for prop in position.properties}
     issues: list[Issue] = []
     corrections: list[Correction] = []
     names = [prop.name for prop in position.properties]
     for fact in facts:
-        matches = [prop for prop in position.properties if fact.subject == prop.subject
-                   and canon(fact.name) in {canon(prop.name), *(canon(alias) for alias in prop.aliases)}]
+        matches = match_properties(position, fact.name, fact.subject)
         if matches:
             priority = min(0 if prop.source == "ktru" else 1 for prop in matches)
             matches = [prop for prop in matches if (0 if prop.source == "ktru" else 1) == priority]

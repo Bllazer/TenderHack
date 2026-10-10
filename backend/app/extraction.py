@@ -16,6 +16,13 @@ def normalize(text: str) -> str:
     return re.sub(r"\s+", " ", unicodedata.normalize("NFC", text)).strip()
 
 
+def decimal_comma(text: str, index: int) -> bool:
+    """Запятая между цифрами — десятичный разделитель, а не граница факта."""
+    left = text[index - 1] if index else ""
+    right = text[index + 1] if index + 1 < len(text) else ""
+    return left.isdigit() and right.isdigit()
+
+
 def segments(text: str):
     start, depth = 0, 0
     for index, char in enumerate(text):
@@ -24,6 +31,12 @@ def segments(text: str):
         elif char in ")]":
             depth = max(0, depth - 1)
         if char in "\n|;" and depth == 0:
+            yield start, index, text[start:index]
+            start = index + 1
+        elif char == "," and depth == 0 and not decimal_comma(text, index):
+            # Запятая разделяет факты: «Мощность: 650 Вт, напряжение 220 В» — это два
+            # факта, а не один со значением до конца строки. Без этого двоеточие
+            # забирало весь остаток сегмента в значение первого свойства.
             yield start, index, text[start:index]
             start = index + 1
     yield start, len(text), text[start:]
