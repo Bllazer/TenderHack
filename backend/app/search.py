@@ -12,12 +12,86 @@ import numpy as np
 from app.catalog import Snapshot
 from app.schemas import CategoryCandidate
 
-ANALYZER_VERSION = "nfc-pymorphy3-v1"
+ANALYZER_VERSION = "nfc-pymorphy3-v2"
 MODEL_ID = "intfloat/multilingual-e5-small"
 
 
 def canon(value: str) -> str:
     return " ".join(unicodedata.normalize("NFC", value).casefold().replace("ё", "е").split())
+
+
+#: ЙЦУКЕН по физическим клавишам QWERTY: неверная раскладка — частая ошибка ввода.
+#: Применяется только к тексту БЕЗ кириллицы: смешанный текст — не ошибка раскладки.
+LAYOUT_LATIN_TO_CYRILLIC = str.maketrans(
+    "qwertyuiop[]asdfghjkl;'zxcvbnm,./`QWERTYUIOP{}ASDFGHJKL:\"ZXCVBNM<>?~",
+    "йцукенгшщзхъфывапролджэячсмитьбю.ёЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,Ё",
+)
+
+#: Латиница, неотличимая на вид от кириллицы. Применяется ТОЛЬКО внутри токена,
+#: где уже есть кириллица: так «дрeль» исправляется, а латинские названия, коды и
+#: идентификаторы остаются нетронутыми.
+HOMOGLYPH_LATIN_TO_CYRILLIC = str.maketrans({
+    "a": "а", "c": "с", "e": "е", "h": "н", "k": "к", "m": "м", "o": "о", "p": "р",
+    "t": "т", "x": "х", "y": "у", "b": "в", "A": "А", "C": "С", "E": "Е", "H": "Н",
+    "K": "К", "M": "М", "O": "О", "P": "Р", "T": "Т", "X": "Х", "Y": "У", "B": "В",
+})
+
+#: Токен с цифрой или разделителем — код, ГОСТ, артикул или идентификатор: не трогаем.
+PROTECTED_TOKEN = re.compile(r"[\d._/@#№-]")
+
+
+def _latin_only(text: str) -> bool:
+    return bool(re.search(r"[A-Za-z]", text)) and not re.search(r"[А-Яа-яЁё]", text)
+
+
+def query_variants(text: str) -> tuple[str, ...]:
+    """Исходный запрос и безопасные поисковые варианты: раскладка и смешение алфавитов.
+
+    Исходный текст всегда первый и никогда не подменяется: варианты добавляются к
+    нему, а не вместо него. Пользовательские характеристики и факты здесь не
+    переписываются — это только поисковый запрос.
+
+    Раскладка: если в тексте нет кириллицы, но есть латиница, добавляется вариант
+    «как если бы набирали в русской раскладке». Идентификаторы, коды и токены с
+    цифрами пропускаются.
+
+    Смешение алфавитов: внутри токена, где уже есть кириллица, латинские
+    двойники заменяются на кириллические. Латинские названия целиком не трогаются.
+    """
+    variants: list[str] = [text]
+    if not text.strip():
+        return tuple(variants)
+
+    if _latin_only(text):
+        mapped = []
+        for token in text.split():
+            if PROTECTED_TOKEN.search(token):
+                mapped.append(token)
+                continue
+            converted = token.translate(LAYOUT_LATIN_TO_CYRILLIC)
+            mapped.append(converted if re.search(r"[А-Яа-яЁё]", converted) else token)
+        candidate = " ".join(mapped)
+        if candidate != text and re.search(r"[А-Яа-яЁё]", candidate):
+            variants.append(candidate)
+
+    mapped = []
+    changed = False
+    for token in text.split():
+        if PROTECTED_TOKEN.search(token):
+            mapped.append(token)
+            continue
+        if re.search(r"[А-Яа-яЁё]", token) and re.search(r"[A-Za-z]", token):
+            fixed = token.translate(HOMOGLYPH_LATIN_TO_CYRILLIC)
+            mapped.append(fixed)
+            changed = changed or fixed != token
+        else:
+            mapped.append(token)
+    if changed:
+        candidate = " ".join(mapped)
+        if candidate not in variants:
+            variants.append(candidate)
+
+    return tuple(variants)
 
 
 class Analyzer:
@@ -103,7 +177,13 @@ class CharNgramIndex:
             for gram, frequency in grams.items():
                 postings.setdefault(gram, []).append((index, frequency))
                 document_frequency[gram] += 1
-        # Grams seen in a single document cannot discriminate anything.
+        # min_df=1, а не 2: на малом каталоге (или в узкой области) у названия, не
+        # похожего на остальные, все n-граммы встречаются ровно один раз, и порог 2
+        # удалял их все — документ становился невидимым и получал нулевую оценку даже
+        # на точном совпадении. Замер на независимом наборе: min_df=1 и min_df=2 с
+        # возвратом грамм невидимому документу дают одинаковый результат (те же 4
+        # промаха из 46), но min_df=1 проще и оставляет редкой грамме максимальный
+        # idf, то есть работает как точное совпадение подстроки.
         self.postings = {gram: rows for gram, rows in postings.items()
                          if document_frequency[gram] >= min_df}
         total = max(len(names), 1)
@@ -162,6 +242,27 @@ class CharNgramIndex:
         return result
 
 
+def _rank_order(ranks: dict[int, float], order: dict[int, list[tuple[str, int]]],
+                categories) -> list[int]:
+    """Порядок кандидатов: убывание RRF-score, и только потом разрешение равенств.
+
+    Раньше сортировка шла по одному `quality` (число каналов, сумма рангов, id), а
+    сам RRF-score в ключ не входил. Из-за этого кандидат с большей оценкой объединения
+    мог стоять ниже кандидата с меньшей: в независимом прогоне score
+    0.038733454862487124 оказался четвёртым, а 0.038099747474747474 — первым.
+    Оценка объединения и есть результат; `quality` разрешает только точные равенства,
+    потому что суммы RRF постоянно совпадают (1/61 у любого одиночного лидера канала).
+
+    RRF-score — не вероятность и не подтверждение типа товара.
+    """
+    def key(index: int) -> tuple:
+        evidence = order.get(index, [])
+        return (-ranks[index], -len(evidence), sum(rank for _, rank in evidence),
+                categories[index].id)
+
+    return sorted(ranks, key=key)
+
+
 class Search:
     def __init__(self, data: Snapshot, encoder, analyzer: Analyzer | None = None,
                  use_char: bool = True):
@@ -186,10 +287,26 @@ class Search:
             scores += idf * freq * 2.5 / (freq + 1.5 * (.25 + .75 * self.lengths / self.average))
         return scores
 
+    def channels_for(self, text: str) -> tuple[np.ndarray | None, np.ndarray | None, np.ndarray | None]:
+        """Оценки трёх каналов для запроса и его безопасных вариантов.
+
+        Варианты (неверная раскладка, смешение алфавитов) объединяются по максимуму
+        на документ: исходный запрос всегда участвует, поэтому вариант может только
+        добавить попадание, но не ухудшить его. Исходный текст при этом не
+        подменяется — см. `query_variants`.
+        """
+        variants = query_variants(text)
+        lexical = [self.lexical(variant) for variant in variants]
+        char = [self.char.scores(variant) for variant in variants] if self.char else None
+        dense = None
+        if self.encoder is not None:
+            encoded = self.encoder.encode(list(variants), "query: ")
+            dense = [self.data.vectors @ row for row in encoded]
+        pick = lambda rows: np.maximum.reduce(rows) if rows else None  # noqa: E731
+        return pick(lexical), pick(dense) if dense is not None else None, pick(char) if char else None
+
     def find(self, text: str) -> list[CategoryCandidate]:
-        lexical = self.lexical(text)
-        dense = self.data.vectors @ self.encoder.encode([text], "query: ")[0] if self.encoder else None
-        char = self.char.scores(text) if self.char else None
+        lexical, dense, char = self.channels_for(text)
         ranks: dict[int, float] = {}
         sources: dict[int, list[str]] = {}
         order: dict[int, list[tuple[str, int]]] = {}
@@ -208,20 +325,9 @@ class Search:
                 sources.setdefault(key, []).append(label)
                 order.setdefault(key, []).append((label, rank))
         categories = self.data.catalog.categories
-
-        def quality(index: int) -> tuple:
-            """Tie-break for equal RRF sums.
-
-            RRF sums collide constantly: every candidate that is rank 1 in exactly
-            one channel scores 1/61, and ordering those by category id is arbitrary.
-            Agreement between channels is the real signal, so it comes first, then
-            the sum of the ranks inside each channel.
-            """
-            evidence = order.get(index, [])
-            return (-len(evidence), sum(rank for _, rank in evidence), categories[index].id)
-
+        ordered = _rank_order(ranks, order, categories)
         candidates = []
-        for rank, index in enumerate(sorted(ranks, key=lambda index: (-ranks[index], quality(index)))[:5], 1):
+        for rank, index in enumerate(ordered[:5], 1):
             evidence = order.get(index, [])
             candidates.append(CategoryCandidate(
                 id=categories[index].id, name=categories[index].name, rank=rank,

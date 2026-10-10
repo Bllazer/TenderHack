@@ -8,6 +8,7 @@ from app.catalog import Catalog, Property, load_snapshot, snapshot
 from app.checks import Interval, check_fact, number, subset
 from app.extraction import extract
 from app.schemas import AnalysisCreate, Fact
+from app.search import canon
 from app.units import get_unit
 from conftest import runtime
 
@@ -209,7 +210,12 @@ def test_dimensions_are_not_conflated(unit, dimension):
 def test_minus_negation_identifiers_and_unparsed_survive():
     text = "  ДА-10,8 ГОСТ 123 (м²/м³); температура: −40 °C; без удара; неизвестная деталь"
     facts, fragments = extract(text, ("Температура", "Удара"))
-    temperature = next(fact for fact in facts if fact.name == "температура")
+    # Имя приводится к написанию из справочника, если форма слова подтверждена
+    # леммами (см. app.extraction.canonical_name): «температура» -> «Температура».
+    # Написание из текста не теряется — оно остаётся в raw и span.
+    temperature = next(fact for fact in facts if canon(fact.name) == "температура")
+    assert temperature.name == "Температура"
+    assert temperature.raw == " температура: −40 °C"
     assert temperature.value == "−40"
     assert number(temperature.value).lower == Decimal(-40)
     assert any(fact.negated and fact.value == "нет" for fact in facts)
