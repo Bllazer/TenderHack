@@ -253,12 +253,14 @@ def snapshot(catalog: Catalog, **kwargs) -> Snapshot:
 
 
 def digest(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
 def load_snapshot(directory: Path, allow_synthetic: bool = False) -> Snapshot:
     from app.search import ANALYZER_VERSION
-    catalog = Catalog.model_validate_json((directory / "catalog.json").read_text(encoding="utf-8"))
+    # Parse UTF-8 directly instead of retaining a second, decoded full-catalog copy.
+    catalog = Catalog.model_validate_json((directory / "catalog.json").read_bytes())
     if catalog.synthetic and not allow_synthetic:
         raise ValueError("Synthetic catalogs are test-only")
     if not catalog.categories or not catalog.positions:

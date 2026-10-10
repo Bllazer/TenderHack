@@ -22,10 +22,17 @@ if __name__ == "__main__":
                  os.environ.get("SMOKE_FRONTEND", "http://127.0.0.1:8080")):
         assert fetch(base, "/api/health/live") == (200, {"status": "ok"})
         status, ready = fetch(base, "/api/health/ready")
-        assert status == 503
+        assert status in (200, 503)
         status, catalog = fetch(base, "/api/v1/catalog/status")
-        assert status == 200 and not catalog["ready"]
-        if catalog["catalog_loaded"]:
+        assert status == 200
+        if catalog["ready"]:
+            assert ready["status"] == "ok"
+            assert catalog["categories"] > 0 and catalog["positions"] > 0
+            status, result = fetch(base, "/api/v1/analyses", {"description": "Чай черный (ферментированный)"})
+            assert status == 200 and result["status"] == "needs_input"
+            assert result["categories"] and result["next_question"]["kind"] == "category"
+            assert result["selected_ktru_code"] is None
+        elif catalog["catalog_loaded"]:
             assert catalog["positions"] == 60087 and catalog["templates"] == 5897 and catalog["final_positions"] == 54190
             assert ready["detail"]["code"] == "search_index_missing"
             assert ready["detail"]["missing_resources"] == ["category_mapping", "search_index"]
@@ -37,13 +44,13 @@ if __name__ == "__main__":
         else:
             assert catalog["positions"] == 0 and ready["detail"]["code"] == "catalog_empty"
         status, result = fetch(base, "/api/v1/analyses", {"description": "Температура: −40 °C; мощность: 650 Вт"})
-        assert status == 200 and result["status"] == "needs_data" and result["selected_ktru_code"] is None
+        assert status == 200 and result["status"] != "resolved" and result["selected_ktru_code"] is None
         assert result["facts"][0]["value"] == "−40"
         assert result["catalog_version"] == catalog["catalog_version"]
         assert fetch(base, "/api/v1/analyses/old")[0] == 404
         status, schema = fetch(base, "/api/openapi.json")
         assert status == 200 and schema["info"]["version"] == "0.2.0"
-        print(base + ": live=200 ready=503(" + ready["detail"]["code"] + ") positions=" + str(catalog["positions"]) + " analysis=needs_data routes/OpenAPI=OK")
+        print(base + ": live=200 ready=" + str(catalog["ready"]) + " positions=" + str(catalog["positions"]) + " routes/OpenAPI=OK")
     status, html = fetch(os.environ.get("SMOKE_FRONTEND", "http://127.0.0.1:8080"), "/")
     assert status == 200 and 'id="root"' in html
     print("Compose frontend HTML=200; /api proxy preserves prefix")

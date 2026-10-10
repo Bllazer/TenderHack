@@ -88,6 +88,7 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
     result.scope = Scope(category_id=category_id, position_count=len(positions), evaluated_count=len(positions), complete=scope_complete)
     all_candidates = []
     all_issues = []
+    catalog_blocked = set()
     for position in positions:
         candidate, issues, corrections = components.checker.evaluate(position, result.facts, data.resolve_unit)
         if candidate.ktru_code != position.code:
@@ -102,6 +103,7 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
         unsupported = any(not prop.verified or not prop.allowed or prop.required is None or
                           prop.kind not in ("1", "2") or prop.unsupported_reasons for prop in position.properties)
         if not position.properties or unsupported or position.source_issues or position.resolve_blocked is True:
+            catalog_blocked.add(position.code)
             candidate.outcome = "unknown"
             issues.append(Issue(code="source_issue" if position.source_issues else "verification_incomplete",
                                 candidate_code=position.code, explanation="Данные позиции не допускают завершение подбора"))
@@ -161,4 +163,10 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
             result.next_steps = [result.next_question.title]
         else:
             result.next_steps = ["Проверьте замечания и уточните исходные сведения; неизвестное не считается подтверждённым"]
+        if not result.next_question and any(candidate.ktru_code in catalog_blocked for candidate in remaining):
+            result.status = "needs_data"
+            result.issues.append(Issue(code="catalog_constraints_unavailable",
+                explanation="В оставшемся пуле есть позиция без пригодных проверенных ограничений; правка ввода не устраняет эту проблему каталога",
+                suggested_action="Нужна исправленная поставка ограничений либо выбор другого типа товара"))
+            result.next_steps = ["Нужна исправленная поставка ограничений; можно изменить категорию товара. Ручное подтверждение кода не обходит эту проверку"]
     return result

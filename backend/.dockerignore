@@ -7,3 +7,4 @@ __pycache__
 .tools
 *.egg-info
 resources/model
+resources/catalog-build

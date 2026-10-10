@@ -160,7 +160,7 @@ def test_identical_constraints_stop_questions_and_manual_choice_cannot_resolve(c
 
 def test_empty_rules_never_verify_values(engine):
     result = request(engine, description="Куртка рабочая", confirmed_category_id="clothes", confirmed_ktru_code="TEST-JACKET")
-    assert result.status == "needs_input"
+    assert result.status == "needs_data"
     assert not result.verification.value_verified
     assert result.selected_ktru_code is None
 

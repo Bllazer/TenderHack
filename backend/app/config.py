@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    catalog_dir: Path = Path("resources/catalog")
+    catalog_dir: Path = Path("resources/catalog-build")
     model_dir: Path = Path("resources/model")
     clean_supply_dir: Path | None = Path("../ktru_clean")
     cors_origins: str = "http://localhost:5173,http://localhost:8080"

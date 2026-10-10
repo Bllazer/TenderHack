@@ -142,9 +142,28 @@ curl http://localhost:8000/api/health/ready
 
 Монтирование: `./backend/resources/model:/srv/resources/model:ro` — контейнер
 видит хостовую папку только на чтение. **Индекс тоже нужен на хосте**:
-`CATALOG_DIR` в Compose указывает на `/srv/resources/catalog`, то есть на
-`backend/resources/catalog`. Либо соберите индекс туда, либо смонтируйте
-`catalog-build` как `/srv/resources/catalog`.
+`CATALOG_DIR` в Compose указывает на `/srv/resources/catalog-build`, то есть на
+`backend/resources/catalog-build`. Поставка монтируется из `./ktru_clean` в
+`/srv/clean-supply`; подготовленный каталог сверяется с её версией. Перед первым
+запуском выполните обе команды шага 4, если готового валидного набора ещё нет.
+Готовый набор повторно не индексируйте.
+
+Другие пути на хосте задаются через `TENDERHACK_CATALOG_PATH`,
+`TENDERHACK_MODEL_PATH`, `TENDERHACK_CLEAN_SUPPLY_PATH` в окружении или локальном
+корневом `.env`. Внутренние пути контейнера остаются неизменными. Пример из корня:
+
+```powershell
+$env:TENDERHACK_CATALOG_PATH='./backend/resources/catalog-build'
+$env:TENDERHACK_MODEL_PATH='./backend/resources/model'
+$env:TENDERHACK_CLEAN_SUPPLY_PATH='./ktru_clean'
+docker compose config --quiet
+docker compose up --build -d
+```
+
+Открыть frontend: http://localhost:8080. Проверить прокси и ресурсы:
+http://localhost:8080/api/health/ready и http://localhost:8080/api/v1/catalog/status.
+Остановка из корня: `docker compose stop`; повторный запуск: `docker compose up -d`.
+Ресурсы исключены из контекста Docker-сборки и не включаются в образ.
 
 Внутри контейнера torch **CPU-версия** (`uv sync --frozen --extra search` берёт
 индекс `pytorch-cpu`). Для сервиса это нормально; для массовой переиндексации
