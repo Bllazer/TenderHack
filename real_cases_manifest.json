@@ -1,0 +1,21 @@
+{
+  "source_hashes": {
+    "Инструменты.xlsx": "7a008f3033f268c33c36eeb0a69e4dddc4b1a2a1b44f81a769e5c22c317b0c2e",
+    "КТРУ xml.zip": "4ebf16535e453433dfd690c01a107a187ffe619f5b8554147baff6950bf7171c",
+    "Мебель.xlsx": "14925eb0655d965b691846db76b643ce4ba6a71050c6c79f678013788928b881",
+    "Одежда.xlsx": "eed9b6205e05cf685acf4926a44641d36b520068be6c28ca9d053e0b2c2027eb"
+  },
+  "case_count": 30,
+  "family_counts": {
+    "дрель ударн": 5,
+    "стол письменн": 5,
+    "футболка трикотажн": 5,
+    "халат производствен": 5,
+    "халат детск": 5,
+    "стул ученич": 5
+  },
+  "selection": "First five matching cards per explicit product-family label; not a random accuracy benchmark",
+  "checks": 78,
+  "csv_sha256": "ec57a0261b4cdaa9a8ab3769371d8ae47c43ac756ad2e60130329c52edae0a24",
+  "acceptance_mutations": 1
+}

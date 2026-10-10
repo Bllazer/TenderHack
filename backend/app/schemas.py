@@ -2,7 +2,7 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from app.catalog import Position
 
-ENGINE_VERSION = "stateless-pipeline-v5-context-card"
+ENGINE_VERSION = "stateless-pipeline-v5.1-context-boundaries"
 
 SelectedValues = Annotated[list[Annotated[str, Field(min_length=1, max_length=512)]], Field(min_length=1, max_length=50)]
 

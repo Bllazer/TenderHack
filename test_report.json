@@ -1,0 +1,5788 @@
+{
+  "counts": {
+    "PASS": 667,
+    "FAIL": 30,
+    "BLOCKED": 0,
+    "REVIEW": 41
+  },
+  "records": [
+    {
+      "case_id": "TH-001",
+      "group": "enum_valid",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-002",
+      "group": "enum_invalid",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-003",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-004",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-005",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-006",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-007",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-008",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-009",
+      "group": "dimension_mismatch",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-010",
+      "group": "unit_conversion",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-011",
+      "group": "enum_valid",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-012",
+      "group": "enum_invalid",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-013",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-014",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-015",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-016",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-017",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-018",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-019",
+      "group": "dimension_mismatch",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-020",
+      "group": "unit_conversion",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-021",
+      "group": "enum_valid",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-022",
+      "group": "enum_invalid",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-023",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-024",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-025",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-026",
+      "group": "dimension_mismatch",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-027",
+      "group": "enum_valid",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-028",
+      "group": "enum_invalid",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-029",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-030",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-031",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-032",
+      "group": "dimension_mismatch",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-033",
+      "group": "enum_valid",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-034",
+      "group": "enum_invalid",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-035",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-036",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-037",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-038",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-039",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-040",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-041",
+      "group": "dimension_mismatch",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-042",
+      "group": "unit_conversion",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-043",
+      "group": "enum_valid",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-044",
+      "group": "enum_invalid",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-045",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-046",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-047",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-048",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-049",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-050",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-051",
+      "group": "dimension_mismatch",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-052",
+      "group": "unit_conversion",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-053",
+      "group": "enum_valid",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-054",
+      "group": "enum_invalid",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-055",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-056",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-057",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-058",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-059",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-060",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-061",
+      "group": "dimension_mismatch",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-062",
+      "group": "unit_conversion",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-063",
+      "group": "enum_valid",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-064",
+      "group": "enum_invalid",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-065",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-066",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-067",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-068",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-069",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-070",
+      "group": "numeric_boundary",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-071",
+      "group": "dimension_mismatch",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-072",
+      "group": "unit_conversion",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-073",
+      "group": "category_recall",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-074",
+      "group": "category_recall",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-075",
+      "group": "category_recall",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-076",
+      "group": "category_recall",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-077",
+      "group": "category_recall",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-078",
+      "group": "category_recall",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-079",
+      "group": "category_recall",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "TH-080",
+      "group": "latest_version",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-081",
+      "group": "latest_version",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-082",
+      "group": "latest_version",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-083",
+      "group": "template_not_final",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-084",
+      "group": "template_not_final",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-085",
+      "group": "portal_property",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-086",
+      "group": "portal_property",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-087",
+      "group": "portal_property",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-088",
+      "group": "portal_property",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-089",
+      "group": "portal_property",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-090",
+      "group": "portal_property",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-091",
+      "group": "portal_property",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-092",
+      "group": "irrelevant_property",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-093",
+      "group": "subjective_property",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-094",
+      "group": "new_objective",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-095",
+      "group": "new_property_reuse",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-096",
+      "group": "useful_question",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-097",
+      "group": "not_stock_search",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-098",
+      "group": "unreadable",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-099",
+      "group": "missing_required_policy",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-100",
+      "group": "correction_accept",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-101",
+      "group": "correction_reject",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-102",
+      "group": "correction_unknown",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-103",
+      "group": "resolved_gate",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-104",
+      "group": "equivalent_not_conflict",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-105",
+      "group": "subject_scope",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-106",
+      "group": "unknown_no_default",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-107",
+      "group": "uncertain_no_exclusion",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-108",
+      "group": "empty_interval",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-109",
+      "group": "point_interval",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-110",
+      "group": "fractional_count",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-111",
+      "group": "physical_fraction",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-112",
+      "group": "multiselect",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-113",
+      "group": "edit_replaces",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-114",
+      "group": "catalog_unavailable",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-115",
+      "group": "real_card_preservation",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-116",
+      "group": "real_card_preservation",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-117",
+      "group": "real_card_preservation",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-118",
+      "group": "real_card_preservation",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-119",
+      "group": "real_card_preservation",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "TH-120",
+      "group": "real_card_preservation",
+      "status": "REVIEW",
+      "detail": "Requires controlled fixture or acceptance review"
+    },
+    {
+      "case_id": "API-001",
+      "group": "empty",
+      "status": "PASS",
+      "detail": "Invalid request rejected by API"
+    },
+    {
+      "case_id": "API-002",
+      "group": "whitespace",
+      "status": "PASS",
+      "detail": "Invalid request rejected by API"
+    },
+    {
+      "case_id": "API-003",
+      "group": "too_long",
+      "status": "PASS",
+      "detail": "Invalid request rejected by API"
+    },
+    {
+      "case_id": "API-004",
+      "group": "limit_zero",
+      "status": "PASS",
+      "detail": "Invalid request rejected by API"
+    },
+    {
+      "case_id": "API-005",
+      "group": "limit_large",
+      "status": "PASS",
+      "detail": "Invalid request rejected by API"
+    },
+    {
+      "case_id": "API-006",
+      "group": "duplicate_facts",
+      "status": "PASS",
+      "detail": "Invalid request rejected by API"
+    },
+    {
+      "case_id": "API-007",
+      "group": "duplicate_answers",
+      "status": "PASS",
+      "detail": "Invalid request rejected by API"
+    },
+    {
+      "case_id": "API-008",
+      "group": "mixed_values",
+      "status": "PASS",
+      "detail": "Invalid request rejected by API"
+    },
+    {
+      "case_id": "API-009",
+      "group": "empty_multiselect",
+      "status": "PASS",
+      "detail": "Invalid request rejected by API"
+    },
+    {
+      "case_id": "API-010",
+      "group": "invalid_subject",
+      "status": "PASS",
+      "detail": "Invalid request rejected by API"
+    },
+    {
+      "case_id": "API-011",
+      "group": "unexpected_field",
+      "status": "PASS",
+      "detail": "Invalid request rejected by API"
+    },
+    {
+      "case_id": "API-012",
+      "group": "unknown_category",
+      "status": "PASS",
+      "detail": "Invalid request rejected by API"
+    },
+    {
+      "case_id": "API-013",
+      "group": "unknown_code",
+      "status": "PASS",
+      "detail": "Invalid request rejected by API"
+    },
+    {
+      "case_id": "API-014",
+      "group": "stateless_Дрель ручная электрическая",
+      "status": "PASS",
+      "detail": "Live API: schema, independent safety and preservation assertions"
+    },
+    {
+      "case_id": "API-015",
+      "group": "stateless_Стол письменный",
+      "status": "PASS",
+      "detail": "Live API: schema, independent safety and preservation assertions"
+    },
+    {
+      "case_id": "API-016",
+      "group": "stateless_Рубашка мужская",
+      "status": "PASS",
+      "detail": "Live API: schema, independent safety and preservation assertions"
+    },
+    {
+      "case_id": "API-017",
+      "group": "stateless_Кресло офисное",
+      "status": "PASS",
+      "detail": "Live API: schema, independent safety and preservation assertions"
+    },
+    {
+      "case_id": "API-018",
+      "group": "additional_retained",
+      "status": "PASS",
+      "detail": "Live API: schema, independent safety and preservation assertions"
+    },
+    {
+      "case_id": "API-019",
+      "group": "input_fact_retained",
+      "status": "PASS",
+      "detail": "Live API: schema, independent safety and preservation assertions"
+    },
+    {
+      "case_id": "API-020",
+      "group": "unknown_value_not_zero",
+      "status": "PASS",
+      "detail": "Live API: schema, independent safety and preservation assertions"
+    },
+    {
+      "case_id": "SRC-0001",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0002",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0003",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0004",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0005",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0006",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0007",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0008",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0009",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0010",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0011",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0012",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0013",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0014",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0015",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0016",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0017",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0018",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0019",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0020",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0021",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0022",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0023",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0024",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0025",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0026",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0027",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0028",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0029",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0030",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0031",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0032",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0033",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0034",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0035",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0036",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0037",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0038",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0039",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0040",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0041",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0042",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0043",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0044",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0045",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0046",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0047",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0048",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0049",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0050",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0051",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0052",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0053",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0054",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0055",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0056",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0057",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0058",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0059",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0060",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0061",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0062",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0063",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0064",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0065",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0066",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0067",
+      "group": "source_unit_equivalence",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0068",
+      "group": "source_equivalent_duplicates",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0069",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0070",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0071",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0072",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0073",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0074",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0075",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0076",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0077",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0078",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0079",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0080",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0081",
+      "group": "source_unit_equivalence",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0082",
+      "group": "source_equivalent_duplicates",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0083",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0084",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0085",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0086",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0087",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0088",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0089",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0090",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0091",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0092",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0093",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0094",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0095",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0096",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0097",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0098",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0099",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0100",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0101",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0102",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0103",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0104",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0105",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0106",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0107",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0108",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0109",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0110",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0111",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0112",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0113",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0114",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0115",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0116",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0117",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0118",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0119",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0120",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0121",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0122",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0123",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0124",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0125",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0126",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0127",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0128",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0129",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0130",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0131",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0132",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0133",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0134",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0135",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0136",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0137",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0138",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0139",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0140",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0141",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0142",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0143",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0144",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0145",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0146",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0147",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0148",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0149",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0150",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0151",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0152",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0153",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0154",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0155",
+      "group": "source_unit_equivalence",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0156",
+      "group": "source_equivalent_duplicates",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0157",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0158",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0159",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0160",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0161",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0162",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0163",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0164",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0165",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0166",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0167",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0168",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0169",
+      "group": "source_unit_equivalence",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0170",
+      "group": "source_equivalent_duplicates",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0171",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0172",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0173",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0174",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0175",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0176",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0177",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0178",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0179",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0180",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0181",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0182",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0183",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0184",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0185",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0186",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0187",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0188",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0189",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0190",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0191",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0192",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0193",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0194",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0195",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0196",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0197",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0198",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0199",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0200",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0201",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0202",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0203",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0204",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0205",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0206",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0207",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0208",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0209",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0210",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0211",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0212",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0213",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0214",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0215",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0216",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0217",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0218",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0219",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0220",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0221",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0222",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0223",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0224",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0225",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0226",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0227",
+      "group": "source_unit_equivalence",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0228",
+      "group": "source_equivalent_duplicates",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0229",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0230",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0231",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0232",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0233",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0234",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0235",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0236",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0237",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0238",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0239",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0240",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0241",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0242",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0243",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0244",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0245",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0246",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0247",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0248",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0249",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0250",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0251",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0252",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0253",
+      "group": "source_unit_equivalence",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0254",
+      "group": "source_equivalent_duplicates",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0255",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0256",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0257",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0258",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0259",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0260",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0261",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0262",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0263",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0264",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0265",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0266",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0267",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0268",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0269",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0270",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0271",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0272",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0273",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0274",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0275",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0276",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0277",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0278",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0279",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0280",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0281",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0282",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0283",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0284",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0285",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0286",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0287",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0288",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0289",
+      "group": "source_unit_equivalence",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0290",
+      "group": "source_equivalent_duplicates",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0291",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0292",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0293",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0294",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0295",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0296",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0297",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0298",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0299",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0300",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0301",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0302",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0303",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0304",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0305",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0306",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0307",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0308",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0309",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0310",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0311",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0312",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0313",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0314",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0315",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0316",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0317",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0318",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0319",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0320",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0321",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0322",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0323",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0324",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0325",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0326",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0327",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0328",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0329",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0330",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0331",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0332",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0333",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0334",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0335",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0336",
+      "group": "source_unit_equivalence",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0337",
+      "group": "source_equivalent_duplicates",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0338",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0339",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0340",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0341",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0342",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0343",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0344",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0345",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0346",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0347",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0348",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0349",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0350",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0351",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0352",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0353",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0354",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0355",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0356",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0357",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0358",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0359",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0360",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0361",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0362",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0363",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0364",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0365",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0366",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0367",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0368",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0369",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0370",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0371",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0372",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0373",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0374",
+      "group": "source_unit_equivalence",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0375",
+      "group": "source_equivalent_duplicates",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0376",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0377",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0378",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0379",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0380",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0381",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0382",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0383",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0384",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0385",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0386",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0387",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0388",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0389",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0390",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0391",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0392",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0393",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0394",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0395",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0396",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0397",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0398",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0399",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0400",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0401",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0402",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0403",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0404",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0405",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0406",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0407",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0408",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0409",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0410",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0411",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0412",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0413",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0414",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0415",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0416",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0417",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0418",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0419",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0420",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0421",
+      "group": "source_unit_equivalence",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0422",
+      "group": "source_equivalent_duplicates",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0423",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0424",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0425",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0426",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0427",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0428",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0429",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0430",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0431",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0432",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0433",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0434",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0435",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0436",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0437",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0438",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0439",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0440",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0441",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0442",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0443",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0444",
+      "group": "source_unit_equivalence",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0445",
+      "group": "source_equivalent_duplicates",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0446",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0447",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0448",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0449",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0450",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0451",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0452",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0453",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0454",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0455",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0456",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0457",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0458",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0459",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0460",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0461",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0462",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0463",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0464",
+      "group": "source_unit_equivalence",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0465",
+      "group": "source_equivalent_duplicates",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0466",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0467",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0468",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0469",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0470",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0471",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0472",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0473",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0474",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0475",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0476",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0477",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0478",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0479",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0480",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0481",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0482",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0483",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0484",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0485",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0486",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0487",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0488",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0489",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0490",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0491",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0492",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0493",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0494",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0495",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0496",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0497",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0498",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0499",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0500",
+      "group": "source_unit_equivalence",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0501",
+      "group": "source_equivalent_duplicates",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0502",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0503",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0504",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0505",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0506",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0507",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0508",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0509",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0510",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0511",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0512",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0513",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0514",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0515",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0516",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0517",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0518",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0519",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0520",
+      "group": "source_unit_equivalence",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0521",
+      "group": "source_equivalent_duplicates",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0522",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0523",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0524",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0525",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0526",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0527",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0528",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0529",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0530",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0531",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0532",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0533",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0534",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0535",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0536",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0537",
+      "group": "source_unit_equivalence",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0538",
+      "group": "source_equivalent_duplicates",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0539",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0540",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0541",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0542",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0543",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0544",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0545",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0546",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0547",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0548",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0549",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0550",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0551",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0552",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0553",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0554",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0555",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0556",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0557",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0558",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0559",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0560",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0561",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0562",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0563",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0564",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0565",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0566",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0567",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0568",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0569",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0570",
+      "group": "source_all_boundaries",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0571",
+      "group": "source_unit_equivalence",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0572",
+      "group": "source_equivalent_duplicates",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0573",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0574",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0575",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0576",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0577",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0578",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0579",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0580",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0581",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0582",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0583",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0584",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0585",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0586",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0587",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0588",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0589",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0590",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0591",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0592",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0593",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0594",
+      "group": "source_enum_alternative",
+      "status": "FAIL",
+      "detail": "AlgorithmC: expected one of ['compatible'], got unknown; HTTP: PASS Source-backed HTTP assertion passed",
+      "offline_status": "FAIL",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0595",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0596",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0597",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    },
+    {
+      "case_id": "SRC-0598",
+      "group": "source_enum_alternative",
+      "status": "PASS",
+      "detail": "Source-backed HTTP assertion passed",
+      "offline_status": "PASS",
+      "live_status": "PASS"
+    }
+  ],
+  "tested_git_commit": "bae204c06bb8f2f213f2a9f37cade80d36acefb4",
+  "tested_engine_version": "stateless-pipeline-v4.1-canonical-count",
+  "note": "Recorded before remote stage3 changes; historical run, not validation of later backend commits"
+}

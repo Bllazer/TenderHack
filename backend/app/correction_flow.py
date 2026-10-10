@@ -41,6 +41,34 @@ def resolve_suggestions(category_id, positions, facts, answers, *, extra_propert
                       confirmation_required=True, suggested_action="Подтвердите или отклоните предлагаемое сопоставление")))
     properties = (*tuple(prop for position in positions for prop in position.properties), *extra_properties)
     for fact in facts:
+        relevant_rule = any(p.name == fact.name and p.subject == fact.subject
+                            for position in positions for p in position.properties)
+        anonymous_measure = not fact.name and fact.unit and not fact.assignment_options and fact.uncertainty_reason
+        if anonymous_measure or (fact.unknown and (fact.assignment_options or (fact.source == 'text' and relevant_rule))):
+            identity = repr((category_id, fact.id, fact.raw, fact.name, fact.value, fact.assignment_options))
+            qid = 'uncertainty:' + hashlib.sha256(identity.encode()).hexdigest()[:24]
+            answer = current_answers.get(qid)
+            if answer and not answer.unknown and answer.value == 'reject':
+                rejected.add(fact.id)
+                fact.name = ''
+                fact.card_mappings.clear()
+                fact.assignment_options.clear()
+                continue
+            reason = fact.uncertainty_reason or 'Отрицание или неопределённость не подтверждает положительное значение'
+            peers = [f.raw for f in facts if f.id != fact.id and fact.name and f.name == fact.name]
+            if peers:
+                reason += '; сопоставленные фрагменты: ' + ' / '.join([*peers, fact.raw])
+            issue = Issue(code='unresolved_fact_uncertainty', fact_id=fact.id,
+                explanation=f'«{fact.raw}»: {reason}', confirmation_required=True,
+                suggested_action='Исправьте факт через attributes.replaces либо сохраните исходные сведения дополнительно')
+            # "Don't know" leaves the blocker visible, but does not ask the same
+            # question forever. Explicit card edits / a new answer can resolve it.
+            question = None if answer and answer.unknown else Question(id=qid, kind='correction',
+                title=f'Уточните противоречащие или неопределённые сведения: «{fact.raw.strip()}»', reason=reason,
+                property_name=fact.name or None,
+                options=[QuestionOption(value='reject', label='Сохранить как дополнительные сведения')])
+            pending.append((fact, question, issue))
+            continue
         if fact.unknown and fact.name:
             continue
         exact, close = enum_targets(properties, fact.value, fact.name, fact.subject if fact.name else None)
@@ -73,8 +101,9 @@ def resolve_suggestions(category_id, positions, facts, answers, *, extra_propert
             fact.card_mappings = [p.id for p in extra_properties if p.name == name and p.subject == subject]
         else:
             original = fact.value
-            pending.append((fact, Question(id=qid, kind="correction",
-                title=(f"К какому свойству относится «{original}»?" if fact.assignment_options else
+            display = f'{original} {fact.unit or ""}'.strip()
+            question = None if answer and answer.unknown and fact.assignment_options else Question(id=qid, kind="correction",
+                title=(f"К какому свойству относится «{display}»?" if fact.assignment_options else
                        f"Уточните значение «{original}»"),
                 reason=("Отрицание или неопределённость нельзя заменить положительным значением; исправьте факт явно или сохраните дополнительно"
                         if fact.negated or fact.unknown else
@@ -82,7 +111,8 @@ def resolve_suggestions(category_id, positions, facts, answers, *, extra_propert
                 property_name=fact.name or None,
                 options=[QuestionOption(value=token, label=f"{name}: {value} {unit or ''}".strip())
                          for token, (name, value, subject, unit) in choices.items()] +
-                        [QuestionOption(value="reject", label="Сохранить как дополнительные сведения")]),
+                        [QuestionOption(value="reject", label="Сохранить как дополнительные сведения")])
+            pending.append((fact, question,
                 Issue(code="unresolved_value_correction", fact_id=fact.id,
                     explanation=f"Не подтверждено исправление или назначение «{original}»",
                     confirmation_required=True, suggested_action="Подтвердите или отклоните предложенное значение")))

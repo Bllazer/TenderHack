@@ -1,0 +1,129 @@
+{
+  "git": {
+    "base": "365ea84e468d6e35417c6966a692e22be4b5525a",
+    "branch": "main",
+    "remote_checked": "main...origin/main: 0 0",
+    "preexisting_untracked_preserved": "ktru_clean/",
+    "force_push": false
+  },
+  "final_checks": [
+    {
+      "command": "RUN_E5_TESTS=1 RUN_CLEAN_SUPPLY_TESTS=1 CLEAN_SUPPLY_DIR=../ktru_clean python -m pytest -q -p no:cacheprovider --basetemp <fresh-workspace-path>",
+      "result": "443 passed, 1 warning in 43.29s",
+      "exit_code": 0,
+      "note": "Final code; actual E5 weights and full clean5 gates enabled; original 90 number/interval checks included. Starlette httpx deprecation warning."
+    },
+    {
+      "command": "python -m pytest -q tests/test_card_stage3_review.py tests/test_card_stage3.py",
+      "result": "71 card regressions, also included in final full suite",
+      "note": "52 new regressions plus 19 unchanged previous assertions; fixture HTTP coverage is separate from real snapshot acceptance."
+    },
+    {
+      "command": "python -m algorithms.validation_tests",
+      "result": "28/28 OK",
+      "exit_code": 0
+    },
+    {
+      "command": "docker compose build api",
+      "result": "Build succeeded; intermediate experimental resource-order image b85b6239 also built, then source resource-order experiment was reverted",
+      "exit_code": 0,
+      "note": "Final Docker runtime is NOT claimed verified; original resource loaders preserved."
+    },
+    {
+      "command": "local uvicorn app.main:app --host 127.0.0.1 --port 8001",
+      "result": "Running actual full snapshot, local E5, ready=200",
+      "launcher_pid": 40164,
+      "server_pid": 22660
+    },
+    {
+      "command": "API_PROXY_TARGET=http://127.0.0.1:8001 npm run dev -- --host 127.0.0.1 --port 5174",
+      "result": "Existing frontend running, HTML=200, proxy /api verified",
+      "launcher_pid": 8344,
+      "note": "No frontend source or type changes. Existing process on 5173 preserved."
+    },
+    {
+      "command": "python tests/real_card_stage3_review.py --base http://127.0.0.1:8001 --output docs/reviews/stage3-followup/after.json --verify",
+      "result": "49 POST analyses + 3 GET actual source cards; all assertions passed",
+      "exit_code": 0,
+      "evidence": "after.json"
+    },
+    {
+      "command": "python tests/real_card_stage3.py --base http://127.0.0.1:8001 --output docs/reviews/stage3-followup/original-scenarios.json --verify",
+      "result": "32 actual E5/catalog HTTP analyses; all original assertions passed",
+      "exit_code": 0,
+      "evidence": "original-scenarios.json"
+    },
+    {
+      "command": "python tests/real_card_flow_stage3.py --base http://127.0.0.1:5174 --output docs/reviews/stage3-followup/original-flow.json",
+      "result": "17 POST analyses + 13 GET source cards through Vite; real-code confirmation succeeded; excluded code rejected",
+      "exit_code": 0,
+      "evidence": "original-flow.json"
+    },
+    {
+      "command": "python tests/record_card_stage3_review_runtime.py --base http://127.0.0.1:8001 --frontend http://127.0.0.1:5174",
+      "result": "Actual SHA unchanged; live/ready/status/OpenAPI=200 at both local endpoints; actual responses validate with Pydantic; OpenAPI field sets agree",
+      "exit_code": 0,
+      "evidence": [
+        "artifacts.json",
+        "runtime.json"
+      ]
+    },
+    {
+      "command": "git diff --check",
+      "result": "clean",
+      "exit_code": 0
+    }
+  ],
+  "development_failures": [
+    {
+      "command": "first focused regressions",
+      "result": "1 failed, 56 passed",
+      "cause": "Comma boundary rejected designation before comma and a separate measurement.",
+      "resolution": "Distinguish comma+digit from punctuation; preserve 3 mm separately. Original assertions retained."
+    },
+    {
+      "command": "measurement question regression",
+      "result": "1 failed, 76 passed",
+      "cause": "Existing contextual assignment question displayed only 3 without its unit.",
+      "resolution": "Question includes unit and unknown assignment answer stops repeating while retaining its blocker; final test passed."
+    },
+    {
+      "command": "Docker API restart",
+      "result": "readiness=503 resources_invalid/model_unavailable",
+      "cause": "OSError [Errno 12] Cannot allocate memory while hashing catalog/model after large graph allocation on shared Docker VM.",
+      "resolution": "Some intermediate retries became ready, but later retries failed; final runtime acceptance switched to native Uvicorn, with same unchanged artifacts and full checks."
+    },
+    {
+      "command": "experimental resource loading reorder",
+      "result": "np.fromfile read 992 of expected 5587200 vector elements despite valid file SHA; later daemon commands returned HTTP 500 and application HTTP timed out",
+      "resolution": "Experiment completely reverted in main.py/catalog.py/test_resources.py. Docker/WSL and unrelated services not restarted or stopped; final Docker startup not claimed."
+    },
+    {
+      "command": "first after HTTP attempt before readiness",
+      "result": "RemoteDisconnected, exit 1",
+      "resolution": "Final evidence written only against a ready actual native API."
+    },
+    {
+      "command": "frontend dev on 5173",
+      "result": "Port 5173 already in use",
+      "resolution": "Existing process preserved; own dev process uses 5174."
+    },
+    {
+      "command": "tool startup/source patch after tests",
+      "result": "helper setup log: os error 112 (disk full); extraction.py became empty",
+      "resolution": "Restored own staged source and known tested deltas. marshal comparison with cached tested code returned exact compiled code equal=True; checked for other empty changed files: none. Subsequent C drive check showed about 2.9 GB free; no team files/catalog resources deleted."
+    },
+    {
+      "command": "full pytest using default Windows temp",
+      "result": "427 passed, 16 setup errors",
+      "cause": "PermissionError for pytest temporary-directory ACL; no failed assertions.",
+      "resolution": "Repeated all tests using a fresh GUID directory inside backend/.tools and disabled cache provider: 443 passed."
+    }
+  ],
+  "not_performed": [
+    "No working catalog, embeddings or lexical-index rebuild; all hashes remain equal to stage 3. E5 test builds only a temporary fixture index.",
+    "No browser UI tests or frontend build in this followup; frontend source/types unchanged. Real full-state HTTP flows went through existing Vite proxy.",
+    "Final Docker runtime not verified due daemon/memory failures; native API and frontend left running.",
+    "Stage 4 / search-quality acceptance not started."
+  ]
+}
