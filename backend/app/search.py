@@ -192,6 +192,7 @@ class Search:
         char = self.char.scores(text) if self.char else None
         ranks: dict[int, float] = {}
         sources: dict[int, list[str]] = {}
+        order: dict[int, list[tuple[str, int]]] = {}
         channels = (("BM25", lexical), ("E5", dense), ("CHAR", char))
         for label, scores in channels:
             if scores is None:
@@ -205,7 +206,24 @@ class Search:
                 key = int(index)
                 ranks[key] = ranks.get(key, 0) + 1 / (60 + rank)
                 sources.setdefault(key, []).append(label)
+                order.setdefault(key, []).append((label, rank))
         categories = self.data.catalog.categories
-        return [CategoryCandidate(id=categories[index].id, name=categories[index].name, rank=rank,
-                                  rank_score=ranks[index], reasons=sources[index])
-                for rank, index in enumerate(sorted(ranks, key=lambda i: (-ranks[i], categories[i].id))[:5], 1)]
+
+        def quality(index: int) -> tuple:
+            """Tie-break for equal RRF sums.
+
+            RRF sums collide constantly: every candidate that is rank 1 in exactly
+            one channel scores 1/61, and ordering those by category id is arbitrary.
+            Agreement between channels is the real signal, so it comes first, then
+            the sum of the ranks inside each channel.
+            """
+            evidence = order.get(index, [])
+            return (-len(evidence), sum(rank for _, rank in evidence), categories[index].id)
+
+        candidates = []
+        for rank, index in enumerate(sorted(ranks, key=quality)[:5], 1):
+            evidence = order.get(index, [])
+            candidates.append(CategoryCandidate(
+                id=categories[index].id, name=categories[index].name, rank=rank,
+                rank_score=ranks[index], reasons=sources[index]))
+        return candidates

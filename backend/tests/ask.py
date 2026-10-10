@@ -33,6 +33,34 @@ def progress(message: str) -> None:
     print(f"  … {message}", file=sys.stderr, flush=True)
 
 
+def confidence(search: Search, data, query: str, best) -> None:
+    """Предупредить, когда результат — не находка, а случайное совпадение.
+
+    Проверено на контрольных запросах: у настоящих находок («лопата»,
+    «шуруповерт») слово запроса есть в каталоге и char-канал даёт ровно 1.0,
+    то есть запрос совпал с названием целиком. У «панамки» и «панамы» слова нет
+    в каталоге вообще (df = 0), а у «граблей» оно встречается в одном документе
+    из 14 550 — внутри характеристик другого товара.
+    """
+    tokens = sorted(set(search.analyzer.tokens(query)))
+    unknown = [token for token in tokens if not search.df.get(token)]
+    channels = len(best.reasons)
+
+    if unknown and len(unknown) == len(tokens):
+        print(f"\n  !! ТОВАРА НЕТ В КАТАЛОГЕ: ни одно слово запроса ({', '.join(tokens)})")
+        print("     не встречается ни в одном поисковом документе. Показанное ниже —")
+        print("     случайное совпадение по буквам или по вектору, доверять нельзя.")
+        return
+    if channels == 1:
+        print(f"\n  !! СЛАБОЕ СОВПАДЕНИЕ: сработал только один канал из трёх"
+              f" ({best.reasons[0]}).")
+        print("     Скорее всего подходящего товара в каталоге нет.")
+        return
+    if unknown:
+        print(f"\n  ~ ЧАСТИЧНО НЕИЗВЕСТНЫЕ СЛОВА: {', '.join(unknown)} — "
+              "в каталоге их нет, они на результат не влияли.")
+
+
 def report(search: Search, data, query: str, top: int, show_pool: int) -> None:
     started = time.time()
     candidates = search.find(query)
@@ -58,6 +86,7 @@ def report(search: Search, data, query: str, top: int, show_pool: int) -> None:
         print()
         return
 
+    confidence(search, data, query, candidates[0])
     positions, complete = data.scopes[candidates[0].id]
     print(f"\n  Раскрытие первого кандидата ({len(positions)} конечных кодов"
           + ("" if complete else ", область неполная") + "):")
