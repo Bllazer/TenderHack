@@ -247,8 +247,8 @@ def explicit_part(text, left, right, parts):
             if tuple(t[0] for t in window) != wanted:
                 continue
             a, b = window[0][1], window[-1][2]
-            if (a >= right and not text[right:a].strip()) or (
-                    b <= left and re.fullmatch(r'\s+(?:из\s+)?', text[b:left])):
+            if (a >= right and not text[right:a].strip() and not re.search(r'[\n;|]', text[right:a])) or (
+                    b <= left and re.fullmatch(r'[ \t]+(?:из[ \t]+)?', text[b:left])):
                 return True
     return False
 
@@ -256,6 +256,11 @@ def explicit_part(text, left, right, parts):
 def canonicalize_facts(facts, properties, lexicon):
     """The same reviewed morphological mapping for text and explicit card edits."""
     for fact in facts:
+        if size_label(fact.name, lexicon) and foreign_size(f'{fact.value} {fact.unit or ""}'):
+            target = fact.name
+            fact.name, fact.unknown = '', True
+            fact.uncertainty_reason = 'Явно указана другая система размера; преобразование в российскую систему не подтверждено'
+            fact.assignment_options = [FactAssignment(name=target, value=fact.value, evidence='explicit size-system qualifier')]
         props = [p for p in properties if p.name == fact.name and p.subject == fact.subject]
         if props:
             fact.extraction_evidence = list(dict.fromkeys([*fact.extraction_evidence, *(p.evidence for p in props)]))
@@ -274,6 +279,85 @@ def canonicalize_facts(facts, properties, lexicon):
                 fact.extraction_evidence.append(lexicon['evidence'])
 
 
+SIZE_SYSTEM_WORDS = r'(?:eu|eur|us|usa|uk|int|fr|it|de|jp|cn|european|american|british|international|французск[а-яё]*|итальянск[а-яё]*|немецк[а-яё]*|японск[а-яё]*|китайск[а-яё]*|европейск[а-яё]*|американск[а-яё]*|британск[а-яё]*|международн[а-яё]*|буквен[а-яё]*|xxxs|xxs|xs|s|m|l|xl|xxl|xxxl)'
+SIZE_SYSTEM = re.compile(r'\b' + SIZE_SYSTEM_WORDS + r'\b', re.I)
+
+
+def foreign_size(text):
+    return SIZE_SYSTEM.search(text) or re.search(
+        r'(?<!\w)(?:eu|eur|us|usa|uk|int|fr|it|de|jp|cn)(?=\d)|(?<=\d)(?:eu|eur|us|usa|uk|int|fr|it|de|jp|cn)(?!\w)', text, re.I)
+
+
+def size_label(name, lexicon):
+    # Reviewed aliases designate the system-specific field; this is not a
+    # product/category/code branch. Unknown systems are never converted.
+    return ('российский' in lemmas(name) and 'размер' in lemmas(name)) or any(
+        lemmas(alias) == ('размер',) for alias in lexicon.get('name_aliases', {}).get(name, ()))
+
+
+def designation_facts(text, dictionary, properties, lexicon, facts, covered):
+    for begin, end, segment in segments(text, dictionary):
+        tokens = token_spans(segment)
+        for name, wanted in dictionary:
+            if not wanted or not size_label(name, lexicon):
+                continue
+            for i in range(len(tokens) - len(wanted) + 1):
+                window = tokens[i:i + len(wanted)]
+                if tuple(t[0] for t in window) != wanted:
+                    continue
+                left, right = window[0][1], window[-1][2]
+                before = re.search(rf'(?<![\w.,])(?P<value>{BRACKET_INTERVAL}|{NUMBER}(?:\s*(?:–|\.\.|…|-)\s*{NUMBER})?)(?:-(?:го|й|ый))?\s*$', segment[:left], re.I)
+                after = re.match(rf'\s*[:=]?\s*(?P<system>{SIZE_SYSTEM_WORDS}\s+)?(?P<value>{NUMBER})(?![\w.]|,\d)', segment[right:], re.I)
+                # An immediately preceding designation owns the label; a later
+                # physical measurement is a separate fact, never its value.
+                unit = None
+                if before:
+                    value, left = measurement_value(before['value']), before.start()
+                elif after:
+                    value_start = right + after.start('value')
+                    measure = MEASUREMENT.match(segment[value_start:])
+                    value, right = after['value'], right + after.end()
+                    if measure:
+                        value, unit = measurement_value(measure['value']), measure['unit']
+                        right = value_start + measure.end()
+                else:
+                    letter = re.match(r'\s*[:=]?\s*(?:XXXS|XXS|XS|XXXL|XXL|XL|S|M|L)\b', segment[right:], re.I)
+                    if not letter:
+                        continue
+                    value, right = letter[0].strip(' := '), right + letter.end()
+                foreign = foreign_size(segment)
+                if foreign:
+                    left, right = min(left, foreign.start()), max(right, foreign.end())
+                a, b = begin + left, begin + right
+                if any(a < y and b > x for x, y in covered):
+                    continue
+                fact = make_fact('' if foreign else name, value, unit, text[a:b], (a, b), len(facts), unknown=bool(foreign))
+                props = [p for p in properties if p.name == name]
+                fact.extraction_evidence = list(dict.fromkeys(p.evidence for p in props))
+                if foreign:
+                    fact.surface_value = text[a:b]
+                    fact.uncertainty_reason = 'Уточните систему размера: иностранное или буквенное обозначение не является российским размером'
+                    fact.assignment_options = [FactAssignment(name=name, value=value, evidence='explicit size-system qualifier')]
+                facts.append(fact)
+                covered.append((a, b))
+        # A system qualifier itself identifies a designation even without a
+        # label ("EU 40"). Do not let a missing label hide meaningful input.
+        targets = sorted({name for name, _ in dictionary if size_label(name, lexicon)})
+        if targets:
+            pattern = rf'\b{SIZE_SYSTEM_WORDS}\s*(?P<after>{NUMBER})(?![\w.]|,\d)|(?<![\w.,])(?P<before>{NUMBER})\s*{SIZE_SYSTEM_WORDS}\b'
+            for match in re.finditer(pattern, segment, re.I):
+                a, b = begin + match.start(), begin + match.end()
+                if any(a < y and b > x for x, y in covered):
+                    continue
+                fact = make_fact('', match['after'] or match['before'], None, text[a:b], (a, b), len(facts), unknown=True)
+                fact.surface_value = fact.raw
+                fact.uncertainty_reason = 'Явная система размера отличается от проверенной системы свойства; требуется уточнение без конвертации'
+                fact.assignment_options = [FactAssignment(name=name, value=fact.value, evidence='explicit size-system qualifier') for name in targets]
+                fact.extraction_evidence = list(dict.fromkeys(p.evidence for p in properties if p.name in targets))
+                facts.append(fact)
+                covered.append((a, b))
+
+
 def extract(text: str, names: tuple[str, ...], *, scoped_properties=(), lexicon=None) -> tuple[list[Fact], list[Fragment]]:
     facts: list[Fact] = []
     covered: list[tuple[int, int]] = []
@@ -283,6 +367,7 @@ def extract(text: str, names: tuple[str, ...], *, scoped_properties=(), lexicon=
     aliases = tuple((name, lemmas(alias)) for name, words in lexicon.get('name_aliases', {}).items()
                     if name in prop_names for alias in words)
     dictionary = tuple(sorted((*dictionary, *aliases), key=lambda entry: len(entry[1]), reverse=True))
+    designation_facts(text, dictionary, scoped_properties, lexicon, facts, covered)
     # Absence is only normalized when the scope's own vocabulary represents it.
     # Otherwise retain a negative, uncertain fact; never invent a positive value.
     for name, allowed_absence in lexicon.get('absence', {}).items():
@@ -327,6 +412,8 @@ def extract(text: str, names: tuple[str, ...], *, scoped_properties=(), lexicon=
     for start, end, segment in segments(text, dictionary):
         pair = re.match(r"\s*([^:=\n]{1,120})\s*[:=]\s*(.+?)\s*$", segment)
         if pair:
+            if any(start < b and end > a for a, b in covered):
+                continue
             value, unit, unconfirmed = split_measurement(pair[2], dictionary)
             # Имя из справочника, если форма слова подтверждена леммами; иначе — как в тексте.
             facts.append(make_fact(canonical_name(pair[1], dictionary), value, unit, segment,
@@ -346,9 +433,6 @@ def extract(text: str, names: tuple[str, ...], *, scoped_properties=(), lexicon=
                 left_token, right_token = window[0][1], window[-1][2]
                 absolute = start + left_token
                 if any(begin <= absolute < finish for begin, finish in covered):
-                    continue
-                # A qualified foreign/letter size never becomes a Russian size.
-                if name == 'Российский размер' and re.search(r'\b(?:европейск\w*|eu|буквен\w*)\b', segment, re.I):
                     continue
                 boundary = re.match(r"\s*(?:[:=]\s*)?", segment[right_token:])
                 match_end = right_token + boundary.end()
@@ -414,6 +498,11 @@ def extract(text: str, names: tuple[str, ...], *, scoped_properties=(), lexicon=
                 if wanted and tuple(t[0] for t in window) == wanted:
                     windows.append((window[0][1], window[-1][2]))
     for left, right in sorted(set(windows), key=lambda span: (span[0], -(span[1] - span[0]))):
+        # Exact, fuzzy and morphological windows obey the same segmentation.
+        # Reject cross-segment windows before assigning meaning or provenance.
+        clause = next((c for c in clauses if c[0] <= left and right <= c[1]), None)
+        if clause is None:
+            continue
         if any(left < end and right > start for start, end in covered):
             continue
         value = text[left:right]
@@ -441,7 +530,7 @@ def extract(text: str, names: tuple[str, ...], *, scoped_properties=(), lexicon=
         if explicit_parts:
             exact = explicit_parts
         ownership = {(prop.semantic_key or prop.id, prop.subject) for prop, _ in exact}
-        begin, end, clause = next((a, b, chunk) for a, b, chunk in clauses if a <= left and right <= b)
+        begin, end, _ = clause
         negation, uncertain = local_uncertainty(text, left, right, begin, end)
         raw_left, raw_right = (begin, end) if uncertain else (left, right)
         if len(ownership) == 1 and (not part_candidates or explicit_parts):
@@ -458,7 +547,12 @@ def extract(text: str, names: tuple[str, ...], *, scoped_properties=(), lexicon=
         facts.append(fact)
         fact.surface_value = value
         fact.extraction_evidence = list(dict.fromkeys(p.evidence for p, _ in exact))
-        if exact and not fact.name:
+        if any(size_label(p.name, lexicon) for p, _ in exact) and foreign_size(text[begin:end]):
+            fact.name, fact.unknown = '', True
+            fact.assignment_options = [FactAssignment(name=p.name, value=target, subject=p.subject, evidence=p.evidence)
+                                       for p, target in exact]
+            fact.uncertainty_reason = 'Иностранная система размера не подтверждает значение российского размера'
+        if exact and not fact.name and not fact.assignment_options:
             fact.assignment_options = [FactAssignment(name=p.name, value=target, subject=p.subject, evidence=p.evidence)
                                        for p, target in exact]
             fact.uncertainty_reason = ('Не указана часть товара, к которой относится материал' if part_candidates
@@ -466,6 +560,8 @@ def extract(text: str, names: tuple[str, ...], *, scoped_properties=(), lexicon=
         covered.append((left, right))
     # Numeric designation may precede its explicit label ("40 размер").
     for prop in scoped_properties:
+        if size_label(prop.name, lexicon):
+            continue
         if prop.numeric_semantics != 'designation' or not prop.numeric_semantics_evidence:
             continue
         labels = [prop.name, *lexicon.get('name_aliases', {}).get(prop.name, [])]

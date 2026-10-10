@@ -198,7 +198,8 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
     result.next_question, indistinguishable = components.questions(category_id, result.categories, positions, remaining,
                                                            result.facts, active_issues, answered, ready, body.confirmed_ktru_code)
     if pending:
-        result.next_question, indistinguishable = pending[0][1], False
+        result.next_question = next((entry[1] for entry in pending if entry[1] is not None), result.next_question)
+        indistinguishable = False
     # Users can still complete the useful card. A code question requires proof;
     # unavailable semantics never bypasses ready / resolved conditions.
     if not pending and any(candidate.ktru_code in catalog_blocked for candidate in remaining):

@@ -1,0 +1,46 @@
+{
+  "manifest": {
+    "catalog_version": "clean5-6dd26154a47aa1ab",
+    "analyzer_version": "nfc-pymorphy3-v2",
+    "model_id": "intfloat/multilingual-e5-small",
+    "model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "sha256": {
+      "catalog.json": "0f67df562f13a4201eaba7507f096617b2bcb092876fc66820d33954781eb817",
+      "vectors.npy": "90f2b326277872a7cd83b7f7e74e8b2046ec1d11e846cd1cb8c3c4b66f260ae9",
+      "tokens.json": "52d648a955547b9d16472fcdcee5c78ef03f03b274293b890188a5560e0033b7"
+    },
+    "reused_from_catalog_sha256": "cdac359dac58bb7800e9dcc35c7174d21c7d9cc18bca5091dece9613138cc5d6",
+    "ordered_search_documents_unchanged": true
+  },
+  "model": {
+    "model_id": "intfloat/multilingual-e5-small",
+    "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "sha256": {
+      ".gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "config.json": "69137736cab8b8903a07fe8afaafdda25aac55415a12a55d1bffa9f581abf959",
+      "model.safetensors": "1a55775f53449dac10a2bcbc312469fac40b96d53198c407081a831f81c98477",
+      "sentencepiece.bpe.model": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+      "special_tokens_map.json": "d05497f1da52c5e09554c0cd874037a083e1dc1b9cfd48034d1c717f1afc07a7",
+      "tokenizer.json": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39",
+      "tokenizer_config.json": "a1d6bc8734a6f635dc158508bef000f8e2e5a759c7d92f984b2c86e5ff53425b"
+    }
+  },
+  "verified": {
+    "resources/catalog-build/catalog.json": "0f67df562f13a4201eaba7507f096617b2bcb092876fc66820d33954781eb817",
+    "resources/catalog-build/vectors.npy": "90f2b326277872a7cd83b7f7e74e8b2046ec1d11e846cd1cb8c3c4b66f260ae9",
+    "resources/catalog-build/tokens.json": "52d648a955547b9d16472fcdcee5c78ef03f03b274293b890188a5560e0033b7",
+    "resources/model/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "resources/model/config.json": "69137736cab8b8903a07fe8afaafdda25aac55415a12a55d1bffa9f581abf959",
+    "resources/model/model.safetensors": "1a55775f53449dac10a2bcbc312469fac40b96d53198c407081a831f81c98477",
+    "resources/model/sentencepiece.bpe.model": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+    "resources/model/special_tokens_map.json": "d05497f1da52c5e09554c0cd874037a083e1dc1b9cfd48034d1c717f1afc07a7",
+    "resources/model/tokenizer.json": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39",
+    "resources/model/tokenizer_config.json": "a1d6bc8734a6f635dc158508bef000f8e2e5a759c7d92f984b2c86e5ff53425b",
+    "resources/card-schemas.json": "c808ac3a7e4bfdd825e4cadecd19d42ee82ac0897f7786532e664a879a7d22d9",
+    "../ktru_clean/ktru_actual_all.jsonl.gz": "2abe70b37894394d7d1323993438ffca03ddd78507df519ebd777e04d6858d5c",
+    "resources/model/model.meta.json": "02e109fca71881ced42ac9751a6e00a31fc7d72f257146e2e8dcf01096cafc59"
+  },
+  "engine_version": "stateless-pipeline-v5.1-context-boundaries",
+  "embeddings_recomputed": false,
+  "catalog_rebuilt": false
+}
