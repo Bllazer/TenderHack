@@ -28,8 +28,8 @@
 |---|---|
 | `pytest tests/test_query_variants.py` (без весов) | **40 passed, 35 skipped** |
 | то же с `RUN_E5_TESTS=1` | **75 passed, 0 xfailed** |
-| полный `pytest -q` | **493 passed, 37 skipped** |
-| полный `pytest -q` с `RUN_E5_TESTS=1` и полной поставкой | **530 passed** |
+| полный `pytest -q` | **552 passed, 37 skipped** |
+| полный `pytest -q` с `RUN_E5_TESTS=1` и полной поставкой | **589 passed** |
 | `python -X utf8 -m algorithms.validation_tests` | 28 tests OK |
 | Аудит ревью (компоненты + HTTP) | **A-extraction 11/12** (было 10/12), C 23/24, границы 28/28, единицы 9/9, B-fusion 1/1, B-char 4/4, D 3/3, **API 24/24, сетка 90/90** |
 | `tests/verify_real_supply.py` | 7 из 8 (остался один промах — перефразировка, §7) |
