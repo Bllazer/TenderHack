@@ -1,4 +1,5 @@
 """Stateless A -> B -> contextual mapping -> C/E -> D orchestration."""
+import json
 from app.catalog import Snapshot
 from app.components import Components, ExistingSearcher, SearchInput, existing_components
 from app.extraction import MEASUREMENT, apply_inputs, normalize
@@ -42,22 +43,38 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
             extracted = [fact for fact in extracted if fact not in superseded]
             for fact in superseded:
                 result.corrections.append(Correction(fact_id="answer:" + answer.question_id, kind="proposed_fact_change",
-                                                    original=fact.raw, normalized=answer.value or "не знаю",
+                                                    original=fact.raw, normalized=json.dumps(answer.values, ensure_ascii=False) if answer.values is not None else answer.value or "не знаю",
                                                     explanation="Текущий явный ответ пользователя заменяет предыдущее значение; источник сохранён"))
-            extracted.append(Fact(id="answer:" + answer.question_id, name=prop.name, value=answer.value or "", unit=answer.unit,
-                                  raw=answer.value or "не знаю", source="answer", subject=prop.subject,
-                                  unknown=answer.unknown or not answer.value))
+            extracted.append(Fact(id="answer:" + answer.question_id, name=prop.name, value=answer.value or "", values=answer.values, unit=answer.unit,
+                                  raw=json.dumps(answer.values, ensure_ascii=False) if answer.values is not None else answer.value or "не знаю", source="answer", subject=prop.subject,
+                                  unknown=answer.unknown or (answer.values is None and not answer.value)))
     result.facts = apply_inputs(extracted, body.attributes)
+    # A current property answer is the full replacement, also for edited card
+    # inputs. kind=3 must not silently union an obsolete selection with it.
+    for answer in body.answers:
+        prop = registry.get(answer.question_id)
+        if prop is None or any(item.replaces == "answer:" + answer.question_id for item in body.attributes):
+            continue
+        from app.search import canon
+        names = {canon(prop.name), *(canon(alias) for alias in prop.aliases)}
+        superseded = [fact for fact in result.facts if fact.source == "input" and
+                      fact.subject == prop.subject and canon(fact.name) in names]
+        result.facts = [fact for fact in result.facts if fact not in superseded]
+        for fact in superseded:
+            result.corrections.append(Correction(fact_id="answer:" + answer.question_id,
+                kind="proposed_fact_change", original=fact.raw,
+                normalized=json.dumps(answer.values, ensure_ascii=False) if answer.values is not None else answer.value or "не знаю",
+                explanation="Текущий ответ заменяет прежний выбор карточки; все значения перепроверены"))
     sources = {fact.id: fact.raw for fact in result.original_facts + extracted} | {fragment.id: fragment.raw for fragment in unparsed}
     # Previous-category answers remain provenance for explicit edits, never proof in the new category.
-    sources.update({"answer:" + answer.question_id: answer.value or "не знаю" for answer in body.answers
+    sources.update({"answer:" + answer.question_id: json.dumps(answer.values, ensure_ascii=False) if answer.values is not None else answer.value or "не знаю" for answer in body.answers
                     if answer.question_id in data.answer_properties})
     for item in body.attributes:
         if item.replaces:
             if item.replaces not in sources:
                 raise InvalidConfirmation("attributes.replaces", "stale_source")
             result.corrections.append(Correction(fact_id=item.id, kind="proposed_fact_change", original=sources[item.replaces],
-                                                normalized=f"{item.name}: {item.value} {item.unit or ''}".strip(),
+                                                normalized=f"{item.name}: {json.dumps(item.values, ensure_ascii=False) if item.values is not None else item.value} {item.unit or ''}".strip(),
                                                 explanation="Явная правка пользователя; новые значения проверяются заново"))
     replaced = {item.replaces for item in body.attributes if item.replaces}
     result.unparsed = [fragment for fragment in unparsed if fragment.id not in replaced]
@@ -104,15 +121,16 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
             candidate.missing_required = sorted(set(candidate.missing_required) | set(required_missing))
             if candidate.outcome == "compatible":
                 candidate.outcome = "unknown"
-        candidate.blocking_reasons = position_blockers(position)
-        if candidate.blocking_reasons:
+        candidate.blocking_reasons = position_blockers(position, candidate.checks)
+        active_blockers = [reason for reason in candidate.blocking_reasons if reason.blocks_resolution]
+        if active_blockers:
             catalog_blocked.add(position.code)
             if candidate.outcome != "incompatible":
                 candidate.outcome = "unknown"
             issues.extend(Issue(code=reason.code, candidate_code=position.code,
                 property_id=reason.property_id, rule_source=reason.rule_source, explanation=reason.explanation,
                 suggested_action="Нужно поддержать семантику ограничения или уточнить источник; заполнение формы не снимает блокировку")
-                for reason in candidate.blocking_reasons)
+                for reason in active_blockers)
         contradictory = {check.property_id for check in candidate.checks if check.outcome == "incompatible"}
         if candidate.outcome == "incompatible":
             candidate.exclusion_reasons = [issue for issue in issues if issue.property_id in contradictory
@@ -137,7 +155,7 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
             raise InvalidConfirmation("confirmed_ktru_code", "incompatible_ktru_code")
         if confirmed not in result.candidates:
             result.candidates = [*result.candidates[:body.candidate_limit - 1], confirmed]
-    result.additional.extend(Fragment(raw=f"{fact.name}: {fact.value} {fact.unit or ''}".strip(), span=fact.span)
+    result.additional.extend(Fragment(raw=f"{fact.name}: {fact.raw if fact.values is not None else fact.value} {fact.unit or ''}".strip(), span=fact.span)
                              for fact in result.facts if not fact.mappings)
     if not scope_complete:
         active_issues.append(Issue(code="insufficient_catalog_coverage", explanation="Полнота связей и конечных позиций выбранной области не подтверждена"))
@@ -155,9 +173,10 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
                                                            result.facts, active_issues, answered, ready, body.confirmed_ktru_code)
     if pending:
         result.next_question, indistinguishable = pending[0][1], False
-    # Input questions cannot repair unavailable constraint semantics in a competing code.
+    # Users can still complete the useful card. A code question requires proof;
+    # unavailable semantics never bypasses ready / resolved conditions.
     if not pending and any(candidate.ktru_code in catalog_blocked for candidate in remaining):
-        if result.next_question and result.next_question.kind in ("property", "code"):
+        if result.next_question and result.next_question.kind == "code":
             result.next_question = None
     result.verification = Verification(type_verified=bool(category_id and data.categories[category_id].link_verified),
                                       ktru_unique=unique and value_verified, fields_complete=fields_complete, value_verified=value_verified,

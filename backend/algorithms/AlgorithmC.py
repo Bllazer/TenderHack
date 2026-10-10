@@ -488,6 +488,16 @@ def check_number(units: Units, char: Characteristic, value: float, fact: Fact):
         return "unknown", "text_against_numeric_characteristic"
 
     with_unit = [a for a in numeric if a.unit_code or a.unit_text]
+    if not with_unit:
+        if char.numeric_semantics not in ("count", "designation") or not char.numeric_semantics_evidence:
+            return "unknown", "numeric_semantics_unknown"
+        if fact.unit and (fact.unit.code or fact.unit.text):
+            if src is None or src.dimension is None:
+                return "unknown", "user_unit_unknown"
+            if char.numeric_semantics != "count" or src.dimension != "count" or src.factor != 1:
+                return "incompatible", "unit_mismatch"
+        if char.numeric_semantics == "count" and float(value) != int(value):
+            return "incompatible", "invalid_count"
     if with_unit and (src is None or src.dimension is None):
         if not fact.unit or not (fact.unit.code or fact.unit.text):
             return "unknown", "user_unit_missing"
@@ -636,13 +646,15 @@ def check_range(units: Units, char: Characteristic, lo, hi, fact: Fact,
 
     unknown: list = []
     if not has_unit:
-        # Безразмерные альтернативы: значения сравниваются как есть, но требование,
-        # выраженное в единице измерения, с безразмерной характеристикой несопоставимо.
+        if char.numeric_semantics not in ("count", "designation") or not char.numeric_semantics_evidence:
+            return "unknown", "numeric_semantics_unknown"
         if fact.unit and (fact.unit.code or fact.unit.text):
             if src is None or src.dimension is None:
                 return "unknown", "user_unit_unknown"
-            if src.dimension not in (None, "count", "ratio", "percent", "length"):
-                return "unknown", "unit_dimension_unsupported"
+            if char.numeric_semantics != "count" or src.dimension != "count" or src.factor != 1:
+                return "incompatible", "unit_mismatch"
+        if char.numeric_semantics == "count" and any(v is not None and float(v) != int(v) for v in (lo, hi)):
+            return "incompatible", "invalid_count"
         canonical = None
         user_lo, user_hi = lo, hi
         segments: list = [seg for alt, _ in alt_units for seg in _alt_segments(alt)]
@@ -691,9 +703,8 @@ def check_fact(units: Units, char: Characteristic, fact: Fact):
         return "unknown", {"reason": "position_has_no_allowed_values"}
     if fact.problems():
         return "unknown", {"reason": "invalid_format"}
-    if str(char.kind) not in ("1", "2"):
-        # несколько допустимых значений — это не одно правило: сравнивать не с чем
-        return "unknown", {"reason": "multiple_choice_not_supported"}
+    if str(char.kind) not in ("1", "2", "3"):
+        return "unknown", {"reason": "unsupported_kind"}
     if any(not _valid_alt(a) for a in char.alternatives):
         # пустой или перевёрнутый интервал в самом справочнике: правило недостоверно
         # ЦЕЛИКОМ, и соседняя исправная альтернатива (OR) его не «спасает»
@@ -709,6 +720,9 @@ def check_fact(units: Units, char: Characteristic, fact: Fact):
         return "unknown", {"reason": "negation_not_supported"}
 
     kind = fact.kind
+    if kind in ("number_set", "text_set") and str(char.kind) != "3":
+        if len({str(v).strip().casefold() for v in fact.value or []}) > 1:
+            return "incompatible", {"reason": "multiple_values_not_allowed"}
 
     if kind == "number" and fact.operator in (">", ">=", "<", "<="):
         # Оператор задаёт ГРАНИЦУ требования, а не измеренное значение. Подставить

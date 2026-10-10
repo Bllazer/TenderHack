@@ -70,13 +70,15 @@ def test_question_offers_values_from_all_remaining_positions(engine):
     assert {option.value for option in result.next_question.options} == {"от сети", "от аккумулятора"}
 
 
-def test_absent_unsupported_optional_rule_cannot_prove_values(catalog_data):
+def test_absent_optional_rule_not_needed_for_proven_unique_position(catalog_data):
     raw = catalog_data.model_dump(mode="json")
     raw["positions"][1]["properties"].append({"id": "unknown-rule", "name": "Сложное правило", "value_type": "unsupported",
         "required": False, "verified": True, "evidence": "test", "allowed": [{"kind": "enum", "value": "test", "source": "test"}]})
     result = request(runtime(Catalog.model_validate(raw)), confirmed_category_id="tools", confirmed_ktru_code="TEST-DRILL-MAINS")
-    assert result.selected_ktru_code is None
-    assert not result.verification.value_verified
+    assert result.selected_ktru_code == "TEST-DRILL-MAINS"
+    assert result.verification.value_verified
+    reason = result.candidates[0].blocking_reasons[0]
+    assert reason.applicability == "potential" and not reason.blocks_resolution
 
 
 def test_category_change_and_fact_edit_rechecks_everything(engine):

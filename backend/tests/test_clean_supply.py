@@ -85,7 +85,7 @@ def test_context_aliases_and_unknown_units(real_data):
     assert sum(len(u.spellings) for u in real_data.catalog.units) == 130
 
 
-def test_kind_three_is_unknown_without_false_conflict(real_data, sample):
+def test_kind_three_is_supported_without_false_conflict(real_data, sample):
     position = real_data.positions[sample["cases"]["kind3"]]
     prop = next(p for p in position.properties if p.kind == "3")
     facts = [Fact(id=str(i), name=prop.name, value=value.value or "20", unit=value.unit, raw="explicit selection", source="input")
@@ -93,7 +93,9 @@ def test_kind_three_is_unknown_without_false_conflict(real_data, sample):
     candidate, issues, _ = evaluate(position, facts, real_data.resolve_unit)
     assert candidate.outcome != "compatible"
     assert not any(issue.code == "conflicting_facts" and issue.property_id == prop.id for issue in issues)
-    assert "multiple_choice_not_supported" in prop.unsupported_reasons
+    assert prop.verified and not prop.unsupported_reasons
+    check = next(c for c in candidate.checks if c.property_id == prop.id)
+    assert check.outcome == "compatible"
 
 
 def test_actual_catalog_http_missing_index_and_blocked_codes(real_data, sample, monkeypatch):

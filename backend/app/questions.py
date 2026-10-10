@@ -16,7 +16,7 @@ def property_question(category_id: str, prop: Property, reason: str) -> Question
     return Question(id=property_question_id(category_id, prop), kind="property", title=f"Укажите: {prop.name}",
                     property_name=prop.name, reason=reason,
                     options=[QuestionOption(value=value, label=value) for value in values[:20]],
-                    unit=next(iter(units)) if len(units) == 1 else None)
+                    unit=next(iter(units)) if len(units) == 1 else None, multiple=prop.kind == "3")
 
 
 def next_question(category_id: str | None, categories: list[CategoryCandidate], positions: tuple[Position, ...],

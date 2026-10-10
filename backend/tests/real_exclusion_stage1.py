@@ -5,6 +5,7 @@ From backend: python tests/real_exclusion_stage1.py before|after
 import gzip
 import hashlib
 import json
+import os
 import sys
 import urllib.error
 import urllib.request
@@ -13,7 +14,8 @@ from pathlib import Path
 PHASE = sys.argv[1]
 BASE = "http://localhost:8080"
 SUPPLY = Path("../ktru_clean")
-OUT = Path("docs/reviews/stage1")
+OUT = Path(os.environ.get("REVIEW_OUTPUT_DIR", "docs/reviews/stage1"))
+CATALOG = Path(os.environ.get("REVIEW_CATALOG_DIR", "resources/catalog-build"))
 CASES = [("лопата совковая", "Лопата"), ("молоток столярный", "Молоток"),
          ("пальто мужское", "Пальто зимнее из текстильных материалов"),
          ("пальто женское", "Пальто зимнее из текстильных материалов"),
@@ -51,12 +53,12 @@ def run():
     if PHASE == "after":
         status, spec = fetch("/api/openapi.json")
         assert status == 200 and "exclusion_reasons" in spec["components"]["schemas"]["Candidate"]["properties"]
-    report["manifest"] = json.loads(Path("resources/catalog-build/manifest.json").read_text(encoding="utf-8"))
+    report["manifest"] = json.loads((CATALOG / "manifest.json").read_text(encoding="utf-8"))
     report["model_meta"] = json.loads(Path("resources/model/model.meta.json").read_text(encoding="utf-8"))
     if PHASE == "after":
         report["actual_artifact_sha256"] = {}
         for name, expected in report["manifest"]["sha256"].items():
-            with (Path("resources/catalog-build") / name).open("rb") as stream:
+            with (CATALOG / name).open("rb") as stream:
                 actual = hashlib.file_digest(stream, "sha256").hexdigest()
             assert actual == expected
             report["actual_artifact_sha256"][name] = actual
@@ -108,7 +110,8 @@ def run():
             assert all(not any(check["outcome"] == "incompatible" for check in c["checks"]) for c in result["candidates"])
             for c in result["excluded"]:
                 assert c["outcome"] == "incompatible" and c["exclusion_reasons"]
-            assert all(c["outcome"] == "unknown" for c in result["candidates"] if c["blocking_reasons"])
+            assert all(c["outcome"] == "unknown" for c in result["candidates"]
+                       if any(reason["blocks_resolution"] for reason in c["blocking_reasons"]))
             assert result["selected_ktru_code"] is None
         manual_status, manual = fetch("/api/v1/analyses", {**body, "confirmed_ktru_code":sorted(expected)[0]})
         if PHASE == "after":

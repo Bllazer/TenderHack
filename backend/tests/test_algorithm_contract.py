@@ -120,9 +120,23 @@ def test_question_unites_all_candidate_options():
     assert {c["value"] for c in q.choices} == {"red", "blue"}
 
 
-def test_multiple_choice_remains_unknown_instead_of_conflicting():
+def test_multiple_choice_checks_each_selected_value():
     char = characteristic(Alternative("text", text="red"), Alternative("text", text="blue"), kind="3")
-    assert check_fact(Units(), char, fact("text_set", ["red", "blue"]))[0] == "unknown"
+    assert check_fact(Units(), char, fact("text_set", ["red", "blue"]))[0] == "compatible"
+    assert check_fact(Units(), char, fact("text_set", ["red", "red"]))[0] == "compatible"
+    assert check_fact(Units(), char, fact("text_set", ["red", "invalid"]))[0] == "incompatible"
+
+
+def test_bare_number_requires_explicit_semantics_and_provenance():
+    char = characteristic(Alternative("number", number=2))
+    given = Fact(kind="number", value=2, name="Size", def_id="size", fact_id="n")
+    assert check_fact(Units(), char, given)[1]["reason"] == "numeric_semantics_unknown"
+    char.numeric_semantics = "count"
+    assert check_fact(Units(), char, given)[0] == "unknown"
+    char.numeric_semantics_evidence = "fixture reviewed dictionary"
+    assert check_fact(Units(), char, given)[0] == "compatible"
+    given.unit = Unit(text="cm")
+    assert check_fact(Units(), char, given)[0] == "incompatible"
 
 
 def test_comparison_is_not_an_exact_number():

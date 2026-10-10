@@ -46,6 +46,8 @@ class Property(Frozen):
     choice_type: str | None = None
     raw_json: str = "{}"
     unsupported_reasons: tuple[str, ...] = ()
+    numeric_semantics: Literal["physical", "count", "designation", "unknown"] = "unknown"
+    numeric_semantics_evidence: str | None = None
 
 
 class Position(Frozen):

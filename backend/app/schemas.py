@@ -2,7 +2,9 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from app.catalog import Position
 
-ENGINE_VERSION = "stateless-pipeline-v3-context-values-cd-gated"
+ENGINE_VERSION = "stateless-pipeline-v4-ktru-multiselect-applicability"
+
+SelectedValues = Annotated[list[Annotated[str, Field(min_length=1, max_length=512)]], Field(min_length=1, max_length=50)]
 
 
 class InputModel(BaseModel):
@@ -12,18 +14,32 @@ class InputModel(BaseModel):
 class InputFact(InputModel):
     id: str = Field(min_length=1, max_length=128)
     name: str = Field(max_length=256)
-    value: str = Field(max_length=512)
+    value: str = Field(default="", max_length=512)
+    values: SelectedValues | None = None
     unit: str | None = Field(default=None, max_length=64)
     unknown: bool = False
     subject: Literal["product", "packaging", "unspecified"] = "product"
     replaces: str | None = Field(default=None, max_length=128)
 
+    @model_validator(mode="after")
+    def exclusive_value(self):
+        if self.values is not None and self.value:
+            raise ValueError("Передайте либо value, либо values")
+        return self
+
 
 class Answer(InputModel):
     question_id: str = Field(min_length=1, max_length=512)
     value: str | None = Field(default=None, max_length=512)
+    values: SelectedValues | None = None
     unit: str | None = Field(default=None, max_length=64)
     unknown: bool = False
+
+    @model_validator(mode="after")
+    def exclusive_value(self):
+        if self.values is not None and self.value:
+            raise ValueError("Передайте либо value, либо values")
+        return self
 
 
 class AnalysisCreate(InputModel):
@@ -71,6 +87,7 @@ class Fact(BaseModel):
     id: str
     name: str
     value: str
+    values: list[str] | None = None
     unit: str | None = None
     raw: str
     span: tuple[int, int] | None = None
@@ -97,6 +114,13 @@ class CategoryCandidate(BaseModel):
     reasons: list[str]
 
 
+class ElementCheck(BaseModel):
+    value: str
+    outcome: Literal["compatible", "incompatible", "unknown"]
+    reason: str
+    value_codes: list[str] = Field(default_factory=list)
+
+
 class Check(BaseModel):
     property_id: str
     name: str
@@ -104,6 +128,7 @@ class Check(BaseModel):
     reason: str
     fact_ids: list[str] = Field(default_factory=list)
     value_codes: list[str] = Field(default_factory=list)
+    elements: list[ElementCheck] = Field(default_factory=list)
 
 
 class BlockingReason(BaseModel):
@@ -117,6 +142,8 @@ class BlockingReason(BaseModel):
     source_issues: list[str] = Field(default_factory=list)
     resolve_blocked_reason: list[str] = Field(default_factory=list)
     rule_source: str | None = None
+    applicability: Literal["source", "required", "provided", "potential"] = "source"
+    blocks_resolution: bool = True
 
 
 class CatalogPositionCard(BaseModel):
@@ -151,6 +178,7 @@ class Question(BaseModel):
     options: list[QuestionOption] = Field(default_factory=list)
     unit: str | None = None
     allow_unknown: bool = True
+    multiple: bool = False
 
 
 class Verification(BaseModel):

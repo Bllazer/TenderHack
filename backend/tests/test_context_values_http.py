@@ -114,12 +114,13 @@ def test_uncertain_typo_cannot_silently_disappear_next_to_verified_value(context
     assert all(not o["value"].startswith("accept_value:") for o in result["next_question"]["options"])
 
 
-def test_blocked_rules_card_and_no_pointless_required_question(context_client):
+def test_required_unsupported_rule_does_not_stop_other_useful_card_questions(context_client):
     result = post(context_client, "лопата совковая", "blocked")
-    assert result["status"] == "needs_data" and result["next_question"] is None
+    assert result["status"] == "needs_input" and result["next_question"]["kind"] == "property"
     reason = result["candidates"][0]["blocking_reasons"][0]
     assert (reason["property_id"], reason["kind"], reason["unsupported_reasons"]) == (
         "features", "3", ["multiple_choice_not_supported"])
+    assert reason["applicability"] == "required" and reason["blocks_resolution"]
     card = context_client.get("/api/v1/catalog/positions/TEST-BLOCKED")
     assert card.status_code == 200 and card.json()["blocking_reasons"] == [reason]
     assert card.json()["position"]["properties"][1]["allowed"][0]["value"] == "Усиленная"

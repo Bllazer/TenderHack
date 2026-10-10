@@ -12,3 +12,5 @@ resources/model/*
 # Оффлайн-сборка ML-артефактов: генерируется, не версионируется.
 resources/catalog-build/
 
+
+resources/catalog-build-stage2/

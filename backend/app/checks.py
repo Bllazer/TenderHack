@@ -6,7 +6,8 @@ from decimal import Decimal
 
 from app.catalog import AllowedValue, Position, Property
 from app.mapping import map_facts
-from app.schemas import Candidate, Check, Correction, Fact, Issue
+from app.schemas import Candidate, Check, Correction, ElementCheck, Fact, Issue
+from app.selected_values import selected_values
 from app.search import canon
 from app.units import get_unit
 
@@ -86,6 +87,8 @@ def subset(query: Interval, allowed: list[Interval]) -> bool:
 
 
 def signature(fact: Fact, prop: Property, unit_resolver=None):
+    if fact.values is not None:
+        return tuple(sorted({canon(v) for v in fact.values})), canon(fact.unit or "")
     if prop.value_type == "number":
         parsed, unit = number(fact.value), unit_resolver(prop, fact.unit) if unit_resolver else get_unit(fact.unit)
         if parsed:
@@ -97,10 +100,18 @@ def check_fact(prop: Property, fact: Fact, unit_resolver=None):
     """outcome, reason, value_codes, optional safe normalization."""
     if fact.unknown:
         return "unknown", "unknown_fact", [], None
-    if not prop.verified or prop.unsupported_reasons or not prop.evidence or prop.required is None or prop.value_type == "unsupported" or prop.kind not in ("1", "2"):
+    if not prop.verified or prop.unsupported_reasons or not prop.evidence or prop.required is None or prop.value_type == "unsupported" or prop.kind not in ("1", "2", "3"):
         return "unknown", "unsupported_constraint", [], None
     if not prop.allowed:
         return "unknown", "no_supported_constraints", [], None
+    values = selected_values(prop, fact)
+    if fact.values is not None or len(values) > 1:
+        if prop.kind != "3" and len({canon(v) for v in values}) > 1:
+            return "incompatible", "multiple_values_not_allowed", [], None
+        results = [check_fact(prop, fact.model_copy(update={"value": v, "values": None}), unit_resolver) for v in values]
+        outcome = "incompatible" if any(r[0] == "incompatible" for r in results) else "unknown" if any(r[0] == "unknown" for r in results) else "compatible"
+        reason = next((r[1] for r in results if r[0] == outcome), "empty_selection")
+        return outcome, reason, sorted({c for r in results for c in r[2]}), None
     if prop.value_type in ("text", "boolean"):
         if any(item.kind != "enum" for item in prop.allowed):
             return "unknown", "unsupported_constraint", [], None
@@ -131,17 +142,24 @@ def check_fact(prop: Property, fact: Fact, unit_resolver=None):
     units = [get_unit(item.unit) for item in prop.allowed]
     if any(item.unit and unit is None for item, unit in zip(prop.allowed, units)):
         return "unknown", "unsupported_constraint", [], None
-    dimensions = {unit.dimension if unit else "dimensionless" for unit in units}
+    bare = any(unit is None for unit in units)
+    if bare and (prop.numeric_semantics not in ("count", "designation") or not prop.numeric_semantics_evidence):
+        return "unknown", "numeric_semantics_unknown", [], None
+    dimensions = {unit.dimension if unit else "count" if prop.numeric_semantics == "count" else "dimensionless" for unit in units}
     if len(dimensions) != 1:
         return "unknown", "unsupported_constraint", [], None
     supplied = unit_resolver(prop, fact.unit) if unit_resolver else get_unit(fact.unit)
     expected_dimension = next(iter(dimensions))
-    if expected_dimension != "dimensionless" and not fact.unit:
+    if not bare and expected_dimension != "dimensionless" and not fact.unit:
         return "unknown", "unit_missing", [], None
     if fact.unit and supplied is None:
         return "unknown", "unit_unknown", [], None
-    if (supplied.dimension if supplied else "dimensionless") != expected_dimension:
+    input_dimension = supplied.dimension if supplied else expected_dimension if bare else "dimensionless"
+    if input_dimension != expected_dimension:
         return "incompatible", "unit_mismatch", [], None
+    if bare and prop.numeric_semantics == "count" and any(bound.is_finite() and bound != bound.to_integral_value()
+                                                         for bound in (parsed.lower, parsed.upper)):
+        return "incompatible", "invalid_count", [], None
     physical = parsed.scaled(supplied.factor if supplied else Decimal(1))
     intervals = [allowed_interval(item).scaled(unit.factor if unit else Decimal(1)) for item, unit in zip(prop.allowed, units)]
     accepted = subset(physical, intervals)
@@ -178,7 +196,7 @@ def evaluate(position: Position, facts: list[Fact], unit_resolver=None):
             continue
         if not found:
             reason = "missing_required" if prop.required else "not_provided"
-            if not prop.verified or prop.required is None or not prop.allowed or prop.value_type == "unsupported" or prop.kind not in ("1", "2"):
+            if prop.required is not False and (not prop.verified or prop.required is None or not prop.allowed or prop.value_type == "unsupported" or prop.kind not in ("1", "2", "3")):
                 reason = "unsupported_constraint"
             checks.append(Check(property_id=prop.id, name=prop.name, outcome="unknown", reason=reason))
             continue
@@ -186,7 +204,14 @@ def evaluate(position: Position, facts: list[Fact], unit_resolver=None):
         outcome = ("incompatible" if any(row[0] == "incompatible" for row in results) else
                    "unknown" if any(row[0] == "unknown" for row in results) else "compatible")
         selected = next((row for row in results if row[0] == outcome), results[0])
-        checks.append(Check(property_id=prop.id, name=prop.name, outcome=outcome, reason=selected[1],
+        elements = []
+        for fact in found:
+            values = selected_values(prop, fact)
+            if fact.values is not None or len(values) > 1:
+                for value in values:
+                    row = check_fact(prop, fact.model_copy(update={"value": value, "values": None}), unit_resolver)
+                    elements.append(ElementCheck(value=value, outcome=row[0], reason=row[1], value_codes=row[2]))
+        checks.append(Check(property_id=prop.id, name=prop.name, outcome=outcome, reason=selected[1], elements=elements,
                             fact_ids=[fact.id for fact in found], value_codes=sorted({code for row in results for code in row[2]})))
         has_checked_value |= outcome == "compatible"
         for fact, row in zip(found, results):
@@ -196,7 +221,7 @@ def evaluate(position: Position, facts: list[Fact], unit_resolver=None):
                 if normalized != fact.value or (unit and unit != fact.unit):
                     corrections.append(Correction(fact_id=fact.id, kind="auto_normalization", original=f"{fact.value} {fact.unit or ''}".strip(),
                                                   normalized=f"{normalized} {unit or ''}".strip(), explanation="Безопасное преобразование в совместимой размерности"))
-            if row[1] in ("invalid_value", "invalid_number", "invalid_type", "unit_mismatch", "out_of_range", "unit_missing", "unit_unknown", "unsupported_constraint"):
+            if row[1] in ("invalid_value", "invalid_number", "invalid_type", "unit_mismatch", "out_of_range", "unit_missing", "unit_unknown", "unsupported_constraint", "numeric_semantics_unknown", "invalid_count", "multiple_values_not_allowed"):
                 issues.append(Issue(code=row[1], fact_id=fact.id, property_id=prop.id, candidate_code=position.code,
                                     rule_source=prop.evidence, severity="error" if row[0] != "compatible" else "info",
                                     explanation=explain(prop, fact, row[1]),
@@ -226,6 +251,9 @@ def explain(prop: Property, fact: Fact, reason: str) -> str:
         "invalid_value": "значение не входит в разрешённые варианты",
         "invalid_number": "ожидается число, сравнение или поддерживаемый интервал",
         "invalid_type": "ожидается значение да/нет",
+        "invalid_count": "счётное значение должно быть целым",
+        "numeric_semantics_unknown": "смысл числа без исходной единицы не подтверждён",
+        "multiple_values_not_allowed": "источник допускает выбор только одного значения",
         "unit_mismatch": "единица имеет другую размерность",
         "out_of_range": "значение не удовлетворяет допустимым границам",
         "unit_missing": "единица не указана, её нельзя вывести из справочника",
@@ -240,7 +268,8 @@ def explain(prop: Property, fact: Fact, reason: str) -> str:
             left = f"{'≥' if item.lower_inclusive else '>'} {item.lower}" if item.lower is not None else ""
             right = f"{'≤' if item.upper_inclusive else '<'} {item.upper}" if item.upper is not None else ""
             constraints.append(f"{' и '.join(part for part in (left, right) if part)} {item.unit or ''}".strip())
-    return f"{prop.name}: «{fact.value} {fact.unit or ''}» — {labels.get(reason, reason)}. Допустимо: {' или '.join(constraints)}."
+    displayed = json.dumps(fact.values, ensure_ascii=False) if fact.values is not None else fact.value
+    return f"{prop.name}: «{displayed} {fact.unit or ''}» — {labels.get(reason, reason)}. Допустимо: {' или '.join(constraints)}."
 
 
 def rule_signature(position: Position):

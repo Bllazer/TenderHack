@@ -1,0 +1,153 @@
+<ns0:position xmlns:ns0="http://zakupki.gov.ru/oos/types/1" xmlns:ns1="http://zakupki.gov.ru/oos/common/1">
+    <ns0:data>
+        <ns0:code>32.50.13.190-04513</ns0:code>
+        <ns0:versionCode>32.50.13.190-045131</ns0:versionCode>
+        <ns0:version>1</ns0:version>
+        <ns0:inclusionDate>2018-01-29T15:35:36+03:00</ns0:inclusionDate>
+        <ns0:publishDate>2018-01-29T15:35:36+03:00</ns0:publishDate>
+        <ns0:updateDate>2025-01-31T11:55:43+03:00</ns0:updateDate>
+        <ns0:name>Окклюдер кардиологический (для закрытия ушка левого предсердия))</ns0:name>
+        <ns0:OKPD2>
+            <ns0:code>32.50.13.190</ns0:code>
+            <ns0:name>Инструменты и приспособления, применяемые в медицинских целях, прочие, не включенные в другие группировки</ns0:name>
+        </ns0:OKPD2>
+        <ns0:status>ACTIVE</ns0:status>
+        <ns0:applicationDateStart>2018-04-01T00:00:00+03:00</ns0:applicationDateStart>
+        <ns0:OKEIs>
+            <ns0:OKEI>
+                <ns0:code>796</ns0:code>
+                <ns0:name>Штука</ns0:name>
+            </ns0:OKEI>
+        </ns0:OKEIs>
+        <ns0:NSI>
+            <ns0:classifiers>
+                <ns0:classifier>
+                    <ns0:name>НОМЕНКЛАТУРНАЯ КЛАССИФИКАЦИЯ МЕДИЦИНСКИХ ИЗДЕЛИЙ ПО ВИДАМ</ns0:name>
+                    <ns0:NSIcode>nsiNKMI</ns0:NSIcode>
+                    <ns0:code>b49f180b-7</ns0:code>
+                    <ns0:source>M</ns0:source>
+                    <ns0:values>
+                        <ns0:value>
+                            <ns0:code>178270</ns0:code>
+                            <ns0:name>Окклюдер кардиологический</ns0:name>
+                            <ns0:descriptionValue>Стерильное изделие в форме диска для нехирургического закрытия дефектов сердца. Изделие, как правило, саморастяжимое, изготовлено из проволочной сетки [например, никель-титанового сплава (Нитинола)], возможно использование дополнительных материалов (например, полиэфира). Изделие имплантируют с помощью специально предназначенного для этих целей катетера/интродьюсера и кабеля для доставки. Изделие используется для лечения нарушений, к которым относятся (хотя и не ограничиваются перечисленным): дефект межпредсердной перегородки, дефект межжелудочковой перегородки, открытое овальное окно или открытый артериальный проток. Может включать устройства для его имплантации. Это изделие для одноразового использования.</ns0:descriptionValue>
+                        </ns0:value>
+                    </ns0:values>
+                </ns0:classifier>
+                <ns0:classifier>
+                    <ns0:name>Общероссийский классификатор продукции по видам экономической деятельности (ОКПД2)</ns0:name>
+                    <ns0:NSIcode>nsiOKPD2</ns0:NSIcode>
+                    <ns0:code>OKPD2</ns0:code>
+                    <ns0:source>N_OKPD2</ns0:source>
+                    <ns0:values>
+                        <ns0:value>
+                            <ns0:code>32.50.13.190</ns0:code>
+                            <ns0:name>Инструменты и приспособления, применяемые в медицинских целях, прочие, не включенные в другие группировки</ns0:name>
+                        </ns0:value>
+                    </ns0:values>
+                </ns0:classifier>
+            </ns0:classifiers>
+        </ns0:NSI>
+        <ns0:characteristics>
+            <ns0:characteristic>
+                <ns0:code>75bf2c0d-7</ns0:code>
+                <ns0:name>Диаметр диска</ns0:name>
+                <ns0:type>2</ns0:type>
+                <ns0:kind>1</ns0:kind>
+                <ns0:actual>true</ns0:actual>
+                <ns0:isRequired>true</ns0:isRequired>
+                <ns0:choiceType>1</ns0:choiceType>
+                <ns0:values>
+                    <ns0:value>
+                        <ns0:valueCode>329d3b08-d</ns0:valueCode>
+                        <ns0:OKEI>
+                            <ns0:code>003</ns0:code>
+                            <ns0:name>Миллиметр</ns0:name>
+                        </ns0:OKEI>
+                        <ns0:rangeSet>
+                            <ns0:valueRange>
+                                <ns0:minMathNotation>greater</ns0:minMathNotation>
+                                <ns0:min>34</ns0:min>
+                                <ns0:maxMathNotation>lessOrEqual</ns0:maxMathNotation>
+                                <ns0:max>34</ns0:max>
+                            </ns0:valueRange>
+                        </ns0:rangeSet>
+                    </ns0:value>
+                </ns0:values>
+            </ns0:characteristic>
+            <ns0:characteristic>
+                <ns0:code>624a547c-d</ns0:code>
+                <ns0:name>Высота доли</ns0:name>
+                <ns0:type>2</ns0:type>
+                <ns0:kind>1</ns0:kind>
+                <ns0:actual>true</ns0:actual>
+                <ns0:isRequired>true</ns0:isRequired>
+                <ns0:choiceType>1</ns0:choiceType>
+                <ns0:values>
+                    <ns0:value>
+                        <ns0:valueCode>ca15e791-f</ns0:valueCode>
+                        <ns0:OKEI>
+                            <ns0:code>003</ns0:code>
+                            <ns0:name>Миллиметр</ns0:name>
+                        </ns0:OKEI>
+                        <ns0:rangeSet>
+                            <ns0:valueRange>
+                                <ns0:minMathNotation>greater</ns0:minMathNotation>
+                                <ns0:min>9</ns0:min>
+                                <ns0:maxMathNotation>lessOrEqual</ns0:maxMathNotation>
+                                <ns0:max>10</ns0:max>
+                            </ns0:valueRange>
+                        </ns0:rangeSet>
+                    </ns0:value>
+                </ns0:values>
+            </ns0:characteristic>
+            <ns0:characteristic>
+                <ns0:code>e57dcd48-7</ns0:code>
+                <ns0:name>Диаметр доли</ns0:name>
+                <ns0:type>2</ns0:type>
+                <ns0:kind>1</ns0:kind>
+                <ns0:actual>true</ns0:actual>
+                <ns0:isRequired>true</ns0:isRequired>
+                <ns0:choiceType>1</ns0:choiceType>
+                <ns0:values>
+                    <ns0:value>
+                        <ns0:valueCode>36f21b7a-a</ns0:valueCode>
+                        <ns0:OKEI>
+                            <ns0:code>003</ns0:code>
+                            <ns0:name>Миллиметр</ns0:name>
+                        </ns0:OKEI>
+                        <ns0:rangeSet>
+                            <ns0:valueRange>
+                                <ns0:minMathNotation>greater</ns0:minMathNotation>
+                                <ns0:min>34</ns0:min>
+                                <ns0:maxMathNotation>lessOrEqual</ns0:maxMathNotation>
+                                <ns0:max>35</ns0:max>
+                            </ns0:valueRange>
+                        </ns0:rangeSet>
+                    </ns0:value>
+                </ns0:values>
+            </ns0:characteristic>
+        </ns0:characteristics>
+        <ns0:rubricators>
+            <ns0:rubricatorInfo>
+                <ns0:code>100</ns0:code>
+                <ns0:name>Медицинские изделия</ns0:name>
+            </ns0:rubricatorInfo>
+        </ns0:rubricators>
+        <ns0:nsiDescription>Стерильное изделие в форме диска для нехирургического закрытия дефектов сердца. Изделие, как правило, саморастяжимое, изготовлено из проволочной сетки [например, никель-титанового сплава (Нитинола)], возможно использование дополнительных материалов (например, полиэфира). Изделие имплантируют с помощью специально предназначенного для этих целей катетера/интродьюсера и кабеля для доставки. Изделие используется для лечения нарушений, к которым относятся (хотя и не ограничиваются перечисленным): дефект межпредсердной перегородки, дефект межжелудочковой перегородки, открытое овальное окно или открытый артериальный проток. Это изделие для одноразового использования.</ns0:nsiDescription>
+        <ns0:isTemplate>false</ns0:isTemplate>
+        <ns0:parentPositionInfo>
+            <ns0:code>32.50.13.190-05174</ns0:code>
+            <ns0:version>1</ns0:version>
+            <ns0:externalCode>ff267ff4-acb5-4984-9368-3d200cc2bd83</ns0:externalCode>
+        </ns0:parentPositionInfo>
+        <ns0:externalCode>ff267ff4-acb5-4984-9368-3d200cc2bd83</ns0:externalCode>
+        <ns0:noNewFeatures>false</ns0:noNewFeatures>
+    </ns0:data>
+    <ns0:printForm>
+        <ns1:url>https://zakupki.gov.ru/epz/ktru/position/printForm.html?dsUid=DB04429443374EBF973A157FB8A4F4DE</ns1:url>
+        <ns1:signatureInfo>
+            <ns1:dsUid>4EFEAC05819946E8A9D0C0088060113C</ns1:dsUid>
+        </ns1:signatureInfo>
+    </ns0:printForm>
+</ns0:position>

@@ -32,11 +32,11 @@
 }
 ```
 
-description: непустой исходный текст до 12000 символов. attributes: до 100 объектов `{id, name, value, unit?, unknown?, subject?, replaces?}`. id уникален, до 128; name до 256, value до 512, unit до 64. subject: `product` (по умолчанию), `packaging`, `unspecified`. unknown по умолчанию false. `replaces` — идентификатор предыдущего извлечённого/ответного факта либо `fragment:start:end`, если пользователь явно исправляет/размечает фрагмент. Неприменимый идентификатор отклоняется: исправление не должно незаметно потеряться после смены текста. Ответ сохраняет original_facts и corrections; facts содержит действующее состояние.
+description: непустой исходный текст до 12000 символов. attributes: до 100 объектов `{id, name, value?, values?, unit?, unknown?, subject?, replaces?}`. Скалярный value по умолчанию ""; для выбора нескольких значений передайте values (см. ниже). id уникален, до 128; name до 256, value до 512, unit до 64. subject: `product` (по умолчанию), `packaging`, `unspecified`. unknown по умолчанию false. `replaces` — идентификатор предыдущего извлечённого/ответного факта либо `fragment:start:end`, если пользователь явно исправляет/размечает фрагмент. Неприменимый идентификатор отклоняется: исправление не должно незаметно потеряться после смены текста. Ответ сохраняет original_facts и corrections; facts содержит действующее состояние.
 
 Скобочные интервалы извлекаются вместе с явно указанной единицей: `Стол; Высота: [70; 80] см` → value=`[70;80]`, unit=`см`; raw/span сохраняют исходный фрагмент без изменений. Поддерживаются `[a;b]`, `(a;b)`, `[a;b)`, `(a;b]`, знаки минус и десятичная запятая. Пустые интервалы с равными границами и хотя бы одной открытой стороной не допускаются: проверка даёт incompatible/invalid_number, selected_ktru_code=null; подтверждение такого исключённого кода — 422. Они не нормализуются в точку. `[750;750]` — допустимая точка. Аналогичные пустые ограничения каталога отклоняются при загрузке (readiness 503 resources_invalid).
 
-additional: до 100 строк по 1024 символа. answers: до 100 объектов `{question_id, value?, unit?, unknown?}`, один текущий ответ на идентификатор. «Не знаю»: value=null, unknown=true. confirmed_category_id: до 128 символов, confirmed_ktru_code: до 64. candidate_limit: 1–100, по умолчанию 20; ограничивает выдачу, а не проверяемую область. Все остальные поля запрещены, включая клиентские verification/normalized_value: доказательства вычисляются заново.
+additional: до 100 строк по 1024 символа. answers: до 100 объектов `{question_id, value?, values?, unit?, unknown?}`, один текущий ответ на идентификатор. «Не знаю»: value=null, unknown=true. confirmed_category_id: до 128 символов, confirmed_ktru_code: до 64. candidate_limit: 1–100, по умолчанию 20; ограничивает выдачу, а не проверяемую область. Все остальные поля запрещены, включая клиентские verification/normalized_value: доказательства вычисляются заново.
 
 Ответы предыдущей категории сохраняются как источник явной правки через replaces; в новой категории они не становятся действующими фактами или доказательством. Идентификатор вопроса сверяется со snapshot каталога.
 
@@ -79,6 +79,67 @@ needs_data из-за неподдержанных правил семейств�
 
 ### Карточка и структурированные блокировки
 
+Семантика адаптера: `clean5-adapter-v2-kind3-applicability`; справочник чисел:
+`numeric-semantics-v1`. Версия адаптера и справочника входит в catalog_version;
+snapshot старой семантики не проходит проверку версии поставки.
+
+Для `kind=3` InputFact и Answer принимают необязательное `values: string[]`
+(1–50 непустых элементов, каждый до 512 символов) вместо скалярного value.
+Одновременные непустой value и values — 422. Пример полного запроса:
+
+```json
+{
+  "description": "Лопата совковая",
+  "confirmed_category_id": "25.99.29.120-00004",
+  "attributes": [{"id": "features", "name": "Конструктивные особенности", "values": ["Черенок", "Ручка на черенке"]}],
+  "answers": [],
+  "additional": [],
+  "confirmed_ktru_code": null
+}
+```
+
+Fact возвращает values списком, value="", raw — исходный JSON списка,
+source=input/answer, span=null. При скалярном вводе values=null; исходные текст,
+фрагмент и span сохраняются. Повтор элемента не конфликтует. Все выбранные
+элементы проверяются; `Check.elements` содержит `{value, outcome, reason,
+value_codes}` для каждого. Недопустимый элемент даёт invalid_value/out_of_range,
+исключает позицию, и её confirmed_ktru_code отклоняется с 422.
+Несколько разных значений при kind=1/2 дают multiple_values_not_allowed.
+Скалярная строка с запятыми разбирается как список только внутри текстового
+kind=3, если в справочнике нет литералов с запятыми. Точное составное значение
+сохраняется целиком. Для неоднозначной пунктуации передавайте values явно.
+Backend никогда не назначает все allowed как факты товара.
+
+Вопрос свойства имеет multiple=true только для kind=3. Ответ:
+`{"question_id":"<id из ответа>","values":["Черенок","Ручка на черенке"]}`.
+Он заменяет старый факт этого свойства и запускает полную проверку.
+Текущий ответ свойства имеет приоритет и над attributes того же свойства:
+устаревший набор не объединяется с новым; raw прежнего выбора сохраняется
+в corrections. Для самостоятельной правки attributes используйте replaces.
+Явное `attributes.replaces="answer:<question_id>"` заменяет сохранённый ответ
+и имеет приоритет над ним, чтобы редактор мог исправить ранее данный ответ.
+unknown=true сохраняет неопределённость даже при переданном списке.
+choice_type сохраняется как метаданные ведения КТРУ и не заменяет kind.
+
+BlockingReason дополнен applicability=source/required/provided/potential и
+blocks_resolution. Недостоверный источник блокирует независимо от заполнения.
+Непроверяемые обязательное поле, введённое значение и конкурирующая unknown-позиция
+не позволяют доказать соответствие/уникальность. Невведённое необязательное
+поле имеет applicability=potential, blocks_resolution=false; оно не становится
+проверенным, его Check остаётся unknown/not_provided. Единственность нельзя
+доказать, игнорируя конкурирующий код. Полезные вопросы карточки продолжаются
+даже при оставшейся блокировке; вопрос подтверждения кода требует готового proof.
+GET карточки не знает ввода: provided не назначается; необязательные ограничения
+показаны как потенциальные. Только reasons с blocks_resolution=true блокируют.
+
+Число без ОКЕИ проверяется только при явных numeric_semantics=count/designation
+и numeric_semantics_evidence; иначе numeric_semantics_unknown/unknown.
+Счётные значения целые; физическая единица не подменяет счёт, неверная размерность
+даёт unit_mismatch. Для физических величин отсутствие единицы ввода остаётся
+unit_missing; единица схемы не доказывает единицу пользователя. Источник, OR,
+строгие границы и value_code сохраняются. source_issues/resolve_blocked и позиции
+без характеристик сохраняют запрет resolved.
+
 GET `/api/v1/catalog/positions/25.99.29.120-00000001` возвращает
 `{catalog_version, position, blocking_reasons}`. position содержит code/name/okpd2,
 parent_code/is_template/status/version/source_status, no_new_features (включая null),
@@ -87,7 +148,8 @@ resolve_blocked/resolve_blocked_reason и properties. Это **правила К
 характеристики пользователя находятся только в facts POST, не в карточке.
 
 Property: id/name/aliases/source/evidence/subject/value_type/required/verified,
-semantic_key/kind/source_type/choice_type/raw_json/unsupported_reasons/allowed.
+semantic_key/kind/source_type/choice_type/raw_json/unsupported_reasons/allowed,
+numeric_semantics (physical/count/designation/unknown), numeric_semantics_evidence.
 AllowedValue: kind(enum/number/interval), value/lower/upper, lower_inclusive/
 upper_inclusive, unit/raw_unit/okei_code/value_code/source. Элементы allowed
 соединены OR; единица и код сохраняются отдельно для каждого элемента.
@@ -101,16 +163,19 @@ units отражает исходные или нормализованные е
 элементов, null означает отсутствие единицы; полный первоисточник есть в raw_json.
 Причины относятся к данным/поддержке семантики и не исчезают после ручного выбора.
 source_issues и resolve_blocked_reason пусты у трёх рассматриваемых лопат;
-kind=3 «Конструктивные особенности» → multiple_choice_not_supported у всех.
-У 00000003 ещё «Количество бортов» и «Количество ребер жесткости» →
-missing_source_unit. Эти признаки не изменяются ради демонстрации.
+В адаптере v2 kind=3 поддержан: «Конструктивные особенности» проверяются
+по каждому действительно выбранному значению. Количество бортов и ребер
+без ОКЕИ интерпретируется отдельным проверенным справочником как счётное;
+исходные unit/raw_unit/okei_code остаются null. Основания — actual-XML и
+описание XML, сохранённые в docs/reviews/stage2. Другие неоднозначные числа
+без ОКЕИ остаются неподдержанными; единицы не назначаются по умолчанию.
 
 Всегда: status, original_text, normalized_text, original_facts, facts, unparsed, additional, categories, candidates, excluded, candidate_count, excluded_count, scope, issues, corrections, next_question, next_steps, verification, selected_ktru_code, catalog_version, engine_version.
 
-- Fact: id/name/value/unit/raw/span/source/subject/negated/unknown/normalized_value/normalized_unit/mappings. source: text/input/answer. span — полуоткрытый диапазон символов исходного текста либо null. Нормализация не меняет исходный факт.
+- Fact: id/name/value/values/unit/raw/span/source/subject/negated/unknown/normalized_value/normalized_unit/mappings. source: text/input/answer. span — полуоткрытый диапазон символов исходного текста либо null. Нормализация не меняет исходный факт.
 - Fragment: id/raw/span. Нераспознанные и дополнительные сведения не теряются.
 - CategoryCandidate: id/name/rank/rank_score/reasons. rank_score — RRF, не вероятность. Предложение требует подтверждения типа пользователем.
-- Candidate: ktru_code/name/okpd2/outcome/checks/missing_required/has_characteristics/**blocking_reasons**/**exclusion_reasons**. outcome: compatible/incompatible/unknown. Check: property_id/name/outcome/reason/fact_ids/value_codes. Шаблон не становится конечным кандидатом. Допустимые элементы сохраняют свои единицы и value_code в каталоге.
+- Candidate: ktru_code/name/okpd2/outcome/checks/missing_required/has_characteristics/**blocking_reasons**/**exclusion_reasons**. outcome: compatible/incompatible/unknown. Check: property_id/name/outcome/reason/fact_ids/value_codes/elements. Шаблон не становится конечным кандидатом. Допустимые элементы сохраняют свои единицы и value_code в каталоге.
 
 Достоверный incompatible-check применимого проверенного правила исключает позицию,
 даже если другое правило неподдержано, не заполнено или источник запрещает resolved.
@@ -131,7 +196,7 @@ exclusion_reasons — массив Issue с исходным фактом, ид�
 
 ## Статусы и подтверждение
 
-Версия движка: `stateless-pipeline-v3-context-values-cd-gated`. A использует действующие правила извлечения с контекстными enum; B — существующий локальный Search. Для пригодного snapshot с категориями C/D подключены через algorithm_adapter и app.structured. C дополняет строгую проверку app.checks и не может самостоятельно разрешить подбор. Backend вычисляет verification и selected_ktru_code заново; флаги и selected из AlgorithmC не принимаются как доказательство.
+Версия движка: `stateless-pipeline-v4-ktru-multiselect-applicability`. A использует действующие правила извлечения с контекстными enum; B — существующий локальный Search. Для пригодного snapshot с категориями C/D подключены через algorithm_adapter и app.structured. C дополняет строгую проверку app.checks и не может самостоятельно разрешить подбор. Backend вычисляет verification и selected_ktru_code заново; флаги и selected из AlgorithmC не принимаются как доказательство.
 
 ### Неподтверждённая правка имени характеристики
 

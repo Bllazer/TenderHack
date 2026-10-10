@@ -1,0 +1,4906 @@
+{
+  "archive_sha256": "4ebf16535e453433dfd690c01a107a187ffe619f5b8554147baff6950bf7171c",
+  "positions": {
+    "32.50.13.190-04513": {
+      "member": "КТРУ/173_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_013.xml",
+      "sha256": "06c53fa641b134f408607099d8d2992455050ac1ce4ee1d78517297c874da271",
+      "fields": {
+        "code": "32.50.13.190-04513",
+        "versionCode": "32.50.13.190-045131",
+        "version": "1",
+        "inclusionDate": "2018-01-29T15:35:36+03:00",
+        "publishDate": "2018-01-29T15:35:36+03:00",
+        "updateDate": "2025-01-31T11:55:43+03:00",
+        "name": "Окклюдер кардиологический (для закрытия ушка левого предсердия))",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2018-04-01T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "nsiDescription": "Стерильное изделие в форме диска для нехирургического закрытия дефектов сердца. Изделие, как правило, саморастяжимое, изготовлено из проволочной сетки [например, никель-титанового сплава (Нитинола)], возможно использование дополнительных материалов (например, полиэфира). Изделие имплантируют с помощью специально предназначенного для этих целей катетера/интродьюсера и кабеля для доставки. Изделие используется для лечения нарушений, к которым относятся (хотя и не ограничиваются перечисленным): дефект межпредсердной перегородки, дефект межжелудочковой перегородки, открытое овальное окно или открытый артериальный проток. Это изделие для одноразового использования.",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "externalCode": "ff267ff4-acb5-4984-9368-3d200cc2bd83",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "75bf2c0d-7",
+          "name": "Диаметр диска",
+          "type": "2",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "624a547c-d",
+          "name": "Высота доли",
+          "type": "2",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "e57dcd48-7",
+          "name": "Диаметр доли",
+          "type": "2",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "32.50.30.110-00000090": {
+      "member": "КТРУ/216_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_056.xml",
+      "sha256": "1732ece7bbf0bd89da2a70c95ecbe5915ca3e06c1d4b4bf1e7a8935e40411b0a",
+      "fields": {
+        "code": "32.50.30.110-00000090",
+        "versionCode": "32.50.30.110-000000904",
+        "version": "4",
+        "inclusionDate": "2019-04-11T14:21:51+03:00",
+        "publishDate": "2024-01-18T12:27:24+03:00",
+        "updateDate": "2025-02-01T12:00:00+03:00",
+        "name": "Шкаф для хранения медицинских карт",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2024-02-17T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "9bfd1589-4",
+          "name": "Длина",
+          "type": "2",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "7657851c-1",
+          "name": "Ширина",
+          "type": "2",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "3e10a732-d",
+          "name": "Высота",
+          "type": "2",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "5792e748-e",
+          "name": "Материал изделия",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "32.50.30.110-00000089": {
+      "member": "КТРУ/216_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_056.xml",
+      "sha256": "9a243ff1fe08937484261c5f6ad6007b8035e2ae6efcae6b94aac968fb1ba25a",
+      "fields": {
+        "code": "32.50.30.110-00000089",
+        "versionCode": "32.50.30.110-000000894",
+        "version": "4",
+        "inclusionDate": "2019-04-11T14:21:50+03:00",
+        "publishDate": "2024-01-18T12:29:16+03:00",
+        "updateDate": "2025-02-01T12:00:00+03:00",
+        "name": "Шкаф для хранения медицинских карт",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2024-02-17T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "9bfd1589-4",
+          "name": "Длина",
+          "type": "2",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "7657851c-1",
+          "name": "Ширина",
+          "type": "2",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "3e10a732-d",
+          "name": "Высота",
+          "type": "2",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "5792e748-e",
+          "name": "Материал изделия",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "32.50.30.110-00000088": {
+      "member": "КТРУ/216_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_056.xml",
+      "sha256": "1ff884b4f461f50d893c1e6568f4fefb5a137dd3a1bf1e0cff734de7dc9fbcdb",
+      "fields": {
+        "code": "32.50.30.110-00000088",
+        "versionCode": "32.50.30.110-000000884",
+        "version": "4",
+        "inclusionDate": "2019-04-11T14:21:50+03:00",
+        "publishDate": "2024-01-18T12:28:58+03:00",
+        "updateDate": "2025-02-01T12:00:00+03:00",
+        "name": "Шкаф для хранения медицинских карт",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2024-02-17T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "9bfd1589-4",
+          "name": "Длина",
+          "type": "2",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "7657851c-1",
+          "name": "Ширина",
+          "type": "2",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "3e10a732-d",
+          "name": "Высота",
+          "type": "2",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "5792e748-e",
+          "name": "Материал изделия",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "31.01.10.000-00000005": {
+      "member": "КТРУ/220_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_060.xml",
+      "sha256": "018d553717fb3c1da05c6a931d510e98d32028b56d630330dd832d8978926de7",
+      "fields": {
+        "code": "31.01.10.000-00000005",
+        "version": "10",
+        "inclusionDate": "2019-11-08T12:52:31+03:00",
+        "publishDate": "2026-05-14T17:21:04+03:00",
+        "updateDate": "2026-05-14T17:21:05+03:00",
+        "name": "Стол письменный",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-05-27T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "4ed2155c-8",
+          "name": "Конфигурация стола",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d32f0d74-4",
+          "name": "Тип каркаса",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "7a5ded16-1",
+          "name": "Тип стола",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "3fde04f2-4",
+          "name": "Количество встроенных тумб",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "a5a36e5b-7",
+          "name": "Вид материала столешницы",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "f8f1437e-8",
+          "name": "Наличие кабель-канала",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "4246394d-6",
+          "name": "Назначение стола письменного",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "1035a09d-d",
+          "name": "Вид опоры стола",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "71fc2e6f-5",
+          "name": "Тип покрытия",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "1fc75129-d",
+          "name": "Количество полок открытых",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8efec0c1-0",
+          "name": "Количество выдвижных ящиков",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "1c21e3d7-a",
+          "name": "Тип направляющих",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "880900e8-6",
+          "name": "Лаковое покрытие столешницы",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "86bcb842-2",
+          "name": "Дополнительное оборудование",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "4feabe1a-4",
+          "name": "Регулируемая высота опоры",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "27a25a44-9",
+          "name": "Толщина материала столешницы",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "0cebdec7-0",
+          "name": "Толщина материала каркаса",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "c29d9b70-c",
+          "name": "Вид материала каркаса",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "c411f208-d",
+          "name": "Эргономичный",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "b5dc6ff9-2",
+          "name": "Наличие ножек",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "31.01.10.000-00000004": {
+      "member": "КТРУ/220_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_060.xml",
+      "sha256": "d4af97a0825f8c3e38eb75e2daec188f1f108540fb00e6735b9e96f6dc8588dd",
+      "fields": {
+        "code": "31.01.10.000-00000004",
+        "version": "10",
+        "inclusionDate": "2019-11-08T12:52:31+03:00",
+        "publishDate": "2026-05-14T17:22:30+03:00",
+        "updateDate": "2026-05-14T17:22:31+03:00",
+        "name": "Стол письменный",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-05-27T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "4ed2155c-8",
+          "name": "Конфигурация стола",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d32f0d74-4",
+          "name": "Тип каркаса",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "7a5ded16-1",
+          "name": "Тип стола",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "3fde04f2-4",
+          "name": "Количество встроенных тумб",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "a5a36e5b-7",
+          "name": "Вид материала столешницы",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "f8f1437e-8",
+          "name": "Наличие кабель-канала",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "4246394d-6",
+          "name": "Назначение стола письменного",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "1035a09d-d",
+          "name": "Вид опоры стола",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "71fc2e6f-5",
+          "name": "Тип покрытия",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "1fc75129-d",
+          "name": "Количество полок открытых",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8efec0c1-0",
+          "name": "Количество выдвижных ящиков",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "1c21e3d7-a",
+          "name": "Тип направляющих",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "880900e8-6",
+          "name": "Лаковое покрытие столешницы",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "86bcb842-2",
+          "name": "Дополнительное оборудование",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "4feabe1a-4",
+          "name": "Регулируемая высота опоры",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "27a25a44-9",
+          "name": "Толщина материала столешницы",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "0cebdec7-0",
+          "name": "Толщина материала каркаса",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "c29d9b70-c",
+          "name": "Вид материала каркаса",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "c411f208-d",
+          "name": "Эргономичный",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "b5dc6ff9-2",
+          "name": "Наличие ножек",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "14.11.10.000-00000005": {
+      "member": "КТРУ/223_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_063.xml",
+      "sha256": "46106ae84c2f425244d63e3ca52d158034ac1d8221366bf71be856dbe3a4ed01",
+      "fields": {
+        "code": "14.11.10.000-00000005",
+        "versionCode": "14.11.10.000-000000052",
+        "version": "2",
+        "inclusionDate": "2019-12-29T13:58:03+03:00",
+        "publishDate": "2020-01-29T18:00:38+03:00",
+        "updateDate": "2025-01-31T17:45:00+03:00",
+        "name": "Куртка зимняя из кожи",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2020-04-01T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "fbcebe49-2",
+          "name": "Половой признак",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "9e6a0755-e",
+          "name": "Натуральная кожа",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "edda08ca-1",
+          "name": "Российский размер",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "14f9cc76-3",
+          "name": "Тип утеплителя",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cf718fa0-5",
+          "name": "Наличие водонепроницаемого покрытия",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cf706e55-7",
+          "name": "Тип капюшона",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "14.11.10.000-00000004": {
+      "member": "КТРУ/223_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_063.xml",
+      "sha256": "9c218474aac50552a6437cf062e39767cdc1d7d74b5920d4028e712d8a32f868",
+      "fields": {
+        "code": "14.11.10.000-00000004",
+        "versionCode": "14.11.10.000-000000042",
+        "version": "2",
+        "inclusionDate": "2019-12-29T13:58:02+03:00",
+        "publishDate": "2020-01-29T18:02:15+03:00",
+        "updateDate": "2025-01-31T17:45:00+03:00",
+        "name": "Куртка зимняя из кожи",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2020-04-01T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "fbcebe49-2",
+          "name": "Половой признак",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "9e6a0755-e",
+          "name": "Натуральная кожа",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "edda08ca-1",
+          "name": "Российский размер",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "14f9cc76-3",
+          "name": "Тип утеплителя",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cf718fa0-5",
+          "name": "Наличие водонепроницаемого покрытия",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cf706e55-7",
+          "name": "Тип капюшона",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "14.11.10.000-00000003": {
+      "member": "КТРУ/223_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_063.xml",
+      "sha256": "cc71918aaa05618e1cddb4be4cffa4000812cecdf4e33cce0dd92737239f7fae",
+      "fields": {
+        "code": "14.11.10.000-00000003",
+        "versionCode": "14.11.10.000-000000032",
+        "version": "2",
+        "inclusionDate": "2019-12-29T13:58:02+03:00",
+        "publishDate": "2020-01-29T18:02:48+03:00",
+        "updateDate": "2025-01-31T17:45:00+03:00",
+        "name": "Куртка зимняя из кожи",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2020-04-01T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "fbcebe49-2",
+          "name": "Половой признак",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "9e6a0755-e",
+          "name": "Натуральная кожа",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "edda08ca-1",
+          "name": "Российский размер",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "14f9cc76-3",
+          "name": "Тип утеплителя",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cf718fa0-5",
+          "name": "Наличие водонепроницаемого покрытия",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cf706e55-7",
+          "name": "Тип капюшона",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "14.11.10.000-00000002": {
+      "member": "КТРУ/223_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_063.xml",
+      "sha256": "11e319eb725713e183904c3c96a44c12e25eb8a20a4c35c45c96033885d79e7a",
+      "fields": {
+        "code": "14.11.10.000-00000002",
+        "versionCode": "14.11.10.000-000000022",
+        "version": "2",
+        "inclusionDate": "2019-12-29T13:58:02+03:00",
+        "publishDate": "2020-01-29T18:03:43+03:00",
+        "updateDate": "2025-01-31T17:45:00+03:00",
+        "name": "Куртка зимняя из кожи",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2020-04-01T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "fbcebe49-2",
+          "name": "Половой признак",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "9e6a0755-e",
+          "name": "Натуральная кожа",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "edda08ca-1",
+          "name": "Российский размер",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "14f9cc76-3",
+          "name": "Тип утеплителя",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cf718fa0-5",
+          "name": "Наличие водонепроницаемого покрытия",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cf706e55-7",
+          "name": "Тип капюшона",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "14.20.10.000-00000016": {
+      "member": "КТРУ/223_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_063.xml",
+      "sha256": "0eda7dec858fed451c61db9867d04b077297b8157a5561db8f347809681b3cd0",
+      "fields": {
+        "code": "14.20.10.000-00000016",
+        "versionCode": "14.20.10.000-000000162",
+        "version": "2",
+        "inclusionDate": "2019-12-29T14:15:08+03:00",
+        "publishDate": "2020-01-29T17:35:26+03:00",
+        "updateDate": "2025-01-31T17:45:00+03:00",
+        "name": "Пальто зимнее с верхом из меха",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2020-04-01T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "659bffab-6",
+          "name": "Половой признак",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "acc9a1ef-9",
+          "name": "Натуральная мех",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "a91db3e5-a",
+          "name": "Российский размер",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8cc5cff5-d",
+          "name": "Тип утеплителя",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d08360f9-7",
+          "name": "Тип капюшона",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "14.20.10.000-00000015": {
+      "member": "КТРУ/223_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_063.xml",
+      "sha256": "7d72eecfffffade7bb6e88f9e08957c4d482704093efeef2204ebee560899d3b",
+      "fields": {
+        "code": "14.20.10.000-00000015",
+        "versionCode": "14.20.10.000-000000152",
+        "version": "2",
+        "inclusionDate": "2019-12-29T14:15:08+03:00",
+        "publishDate": "2020-01-29T17:35:52+03:00",
+        "updateDate": "2025-01-31T17:45:00+03:00",
+        "name": "Пальто зимнее с верхом из меха",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2020-04-01T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "659bffab-6",
+          "name": "Половой признак",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "acc9a1ef-9",
+          "name": "Натуральная мех",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "a91db3e5-a",
+          "name": "Российский размер",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8cc5cff5-d",
+          "name": "Тип утеплителя",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d08360f9-7",
+          "name": "Тип капюшона",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "14.20.10.000-00000014": {
+      "member": "КТРУ/223_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_063.xml",
+      "sha256": "dc654aab025d28e6d468a8b1f61cc31a0eae2917456db4e5192e3b6a046a92aa",
+      "fields": {
+        "code": "14.20.10.000-00000014",
+        "versionCode": "14.20.10.000-000000142",
+        "version": "2",
+        "inclusionDate": "2019-12-29T14:15:07+03:00",
+        "publishDate": "2020-01-29T17:37:04+03:00",
+        "updateDate": "2025-01-31T17:45:00+03:00",
+        "name": "Пальто зимнее с верхом из меха",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2020-04-01T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "659bffab-6",
+          "name": "Половой признак",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "acc9a1ef-9",
+          "name": "Натуральная мех",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "a91db3e5-a",
+          "name": "Российский размер",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8cc5cff5-d",
+          "name": "Тип утеплителя",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d08360f9-7",
+          "name": "Тип капюшона",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "14.20.10.000-00000013": {
+      "member": "КТРУ/223_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_063.xml",
+      "sha256": "613431ae08c5f7f2eeba55dc2bec23709b2d304a9ccab1771bd0e9464053191d",
+      "fields": {
+        "code": "14.20.10.000-00000013",
+        "versionCode": "14.20.10.000-000000132",
+        "version": "2",
+        "inclusionDate": "2019-12-29T14:15:07+03:00",
+        "publishDate": "2020-01-29T17:37:39+03:00",
+        "updateDate": "2025-01-31T17:45:00+03:00",
+        "name": "Пальто зимнее с верхом из меха",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2020-04-01T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "659bffab-6",
+          "name": "Половой признак",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "acc9a1ef-9",
+          "name": "Натуральная мех",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "a91db3e5-a",
+          "name": "Российский размер",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8cc5cff5-d",
+          "name": "Тип утеплителя",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d08360f9-7",
+          "name": "Тип капюшона",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "14.13.10.000-00000032": {
+      "member": "КТРУ/223_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_063.xml",
+      "sha256": "d6eeb5aa2e4b6ae135d47abb48e690f5a275de16c4e1b655ed5a1ab18049874a",
+      "fields": {
+        "code": "14.13.10.000-00000032",
+        "versionCode": "14.13.10.000-000000322",
+        "version": "2",
+        "inclusionDate": "2019-12-29T14:18:19+03:00",
+        "publishDate": "2020-01-29T17:41:54+03:00",
+        "updateDate": "2025-01-31T17:45:00+03:00",
+        "name": "Пальто зимнее из текстильных материалов",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2020-04-01T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "008aa780-4",
+          "name": "Половой признак",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "12fe4237-3",
+          "name": "Российский размер",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "33188bce-b",
+          "name": "Тип утеплителя",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "c88746e5-b",
+          "name": "Наличие водонепроницаемого покрытия",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "2977cc75-4",
+          "name": "Тип капюшона",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "e5dd7c71-0",
+          "name": "Тип ткани",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "14.13.10.000-00000031": {
+      "member": "КТРУ/223_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_063.xml",
+      "sha256": "14852d7be33351226c91ec596eaa6da14909be7302899903082ddb70e1a7a9b1",
+      "fields": {
+        "code": "14.13.10.000-00000031",
+        "versionCode": "14.13.10.000-000000312",
+        "version": "2",
+        "inclusionDate": "2019-12-29T14:18:18+03:00",
+        "publishDate": "2020-01-29T17:42:51+03:00",
+        "updateDate": "2025-01-31T17:45:00+03:00",
+        "name": "Пальто зимнее из текстильных материалов",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2020-04-01T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "008aa780-4",
+          "name": "Половой признак",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "12fe4237-3",
+          "name": "Российский размер",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "33188bce-b",
+          "name": "Тип утеплителя",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "c88746e5-b",
+          "name": "Наличие водонепроницаемого покрытия",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "2977cc75-4",
+          "name": "Тип капюшона",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "e5dd7c71-0",
+          "name": "Тип ткани",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.73.30.141-00000010": {
+      "member": "КТРУ/232_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_072.xml",
+      "sha256": "e5c899a30b75b459b12f85dd184380cb9e8daaebcf15ab424ae7c05082b8cd9c",
+      "fields": {
+        "code": "25.73.30.141-00000010",
+        "version": "4",
+        "inclusionDate": "2021-02-10T09:34:29+03:00",
+        "publishDate": "2026-06-03T13:06:15+03:00",
+        "updateDate": "2026-06-03T13:06:16+03:00",
+        "name": "Молоток",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-07-03T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "86d2b111-f",
+          "name": "Тип",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "f78c450e-2",
+          "name": "Масса молотка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "aa26f312-6",
+          "name": "Материал бойка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "eef63e69-7",
+          "name": "Безынерционный",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ca0d4c23-5",
+          "name": "Форма бойка",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cc742fbb-8",
+          "name": "Длина рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.73.30.141-00000009": {
+      "member": "КТРУ/232_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_072.xml",
+      "sha256": "b0706e1984e05ff5a70ce6cca14bdb17b0e9ee6f0028a57285529a5423f45bfa",
+      "fields": {
+        "code": "25.73.30.141-00000009",
+        "version": "4",
+        "inclusionDate": "2021-02-10T09:34:29+03:00",
+        "publishDate": "2026-06-03T13:05:49+03:00",
+        "updateDate": "2026-06-03T13:05:50+03:00",
+        "name": "Молоток",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-07-03T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "daec7762-c",
+          "name": "Тип исполнения рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "86d2b111-f",
+          "name": "Тип",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "f78c450e-2",
+          "name": "Масса молотка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "aa26f312-6",
+          "name": "Материал бойка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "eef63e69-7",
+          "name": "Безынерционный",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ca0d4c23-5",
+          "name": "Форма бойка",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cc742fbb-8",
+          "name": "Длина рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.73.30.141-00000008": {
+      "member": "КТРУ/232_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_072.xml",
+      "sha256": "3d45d71a532bfd29d51205298cf1055085c15bc0d043f3209d9f53e5e529fc95",
+      "fields": {
+        "code": "25.73.30.141-00000008",
+        "version": "4",
+        "inclusionDate": "2021-02-10T09:34:29+03:00",
+        "publishDate": "2026-06-03T13:05:09+03:00",
+        "updateDate": "2026-06-03T13:05:10+03:00",
+        "name": "Молоток",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-07-03T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "daec7762-c",
+          "name": "Тип исполнения рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "86d2b111-f",
+          "name": "Тип",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "f78c450e-2",
+          "name": "Масса молотка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "aa26f312-6",
+          "name": "Материал бойка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "eef63e69-7",
+          "name": "Безынерционный",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ca0d4c23-5",
+          "name": "Форма бойка",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cc742fbb-8",
+          "name": "Длина рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.73.30.141-00000007": {
+      "member": "КТРУ/232_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_072.xml",
+      "sha256": "7ff5ae7e143ceb879bed2f5bc31d212456af1676c9c882bb6d5bade5169fbc32",
+      "fields": {
+        "code": "25.73.30.141-00000007",
+        "version": "4",
+        "inclusionDate": "2021-02-10T09:34:28+03:00",
+        "publishDate": "2026-06-03T13:04:42+03:00",
+        "updateDate": "2026-06-03T13:04:43+03:00",
+        "name": "Молоток",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-07-03T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "daec7762-c",
+          "name": "Тип исполнения рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "86d2b111-f",
+          "name": "Тип",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "f78c450e-2",
+          "name": "Масса молотка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "aa26f312-6",
+          "name": "Материал бойка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "eef63e69-7",
+          "name": "Безынерционный",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ca0d4c23-5",
+          "name": "Форма бойка",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cc742fbb-8",
+          "name": "Длина рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.73.30.141-00000006": {
+      "member": "КТРУ/232_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_072.xml",
+      "sha256": "715de249986464d77bd7ea2d45abfcc739c2c44ead177d6dbb30a992ef2fad9a",
+      "fields": {
+        "code": "25.73.30.141-00000006",
+        "version": "4",
+        "inclusionDate": "2021-02-10T09:34:28+03:00",
+        "publishDate": "2026-06-03T13:04:01+03:00",
+        "updateDate": "2026-06-03T13:04:02+03:00",
+        "name": "Молоток",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-07-03T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "86d2b111-f",
+          "name": "Тип",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "f78c450e-2",
+          "name": "Масса молотка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "aa26f312-6",
+          "name": "Материал бойка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "eef63e69-7",
+          "name": "Безынерционный",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ca0d4c23-5",
+          "name": "Форма бойка",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cc742fbb-8",
+          "name": "Длина рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.73.30.141-00000005": {
+      "member": "КТРУ/232_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_072.xml",
+      "sha256": "248c404d939198b69c23d0b391a1f22d002f36616595922ceafb62e75678724c",
+      "fields": {
+        "code": "25.73.30.141-00000005",
+        "version": "4",
+        "inclusionDate": "2021-02-10T09:34:27+03:00",
+        "publishDate": "2026-06-03T13:03:36+03:00",
+        "updateDate": "2026-06-03T13:03:36+03:00",
+        "name": "Молоток",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-07-03T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "86d2b111-f",
+          "name": "Тип",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "f78c450e-2",
+          "name": "Масса молотка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "aa26f312-6",
+          "name": "Материал бойка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "eef63e69-7",
+          "name": "Безынерционный",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ca0d4c23-5",
+          "name": "Форма бойка",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cc742fbb-8",
+          "name": "Длина рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.73.30.141-00000004": {
+      "member": "КТРУ/232_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_072.xml",
+      "sha256": "7ae27a301903ecfe43d58265fcd31a9aa08c6eccaa8d406992851d36fb91d6cd",
+      "fields": {
+        "code": "25.73.30.141-00000004",
+        "version": "4",
+        "inclusionDate": "2021-02-10T09:34:27+03:00",
+        "publishDate": "2026-06-03T13:02:50+03:00",
+        "updateDate": "2026-06-03T13:02:51+03:00",
+        "name": "Молоток",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-07-03T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "daec7762-c",
+          "name": "Тип исполнения рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "86d2b111-f",
+          "name": "Тип",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "f78c450e-2",
+          "name": "Масса молотка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "aa26f312-6",
+          "name": "Материал бойка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "eef63e69-7",
+          "name": "Безынерционный",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ca0d4c23-5",
+          "name": "Форма бойка",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cc742fbb-8",
+          "name": "Длина рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.73.30.141-00000003": {
+      "member": "КТРУ/232_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_072.xml",
+      "sha256": "484d953039f92a5a80f3762d912595617b9a3ff7d7c31ecf68ee5ebad332c430",
+      "fields": {
+        "code": "25.73.30.141-00000003",
+        "version": "4",
+        "inclusionDate": "2021-02-10T09:34:27+03:00",
+        "publishDate": "2026-06-03T13:02:30+03:00",
+        "updateDate": "2026-06-03T13:02:30+03:00",
+        "name": "Молоток",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-07-03T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "daec7762-c",
+          "name": "Тип исполнения рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "86d2b111-f",
+          "name": "Тип",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "f78c450e-2",
+          "name": "Масса молотка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "aa26f312-6",
+          "name": "Материал бойка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "eef63e69-7",
+          "name": "Безынерционный",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ca0d4c23-5",
+          "name": "Форма бойка",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cc742fbb-8",
+          "name": "Длина рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.73.30.141-00000002": {
+      "member": "КТРУ/232_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_072.xml",
+      "sha256": "6bce55869e74081834bf5140a32115fc75f35afefa9967521ccb5b17f6448d5a",
+      "fields": {
+        "code": "25.73.30.141-00000002",
+        "version": "4",
+        "inclusionDate": "2021-02-10T09:34:26+03:00",
+        "publishDate": "2026-06-03T13:01:26+03:00",
+        "updateDate": "2026-06-03T13:01:27+03:00",
+        "name": "Молоток",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-07-03T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "daec7762-c",
+          "name": "Тип исполнения рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "86d2b111-f",
+          "name": "Тип",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "f78c450e-2",
+          "name": "Масса молотка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "aa26f312-6",
+          "name": "Материал бойка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "eef63e69-7",
+          "name": "Безынерционный",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ca0d4c23-5",
+          "name": "Форма бойка",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cc742fbb-8",
+          "name": "Длина рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.73.30.141-00000001": {
+      "member": "КТРУ/232_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_072.xml",
+      "sha256": "da0fd42fe921f33ed9f31af72942f1b21526d22adc6c8bd563424942101b978a",
+      "fields": {
+        "code": "25.73.30.141-00000001",
+        "version": "4",
+        "inclusionDate": "2021-02-10T09:34:26+03:00",
+        "publishDate": "2026-06-03T13:01:03+03:00",
+        "updateDate": "2026-06-03T13:01:04+03:00",
+        "name": "Молоток",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-07-03T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "daec7762-c",
+          "name": "Тип исполнения рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "86d2b111-f",
+          "name": "Тип",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "f78c450e-2",
+          "name": "Масса молотка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "aa26f312-6",
+          "name": "Материал бойка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "eef63e69-7",
+          "name": "Безынерционный",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ca0d4c23-5",
+          "name": "Форма бойка",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cc742fbb-8",
+          "name": "Длина рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.73.30.290-00000003": {
+      "member": "КТРУ/232_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_072.xml",
+      "sha256": "d9ff9897a4cc5563e1031cbd546b86808272d31b38832a43f148707ec71c818a",
+      "fields": {
+        "code": "25.73.30.290-00000003",
+        "versionCode": "25.73.30.290-000000031",
+        "version": "1",
+        "inclusionDate": "2021-02-10T11:33:33+03:00",
+        "publishDate": "2021-02-10T11:33:33+03:00",
+        "updateDate": "2025-01-31T19:54:46+03:00",
+        "name": "Киянка",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2021-04-01T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "b8d0a143-1",
+          "name": "Материал рабочей части",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "04c51a89-e",
+          "name": "Вес",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "c0e59c39-2",
+          "name": "Длина",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "f5de5ed5-d",
+          "name": "Форма сечения рабочей части",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "70f5139a-a",
+          "name": "Форма поверхности рабочей части",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "bd1f360b-0",
+          "name": "Киянка безынерционная",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "28.24.11.000-00000023": {
+      "member": "КТРУ/232_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_072.xml",
+      "sha256": "e54dad3866480ee799940bae5e3499a1d2119104d7f4384d14c9f1baf718dd6a",
+      "fields": {
+        "code": "28.24.11.000-00000023",
+        "versionCode": "28.24.11.000-000000231",
+        "version": "1",
+        "inclusionDate": "2021-02-11T11:43:42+03:00",
+        "publishDate": "2021-02-11T11:43:42+03:00",
+        "updateDate": "2025-01-31T19:54:46+03:00",
+        "name": "Пила сабельная",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2021-04-01T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "2dde220c-a",
+          "name": "Тип питания",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "f1ea9606-5",
+          "name": "Тип обрабатываемого материала",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "c6b4f823-9",
+          "name": "Мощность",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "6ad7cb68-3",
+          "name": "Глубина пропила дерева",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "22b1c3eb-f",
+          "name": "Глубина пропила металла",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "4c7aacd1-a",
+          "name": "Максимальные обороты  на холостом ходу",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ece23fa7-3",
+          "name": "Маятниковый ход",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "203bd9c2-8",
+          "name": "Плавный пуск",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ac892ee8-a",
+          "name": "Бесключевая замена полотна",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "133905ab-5",
+          "name": "Регулировка скорости",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8c7d3ea0-e",
+          "name": "Регулировка глубины реза",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "28.24.11.000-00000022": {
+      "member": "КТРУ/232_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_072.xml",
+      "sha256": "caae0fb7ea7e7080a009a666f540753b40742cf39cf6629e84c0409dc124a5a9",
+      "fields": {
+        "code": "28.24.11.000-00000022",
+        "versionCode": "28.24.11.000-000000221",
+        "version": "1",
+        "inclusionDate": "2021-02-11T11:43:41+03:00",
+        "publishDate": "2021-02-11T11:43:41+03:00",
+        "updateDate": "2025-01-31T19:54:46+03:00",
+        "name": "Пила сабельная",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2021-04-01T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "f1ea9606-5",
+          "name": "Тип обрабатываемого материала",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "c6b4f823-9",
+          "name": "Мощность",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "335cfc56-f",
+          "name": "Наличие аккумуляторов в комплекте",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ce1c97de-8",
+          "name": "Количество аккумуляторов в комплекте",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "6ad7cb68-3",
+          "name": "Глубина пропила дерева",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "22b1c3eb-f",
+          "name": "Глубина пропила металла",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "4c7aacd1-a",
+          "name": "Максимальные обороты  на холостом ходу",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ece23fa7-3",
+          "name": "Маятниковый ход",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "203bd9c2-8",
+          "name": "Плавный пуск",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ac892ee8-a",
+          "name": "Бесключевая замена полотна",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "133905ab-5",
+          "name": "Регулировка скорости",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8c7d3ea0-e",
+          "name": "Регулировка глубины реза",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "2dde220c-a",
+          "name": "Тип питания",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.29.12.000-00000002": {
+      "member": "КТРУ/235_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_075.xml",
+      "sha256": "9c5a3e7d2aa90a7e5a0cee552ee7c7c375ed474cc67862ba2494273a8cbad089",
+      "fields": {
+        "code": "25.29.12.000-00000002",
+        "versionCode": "25.29.12.000-000000024",
+        "version": "4",
+        "inclusionDate": "2022-01-13T17:45:02+03:00",
+        "publishDate": "2023-03-16T17:07:05+03:00",
+        "updateDate": "2025-01-31T21:30:00+03:00",
+        "name": "Сосуд Дьюара",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2023-04-15T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "true",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "f59d413a-c",
+          "name": "Вместимость",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "f02e63b6-a",
+          "name": "Время полного испарения азота, не менее",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "743a9dc5-6",
+          "name": "Материал сосуда",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "baf12bff-0",
+          "name": "Вид сжиженного газа",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ffad8f40-8",
+          "name": "Наличие канистр",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "64078f44-8",
+          "name": "Диаметр горловины",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "74d483a7-3",
+          "name": "Назначение",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "f89d9567-5",
+          "name": "Фаза хранения",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "363e747d-6",
+          "name": "Температура хранения",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "0cd437ed-3",
+          "name": "Время хранения",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.29.12.000-00000001": {
+      "member": "КТРУ/235_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_075.xml",
+      "sha256": "035583d3a42ea1341aad0ac2d6667c06f1e01b8c05a86ed3c6732a6bc277a584",
+      "fields": {
+        "code": "25.29.12.000-00000001",
+        "versionCode": "25.29.12.000-000000013",
+        "version": "3",
+        "inclusionDate": "2022-01-13T17:44:28+03:00",
+        "publishDate": "2023-03-16T17:07:40+03:00",
+        "updateDate": "2025-01-31T21:30:00+03:00",
+        "name": "Сосуд Дьюара",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2023-04-15T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "f59d413a-c",
+          "name": "Вместимость",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "f02e63b6-a",
+          "name": "Время полного испарения азота, не менее",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "743a9dc5-6",
+          "name": "Материал сосуда",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "baf12bff-0",
+          "name": "Вид сжиженного газа",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ffad8f40-8",
+          "name": "Наличие канистр",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "64078f44-8",
+          "name": "Диаметр горловины",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "74d483a7-3",
+          "name": "Назначение",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "f89d9567-5",
+          "name": "Фаза хранения",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "363e747d-6",
+          "name": "Температура хранения",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "0cd437ed-3",
+          "name": "Время хранения",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.73.30.141-00000012": {
+      "member": "КТРУ/237_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_077.xml",
+      "sha256": "c8627b1b4283d8f6f4926d5e39bf7437edf1e377ac2256f7a6f53c81aaa61ab3",
+      "fields": {
+        "code": "25.73.30.141-00000012",
+        "version": "2",
+        "inclusionDate": "2024-05-07T18:12:57+03:00",
+        "publishDate": "2026-06-03T13:07:16+03:00",
+        "updateDate": "2026-06-03T13:07:17+03:00",
+        "name": "Молоток",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-07-03T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "daec7762-c",
+          "name": "Тип исполнения рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "86d2b111-f",
+          "name": "Тип",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "ca0d4c23-5",
+          "name": "Форма бойка",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cc742fbb-8",
+          "name": "Длина рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "428b5618-c",
+          "name": "Форма носка",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "6ddeb36b-4",
+          "name": "Масса головки молотка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "14.13.12.140-00000002": {
+      "member": "КТРУ/237_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_077.xml",
+      "sha256": "6fc1c859cd9015597efde0b1243ce25b9e4cfbe0818f5a1e060fbdd3c8be4270",
+      "fields": {
+        "code": "14.13.12.140-00000002",
+        "version": "5",
+        "inclusionDate": "2024-05-24T13:25:43+03:00",
+        "publishDate": "2026-02-26T16:23:25+03:00",
+        "updateDate": "2026-02-26T16:23:26+03:00",
+        "name": "Брюки",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-03-28T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "0937a97c-3",
+          "name": "Половой признак",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "02047072-2",
+          "name": "Вид основного сырья (волокна) в составе ткани/трикотажного полотна",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "2a86458d-4",
+          "name": "Сезон",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "fa49bab3-c",
+          "name": "Российский размер",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "990f632a-5",
+          "name": "Материал изделия",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "14.13.12.140-00000001": {
+      "member": "КТРУ/237_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_077.xml",
+      "sha256": "1c37359e4829a79fbc66600eaf44172c464192800870c51958fccc3e7345031f",
+      "fields": {
+        "code": "14.13.12.140-00000001",
+        "version": "5",
+        "inclusionDate": "2024-05-24T13:25:42+03:00",
+        "publishDate": "2026-02-26T16:22:54+03:00",
+        "updateDate": "2026-02-26T16:22:54+03:00",
+        "name": "Брюки",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-03-28T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "0937a97c-3",
+          "name": "Половой признак",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "02047072-2",
+          "name": "Вид основного сырья (волокна) в составе ткани/трикотажного полотна",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "2a86458d-4",
+          "name": "Сезон",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "fa49bab3-c",
+          "name": "Российский размер",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "990f632a-5",
+          "name": "Материал изделия",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "14.13.12.140-00000005": {
+      "member": "КТРУ/238_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_078.xml",
+      "sha256": "0f21c8b3c98b9922dd0424ca40c5126104cd5437d8f4860e841e48a18963bc3f",
+      "fields": {
+        "code": "14.13.12.140-00000005",
+        "version": "4",
+        "inclusionDate": "2024-12-03T10:11:05+03:00",
+        "publishDate": "2026-02-26T16:25:13+03:00",
+        "updateDate": "2026-02-26T16:25:14+03:00",
+        "name": "Брюки",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-03-28T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "0937a97c-3",
+          "name": "Половой признак",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "02047072-2",
+          "name": "Вид основного сырья (волокна) в составе ткани/трикотажного полотна",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "2a86458d-4",
+          "name": "Сезон",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "fa49bab3-c",
+          "name": "Российский размер",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "990f632a-5",
+          "name": "Материал изделия",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "e478a30f-1",
+          "name": "Вид ткани",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "14.13.12.140-00000004": {
+      "member": "КТРУ/238_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_078.xml",
+      "sha256": "3ac68e5d642e4435d43798bcbe8f9e72a8289c51647d7e38713c2db9ec18f4cb",
+      "fields": {
+        "code": "14.13.12.140-00000004",
+        "version": "3",
+        "inclusionDate": "2024-12-03T10:11:04+03:00",
+        "publishDate": "2026-02-26T16:24:49+03:00",
+        "updateDate": "2026-02-26T16:24:50+03:00",
+        "name": "Брюки",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-03-28T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "0937a97c-3",
+          "name": "Половой признак",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "02047072-2",
+          "name": "Вид основного сырья (волокна) в составе ткани/трикотажного полотна",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "2a86458d-4",
+          "name": "Сезон",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "fa49bab3-c",
+          "name": "Российский размер",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "990f632a-5",
+          "name": "Материал изделия",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "e478a30f-1",
+          "name": "Вид ткани",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "28.99.39.190-00000353": {
+      "member": "КТРУ/238_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_078.xml",
+      "sha256": "ce869a9bad380ca6b97ad5aa0e60c1b81c361b219d5dce45ea6f5cad80b814f6",
+      "fields": {
+        "code": "28.99.39.190-00000353",
+        "versionCode": "28.99.39.190-000003531",
+        "version": "1",
+        "inclusionDate": "2025-01-10T15:12:24+03:00",
+        "publishDate": "2025-01-10T15:12:24+03:00",
+        "updateDate": "2025-02-01T12:00:00+03:00",
+        "name": "Концентратор кислородный промышленный",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2025-03-26T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "true",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "4a4cc3f7-b",
+          "name": "Производительность, л/мин",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8044c5c3-a",
+          "name": "Уровень шума",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8eeaaffa-4",
+          "name": "Давление кислорода",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "0ca38fbe-6",
+          "name": "Увлажнитель",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "3ae11b3f-9",
+          "name": "Наличие световой и звуковой индикации",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "12b4b959-5",
+          "name": "Режим работы концентратора",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "28.99.39.190-00000352": {
+      "member": "КТРУ/238_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_078.xml",
+      "sha256": "26093144c792ab6bad199ddd2719de00b7f65b83042112dc577041cc3cb5bc14",
+      "fields": {
+        "code": "28.99.39.190-00000352",
+        "versionCode": "28.99.39.190-000003521",
+        "version": "1",
+        "inclusionDate": "2025-01-10T15:11:29+03:00",
+        "publishDate": "2025-01-10T15:11:29+03:00",
+        "updateDate": "2025-01-31T21:15:00+03:00",
+        "name": "Концентратор кислородный промышленный",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2025-03-26T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "4a4cc3f7-b",
+          "name": "Производительность, л/мин",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8044c5c3-a",
+          "name": "Уровень шума",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8eeaaffa-4",
+          "name": "Давление кислорода",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "0ca38fbe-6",
+          "name": "Увлажнитель",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "3ae11b3f-9",
+          "name": "Наличие световой и звуковой индикации",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "12b4b959-5",
+          "name": "Режим работы концентратора",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.99.29.120-00000003": {
+      "member": "КТРУ/241_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_081.xml",
+      "sha256": "c2c3f265441ad9498732dfebaee56d5bb09616521d7eee26b25a8d0a4291fce4",
+      "fields": {
+        "code": "25.99.29.120-00000003",
+        "version": "2",
+        "inclusionDate": "2026-05-12T13:53:01+03:00",
+        "publishDate": "2026-05-21T11:08:04+03:00",
+        "updateDate": "2026-05-21T11:08:05+03:00",
+        "name": "Лопата",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-07-25T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "2db9da2a-6",
+          "name": "Тип лопаты",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "e27882bd-c",
+          "name": "Крепление черенка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "535b63e0-b",
+          "name": "Конструктивные особенности",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d52e53e0-0",
+          "name": "Материал черенка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "3a3036fd-a",
+          "name": "Материал деревянного черенка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "a578f540-d",
+          "name": "Диаметр черенка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d69e3b8f-b",
+          "name": "Длина черенка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8909bef7-b",
+          "name": "Материал полотна лопаты",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d089ec57-9",
+          "name": "Вид стали",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "883bc469-e",
+          "name": "Вид пластика",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "b0eb04f8-c",
+          "name": "Толщина полотна лопаты",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "4d64dbfe-1",
+          "name": "Длина полотна лопаты",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "595476ea-b",
+          "name": "Ширина полотна лопаты",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "372218d3-6",
+          "name": "Количество бортов",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "dcc501a9-e",
+          "name": "Количество ребер жесткости",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ea1a632d-9",
+          "name": "Климатические условия применения (максимальный нижний предел температуры)",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.99.29.120-00000002": {
+      "member": "КТРУ/241_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_081.xml",
+      "sha256": "556b52a9abc57d5484c0027b6836e4eb2568d128f1b796eb413acf6a4476b8a8",
+      "fields": {
+        "code": "25.99.29.120-00000002",
+        "version": "2",
+        "inclusionDate": "2026-05-12T13:53:00+03:00",
+        "publishDate": "2026-05-21T11:06:29+03:00",
+        "updateDate": "2026-05-21T11:06:30+03:00",
+        "name": "Лопата",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-07-25T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "2db9da2a-6",
+          "name": "Тип лопаты",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "33fcf4a4-7",
+          "name": "Вид лопаты по конструкции полотна",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ac823472-e",
+          "name": "Тип черенка лопаты",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "76eefff8-1",
+          "name": "Тип тулейки",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "535b63e0-b",
+          "name": "Конструктивные особенности",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d52e53e0-0",
+          "name": "Материал черенка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "3a3036fd-a",
+          "name": "Материал деревянного черенка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "a578f540-d",
+          "name": "Диаметр черенка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d69e3b8f-b",
+          "name": "Длина черенка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8909bef7-b",
+          "name": "Материал полотна лопаты",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d089ec57-9",
+          "name": "Вид стали",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "b0eb04f8-c",
+          "name": "Толщина полотна лопаты",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "4d64dbfe-1",
+          "name": "Длина полотна лопаты",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "595476ea-b",
+          "name": "Ширина полотна лопаты",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.99.29.120-00000001": {
+      "member": "КТРУ/241_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_081.xml",
+      "sha256": "c8130d8c79def3db9ab47e6def84c048877d77d715f0bb21344152a3d3903d9b",
+      "fields": {
+        "code": "25.99.29.120-00000001",
+        "version": "3",
+        "inclusionDate": "2026-05-12T13:52:58+03:00",
+        "publishDate": "2026-05-21T11:05:28+03:00",
+        "updateDate": "2026-05-21T11:05:29+03:00",
+        "name": "Лопата",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-07-25T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "2db9da2a-6",
+          "name": "Тип лопаты",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "33fcf4a4-7",
+          "name": "Вид лопаты по конструкции полотна",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ac823472-e",
+          "name": "Тип черенка лопаты",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "76eefff8-1",
+          "name": "Тип тулейки",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "535b63e0-b",
+          "name": "Конструктивные особенности",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d52e53e0-0",
+          "name": "Материал черенка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "3a3036fd-a",
+          "name": "Материал деревянного черенка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "a578f540-d",
+          "name": "Диаметр черенка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d69e3b8f-b",
+          "name": "Длина черенка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8909bef7-b",
+          "name": "Материал полотна лопаты",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d089ec57-9",
+          "name": "Вид стали",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "b0eb04f8-c",
+          "name": "Толщина полотна лопаты",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "4d64dbfe-1",
+          "name": "Длина полотна лопаты",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "595476ea-b",
+          "name": "Ширина полотна лопаты",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "26.30.50.119-00008": {
+      "member": "КТРУ/242_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_082.xml",
+      "sha256": "a163715657837472e2b6d65bca8dc575fbf68deda06e2a42fb7789a726ce62bc",
+      "fields": {
+        "code": "26.30.50.119-00008",
+        "version": "4",
+        "inclusionDate": "2026-06-08T17:43:03+03:00",
+        "publishDate": "2026-07-28T12:47:50+03:00",
+        "updateDate": "2026-07-28T12:47:51+03:00",
+        "name": "Металлодетектор",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-08-27T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "true"
+      },
+      "characteristics": [
+        {
+          "code": "e801e2dd-c",
+          "name": "Вид",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "1f184d7e-1",
+          "name": "Мощность",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "5d1f4de1-7",
+          "name": "Тип питания",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "51a1a7ab-a",
+          "name": "Чувствительность",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "e73477e1-5",
+          "name": "Тип стационарного металлодетектора",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "72e62cf7-b",
+          "name": "Класс обнаружения",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "1adca293-b",
+          "name": "Класс селективности",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "b369b96c-7",
+          "name": "Размер контрольной зоны",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "3e1613f7-6",
+          "name": "Количество зон обнаружения металла",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "c5f34c26-6",
+          "name": "Требования к оснащению и функциям",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "af8f6f2a-d",
+          "name": "Степень защиты (код IP)",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "e6b751c1-2",
+          "name": "Длина",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "47f20cb2-5",
+          "name": "Высота",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "abab5c21-f",
+          "name": "Ширина контрольной зоны",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d134765a-b",
+          "name": "Глубина контрольной зоны",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "40344421-b",
+          "name": "Высота контрольной зоны",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "9d4b9443-d",
+          "name": "Средняя наработка на отказ металлообнаружителя",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "41cdfbc9-4",
+          "name": "Тип диапазона",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "df807327-6",
+          "name": "Тип излучения",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "91dc27b5-4",
+          "name": "Количество уровней регулировки чувствительности",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "45deb8ee-a",
+          "name": "Пропускная способность, Человек в минуту",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "35a0f2d7-1",
+          "name": "Напряжение",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "2f4d1ec8-1",
+          "name": "Рабочая температура",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ae02a4db-8",
+          "name": "Дальность измерения температуры",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "f2a3f329-2",
+          "name": "Количество рабочих частот",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "2e7e9135-b",
+          "name": "Время автономной работы",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "6252cf32-3",
+          "name": "Конструкция",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ff606926-6",
+          "name": "Ширина",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "b772951f-b",
+          "name": "Количество встроенных мониторов радиационного контроля",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "20c601a0-3",
+          "name": "Тип встроенного монитора радиационного контроля по виду контролируемого ионизирующего излучения",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "52e28949-a",
+          "name": "Глубина",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8e6ae15a-9",
+          "name": "Вероятность обнаружения объекта(ов)",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d1dd5ea4-0",
+          "name": "Вероятность выдачи сигнала ложного срабатывания",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "26.30.50.119-00000007": {
+      "member": "КТРУ/242_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_082.xml",
+      "sha256": "9118c159d63aca21a9be283a48b4694d953b5420141da0a50a8ac8793fa18517",
+      "fields": {
+        "code": "26.30.50.119-00000007",
+        "version": "4",
+        "inclusionDate": "2026-06-08T17:42:44+03:00",
+        "publishDate": "2026-07-28T12:49:20+03:00",
+        "updateDate": "2026-07-28T12:49:21+03:00",
+        "name": "Металлодетектор",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-08-27T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "e801e2dd-c",
+          "name": "Вид",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "1f184d7e-1",
+          "name": "Мощность",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "5d1f4de1-7",
+          "name": "Тип питания",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "51a1a7ab-a",
+          "name": "Чувствительность",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "e73477e1-5",
+          "name": "Тип стационарного металлодетектора",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "72e62cf7-b",
+          "name": "Класс обнаружения",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "1adca293-b",
+          "name": "Класс селективности",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "b369b96c-7",
+          "name": "Размер контрольной зоны",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "3e1613f7-6",
+          "name": "Количество зон обнаружения металла",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "c5f34c26-6",
+          "name": "Требования к оснащению и функциям",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "af8f6f2a-d",
+          "name": "Степень защиты (код IP)",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "e6b751c1-2",
+          "name": "Длина",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "47f20cb2-5",
+          "name": "Высота",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "abab5c21-f",
+          "name": "Ширина контрольной зоны",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d134765a-b",
+          "name": "Глубина контрольной зоны",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "40344421-b",
+          "name": "Высота контрольной зоны",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "9d4b9443-d",
+          "name": "Средняя наработка на отказ металлообнаружителя",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "41cdfbc9-4",
+          "name": "Тип диапазона",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "df807327-6",
+          "name": "Тип излучения",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "91dc27b5-4",
+          "name": "Количество уровней регулировки чувствительности",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "45deb8ee-a",
+          "name": "Пропускная способность, Человек в минуту",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "35a0f2d7-1",
+          "name": "Напряжение",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "2f4d1ec8-1",
+          "name": "Рабочая температура",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ae02a4db-8",
+          "name": "Дальность измерения температуры",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "f2a3f329-2",
+          "name": "Количество рабочих частот",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "2e7e9135-b",
+          "name": "Время автономной работы",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "6252cf32-3",
+          "name": "Конструкция",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ff606926-6",
+          "name": "Ширина",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "b772951f-b",
+          "name": "Количество встроенных мониторов радиационного контроля",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "20c601a0-3",
+          "name": "Тип встроенного монитора радиационного контроля по виду контролируемого ионизирующего излучения",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "52e28949-a",
+          "name": "Глубина",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8e6ae15a-9",
+          "name": "Вероятность обнаружения объекта(ов)",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "d1dd5ea4-0",
+          "name": "Вероятность выдачи сигнала ложного срабатывания",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    }
+  },
+  "missing": []
+}

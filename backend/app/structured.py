@@ -219,7 +219,7 @@ def confidence(fact: Fact) -> float:
     неизвестное значение известным. Значение-заглушка («не знаю») распознаётся и без
     флага `unknown`: так приходит ответ пользователя, набранный текстом.
     """
-    if fact.unknown or canon(fact.value or "") in UNKNOWN_VALUES:
+    if fact.unknown or (fact.values is None and canon(fact.value or "") in UNKNOWN_VALUES):
         return UNCONFIRMED_CONFIDENCE
     if fact.source in ("input", "answer"):
         return 1.0
@@ -274,10 +274,6 @@ def is_boolean_property(prop: Property | None) -> bool:
     return values == {"да", "нет"}
 
 
-def list_values(value: str) -> list[str]:
-    return [part.strip() for part in (value or "").split(",") if part.strip()]
-
-
 def structure(fact: Fact, position: Position | None = None) -> StructuredFact:
     """Спроецировать один факт. С позицией `def_id` становится кодом характеристики."""
     prop = matched_property(fact, position)
@@ -291,12 +287,17 @@ def structure(fact: Fact, position: Position | None = None) -> StructuredFact:
     #: причина, по которой факт не может быть жёстким; она же становится extraction_method
     reason: str | None = None
 
-    if fact.unknown or canon(raw_value) in UNKNOWN_VALUES:
+    if fact.values is not None:
+        numbers = [to_number(value) for value in fact.values]
+        kind = "number_set" if prop and prop.value_type == "number" and all(v is not None for v in numbers) else "text_set"
+        value = numbers if kind == "number_set" else fact.values
+
+    if fact.unknown or (fact.values is None and canon(raw_value) in UNKNOWN_VALUES):
         # A4/A5/A9: неизвестное значение сохраняется как в тексте и не подтверждается
         # ни источником «input»/«answer», ни похожестью на число. Значение-заглушку
         # («не знаю») распознаём и без флага unknown — так приходит ответ текстом.
         reason = "ambiguous_separator" if AMBIGUOUS_SEPARATOR.search(raw_value) else "unknown_value"
-    else:
+    elif fact.values is None:
         parsed = parse_range(remainder)
         number = to_number(remainder)
         if parsed is not None:
@@ -322,7 +323,8 @@ def structure(fact: Fact, position: Position | None = None) -> StructuredFact:
             kind, value = "boolean", BOOLEAN_VALUES[canon(value)]
         elif kind == "text" and prop is not None and prop.kind == "3":
             # A10: множественные значения (kind «3» — multiple choice) сохраняются списком.
-            values = list_values(raw_value)
+            from app.selected_values import selected_values
+            values = selected_values(prop, fact)
             if len(values) > 1:
                 kind, value = "text_set", values
 

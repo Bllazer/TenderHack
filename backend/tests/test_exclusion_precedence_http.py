@@ -13,7 +13,7 @@ def test_proven_contradiction_excluded_despite_other_blocker(catalog_data, monke
         if not position.code.startswith("TEST-DRILL-") or position.is_template:
             return position
         if blocker == "unsupported":
-            extra = Property(id="other", name="Особенности", value_type="unsupported", required=False,
+            extra = Property(id="other", name="Особенности", value_type="unsupported", required=True,
                 verified=False, kind="3", evidence="fixture", unsupported_reasons=("multiple_choice_not_supported",))
             return position.model_copy(update={"properties":position.properties + (extra,)})
         return position.model_copy(update={"source_issues":("fixture issue",)} if blocker == "source_issue"

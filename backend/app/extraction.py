@@ -334,6 +334,8 @@ def apply_inputs(extracted: list[Fact], inputs: list[InputFact]) -> list[Fact]:
     for item in inputs:
         if item.replaces:
             result = [fact for fact in result if fact.id != item.replaces]
-        result.append(Fact(id=item.id, name=item.name, value=item.value, unit=item.unit, raw=item.value,
-                           source="input", unknown=item.unknown or not item.value.strip(), subject=item.subject))
+        import json
+        result.append(Fact(id=item.id, name=item.name, value=item.value, values=item.values, unit=item.unit,
+                           raw=json.dumps(item.values, ensure_ascii=False) if item.values is not None else item.value,
+                           source="input", unknown=item.unknown or (item.values is None and not item.value.strip()), subject=item.subject))
     return result

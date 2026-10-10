@@ -24,7 +24,8 @@ def make_index(data):
                 lo_strict=not item.lower_inclusive, hi_strict=not item.upper_inclusive,
                 unit_code=item.okei_code, unit_text=item.unit, value_code=item.value_code) for item in prop.allowed]
             chars.append(Characteristic(prop.id, prop.name, prop.source_type or ("2" if prop.value_type == "number" else "1"),
-                                        prop.kind, prop.required is True, prop.choice_type, alternatives))
+                                        prop.kind, prop.required is True, prop.choice_type, alternatives,
+                                        prop.numeric_semantics, prop.numeric_semantics_evidence))
         current = AlgorithmPosition(position.code, position.name, position.is_template is True,
             "ACTIVE" if position.status == "actual" else position.status, bool(position.properties),
             bool(position.source_issues or position.resolve_blocked is True), list(position.resolve_blocked_reason),

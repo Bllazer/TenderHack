@@ -26,10 +26,16 @@ def encode(value):
 
 
 def adapt_property(row, origin):
+    from app.numeric_semantics import interpretation
+    numeric_semantics, semantic_evidence = interpretation(row)
+    if row.get("type") == "2" and row.get("values") and all(v.get("okei", {}).get("code") for v in row["values"]):
+        codes = {v["okei"]["code"] for v in row["values"]}
+        numeric_semantics = "count" if codes <= {"796", "715"} else "physical"
+        semantic_evidence = origin + "/source-OKEI:" + ",".join(sorted(codes))
     values = []
     unsupported = []
-    if row.get("kind") not in ("1", "2"):
-        unsupported.append("multiple_choice_not_supported" if row.get("kind") == "3" else "unknown_kind")
+    if row.get("kind") not in ("1", "2", "3"):
+        unsupported.append("unknown_kind")
     if row.get("type") not in ("1", "2"):
         unsupported.append("unknown_type")
     for item in row.get("values", []):
@@ -41,9 +47,9 @@ def adapt_property(row, origin):
         if row.get("type") == "1" and item.get("quality_description"):
             alternatives.append({**base, "kind": "enum", "value": item["quality_description"]})
         elif row.get("type") == "2":
-            if not okei.get("code"):
+            if not okei.get("code") and numeric_semantics == "unknown":
                 unsupported.append("missing_source_unit")
-            elif okei["code"] not in OKEI_SUPPORTED:
+            elif okei.get("code") and okei["code"] not in OKEI_SUPPORTED:
                 unsupported.append("unsupported_source_unit")
             for concrete in item.get("concrete_values", []):
                 try:
@@ -74,7 +80,9 @@ def adapt_property(row, origin):
                     choice_type=row.get("choice_type"), required=row.get("is_required"), evidence=origin,
                     value_type=("text" if row["type"] == "1" else "number") if not unsupported else "unsupported",
                     verified=not unsupported, allowed=tuple(values), raw_json=encode(row),
-                    unsupported_reasons=tuple(sorted(set(unsupported))))
+                    unsupported_reasons=tuple(sorted(set(unsupported))),
+                    numeric_semantics=numeric_semantics,
+                    numeric_semantics_evidence=semantic_evidence)
 
 
 def adapt_position(row, origin, original=None):
@@ -107,7 +115,10 @@ def read_auxiliary(directory):
 
 def supply_version(hashes):
     import hashlib
-    return "clean5-" + hashlib.sha256(encode(dict(sorted(hashes.items()))).encode()).hexdigest()[:16]
+    from app.numeric_semantics import ADAPTER_VERSION, REGISTRY_VERSION
+    versioned = {"source_hashes": dict(sorted(hashes.items())), "adapter": ADAPTER_VERSION,
+                 "numeric_registry": REGISTRY_VERSION}
+    return "clean5-" + hashlib.sha256(encode(versioned).encode()).hexdigest()[:16]
 
 
 def expected_supply_version(directory: Path):

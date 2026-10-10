@@ -71,6 +71,8 @@ class Characteristic:
     is_required: bool
     choice_type: Optional[str]
     alternatives: list = field(default_factory=list)
+    numeric_semantics: str = "unknown"
+    numeric_semantics_evidence: Optional[str] = None
 
     @property
     def is_quantitative(self) -> bool:

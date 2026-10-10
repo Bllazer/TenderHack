@@ -35,8 +35,8 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-from app.catalog import Catalog, Category, Snapshot, digest
-from app.clean_supply import load_clean_supply
+from app.catalog import Catalog, Category, Snapshot, digest, load_snapshot
+from app.clean_supply import load_clean_supply, read_auxiliary, supply_version, adapt_position
 from app.synonyms import search_part
 
 # Поисковая запись должна укладываться в 512 токенов E5; prepare это проверяет
@@ -330,9 +330,35 @@ def build_categories(catalog: Catalog, *, tokenizer=None, verbose: bool = False)
 
 
 def build(clean_dir: Path, catalog_dir: Path, model_dir: Path | None,
-          compact_raw: bool = False) -> int:
+          compact_raw: bool = False, reuse_from: Path | None = None) -> int:
     catalog_dir.mkdir(parents=True, exist_ok=True)
+    if reuse_from is not None and catalog_dir.resolve() == reuse_from.resolve():
+        raise ValueError("Refresh into a separate directory; preserve the validated bundle")
     print(f"читаю поставку: {clean_dir}")
+    if reuse_from is not None:
+        # Refresh constraint semantics only, with the exact same source and names.
+        snap = load_snapshot(reuse_from)
+        _, _, _, hashes = read_auxiliary(clean_dir)
+        hashes["ktru_actual_all.jsonl.gz"] = digest(clean_dir / "ktru_actual_all.jsonl.gz")
+        if json.loads(snap.catalog.validation_report) != hashes:
+            raise ValueError("Cannot reuse categories from a different source supply")
+        refreshed = []
+        for old in snap.catalog.positions:
+            new = adapt_position(json.loads(old.raw_json), old.source_path, old.raw_json)
+            if [(p.id, p.name) for p in new.properties] != [(p.id, p.name) for p in old.properties]:
+                raise ValueError("Constraint refresh changed search names")
+            refreshed.append(new)
+        catalog = snap.catalog.model_copy(update={"positions": tuple(refreshed), "catalog_version": supply_version(hashes)})
+        if compact_raw:
+            catalog = compact_property_raw(catalog)
+        catalog = Catalog(**catalog.__dict__)
+        (catalog_dir / "catalog.json").write_text(catalog.model_dump_json(), encoding="utf-8")
+        (catalog_dir / "category_map_report.json").write_text(json.dumps({
+            "catalog_version": catalog.catalog_version, "catalog_sha256": digest(catalog_dir / "catalog.json"),
+            "source_files": hashes, "reused_categories_from": digest(reuse_from / "catalog.json"),
+            "ordered_search_documents_unchanged": True}, indent=2), encoding="utf-8")
+        print(f"refreshed {len(catalog.positions)} positions; ordered category documents preserved")
+        return 0
     snap: Snapshot = load_clean_supply(clean_dir)
     catalog = snap.catalog
     print(f"позиций в поставке: {len(catalog.positions)}")
@@ -397,8 +423,9 @@ def main() -> int:
     parser.add_argument("--model-dir", type=Path, default=None)
     parser.add_argument("--compact-raw", action="store_true",
                         help="свести raw_json характеристики к ссылке на raw_json позиции")
+    parser.add_argument("--reuse-from", type=Path, help="refresh constraints from a validated same-source snapshot")
     args = parser.parse_args()
-    return build(args.clean_dir, args.catalog_dir, args.model_dir, compact_raw=args.compact_raw)
+    return build(args.clean_dir, args.catalog_dir, args.model_dir, compact_raw=args.compact_raw, reuse_from=args.reuse_from)
 
 
 if __name__ == "__main__":
