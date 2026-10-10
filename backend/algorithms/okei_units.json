@@ -1,0 +1,1538 @@
+{
+ "schema": 2,
+ "schema_note": "v2: units[].spellings[]/usage_total (варианты написания и частоты). Для обратной совместимости сохранены units[].name (самое частое написание) и units[].usage (=usage_total).",
+ "description": "Единицы измерения (ОКЕИ) в очищенном справочнике КТРУ",
+ "unique_codes": 126,
+ "code_spelling_pairs": 130,
+ "note": "в справочнике 130 пар «код—написание» при 126 уникальных кодах ОКЕИ: у части кодов написание отличается символом ^ или сокращением, поэтому сопоставлять единицы нужно по коду, а не по строке названия",
+ "units": [
+  {
+   "code": "003",
+   "spellings": [
+    {
+     "name": "Миллиметр",
+     "usage": 141954
+    }
+   ],
+   "usage_total": 141954,
+   "name": "Миллиметр",
+   "usage": 141954
+  },
+  {
+   "code": "796",
+   "spellings": [
+    {
+     "name": "Штука",
+     "usage": 82350
+    }
+   ],
+   "usage_total": 82350,
+   "name": "Штука",
+   "usage": 82350
+  },
+  {
+   "code": "004",
+   "spellings": [
+    {
+     "name": "Сантиметр",
+     "usage": 18789
+    }
+   ],
+   "usage_total": 18789,
+   "name": "Сантиметр",
+   "usage": 18789
+  },
+  {
+   "code": "111",
+   "spellings": [
+    {
+     "name": "Кубический сантиметр; миллилитр",
+     "usage": 10591
+    },
+    {
+     "name": "Кубический сантиметр;^миллилитр",
+     "usage": 1245
+    },
+    {
+     "name": "Миллилитр",
+     "usage": 4
+    }
+   ],
+   "usage_total": 11840,
+   "name": "Кубический сантиметр; миллилитр",
+   "usage": 11840
+  },
+  {
+   "code": "006",
+   "spellings": [
+    {
+     "name": "Метр",
+     "usage": 10598
+    }
+   ],
+   "usage_total": 10598,
+   "name": "Метр",
+   "usage": 10598
+  },
+  {
+   "code": "704",
+   "spellings": [
+    {
+     "name": "Набор",
+     "usage": 9851
+    }
+   ],
+   "usage_total": 9851,
+   "name": "Набор",
+   "usage": 9851
+  },
+  {
+   "code": "166",
+   "spellings": [
+    {
+     "name": "Килограмм",
+     "usage": 8587
+    }
+   ],
+   "usage_total": 8587,
+   "name": "Килограмм",
+   "usage": 8587
+  },
+  {
+   "code": "2553",
+   "spellings": [
+    {
+     "name": "Гигабайт",
+     "usage": 5026
+    }
+   ],
+   "usage_total": 5026,
+   "name": "Гигабайт",
+   "usage": 5026
+  },
+  {
+   "code": "212",
+   "spellings": [
+    {
+     "name": "Ватт",
+     "usage": 4674
+    }
+   ],
+   "usage_total": 4674,
+   "name": "Ватт",
+   "usage": 4674
+  },
+  {
+   "code": "112",
+   "spellings": [
+    {
+     "name": "Литр; кубический дециметр",
+     "usage": 4248
+    },
+    {
+     "name": "Литр;^кубический дециметр",
+     "usage": 75
+    }
+   ],
+   "usage_total": 4323,
+   "name": "Литр; кубический дециметр",
+   "usage": 4323
+  },
+  {
+   "code": "744",
+   "spellings": [
+    {
+     "name": "Процент",
+     "usage": 4229
+    }
+   ],
+   "usage_total": 4229,
+   "name": "Процент",
+   "usage": 4229
+  },
+  {
+   "code": "214",
+   "spellings": [
+    {
+     "name": "Киловатт",
+     "usage": 4201
+    }
+   ],
+   "usage_total": 4201,
+   "name": "Киловатт",
+   "usage": 4201
+  },
+  {
+   "code": "039",
+   "spellings": [
+    {
+     "name": "Дюйм (25,4 мм)",
+     "usage": 3695
+    }
+   ],
+   "usage_total": 3695,
+   "name": "Дюйм (25,4 мм)",
+   "usage": 3695
+  },
+  {
+   "code": "280",
+   "spellings": [
+    {
+     "name": "Градус Цельсия",
+     "usage": 3255
+    }
+   ],
+   "usage_total": 3255,
+   "name": "Градус Цельсия",
+   "usage": 3255
+  },
+  {
+   "code": "168",
+   "spellings": [
+    {
+     "name": "Тонна; метрическая тонна (1000 кг)",
+     "usage": 2776
+    },
+    {
+     "name": "Тонна;^метрическая тонна (1000 кг)",
+     "usage": 13
+    }
+   ],
+   "usage_total": 2789,
+   "name": "Тонна; метрическая тонна (1000 кг)",
+   "usage": 2789
+  },
+  {
+   "code": "222",
+   "spellings": [
+    {
+     "name": "Вольт",
+     "usage": 2574
+    }
+   ],
+   "usage_total": 2574,
+   "name": "Вольт",
+   "usage": 2574
+  },
+  {
+   "code": "163",
+   "spellings": [
+    {
+     "name": "Грамм",
+     "usage": 2573
+    }
+   ],
+   "usage_total": 2573,
+   "name": "Грамм",
+   "usage": 2573
+  },
+  {
+   "code": "3135",
+   "spellings": [
+    {
+     "name": "Децибел",
+     "usage": 2538
+    }
+   ],
+   "usage_total": 2538,
+   "name": "Децибел",
+   "usage": 2538
+  },
+  {
+   "code": "290",
+   "spellings": [
+    {
+     "name": "Герц",
+     "usage": 2237
+    }
+   ],
+   "usage_total": 2237,
+   "name": "Герц",
+   "usage": 2237
+  },
+  {
+   "code": "293",
+   "spellings": [
+    {
+     "name": "Гигагерц",
+     "usage": 1961
+    }
+   ],
+   "usage_total": 1961,
+   "name": "Гигагерц",
+   "usage": 1961
+  },
+  {
+   "code": "113",
+   "spellings": [
+    {
+     "name": "Кубический метр",
+     "usage": 1924
+    }
+   ],
+   "usage_total": 1924,
+   "name": "Кубический метр",
+   "usage": 1924
+  },
+  {
+   "code": "251",
+   "spellings": [
+    {
+     "name": "Лошадиная сила",
+     "usage": 1712
+    }
+   ],
+   "usage_total": 1712,
+   "name": "Лошадиная сила",
+   "usage": 1712
+  },
+  {
+   "code": "876",
+   "spellings": [
+    {
+     "name": "Условная единица",
+     "usage": 1464
+    }
+   ],
+   "usage_total": 1464,
+   "name": "Условная единица",
+   "usage": 1464
+  },
+  {
+   "code": "331",
+   "spellings": [
+    {
+     "name": "Оборот в минуту",
+     "usage": 1447
+    }
+   ],
+   "usage_total": 1447,
+   "name": "Оборот в минуту",
+   "usage": 1447
+  },
+  {
+   "code": "356",
+   "spellings": [
+    {
+     "name": "Час",
+     "usage": 1388
+    }
+   ],
+   "usage_total": 1388,
+   "name": "Час",
+   "usage": 1388
+  },
+  {
+   "code": "050",
+   "spellings": [
+    {
+     "name": "Квадратный миллиметр",
+     "usage": 1360
+    }
+   ],
+   "usage_total": 1360,
+   "name": "Квадратный миллиметр",
+   "usage": 1360
+  },
+  {
+   "code": "2545",
+   "spellings": [
+    {
+     "name": "Мегабит в секунду",
+     "usage": 1313
+    }
+   ],
+   "usage_total": 1313,
+   "name": "Мегабит в секунду",
+   "usage": 1313
+  },
+  {
+   "code": "292",
+   "spellings": [
+    {
+     "name": "Мегагерц",
+     "usage": 1287
+    }
+   ],
+   "usage_total": 1287,
+   "name": "Мегагерц",
+   "usage": 1287
+  },
+  {
+   "code": "2355",
+   "spellings": [
+    {
+     "name": "Градус (плоского угла)",
+     "usage": 1280
+    }
+   ],
+   "usage_total": 1280,
+   "name": "Градус (плоского угла)",
+   "usage": 1280
+  },
+  {
+   "code": "598",
+   "spellings": [
+    {
+     "name": "Кубический метр в час",
+     "usage": 1070
+    }
+   ],
+   "usage_total": 1070,
+   "name": "Кубический метр в час",
+   "usage": 1070
+  },
+  {
+   "code": "263",
+   "spellings": [
+    {
+     "name": "Ампер-час (3,6 кКл)",
+     "usage": 910
+    }
+   ],
+   "usage_total": 910,
+   "name": "Ампер-час (3,6 кКл)",
+   "usage": 910
+  },
+  {
+   "code": "354",
+   "spellings": [
+    {
+     "name": "Секунда",
+     "usage": 902
+    }
+   ],
+   "usage_total": 902,
+   "name": "Секунда",
+   "usage": 902
+  },
+  {
+   "code": "778",
+   "spellings": [
+    {
+     "name": "Упаковка",
+     "usage": 843
+    }
+   ],
+   "usage_total": 843,
+   "name": "Упаковка",
+   "usage": 843
+  },
+  {
+   "code": "055",
+   "spellings": [
+    {
+     "name": "Квадратный метр",
+     "usage": 788
+    }
+   ],
+   "usage_total": 788,
+   "name": "Квадратный метр",
+   "usage": 788
+  },
+  {
+   "code": "260",
+   "spellings": [
+    {
+     "name": "Ампер",
+     "usage": 785
+    }
+   ],
+   "usage_total": 785,
+   "name": "Ампер",
+   "usage": 785
+  },
+  {
+   "code": "355",
+   "spellings": [
+    {
+     "name": "Минута",
+     "usage": 754
+    }
+   ],
+   "usage_total": 754,
+   "name": "Минута",
+   "usage": 754
+  },
+  {
+   "code": "362",
+   "spellings": [
+    {
+     "name": "Месяц",
+     "usage": 734
+    }
+   ],
+   "usage_total": 734,
+   "name": "Месяц",
+   "usage": 734
+  },
+  {
+   "code": "257",
+   "spellings": [
+    {
+     "name": "Мегабайт",
+     "usage": 709
+    }
+   ],
+   "usage_total": 709,
+   "name": "Мегабайт",
+   "usage": 709
+  },
+  {
+   "code": "534",
+   "spellings": [
+    {
+     "name": "Тонна в час",
+     "usage": 704
+    }
+   ],
+   "usage_total": 704,
+   "name": "Тонна в час",
+   "usage": 704
+  },
+  {
+   "code": "792",
+   "spellings": [
+    {
+     "name": "Человек",
+     "usage": 662
+    }
+   ],
+   "usage_total": 662,
+   "name": "Человек",
+   "usage": 662
+  },
+  {
+   "code": "254",
+   "spellings": [
+    {
+     "name": "Бит",
+     "usage": 661
+    }
+   ],
+   "usage_total": 661,
+   "name": "Бит",
+   "usage": 661
+  },
+  {
+   "code": "274",
+   "spellings": [
+    {
+     "name": "Ом",
+     "usage": 651
+    }
+   ],
+   "usage_total": 651,
+   "name": "Ом",
+   "usage": 651
+  },
+  {
+   "code": "298",
+   "spellings": [
+    {
+     "name": "Мегапаскаль",
+     "usage": 613
+    }
+   ],
+   "usage_total": 613,
+   "name": "Мегапаскаль",
+   "usage": 613
+  },
+  {
+   "code": "2547",
+   "spellings": [
+    {
+     "name": "Гигабит в секунду",
+     "usage": 573
+    }
+   ],
+   "usage_total": 573,
+   "name": "Гигабит в секунду",
+   "usage": 573
+  },
+  {
+   "code": "288",
+   "spellings": [
+    {
+     "name": "Кельвин",
+     "usage": 559
+    }
+   ],
+   "usage_total": 559,
+   "name": "Кельвин",
+   "usage": 559
+  },
+  {
+   "code": "2571",
+   "spellings": [
+    {
+     "name": "Мегабайт в секунду",
+     "usage": 521
+    }
+   ],
+   "usage_total": 521,
+   "name": "Мегабайт в секунду",
+   "usage": 521
+  },
+  {
+   "code": "284",
+   "spellings": [
+    {
+     "name": "Люмен",
+     "usage": 518
+    }
+   ],
+   "usage_total": 518,
+   "name": "Люмен",
+   "usage": 518
+  },
+  {
+   "code": "215",
+   "spellings": [
+    {
+     "name": "Мегаватт; тысяча киловатт",
+     "usage": 480
+    }
+   ],
+   "usage_total": 480,
+   "name": "Мегаватт; тысяча киловатт",
+   "usage": 480
+  },
+  {
+   "code": "715",
+   "spellings": [
+    {
+     "name": "Пара (2 шт.)",
+     "usage": 465
+    }
+   ],
+   "usage_total": 465,
+   "name": "Пара (2 шт.)",
+   "usage": 465
+  },
+  {
+   "code": "625",
+   "spellings": [
+    {
+     "name": "Лист",
+     "usage": 423
+    }
+   ],
+   "usage_total": 423,
+   "name": "Лист",
+   "usage": 423
+  },
+  {
+   "code": "051",
+   "spellings": [
+    {
+     "name": "Квадратный сантиметр",
+     "usage": 382
+    }
+   ],
+   "usage_total": 382,
+   "name": "Квадратный сантиметр",
+   "usage": 382
+  },
+  {
+   "code": "328",
+   "spellings": [
+    {
+     "name": "Метр в секунду",
+     "usage": 370
+    }
+   ],
+   "usage_total": 370,
+   "name": "Метр в секунду",
+   "usage": 370
+  },
+  {
+   "code": "535",
+   "spellings": [
+    {
+     "name": "Тонна в сутки",
+     "usage": 330
+    }
+   ],
+   "usage_total": 330,
+   "name": "Тонна в сутки",
+   "usage": 330
+  },
+  {
+   "code": "366",
+   "spellings": [
+    {
+     "name": "Год",
+     "usage": 321
+    }
+   ],
+   "usage_total": 321,
+   "name": "Год",
+   "usage": 321
+  },
+  {
+   "code": "008",
+   "spellings": [
+    {
+     "name": "Километр; тысяча метров",
+     "usage": 316
+    }
+   ],
+   "usage_total": 316,
+   "name": "Километр; тысяча метров",
+   "usage": 316
+  },
+  {
+   "code": "2554",
+   "spellings": [
+    {
+     "name": "Терабайт",
+     "usage": 304
+    }
+   ],
+   "usage_total": 304,
+   "name": "Терабайт",
+   "usage": 304
+  },
+  {
+   "code": "333",
+   "spellings": [
+    {
+     "name": "Километр в час",
+     "usage": 299
+    }
+   ],
+   "usage_total": 299,
+   "name": "Километр в час",
+   "usage": 299
+  },
+  {
+   "code": "798",
+   "spellings": [
+    {
+     "name": "Тысяча штук",
+     "usage": 291
+    }
+   ],
+   "usage_total": 291,
+   "name": "Тысяча штук",
+   "usage": 291
+  },
+  {
+   "code": "223",
+   "spellings": [
+    {
+     "name": "Киловольт",
+     "usage": 254
+    }
+   ],
+   "usage_total": 254,
+   "name": "Киловольт",
+   "usage": 254
+  },
+  {
+   "code": "291",
+   "spellings": [
+    {
+     "name": "Килогерц",
+     "usage": 238
+    }
+   ],
+   "usage_total": 238,
+   "name": "Килогерц",
+   "usage": 238
+  },
+  {
+   "code": "839",
+   "spellings": [
+    {
+     "name": "Комплект",
+     "usage": 234
+    }
+   ],
+   "usage_total": 234,
+   "name": "Комплект",
+   "usage": 234
+  },
+  {
+   "code": "353",
+   "spellings": [
+    {
+     "name": "Миллисекунда",
+     "usage": 228
+    }
+   ],
+   "usage_total": 228,
+   "name": "Миллисекунда",
+   "usage": 228
+  },
+  {
+   "code": "226",
+   "spellings": [
+    {
+     "name": "Вольт-ампер",
+     "usage": 226
+    }
+   ],
+   "usage_total": 226,
+   "name": "Вольт-ампер",
+   "usage": 226
+  },
+  {
+   "code": "316",
+   "spellings": [
+    {
+     "name": "Килограмм на кубический метр",
+     "usage": 211
+    }
+   ],
+   "usage_total": 211,
+   "name": "Килограмм на кубический метр",
+   "usage": 211
+  },
+  {
+   "code": "018",
+   "spellings": [
+    {
+     "name": "Погонный метр",
+     "usage": 171
+    }
+   ],
+   "usage_total": 171,
+   "name": "Погонный метр",
+   "usage": 171
+  },
+  {
+   "code": "642",
+   "spellings": [
+    {
+     "name": "Единица",
+     "usage": 170
+    }
+   ],
+   "usage_total": 170,
+   "name": "Единица",
+   "usage": 170
+  },
+  {
+   "code": "243",
+   "spellings": [
+    {
+     "name": "Ватт-час",
+     "usage": 164
+    }
+   ],
+   "usage_total": 164,
+   "name": "Ватт-час",
+   "usage": 164
+  },
+  {
+   "code": "161",
+   "spellings": [
+    {
+     "name": "Миллиграмм",
+     "usage": 161
+    }
+   ],
+   "usage_total": 161,
+   "name": "Миллиграмм",
+   "usage": 161
+  },
+  {
+   "code": "359",
+   "spellings": [
+    {
+     "name": "Сутки",
+     "usage": 139
+    }
+   ],
+   "usage_total": 139,
+   "name": "Сутки",
+   "usage": 139
+  },
+  {
+   "code": "271",
+   "spellings": [
+    {
+     "name": "Джоуль",
+     "usage": 133
+    }
+   ],
+   "usage_total": 133,
+   "name": "Джоуль",
+   "usage": 133
+  },
+  {
+   "code": "736",
+   "spellings": [
+    {
+     "name": "Рулон",
+     "usage": 127
+    }
+   ],
+   "usage_total": 127,
+   "name": "Рулон",
+   "usage": 127
+  },
+  {
+   "code": "309",
+   "spellings": [
+    {
+     "name": "Бар",
+     "usage": 125
+    }
+   ],
+   "usage_total": 125,
+   "name": "Бар",
+   "usage": 125
+  },
+  {
+   "code": "283",
+   "spellings": [
+    {
+     "name": "Люкс",
+     "usage": 118
+    }
+   ],
+   "usage_total": 118,
+   "name": "Люкс",
+   "usage": 118
+  },
+  {
+   "code": "297",
+   "spellings": [
+    {
+     "name": "Килопаскаль",
+     "usage": 116
+    }
+   ],
+   "usage_total": 116,
+   "name": "Килопаскаль",
+   "usage": 116
+  },
+  {
+   "code": "289",
+   "spellings": [
+    {
+     "name": "Ньютон",
+     "usage": 95
+    }
+   ],
+   "usage_total": 95,
+   "name": "Ньютон",
+   "usage": 95
+  },
+  {
+   "code": "872",
+   "spellings": [
+    {
+     "name": "Флакон",
+     "usage": 81
+    }
+   ],
+   "usage_total": 81,
+   "name": "Флакон",
+   "usage": 81
+  },
+  {
+   "code": "245",
+   "spellings": [
+    {
+     "name": "Киловатт-час",
+     "usage": 76
+    }
+   ],
+   "usage_total": 76,
+   "name": "Киловатт-час",
+   "usage": 76
+  },
+  {
+   "code": "256",
+   "spellings": [
+    {
+     "name": "Килобайт",
+     "usage": 75
+    }
+   ],
+   "usage_total": 75,
+   "name": "Килобайт",
+   "usage": 75
+  },
+  {
+   "code": "338",
+   "spellings": [
+    {
+     "name": "Миллиметр ртутного столба",
+     "usage": 67
+    }
+   ],
+   "usage_total": 67,
+   "name": "Миллиметр ртутного столба",
+   "usage": 67
+  },
+  {
+   "code": "599",
+   "spellings": [
+    {
+     "name": "Тысяча кубических метров в сутки",
+     "usage": 50
+    }
+   ],
+   "usage_total": 50,
+   "name": "Тысяча кубических метров в сутки",
+   "usage": 50
+  },
+  {
+   "code": "015",
+   "spellings": [
+    {
+     "name": "Нанометр",
+     "usage": 49
+    }
+   ],
+   "usage_total": 49,
+   "name": "Нанометр",
+   "usage": 49
+  },
+  {
+   "code": "538",
+   "spellings": [
+    {
+     "name": "Тысяча тонн в год",
+     "usage": 32
+    }
+   ],
+   "usage_total": 32,
+   "name": "Тысяча тонн в год",
+   "usage": 32
+  },
+  {
+   "code": "539",
+   "spellings": [
+    {
+     "name": "Человеко-час",
+     "usage": 30
+    }
+   ],
+   "usage_total": 30,
+   "name": "Человеко-час",
+   "usage": 30
+  },
+  {
+   "code": "227",
+   "spellings": [
+    {
+     "name": "Киловольт-ампер",
+     "usage": 30
+    }
+   ],
+   "usage_total": 30,
+   "name": "Киловольт-ампер",
+   "usage": 30
+  },
+  {
+   "code": "294",
+   "spellings": [
+    {
+     "name": "Паскаль",
+     "usage": 28
+    }
+   ],
+   "usage_total": 28,
+   "name": "Паскаль",
+   "usage": 28
+  },
+  {
+   "code": "383",
+   "spellings": [
+    {
+     "name": "Рубль",
+     "usage": 28
+    }
+   ],
+   "usage_total": 28,
+   "name": "Рубль",
+   "usage": 28
+  },
+  {
+   "code": "923",
+   "spellings": [
+    {
+     "name": "Слово",
+     "usage": 27
+    }
+   ],
+   "usage_total": 27,
+   "name": "Слово",
+   "usage": 27
+  },
+  {
+   "code": "728",
+   "spellings": [
+    {
+     "name": "Пачка",
+     "usage": 27
+    }
+   ],
+   "usage_total": 27,
+   "name": "Пачка",
+   "usage": 27
+  },
+  {
+   "code": "300",
+   "spellings": [
+    {
+     "name": "Физическая атмосфера (101325 Па)",
+     "usage": 24
+    }
+   ],
+   "usage_total": 24,
+   "name": "Физическая атмосфера (101325 Па)",
+   "usage": 24
+  },
+  {
+   "code": "596",
+   "spellings": [
+    {
+     "name": "Кубический метр в секунду",
+     "usage": 24
+    }
+   ],
+   "usage_total": 24,
+   "name": "Кубический метр в секунду",
+   "usage": 24
+  },
+  {
+   "code": "2543",
+   "spellings": [
+    {
+     "name": "Килобит в секунду",
+     "usage": 24
+    }
+   ],
+   "usage_total": 24,
+   "name": "Килобит в секунду",
+   "usage": 24
+  },
+  {
+   "code": "330",
+   "spellings": [
+    {
+     "name": "Оборот в секунду",
+     "usage": 23
+    }
+   ],
+   "usage_total": 23,
+   "name": "Оборот в секунду",
+   "usage": 23
+  },
+  {
+   "code": "2541",
+   "spellings": [
+    {
+     "name": "Бит в секунду",
+     "usage": 22
+    }
+   ],
+   "usage_total": 22,
+   "name": "Бит в секунду",
+   "usage": 22
+  },
+  {
+   "code": "2357",
+   "spellings": [
+    {
+     "name": "Секунда (плоского угла)",
+     "usage": 20
+    }
+   ],
+   "usage_total": 20,
+   "name": "Секунда (плоского угла)",
+   "usage": 20
+  },
+  {
+   "code": "9642",
+   "spellings": [
+    {
+     "name": "Балл",
+     "usage": 18
+    }
+   ],
+   "usage_total": 18,
+   "name": "Балл",
+   "usage": 18
+  },
+  {
+   "code": "499",
+   "spellings": [
+    {
+     "name": "Килограмм в секунду",
+     "usage": 16
+    }
+   ],
+   "usage_total": 16,
+   "name": "Килограмм в секунду",
+   "usage": 16
+  },
+  {
+   "code": "231",
+   "spellings": [
+    {
+     "name": "Метр в час",
+     "usage": 14
+    }
+   ],
+   "usage_total": 14,
+   "name": "Метр в час",
+   "usage": 14
+  },
+  {
+   "code": "273",
+   "spellings": [
+    {
+     "name": "Килоджоуль",
+     "usage": 14
+    }
+   ],
+   "usage_total": 14,
+   "name": "Килоджоуль",
+   "usage": 14
+  },
+  {
+   "code": "313",
+   "spellings": [
+    {
+     "name": "Тесла",
+     "usage": 13
+    }
+   ],
+   "usage_total": 13,
+   "name": "Тесла",
+   "usage": 13
+  },
+  {
+   "code": "255",
+   "spellings": [
+    {
+     "name": "Байт",
+     "usage": 12
+    }
+   ],
+   "usage_total": 12,
+   "name": "Байт",
+   "usage": 12
+  },
+  {
+   "code": "616",
+   "spellings": [
+    {
+     "name": "Бобина",
+     "usage": 12
+    }
+   ],
+   "usage_total": 12,
+   "name": "Бобина",
+   "usage": 12
+  },
+  {
+   "code": "061",
+   "spellings": [
+    {
+     "name": "Квадратный километр",
+     "usage": 12
+    }
+   ],
+   "usage_total": 12,
+   "name": "Квадратный километр",
+   "usage": 12
+  },
+  {
+   "code": "059",
+   "spellings": [
+    {
+     "name": "Гектар",
+     "usage": 8
+    }
+   ],
+   "usage_total": 8,
+   "name": "Гектар",
+   "usage": 8
+  },
+  {
+   "code": "308",
+   "spellings": [
+    {
+     "name": "Миллибар",
+     "usage": 8
+    }
+   ],
+   "usage_total": 8,
+   "name": "Миллибар",
+   "usage": 8
+  },
+  {
+   "code": "836",
+   "spellings": [
+    {
+     "name": "Голова",
+     "usage": 7
+    }
+   ],
+   "usage_total": 7,
+   "name": "Голова",
+   "usage": 7
+  },
+  {
+   "code": "421",
+   "spellings": [
+    {
+     "name": "Пассажирское место (пассажирских мест)",
+     "usage": 6
+    }
+   ],
+   "usage_total": 6,
+   "name": "Пассажирское место (пассажирских мест)",
+   "usage": 6
+  },
+  {
+   "code": "508",
+   "spellings": [
+    {
+     "name": "Тысяча метров кубических в час",
+     "usage": 6
+    }
+   ],
+   "usage_total": 6,
+   "name": "Тысяча метров кубических в час",
+   "usage": 6
+  },
+  {
+   "code": "2552",
+   "spellings": [
+    {
+     "name": "Гигабайт в секунду",
+     "usage": 6
+    }
+   ],
+   "usage_total": 6,
+   "name": "Гигабайт в секунду",
+   "usage": 6
+  },
+  {
+   "code": "2356",
+   "spellings": [
+    {
+     "name": "Минута (плоского угла)",
+     "usage": 6
+    }
+   ],
+   "usage_total": 6,
+   "name": "Минута (плоского угла)",
+   "usage": 6
+  },
+  {
+   "code": "917",
+   "spellings": [
+    {
+     "name": "Смена",
+     "usage": 4
+    }
+   ],
+   "usage_total": 4,
+   "name": "Смена",
+   "usage": 4
+  },
+  {
+   "code": "305",
+   "spellings": [
+    {
+     "name": "Кюри",
+     "usage": 4
+    }
+   ],
+   "usage_total": 4,
+   "name": "Кюри",
+   "usage": 4
+  },
+  {
+   "code": "550",
+   "spellings": [
+    {
+     "name": "Миллион тонн в год",
+     "usage": 4
+    }
+   ],
+   "usage_total": 4,
+   "name": "Миллион тонн в год",
+   "usage": 4
+  },
+  {
+   "code": "339",
+   "spellings": [
+    {
+     "name": "Сантиметр водяного столба",
+     "usage": 4
+    }
+   ],
+   "usage_total": 4,
+   "name": "Сантиметр водяного столба",
+   "usage": 4
+  },
+  {
+   "code": "162",
+   "spellings": [
+    {
+     "name": "Метрический карат",
+     "usage": 2
+    }
+   ],
+   "usage_total": 2,
+   "name": "Метрический карат",
+   "usage": 2
+  },
+  {
+   "code": "740",
+   "spellings": [
+    {
+     "name": "Дюжина штук",
+     "usage": 2
+    }
+   ],
+   "usage_total": 2,
+   "name": "Дюжина штук",
+   "usage": 2
+  },
+  {
+   "code": "360",
+   "spellings": [
+    {
+     "name": "Неделя",
+     "usage": 2
+    }
+   ],
+   "usage_total": 2,
+   "name": "Неделя",
+   "usage": 2
+  },
+  {
+   "code": "365",
+   "spellings": [
+    {
+     "name": "Полугодие",
+     "usage": 2
+    }
+   ],
+   "usage_total": 2,
+   "name": "Полугодие",
+   "usage": 2
+  },
+  {
+   "code": "233",
+   "spellings": [
+    {
+     "name": "Гигакалория",
+     "usage": 2
+    }
+   ],
+   "usage_total": 2,
+   "name": "Гигакалория",
+   "usage": 2
+  },
+  {
+   "code": "352",
+   "spellings": [
+    {
+     "name": "Микросекунда",
+     "usage": 2
+    }
+   ],
+   "usage_total": 2,
+   "name": "Микросекунда",
+   "usage": 2
+  },
+  {
+   "code": "9111",
+   "spellings": [
+    {
+     "name": "Койко-день",
+     "usage": 2
+    }
+   ],
+   "usage_total": 2,
+   "name": "Койко-день",
+   "usage": 2
+  },
+  {
+   "code": "110",
+   "spellings": [
+    {
+     "name": "Кубический миллиметр",
+     "usage": 1
+    }
+   ],
+   "usage_total": 1,
+   "name": "Кубический миллиметр",
+   "usage": 1
+  },
+  {
+   "code": "950",
+   "spellings": [
+    {
+     "name": "Вагоно (машино)-день",
+     "usage": 1
+    }
+   ],
+   "usage_total": 1,
+   "name": "Вагоно (машино)-день",
+   "usage": 1
+  },
+  {
+   "code": "904",
+   "spellings": [
+    {
+     "name": "Рабочее место",
+     "usage": 1
+    }
+   ],
+   "usage_total": 1,
+   "name": "Рабочее место",
+   "usage": 1
+  },
+  {
+   "code": "5423",
+   "spellings": [
+    {
+     "name": "Человек в год",
+     "usage": 1
+    }
+   ],
+   "usage_total": 1,
+   "name": "Человек в год",
+   "usage": 1
+  },
+  {
+   "code": "540",
+   "spellings": [
+    {
+     "name": "Человеко-день",
+     "usage": 1
+    }
+   ],
+   "usage_total": 1,
+   "name": "Человеко-день",
+   "usage": 1
+  },
+  {
+   "code": "989",
+   "spellings": [
+    {
+     "name": "Человек в час",
+     "usage": 1
+    }
+   ],
+   "usage_total": 1,
+   "name": "Человек в час",
+   "usage": 1
+  }
+ ]
+}

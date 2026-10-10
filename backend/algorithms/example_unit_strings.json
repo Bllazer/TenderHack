@@ -1,0 +1,1547 @@
+{
+ "schema": 2,
+ "schema_note": "v2: aliases / not_resolved (+ coverage). Для обратной совместимости продублированы ключи v1: mapped / not_mapped.",
+ "description": "Сокращения единиц из выгрузок-примеров (лист «Лист2», столбец «Единица измерения»), сопоставленные с ОКЕИ очищенного КТРУ. Сопоставление сначала по коду ОКЕИ, затем по каноническому названию.",
+ "aliases": [
+  {
+   "raw": "%",
+   "okei_code": "744",
+   "okei_name": "Процент",
+   "expected": "процент",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "[0*]с",
+   "okei_code": "280",
+   "okei_name": "Градус Цельсия",
+   "expected": "градус цельсия",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "°с",
+   "okei_code": "280",
+   "okei_name": "Градус Цельсия",
+   "expected": "градус цельсия",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "а",
+   "okei_code": "260",
+   "okei_name": "Ампер",
+   "expected": "ампер",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "байт",
+   "okei_code": "255",
+   "okei_name": "Байт",
+   "expected": "байт",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "бар",
+   "okei_code": "309",
+   "okei_name": "Бар",
+   "expected": "бар",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "в",
+   "okei_code": "222",
+   "okei_name": "Вольт",
+   "expected": "вольт",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "вт",
+   "okei_code": "212",
+   "okei_name": "Ватт",
+   "expected": "ватт",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "г",
+   "okei_code": "163",
+   "okei_name": "Грамм",
+   "expected": "грамм",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "га",
+   "okei_code": "059",
+   "okei_name": "Гектар",
+   "expected": "гектар",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "гбайт",
+   "okei_code": "2553",
+   "okei_name": "Гигабайт",
+   "expected": "гигабайт",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "гбит/с",
+   "okei_code": "2547",
+   "okei_name": "Гигабит в секунду",
+   "expected": "гигабит в секунду",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "год",
+   "okei_code": "366",
+   "okei_name": "Год",
+   "expected": "год",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "гц",
+   "okei_code": "290",
+   "okei_name": "Герц",
+   "expected": "герц",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "дб",
+   "okei_code": "3135",
+   "okei_name": "Децибел",
+   "expected": "децибел",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "дж",
+   "okei_code": "271",
+   "okei_name": "Джоуль",
+   "expected": "джоуль",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "дюйм",
+   "okei_code": "039",
+   "okei_name": "Дюйм (25,4 мм)",
+   "expected": "дюйм",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "единица",
+   "okei_code": "642",
+   "okei_name": "Единица",
+   "expected": "единица",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": "«Единица» (642) — счётная единица; не путать с «условной единицей» (876)"
+  },
+  {
+   "raw": "кбайт",
+   "okei_code": "256",
+   "okei_name": "Килобайт",
+   "expected": "килобайт",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "квт",
+   "okei_code": "214",
+   "okei_name": "Киловатт",
+   "expected": "киловатт",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "кг",
+   "okei_code": "166",
+   "okei_name": "Килограмм",
+   "expected": "килограмм",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "кгц",
+   "okei_code": "291",
+   "okei_name": "Килогерц",
+   "expected": "килогерц",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "кдж",
+   "okei_code": "273",
+   "okei_name": "Килоджоуль",
+   "expected": "килоджоуль",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "км",
+   "okei_code": "008",
+   "okei_name": "Километр; тысяча метров",
+   "expected": "километр",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "компл",
+   "okei_code": "839",
+   "okei_name": "Комплект",
+   "expected": "комплект",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "кпа",
+   "okei_code": "297",
+   "okei_name": "Килопаскаль",
+   "expected": "килопаскаль",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "л",
+   "okei_code": "112",
+   "okei_name": "Литр; кубический дециметр",
+   "expected": "литр",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "л.с.",
+   "okei_code": "251",
+   "okei_name": "Лошадиная сила",
+   "expected": "лошадиная сила",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "лет",
+   "okei_code": "366",
+   "okei_name": "Год",
+   "expected": "год",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "м",
+   "okei_code": "006",
+   "okei_name": "Метр",
+   "expected": "метр",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "м2",
+   "okei_code": "055",
+   "okei_name": "Квадратный метр",
+   "expected": "квадратный метр",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "м3",
+   "okei_code": "113",
+   "okei_name": "Кубический метр",
+   "expected": "кубический метр",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "м[2*]",
+   "okei_code": "055",
+   "okei_name": "Квадратный метр",
+   "expected": "квадратный метр",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "м[3*]",
+   "okei_code": "113",
+   "okei_name": "Кубический метр",
+   "expected": "кубический метр",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мбайт",
+   "okei_code": "257",
+   "okei_name": "Мегабайт",
+   "expected": "мегабайт",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мбит/с",
+   "okei_code": "2545",
+   "okei_name": "Мегабит в секунду",
+   "expected": "мегабит в секунду",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мгц",
+   "okei_code": "292",
+   "okei_name": "Мегагерц",
+   "expected": "мегагерц",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мес",
+   "okei_code": "362",
+   "okei_name": "Месяц",
+   "expected": "месяц",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "миллилитр",
+   "okei_code": "111",
+   "okei_name": "Кубический сантиметр; миллилитр",
+   "expected": "миллилитр",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мин",
+   "okei_code": "355",
+   "okei_name": "Минута",
+   "expected": "минута",
+   "resolved_by": "code",
+   "global_safe": false,
+   "context": "минута времени (355) и минута плоского угла (2356) — различать по характеристике",
+   "note": null
+  },
+  {
+   "raw": "мин-1",
+   "okei_code": "331",
+   "okei_name": "Оборот в минуту",
+   "expected": "оборот в минуту",
+   "resolved_by": "code",
+   "global_safe": false,
+   "context": "обратная минута — это частота вращения только в контексте вращения; глобально отождествлять её с об/мин нельзя (может быть частота события)",
+   "note": null
+  },
+  {
+   "raw": "мл",
+   "okei_code": "111",
+   "okei_name": "Кубический сантиметр; миллилитр",
+   "expected": "миллилитр",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мм",
+   "okei_code": "003",
+   "okei_name": "Миллиметр",
+   "expected": "миллиметр",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мм рт. ст.",
+   "okei_code": "338",
+   "okei_name": "Миллиметр ртутного столба",
+   "expected": "миллиметр ртутного столба",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мм2",
+   "okei_code": "050",
+   "okei_name": "Квадратный миллиметр",
+   "expected": "квадратный миллиметр",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мм3",
+   "okei_code": "110",
+   "okei_name": "Кубический миллиметр",
+   "expected": "кубический миллиметр",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мм[2*]",
+   "okei_code": "050",
+   "okei_name": "Квадратный миллиметр",
+   "expected": "квадратный миллиметр",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мпа",
+   "okei_code": "298",
+   "okei_name": "Мегапаскаль",
+   "expected": "мегапаскаль",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "н",
+   "okei_code": "289",
+   "okei_name": "Ньютон",
+   "expected": "ньютон",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "об./мин",
+   "okei_code": "331",
+   "okei_name": "Оборот в минуту",
+   "expected": "оборот в минуту",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "об/мин",
+   "okei_code": "331",
+   "okei_name": "Оборот в минуту",
+   "expected": "оборот в минуту",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "па",
+   "okei_code": "294",
+   "okei_name": "Паскаль",
+   "expected": "паскаль",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "пар",
+   "okei_code": "715",
+   "okei_name": "Пара (2 шт.)",
+   "expected": "пара",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "с",
+   "okei_code": "354",
+   "okei_name": "Секунда",
+   "expected": "секунда",
+   "resolved_by": "code",
+   "global_safe": false,
+   "context": "секунда времени (354) и секунда плоского угла (2357) — различать по характеристике",
+   "note": null
+  },
+  {
+   "raw": "см",
+   "okei_code": "004",
+   "okei_name": "Сантиметр",
+   "expected": "сантиметр",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "сут",
+   "okei_code": "359",
+   "okei_name": "Сутки",
+   "expected": "сутки",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "т",
+   "okei_code": "168",
+   "okei_name": "Тонна; метрическая тонна (1000 кг)",
+   "expected": "тонна",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "уп",
+   "okei_code": "778",
+   "okei_name": "Упаковка",
+   "expected": "упаковка",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "ч",
+   "okei_code": "356",
+   "okei_name": "Час",
+   "expected": "час",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "шт",
+   "okei_code": "796",
+   "okei_name": "Штука",
+   "expected": "штука",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": "«Штука» (796); не путать с «тысячей штук» (798) и «дюжиной штук» (740)"
+  },
+  {
+   "raw": "шт.",
+   "okei_code": "796",
+   "okei_name": "Штука",
+   "expected": "штука",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "штук",
+   "okei_code": "796",
+   "okei_name": "Штука",
+   "expected": "штука",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "штуки",
+   "okei_code": "796",
+   "okei_name": "Штука",
+   "expected": "штука",
+   "resolved_by": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  }
+ ],
+ "not_resolved": [
+  {
+   "raw": "г/кв.м",
+   "expected": "грамм на квадратный метр",
+   "note": "в этой выгрузке КТРУ единица не встречается; отсутствие в конкретной выгрузке не означает, что единицы нет в ОКЕИ — код нужно взять из полного справочника ОКЕИ, а не подбирать похожую единицу"
+  },
+  {
+   "raw": "гр/м2",
+   "expected": "грамм на квадратный метр",
+   "note": "в этой выгрузке КТРУ единица не встречается; отсутствие в конкретной выгрузке не означает, что единицы нет в ОКЕИ — код нужно взять из полного справочника ОКЕИ, а не подбирать похожую единицу"
+  },
+  {
+   "raw": "мкм",
+   "expected": "микрометр",
+   "note": "в этой выгрузке КТРУ единица не встречается; отсутствие в конкретной выгрузке не означает, что единицы нет в ОКЕИ — код нужно взять из полного справочника ОКЕИ, а не подбирать похожую единицу"
+  }
+ ],
+ "mapped": [
+  {
+   "raw": "%",
+   "okei_code": "744",
+   "okei_name": "Процент",
+   "canonical": "процент",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "[0*]с",
+   "okei_code": "280",
+   "okei_name": "Градус Цельсия",
+   "canonical": "градус цельсия",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "°с",
+   "okei_code": "280",
+   "okei_name": "Градус Цельсия",
+   "canonical": "градус цельсия",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "а",
+   "okei_code": "260",
+   "okei_name": "Ампер",
+   "canonical": "ампер",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "байт",
+   "okei_code": "255",
+   "okei_name": "Байт",
+   "canonical": "байт",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "бар",
+   "okei_code": "309",
+   "okei_name": "Бар",
+   "canonical": "бар",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "в",
+   "okei_code": "222",
+   "okei_name": "Вольт",
+   "canonical": "вольт",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "вт",
+   "okei_code": "212",
+   "okei_name": "Ватт",
+   "canonical": "ватт",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "г",
+   "okei_code": "163",
+   "okei_name": "Грамм",
+   "canonical": "грамм",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "га",
+   "okei_code": "059",
+   "okei_name": "Гектар",
+   "canonical": "гектар",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "гбайт",
+   "okei_code": "2553",
+   "okei_name": "Гигабайт",
+   "canonical": "гигабайт",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "гбит/с",
+   "okei_code": "2547",
+   "okei_name": "Гигабит в секунду",
+   "canonical": "гигабит в секунду",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "год",
+   "okei_code": "366",
+   "okei_name": "Год",
+   "canonical": "год",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "гц",
+   "okei_code": "290",
+   "okei_name": "Герц",
+   "canonical": "герц",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "дб",
+   "okei_code": "3135",
+   "okei_name": "Децибел",
+   "canonical": "децибел",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "дж",
+   "okei_code": "271",
+   "okei_name": "Джоуль",
+   "canonical": "джоуль",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "дюйм",
+   "okei_code": "039",
+   "okei_name": "Дюйм (25,4 мм)",
+   "canonical": "дюйм",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "единица",
+   "okei_code": "642",
+   "okei_name": "Единица",
+   "canonical": "единица",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": "«Единица» (642) — счётная единица; не путать с «условной единицей» (876)"
+  },
+  {
+   "raw": "кбайт",
+   "okei_code": "256",
+   "okei_name": "Килобайт",
+   "canonical": "килобайт",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "квт",
+   "okei_code": "214",
+   "okei_name": "Киловатт",
+   "canonical": "киловатт",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "кг",
+   "okei_code": "166",
+   "okei_name": "Килограмм",
+   "canonical": "килограмм",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "кгц",
+   "okei_code": "291",
+   "okei_name": "Килогерц",
+   "canonical": "килогерц",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "кдж",
+   "okei_code": "273",
+   "okei_name": "Килоджоуль",
+   "canonical": "килоджоуль",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "км",
+   "okei_code": "008",
+   "okei_name": "Километр; тысяча метров",
+   "canonical": "километр",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "компл",
+   "okei_code": "839",
+   "okei_name": "Комплект",
+   "canonical": "комплект",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "кпа",
+   "okei_code": "297",
+   "okei_name": "Килопаскаль",
+   "canonical": "килопаскаль",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "л",
+   "okei_code": "112",
+   "okei_name": "Литр; кубический дециметр",
+   "canonical": "литр",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "л.с.",
+   "okei_code": "251",
+   "okei_name": "Лошадиная сила",
+   "canonical": "лошадиная сила",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "лет",
+   "okei_code": "366",
+   "okei_name": "Год",
+   "canonical": "год",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "м",
+   "okei_code": "006",
+   "okei_name": "Метр",
+   "canonical": "метр",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "м2",
+   "okei_code": "055",
+   "okei_name": "Квадратный метр",
+   "canonical": "квадратный метр",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "м3",
+   "okei_code": "113",
+   "okei_name": "Кубический метр",
+   "canonical": "кубический метр",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "м[2*]",
+   "okei_code": "055",
+   "okei_name": "Квадратный метр",
+   "canonical": "квадратный метр",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "м[3*]",
+   "okei_code": "113",
+   "okei_name": "Кубический метр",
+   "canonical": "кубический метр",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мбайт",
+   "okei_code": "257",
+   "okei_name": "Мегабайт",
+   "canonical": "мегабайт",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мбит/с",
+   "okei_code": "2545",
+   "okei_name": "Мегабит в секунду",
+   "canonical": "мегабит в секунду",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мгц",
+   "okei_code": "292",
+   "okei_name": "Мегагерц",
+   "canonical": "мегагерц",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мес",
+   "okei_code": "362",
+   "okei_name": "Месяц",
+   "canonical": "месяц",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "миллилитр",
+   "okei_code": "111",
+   "okei_name": "Кубический сантиметр; миллилитр",
+   "canonical": "миллилитр",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мин",
+   "okei_code": "355",
+   "okei_name": "Минута",
+   "canonical": "минута",
+   "source": "code",
+   "global_safe": false,
+   "context": "минута времени (355) и минута плоского угла (2356) — различать по характеристике",
+   "note": null
+  },
+  {
+   "raw": "мин-1",
+   "okei_code": "331",
+   "okei_name": "Оборот в минуту",
+   "canonical": "оборот в минуту",
+   "source": "code",
+   "global_safe": false,
+   "context": "обратная минута — это частота вращения только в контексте вращения; глобально отождествлять её с об/мин нельзя (может быть частота события)",
+   "note": null
+  },
+  {
+   "raw": "мл",
+   "okei_code": "111",
+   "okei_name": "Кубический сантиметр; миллилитр",
+   "canonical": "миллилитр",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мм",
+   "okei_code": "003",
+   "okei_name": "Миллиметр",
+   "canonical": "миллиметр",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мм рт. ст.",
+   "okei_code": "338",
+   "okei_name": "Миллиметр ртутного столба",
+   "canonical": "миллиметр ртутного столба",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мм2",
+   "okei_code": "050",
+   "okei_name": "Квадратный миллиметр",
+   "canonical": "квадратный миллиметр",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мм3",
+   "okei_code": "110",
+   "okei_name": "Кубический миллиметр",
+   "canonical": "кубический миллиметр",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мм[2*]",
+   "okei_code": "050",
+   "okei_name": "Квадратный миллиметр",
+   "canonical": "квадратный миллиметр",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "мпа",
+   "okei_code": "298",
+   "okei_name": "Мегапаскаль",
+   "canonical": "мегапаскаль",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "н",
+   "okei_code": "289",
+   "okei_name": "Ньютон",
+   "canonical": "ньютон",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "об./мин",
+   "okei_code": "331",
+   "okei_name": "Оборот в минуту",
+   "canonical": "оборот в минуту",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "об/мин",
+   "okei_code": "331",
+   "okei_name": "Оборот в минуту",
+   "canonical": "оборот в минуту",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "па",
+   "okei_code": "294",
+   "okei_name": "Паскаль",
+   "canonical": "паскаль",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "пар",
+   "okei_code": "715",
+   "okei_name": "Пара (2 шт.)",
+   "canonical": "пара",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "с",
+   "okei_code": "354",
+   "okei_name": "Секунда",
+   "canonical": "секунда",
+   "source": "code",
+   "global_safe": false,
+   "context": "секунда времени (354) и секунда плоского угла (2357) — различать по характеристике",
+   "note": null
+  },
+  {
+   "raw": "см",
+   "okei_code": "004",
+   "okei_name": "Сантиметр",
+   "canonical": "сантиметр",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "сут",
+   "okei_code": "359",
+   "okei_name": "Сутки",
+   "canonical": "сутки",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "т",
+   "okei_code": "168",
+   "okei_name": "Тонна; метрическая тонна (1000 кг)",
+   "canonical": "тонна",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "уп",
+   "okei_code": "778",
+   "okei_name": "Упаковка",
+   "canonical": "упаковка",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "ч",
+   "okei_code": "356",
+   "okei_name": "Час",
+   "canonical": "час",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "шт",
+   "okei_code": "796",
+   "okei_name": "Штука",
+   "canonical": "штука",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": "«Штука» (796); не путать с «тысячей штук» (798) и «дюжиной штук» (740)"
+  },
+  {
+   "raw": "шт.",
+   "okei_code": "796",
+   "okei_name": "Штука",
+   "canonical": "штука",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "штук",
+   "okei_code": "796",
+   "okei_name": "Штука",
+   "canonical": "штука",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  },
+  {
+   "raw": "штуки",
+   "okei_code": "796",
+   "okei_name": "Штука",
+   "canonical": "штука",
+   "source": "code",
+   "global_safe": true,
+   "context": null,
+   "note": null
+  }
+ ],
+ "not_mapped": [
+  "г/кв.м",
+  "гр/м2",
+  "мкм"
+ ],
+ "context_required": [
+  "мин",
+  "мин-1",
+  "с"
+ ],
+ "compat_note": "совместимый список mapped содержит те же поля, что aliases, включая global_safe/context/note; context_required перечисляет написания, которые нельзя подставлять глобально — их нужно разрешать только по контексту характеристики",
+ "coverage": {
+  "distinct_writings_in_examples": 1023,
+  "unit_rows_in_examples": 46207,
+  "distinct_writings_with_alias": 35,
+  "unit_rows_covered_by_alias": 37755,
+  "share_of_rows_covered": 0.8171,
+  "warning": "таблица алиасов НЕ является полным словарём написаний: она покрывает распространённые сокращения из примеров. Неизвестную единицу следует возвращать как неопределённую, а не назначать по сходству строки."
+ },
+ "example_strings_top": [
+  [
+   "мм",
+   20220
+  ],
+  [
+   "шт",
+   6443
+  ],
+  [
+   "см",
+   3566
+  ],
+  [
+   "кг",
+   2103
+  ],
+  [
+   "%",
+   1392
+  ],
+  [
+   "В",
+   856
+  ],
+  [
+   "[0*]С",
+   828
+  ],
+  [
+   "г",
+   797
+  ],
+  [
+   "м",
+   760
+  ],
+  [
+   "дюйм",
+   499
+  ],
+  [
+   "мес",
+   377
+  ],
+  [
+   "Вт",
+   368
+  ],
+  [
+   "об/мин",
+   332
+  ],
+  [
+   "А",
+   315
+  ],
+  [
+   "градус",
+   311
+  ],
+  [
+   "г; лет",
+   289
+  ],
+  [
+   "Гц",
+   244
+  ],
+  [
+   "гр/м2",
+   235
+  ],
+  [
+   "ч",
+   192
+  ],
+  [
+   "с",
+   179
+  ],
+  [
+   "миллилитр",
+   163
+  ],
+  [
+   "Л; ДМ3",
+   151
+  ],
+  [
+   "-",
+   140
+  ],
+  [
+   "кВт",
+   133
+  ],
+  [
+   "° градус",
+   129
+  ],
+  [
+   "милиметр (мм)",
+   126
+  ],
+  [
+   "бар",
+   125
+  ],
+  [
+   "мин",
+   119
+  ],
+  [
+   "мм[2*]",
+   119
+  ],
+  [
+   "мкм",
+   113
+  ],
+  [
+   "МПа",
+   112
+  ],
+  [
+   "Ом",
+   97
+  ],
+  [
+   "Н",
+   94
+  ],
+  [
+   "ДЕЦИБЕЛ",
+   91
+  ],
+  [
+   "м/с",
+   75
+  ],
+  [
+   "пар",
+   75
+  ],
+  [
+   "см[3*]; мл",
+   71
+  ],
+  [
+   "миллиметр (мм)",
+   67
+  ],
+  [
+   "м[3*]",
+   65
+  ],
+  [
+   "А.ч",
+   62
+  ],
+  [
+   "дюйм (\")",
+   61
+  ],
+  [
+   "г/кв.м",
+   61
+  ],
+  [
+   "милиметр",
+   60
+  ],
+  [
+   "дБ",
+   59
+  ],
+  [
+   "т",
+   58
+  ],
+  [
+   "Дж",
+   53
+  ],
+  [
+   "МГц",
+   45
+  ],
+  [
+   "Н·м",
+   44
+  ],
+  [
+   "штук",
+   44
+  ],
+  [
+   "кГц",
+   40
+  ],
+  [
+   "% (процент)",
+   39
+  ],
+  [
+   "г/м2 (грамм на метр квадратный)",
+   39
+  ],
+  [
+   "ip",
+   35
+  ],
+  [
+   "hrc",
+   33
+  ],
+  [
+   "килоньютон (кн)",
+   32
+  ],
+  [
+   "кг/м[3*]",
+   32
+  ],
+  [
+   "компл",
+   30
+  ],
+  [
+   "м[2*]",
+   30
+  ],
+  [
+   "процент (%)",
+   29
+  ],
+  [
+   "м[3*]/ч",
+   28
+  ]
+ ]
+}

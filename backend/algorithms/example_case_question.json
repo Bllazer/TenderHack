@@ -1,0 +1,12 @@
+{
+ "title": "Дрель ручная электрическая, тип питания не указан (должен спросить D)",
+ "pool": ["28.24.11.000-00000001", "28.24.11.000-00000002"],
+ "type_verified": true,
+ "facts": [
+  {"fact_id": "f2", "def_id": null, "name": "Мощность", "kind": "number", "value": 650,
+   "unit": {"code": "212", "text": "Ватт"}, "polarity": "affirmed", "extraction_confidence": 0.9}
+ ],
+ "answer": {"fact_id": "a1", "def_id": null, "name": "Тип питания", "kind": "text",
+            "value": "От сети", "unit": null, "polarity": "affirmed",
+            "extraction_method": "user_input", "extraction_confidence": 1.0}
+}
