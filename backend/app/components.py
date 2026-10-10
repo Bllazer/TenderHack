@@ -66,13 +66,19 @@ class ExistingExtractor:
     def extract_context(self, text, names, *, scoped_properties=(), category_id=None):
         from app.extraction import extract
         lexicon = self.cards.lexicon if self.cards and category_id else {}
-        facts, unparsed = extract(text, names, scoped_properties=scoped_properties, lexicon=lexicon)
-        return ExtractionResult(facts, unparsed)
+        # Провенанс автоматических исправлений имён: замена не спрашивает разрешения,
+        # но и не молчит — в ответе видно ««Мошность» → «Мощность»».
+        corrections: list = []
+        facts, unparsed = extract(text, names, scoped_properties=scoped_properties, lexicon=lexicon,
+                                  corrections=corrections)
+        return ExtractionResult(facts, unparsed, corrections)
 
     def extract(self, text, names, *, scoped_properties=()):
         from app.extraction import extract
-        facts, unparsed = extract(text, names, scoped_properties=scoped_properties)
-        return ExtractionResult(facts, unparsed)
+        corrections: list = []
+        facts, unparsed = extract(text, names, scoped_properties=scoped_properties,
+                                  corrections=corrections)
+        return ExtractionResult(facts, unparsed, corrections)
 
 
 class ExistingChecker:

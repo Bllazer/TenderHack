@@ -31,13 +31,14 @@ def resolve_suggestions(category_id, positions, facts, answers, *, extra_propert
             fact.name = answer.value.removeprefix("accept:")
         else:
             pending.append((fact, Question(id=qid, kind="correction",
-                title=f"«{fact.name}: {fact.value} {fact.unit or ''}» — уточните характеристику",
-                reason="Похожее имя может изменить проверку товара; сопоставление требует вашего решения",
+                title=f"Возможно, вы имели в виду «{targets[0]}»?",
+                reason="Написание имени похоже на характеристику позиции, но не совпало: "
+                       "подтвердите исправление или оставьте как дополнительные сведения",
                 property_name=fact.name,
                 options=[QuestionOption(value="accept:" + name, label=f"Это «{name}»") for name in targets] +
                         [QuestionOption(value="reject", label="Это дополнительные сведения")]),
                 Issue(code="unresolved_property_correction", fact_id=fact.id,
-                      explanation=f"Не подтверждено сопоставление «{fact.name}» с «{' / '.join(targets)}»",
+                      explanation=f"Возможно, «{fact.name}» — это «{' / '.join(targets)}»; исправление не применено",
                       confirmation_required=True, suggested_action="Подтвердите или отклоните предлагаемое сопоставление")))
     properties = (*tuple(prop for position in positions for prop in position.properties), *extra_properties)
     for fact in facts:

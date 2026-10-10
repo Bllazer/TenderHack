@@ -5,9 +5,9 @@ from difflib import SequenceMatcher
 from functools import lru_cache
 from threading import Lock
 
-from app.schemas import Fact, FactAssignment, Fragment, InputFact
+from app.schemas import Correction, Fact, FactAssignment, Fragment, InputFact
 from app.search import canon
-from app.units import UNITS
+from app.units import UNITS, get_unit
 
 NUMBER = r"[+−-]?\d+(?:[.,]\d+)?"
 UNIT_PATTERN = "|".join(re.escape(alias) for alias in sorted(UNITS, key=len, reverse=True))
@@ -358,10 +358,347 @@ def designation_facts(text, dictionary, properties, lexicon, facts, covered):
                 covered.append((a, b))
 
 
-def extract(text: str, names: tuple[str, ...], *, scoped_properties=(), lexicon=None) -> tuple[list[Fact], list[Fragment]]:
+#: Чистое число — измерение, а не часть имени характеристики.
+DIGITS = re.compile(r"^[+−-]?\d+$")
+
+#: Между значением и именем допускаются только пробелы и разделители: «650 Вт мощность».
+BEFORE_NAME_SEPARATORS = re.compile(r"[\s,;|]*\Z")
+
+
+def preceding_measurement(text: str, position: int) -> tuple[str, str | None, int] | None:
+    """Измерение, стоящее вплотную перед именем: «650 Вт **мощность**».
+
+    В карточках СТЕ порядок всегда «имя значение», но в свободном описании
+    значение идёт первым («650 Вт, от сети»), и раньше такой факт терялся целиком.
+    Берём только измерение, которое заканчивается ровно перед именем: иначе
+    «Мощность 650 Вт напряжение» приписало бы 650 Вт напряжению.
+    """
+    before = text[:position]
+    stripped = before.rstrip()
+    if not stripped or not BEFORE_NAME_SEPARATORS.fullmatch(before[len(stripped):]):
+        return None
+    # Именно измерение, заканчивающееся вплотную перед именем: в строке
+    # «2000 мм высота, 600 мм ширина» слева от «ширины» два измерения, нужно последнее.
+    match = None
+    for candidate in MEASUREMENT.finditer(stripped):
+        if candidate.end() == len(stripped):
+            match = candidate
+    if match is None:
+        return None
+    unit = match["unit"]
+    if not unit:
+        word = re.match(rf"\s+(?P<unit>{UNSUPPORTED_UNIT})", stripped[match.end():])
+        if word:
+            return measurement_value(match["value"]), word["unit"], match.start()
+    return measurement_value(match["value"]), unit, match.start()
+
+
+#: Два порога похожести имени с известным. Замерено на именах характеристик:
+#: опечатки дают 0.83…0.95 («Мощьность» 0.941, «маса» 0.889, «напряжене» 0.947),
+#: а РАЗНЫЕ имена — не выше 0.57 («Толщина/Глубина» 0.571, «Длина/Ширина» 0.545).
+#: Между 0.57 и 0.83 есть запас, пороги стоят в нём.
+TYPO_CONFIDENT = 0.85   # выше — имя заменяется автоматически: «Мошность» → «Мощность»
+TYPO_SUGGEST = 0.72     # ниже — ничего; между — «возможно, вы имели в виду …»
+
+
+def fuzzy_name_index(names: tuple[str, ...]) -> dict:
+    """Индекс «первая буква и длина → имена» для быстрого поиска опечаток.
+
+    Ключ — первая буква и длина, а не первые две буквы: опечатка бывает во второй
+    букве («дакументов» ↔ «документов»), и по двум буквам кандидат не нашёлся бы.
+    Без индекса сравнение шло бы со всеми именами (при невыбранной области их
+    больше 15 000) на каждое окно токенов.
+    """
+    index: dict[tuple[str, int], list[str]] = {}
+    for name in set(names):
+        key = canon(name)
+        if key:
+            index.setdefault((key[0], len(key)), []).append(name)
+    return index
+
+
+def _candidates(surface: str, names, fuzzy_index) -> list[str]:
+    """Имена-кандидаты: та же первая буква, длина ±2, из индекса или из списка."""
+    key = canon(surface)
+    if not key:
+        return []
+    if fuzzy_index:
+        out: list[str] = []
+        for length in range(max(1, len(key) - 2), len(key) + 3):
+            out.extend(fuzzy_index.get((key[0], length), ()))
+        return out
+    return [str(name) for name in names
+            if canon(name) and canon(name)[0] == key[0] and abs(len(canon(name)) - len(key)) <= 2]
+
+
+def closest_name(surface: str, names, fuzzy_index=None) -> tuple[float, str | None]:
+    """Наибольшая похожесть написания с именами справочника и само имя."""
+    key = canon(surface)
+    best: tuple[float, str | None] = (0.0, None)
+    for name in _candidates(surface, names, fuzzy_index):
+        other = canon(name)
+        if not other:
+            continue
+        ratio = SequenceMatcher(None, key, other).ratio()
+        if ratio > best[0]:
+            best = (ratio, name)
+    return best
+
+
+def confident_correction(surface: str, names, fuzzy_index=None) -> str | None:
+    """Имя из справочника, если написание почти наверняка его опечатка.
+
+    Три условия сразу, и все три — страховка от молчаливой подмены значимого текста:
+
+    * похожесть >= `TYPO_CONFIDENT` (0.85);
+    * та же первая буква — опечатка обычно не в начале слова;
+    * кандидат **ровно один**: если похожи два имени, автоматика запрещена, и
+      написание уходит в подсказку, а не в замену.
+    """
+    key = canon(surface)
+    if len(key) < 5:
+        return None
+    matches = [name for name in {str(item) for item in _candidates(surface, names, fuzzy_index)}
+               if canon(name)[0] == key[0] and abs(len(canon(name)) - len(key)) <= 2
+               and SequenceMatcher(None, key, canon(name)).ratio() >= TYPO_CONFIDENT]
+    return matches[0] if len(matches) == 1 else None
+
+
+def typo_hits(segment: str, tokens, dictionary, fuzzy_index, names) -> list[tuple[str, int, int, str | None]]:
+    """Окна токенов, похожие на известное имя характеристики, но не совпавшие с ним.
+
+    Возвращает (имя для факта, начало, конец, исходное написание или None).
+
+    Два уровня вместо одного вопроса:
+
+    * похожесть >= `TYPO_CONFIDENT` и кандидат один — **автозамена**: имя факта
+      сразу становится каноническим, а исходное написание уходит в провенанс
+      (`Correction(confirmation_required=False)`) и остаётся в `raw`;
+    * похожесть от `TYPO_SUGGEST` до `TYPO_CONFIDENT` — **подсказка**: факт
+      сохраняет написание пользователя, а поток коррекций спрашивает
+      «возможно, вы имели в виду …». Ничего не подменяется без ответа.
+    """
+    if not dictionary or not names:
+        return []
+    exact = {wanted for _, wanted in dictionary}
+    found: list[tuple[str, int, int, str | None]] = []
+    for size in range(min(4, len(tokens)), 0, -1):
+        for position in range(len(tokens) - size + 1):
+            window = tokens[position:position + size]
+            if tuple(item[0] for item in window) in exact:
+                continue
+            # Окно с числом — это имя вместе со значением («Мощность 0» в «Мощность 0,65 кВт»):
+            # похожесть на имя высокая, но значение к имени не относится. В именах
+            # характеристик цифр не бывает, поэтому такие окна не рассматриваем.
+            if any(DIGITS.fullmatch(item[0]) for item in window):
+                continue
+            left, right = window[0][1], window[-1][2]
+            surface = segment[left:right]
+            ratio, _ = closest_name(surface, names, fuzzy_index)
+            if ratio < TYPO_SUGGEST:
+                continue
+            corrected = confident_correction(surface, names, fuzzy_index)
+            if corrected:
+                found.append((corrected, left, right, surface))
+            else:
+                found.append((surface, left, right, None))
+    return found
+
+
+def partial_hits(segment: str, tokens, dictionary, names) -> list[tuple[str, int, int]]:
+    """Окна, леммы которых — строгое подмножество лемм РОВНО ОДНОГО имени характеристики.
+
+    «минимальный диаметр» ⊂ «Минимальный диаметр зажима патрона»: имя написано не
+    полностью, но однозначно — это ступень `partial` (мягкий факт), как в модели A.
+    «диаметр» подходит и минимуму, и максимуму, поэтому такое окно не берём: значение
+    уйдёт на уточнение вопросом, а не будет приписано наугад. Написание сохраняется:
+    каноническое имя даёт сопоставление, а не подмена.
+    """
+    if not names:
+        return []
+    keys = [(name, tuple(lemmas(name))) for name in set(names)]
+    exact = {wanted for _, wanted in dictionary}
+    found: list[tuple[str, int, int]] = []
+    for size in range(min(4, len(tokens)), 0, -1):
+        for position in range(len(tokens) - size + 1):
+            window = tokens[position:position + size]
+            if tuple(item[0] for item in window) in exact:
+                continue
+            if any(DIGITS.fullmatch(item[0]) for item in window):
+                continue
+            left, right = window[0][1], window[-1][2]
+            surface = segment[left:right]
+            target = tuple(lemmas(surface))
+            if not target:
+                continue
+            matches = [name for name, key in keys if key and set(target) < set(key)]
+            if len(matches) == 1:
+                found.append((surface, left, right))
+    return found
+
+
+def emit_fact(segment: str, text: str, start: int, name: str, left_token: int, right_token: int,
+              dictionary, scoped_properties, facts: list, covered: list,
+              require_measurement: bool = False) -> bool:
+    """Создать факт для найденного имени (точного или с опечаткой). True, если создан.
+
+    Значение берётся у того имени, рядом с которым оно стоит: сначала слева
+    («650 Вт мощность»), и только если слева значения нет — справа. Чужое значение
+    не отбирается: занятое предыдущим фактом измерение пропускается.
+
+    `require_measurement` — для имени с опечаткой: пока написание не подтверждено
+    пользователем, факт выдаётся только с однозначным измерением. Текстовое значение
+    при неподтверждённом имени не выдумывается.
+    """
+    absolute = start + left_token
+    if any(begin <= absolute < finish for begin, finish in covered):
+        return False
+    boundary = re.match(r"\s*(?:[:=]\s*)?", segment[right_token:])
+    match_end = right_token + boundary.end()
+    prefix = segment[max(0, left_token - 4):left_token]
+    if re.search(r"без\s*$", prefix, re.I):
+        if require_measurement:
+            return False
+        left, right = start + max(0, left_token - 4), start + match_end
+        facts.append(make_fact(name, "нет", None, text[left:right], (left, right), len(facts), negated=True))
+        covered.append((left, right))
+        return True
+    tail = segment[match_end:]
+    measure = MEASUREMENT.match(tail)
+    before = preceding_measurement(segment, left_token)
+    if before is not None:
+        value, unit, value_start = before
+        left = start + value_start
+        if not any(begin <= left < finish for begin, finish in covered):
+            right = start + match_end
+            facts.append(make_fact(name, value, unit, text[left:right], (left, right), len(facts)))
+            covered.append((left, right))
+            return True
+    if measure:
+        unit, consumed = measure["unit"], measure.end()
+        current_props = [p for p in scoped_properties if p.name == name]
+        if not unit and (not current_props or any(p.value_type == 'number' and
+                p.numeric_semantics != 'designation' for p in current_props)):
+            # «5 футов»: слово после числа — не единица справочника и не имя свойства.
+            # Сохраняем написание, но не подтверждаем факт.
+            unsupported = re.match(rf"\s+(?P<unit>{UNSUPPORTED_UNIT})", tail[consumed:])
+            if unsupported and not is_property_name(unsupported["unit"], dictionary):
+                unit, consumed = unsupported["unit"], consumed + unsupported.end()
+        right = start + match_end + consumed
+        facts.append(make_fact(name, measurement_value(measure["value"]), unit,
+                               text[absolute:right], (absolute, right), len(facts)))
+        covered.append((absolute, right))
+        return True
+    if require_measurement:
+        return False
+    value = tail.strip()
+    # Хвост, который сам начинает новый факт («Мощность напряжение 220 В»), значением
+    # не становится: иначе рождается мусорное значение, а настоящее имя теряется.
+    if value and not starts_with_property_name(value, dictionary):
+        lead = len(tail) - len(tail.lstrip())
+        right = start + match_end + lead + len(value)
+        facts.append(make_fact(name, value, None, text[absolute:right], (absolute, right), len(facts)))
+        covered.append((absolute, right))
+        return True
+    return False
+
+
+def note_correction(corrections: list | None, original: str, corrected: str, fact_id: str) -> None:
+    """Записать в провенанс автоматическую замену имени.
+
+    Замена не спрашивает разрешения, но и не молчит: в ответе API видно
+    ««Мошность» → «Мощность»», а исходный текст остаётся в `raw` факта.
+    """
+    if corrections is None or canon(original) == canon(corrected):
+        return
+    corrections.append(Correction(fact_id=fact_id, kind="proposed_text_fix", original=original,
+                                  normalized=corrected, confirmation_required=False,
+                                  explanation="Опечатка имени исправлена автоматически: "
+                                              f"«{original}» похоже на «{corrected}»"))
+
+
+def dimension_candidates(properties, dimension: str) -> list:
+    """Характеристики области, у которых есть допустимые значения в этой размерности.
+
+    Нужны для случая «значение без имени»: «дрель 650 вт» — единица «Вт» называет
+    размерность мощности, и если такая характеристика в области одна, значение
+    принадлежит ей. Две характеристики одной размерности (например «минимальный» и
+    «максимальный диаметр» оба в мм) — повод не угадывать: значение уходит
+    неразобранным, а не приписывается наугад.
+    """
+    out = []
+    for prop in properties:
+        if getattr(prop, "value_type", None) != "number":
+            continue
+        for item in getattr(prop, "allowed", ()) or ():
+            unit = get_unit(item.unit or item.raw_unit)
+            if unit is not None and unit.dimension == dimension:
+                out.append(prop)
+                break
+    return out
+
+
+def bind_bare_measurements(segment: str, text: str, start: int, scoped_properties,
+                           facts: list, covered: list) -> None:
+    """Привязать измерения без имени к характеристике по размерности единицы.
+
+    Реальный запрос «дрель 650 вт»: имени характеристики в тексте нет, но «Вт» —
+    это мощность, и в области такая характеристика одна. Перевод в единицу
+    характеристики делает C (0,65 кВт → 650 Вт), здесь сохраняется написание.
+    """
+    if not scoped_properties:
+        return
+    for match in MEASUREMENT.finditer(segment):
+        if not match["unit"]:
+            continue
+        left, right = start + match.start(), start + match.end()
+        if any(begin < right and left < finish for begin, finish in covered):
+            continue
+        unit = get_unit(match["unit"])
+        if unit is None:
+            continue
+        candidates = dimension_candidates(scoped_properties, unit.dimension)
+        if len(candidates) != 1:
+            continue
+        facts.append(make_fact(candidates[0].name, measurement_value(match["value"]),
+                               match["unit"], text[left:right], (left, right), len(facts)))
+        covered.append((left, right))
+
+
+def measurement_options(fragment: str, properties) -> list:
+    """Характеристики области, подходящие измерению по размерности единицы.
+
+    Пустой список — измерение не с чем связать вовсе. Один вариант — значение
+    привязывается само (`bind_bare_measurements`). Несколько — нужен вопрос
+    пользователю: «что означает 12 мм: минимальный или максимальный диаметр?»
+    """
+    out: list = []
+    seen: set[str] = set()
+    for match in MEASUREMENT.finditer(fragment):
+        if not match["unit"]:
+            continue
+        unit = get_unit(match["unit"])
+        if unit is None:
+            continue
+        for prop in dimension_candidates(properties, unit.dimension):
+            if prop.name not in seen:
+                seen.add(prop.name)
+                out.append(prop)
+    return out
+
+
+def measurement_option_names(fragment: str, properties) -> list[str]:
+    """То же, но именами: так вопрос и ответ не зависят от объектов каталога."""
+    return [prop.name for prop in measurement_options(fragment, properties)]
+
+
+
+def extract(text: str, names: tuple[str, ...], *, scoped_properties=(), lexicon=None,
+            corrections: list | None = None) -> tuple[list[Fact], list[Fragment]]:
     facts: list[Fact] = []
     covered: list[tuple[int, int]] = []
     dictionary = name_dictionary(names)
+    fuzzy_index = fuzzy_name_index(names)
     lexicon = lexicon or {}
     prop_names = {p.name for p in scoped_properties}
     aliases = tuple((name, lemmas(alias)) for name, words in lexicon.get('name_aliases', {}).items()
@@ -414,15 +751,33 @@ def extract(text: str, names: tuple[str, ...], *, scoped_properties=(), lexicon=
         if pair:
             if any(start < b and end > a for a, b in covered):
                 continue
+            # «650 Вт: мощность» — значение слева, имя справа. Разбор по двоеточию
+            # иначе делает именем «650 Вт», а значением — название характеристики.
+            leading = MEASUREMENT.fullmatch(pair[1].strip())
+            if leading is not None and is_property_name(pair[2].strip(), dictionary):
+                facts.append(make_fact(canonical_name(pair[2].strip(), dictionary),
+                                       measurement_value(leading["value"]), leading["unit"],
+                                       segment, (start, end), len(facts)))
+                covered.append((start, end))
+                continue
             value, unit, unconfirmed = split_measurement(pair[2], dictionary)
-            # Имя из справочника, если форма слова подтверждена леммами; иначе — как в тексте.
-            facts.append(make_fact(canonical_name(pair[1], dictionary), value, unit, segment,
+            # Имя из справочника, если форма слова подтверждена леммами. Если нет —
+            # проверяем, не опечатка ли это: уверенная замена делается сразу,
+            # неуверенная уходит в подсказку (её покажет поток коррекций).
+            name = canonical_name(pair[1], dictionary)
+            if name == pair[1]:
+                corrected = confident_correction(pair[1], names, fuzzy_index)
+                if corrected:
+                    name = corrected
+                    note_correction(corrections, pair[1], corrected, f"text:{start}:{end}:{len(facts)}")
+            facts.append(make_fact(name, value, unit, segment,
                                    (start, end), len(facts), unknown=unconfirmed))
             covered.append((start, end))
             continue
         # Only explicit property phrases from vetted dictionaries, longest first.
         # Без имён свойств морфология не поднимается вовсе (ленивый синглтон).
         tokens = token_spans(segment) if dictionary else []
+        hits: list[tuple[int, int, str, int, int]] = []
         for name, wanted in dictionary:
             if not wanted:
                 continue
@@ -430,44 +785,28 @@ def extract(text: str, names: tuple[str, ...], *, scoped_properties=(), lexicon=
                 window = tokens[index:index + len(wanted)]
                 if tuple(item[0] for item in window) != wanted:
                     continue
-                left_token, right_token = window[0][1], window[-1][2]
-                absolute = start + left_token
-                if any(begin <= absolute < finish for begin, finish in covered):
-                    continue
-                boundary = re.match(r"\s*(?:[:=]\s*)?", segment[right_token:])
-                match_end = right_token + boundary.end()
-                matched = segment[left_token:match_end]
-                prefix = segment[max(0, left_token - 4):left_token]
-                if re.search(r"без\s*$", prefix, re.I):
-                    left, right = start + max(0, left_token - 4), start + match_end
-                    facts.append(make_fact(name, "нет", None, text[left:right], (left, right),
-                                           len(facts), negated=True))
-                    covered.append((left, right))
-                    continue
-                tail = segment[match_end:]
-                measure = MEASUREMENT.match(tail)
-                if measure:
-                    unit, consumed = measure["unit"], measure.end()
-                    current_props = [p for p in scoped_properties if p.name == name]
-                    if not unit and (not current_props or any(p.value_type == 'number' and
-                            p.numeric_semantics != 'designation' for p in current_props)):
-                        # «5 футов»: слово после числа — не единица справочника и не
-                        # имя свойства. Сохраняем написание, но не подтверждаем факт.
-                        unsupported = re.match(rf"\s+(?P<unit>{UNSUPPORTED_UNIT})", tail[consumed:])
-                        if unsupported and not is_property_name(unsupported["unit"], dictionary):
-                            unit, consumed = unsupported["unit"], consumed + unsupported.end()
-                    right = start + match_end + consumed
-                    facts.append(make_fact(name, measurement_value(measure["value"]), unit,
-                                           text[absolute:right], (absolute, right), len(facts)))
-                    covered.append((absolute, right))
-                else:
-                    value = tail.strip()
-                    if value:
-                        lead = len(tail) - len(tail.lstrip())
-                        right = start + match_end + lead + len(value)
-                        facts.append(make_fact(name, value, None, text[absolute:right],
-                                               (absolute, right), len(facts)))
-                        covered.append((absolute, right))
+                hits.append((start + window[0][1], -len(wanted), name, window[0][1], window[-1][2]))
+        # Разбор идёт по тексту, а не по словарю: значение принадлежит тому имени,
+        # рядом с которым оно стоит. Точные имена, имена с опечаткой и неполные имена
+        # обрабатываются в ОДНОМ проходе по позиции: иначе «Мощность 650 Вт напряжение
+        # 220 В» отдало бы 650 Вт точному «Напряжению» до очереди на «Мощность».
+        combined: list[tuple[int, int, str, int, int, bool, str]] = [
+            (absolute, length, name, left_token, right_token, False, "")
+            for absolute, length, name, left_token, right_token in hits]
+        # Уровень подсказки требует измерения (имя не подтверждено); уровень автозамены
+        # ведёт себя как точное имя, но исходное написание уходит в провенанс.
+        combined += [(start + left, -(right - left), name, left, right, not original, original or "")
+                     for name, left, right, original
+                     in typo_hits(segment, tokens, dictionary, fuzzy_index, names)]
+        # Неполное имя характеристики: «минимальный диаметр» при «Минимальный диаметр
+        # зажима патрона». Факт идёт с написанием пользователя и мягким (см.
+        # `app/structured.py`): догадка не должна исключать коды.
+        combined += [(start + left, -(right - left), name, left, right, True, "")
+                     for name, left, right in partial_hits(segment, tokens, dictionary, names)]
+        for _, _, name, left_token, right_token, with_typo, original in sorted(combined):
+            if emit_fact(segment, text, start, name, left_token, right_token, dictionary,
+                         scoped_properties, facts, covered, require_measurement=with_typo) and original:
+                note_correction(corrections, original, name, facts[-1].id)
     # Reuse A's segmentation/provenance and the confirmed scope, never the global catalog.
     scope_parts = any(p.name in lexicon.get('parts', {}) for p in scoped_properties)
     values = sorted({value for _, value, _ in enum_dictionary(tuple(scoped_properties))} |
@@ -587,6 +926,20 @@ def extract(text: str, names: tuple[str, ...], *, scoped_properties=(), lexicon=
             if unit and any(get_unit(item.unit) and get_unit(item.unit).dimension == unit.dimension for item in prop.allowed):
                 fact.assignment_options.append(FactAssignment(name=prop.name, value=fact.value, unit=fact.unit,
                                                               subject=prop.subject, evidence=prop.evidence))
+        # Единица измерения называет характеристику, если такая в области ОДНА:
+        # «дрель 650 вт» — это мощность, и значение принадлежит ей сразу, без вопроса.
+        # Если подходящих несколько («минимальный» и «максимальный диаметр» оба в мм),
+        # значение остаётся без имени, и вопрос задаёт поток коррекций.
+        # В контексте размеров (size systems) не угадываем вовсе: там значение зависит
+        # от системы (EU/FR/RU), и решение остаётся за пользователем — как и требует
+        # независимый набор проверок размеров.
+        size_context = any(size_label(prop.name, lexicon) for prop in scoped_properties)
+        if len(fact.assignment_options) == 1 and not size_context:
+            option = fact.assignment_options[0]
+            fact.name, fact.subject = option.name, option.subject
+            fact.extraction_evidence = list(dict.fromkeys([*fact.extraction_evidence, option.evidence]))
+            fact.uncertainty_reason = None
+            fact.assignment_options.clear()
         facts.append(fact)
         covered.append(match.span())
     canonicalize_facts(facts, scoped_properties, lexicon)

@@ -4,7 +4,7 @@ from decimal import Decimal
 import pytest
 
 from app.analysis import InvalidConfirmation, analyze
-from app.catalog import Catalog, Property, load_snapshot, snapshot
+from app.catalog import AllowedValue, Catalog, Property, load_snapshot, snapshot
 from app.checks import Interval, check_fact, number, subset
 from app.extraction import extract
 from app.schemas import AnalysisCreate, Fact
@@ -258,14 +258,166 @@ def test_mixed_units_are_not_unioned_as_trusted_constraints():
     assert check_fact(prop, fact)[:2] == ("unknown", "unsupported_constraint")
 
 
+def test_power_in_a_query_without_a_name_is_counted_in_watts(engine):
+    """«дрель 650 вт» — реальный запрос: «Вт» называет характеристику «Мощность».
+
+    Раньше такое измерение оставалось неразобранным: имени характеристики в тексте нет,
+    и значение не с чем было связать. Теперь размерность единицы называет
+    характеристику (в области она одна), а перевод в ватты для сравнения делает C.
+    """
+    result = request(engine, description="Дрель; питание: от сети; 650 вт",
+                     confirmed_category_id="tools", confirmed_ktru_code="TEST-DRILL-MAINS")
+    fact = next(item for item in result.facts if item.name == "Мощность")
+    assert (fact.value, fact.unit) == ("650", "вт")
+    assert not any(issue.code == "unmapped_measurement" for issue in result.issues)
+    assert result.status == "resolved" and result.selected_ktru_code == "TEST-DRILL-MAINS"
+
+
+def test_kilowatts_are_compared_in_watts(engine):
+    """«0,65 кВт» — та же мощность: факт сохраняет киловатты, сравнение идёт в ваттах."""
+    result = request(engine, description="Дрель; питание: от сети; 0,65 кВт",
+                     confirmed_category_id="tools", confirmed_ktru_code="TEST-DRILL-MAINS")
+    fact = next(item for item in result.facts if item.name == "Мощность")
+    assert (fact.value, fact.unit) == ("0,65", "кВт")
+    assert result.status == "resolved"
+
+
+def test_power_outside_the_range_excludes_the_position(engine):
+    """900 вт не входит в [500; 800] — позиция исключается, а не остаётся «непроверенной»."""
+    result = request(engine, description="Дрель; питание: от сети; 900 вт",
+                     confirmed_category_id="tools")
+    assert "TEST-DRILL-MAINS" in {candidate.ktru_code for candidate in result.excluded}
+
+
+def test_voltage_and_power_are_bound_by_their_own_units(engine):
+    """«18 в» и «650 вт» рядом: каждая единица называет свою характеристику."""
+    result = request(engine, description="Дрель; питание: от сети; 650 вт; 18 в",
+                     confirmed_category_id="tools")
+    assert {(item.name, item.value, item.unit) for item in result.facts
+            if item.name in ("Мощность", "Напряжение")} == {("Мощность", "650", "вт"),
+                                                            ("Напряжение", "18", "в")}
+
+
 def test_unparsed_measurement_requires_explicit_mapping(engine):
-    description = "Дрель; питание: от сети; 650 Вт"
+    """Измерение без подходящей характеристики требует явного сопоставления.
+
+    «650 Вт» привязывается по единице само: мощность в области одна (правило владельца
+    «однозначно по единице — расписать»). Здесь намеренно взято измерение, которому в
+    области не соответствует НИ ОДНА характеристика — длина у дрели фикстуры, — поэтому
+    значение остаётся без имени, и его сопоставляет пользователь явно.
+    """
+    description = "Дрель; питание: от сети; 12 мм"
     result = request(engine, description=description, confirmed_category_id="tools")
     assert any(issue.code == "unmapped_measurement" for issue in result.issues)
-    fragment = next(fact for fact in result.facts if "650" in fact.raw)
-    fixed = request(engine, description=description, confirmed_category_id="tools", confirmed_ktru_code="TEST-DRILL-MAINS",
-                    attributes=[{"id":"manual", "name":"Мощность", "value":"650", "unit":"Вт", "replaces":fragment.id}])
+    assert result.next_question is not None and result.next_question.kind == "correction"
+    orphan = next(item for item in result.facts if "12" in item.raw)
+    assert orphan.name == ""                      # имя не выдумано
+    fixed = request(engine, description=description, confirmed_category_id="tools",
+                    confirmed_ktru_code="TEST-DRILL-MAINS",
+                    attributes=[{"id": "manual", "name": "Мощность", "value": "650", "unit": "Вт",
+                                 "replaces": orphan.id}])
     assert fixed.status == "resolved"
+    assert any(item.name == "Мощность" and item.value == "650" for item in fixed.facts)
+
+
+# ------------------- правило «что означает это измерение?» (неоднозначная размерность)
+def millimetre(identifier, name, lower, upper):
+    item = AllowedValue(kind="interval", lower=lower, upper=upper, unit="мм", raw_unit="мм", source="test")
+    return Property(id=identifier, name=name, value_type="number", required=False, verified=True,
+                    evidence="test", allowed=(item,))
+
+
+def ambiguous_engine(catalog_data):
+    """Фикстура с двумя характеристиками в миллиметрах: единица называет не одну.
+
+    Так устроена реальная позиция дрели: «минимальный» и «максимальный диаметр зажима
+    патрона» оба в миллиметрах, и «12 мм» нельзя приписать ни одному без вопроса.
+    """
+    positions = [position.model_copy(update={"properties": (
+        *position.properties,
+        millimetre("dmin", "Минимальный диаметр зажима патрона", "1", "10"),
+        millimetre("dmax", "Максимальный диаметр зажима патрона", "10", "20"))})
+        if position.code == "TEST-DRILL-MAINS" else position
+        for position in catalog_data.positions]
+    return runtime(catalog_data.model_copy(update={"positions": tuple(positions)}))
+
+
+AMBIGUOUS = {"description": "Дрель; питание: от сети; мощность 650 вт; 5 мм",
+             "confirmed_category_id": "tools", "confirmed_ktru_code": "TEST-DRILL-MAINS"}
+
+
+def test_ambiguous_measurement_is_asked_about_not_guessed(catalog_data):
+    """Два свойства в миллиметрах — система спрашивает, а не выбирает наугад."""
+    result = request(ambiguous_engine(catalog_data), **AMBIGUOUS)
+    assert result.status == "needs_input"
+    question = result.next_question
+    assert question.kind == "correction" and "5 мм" in question.title
+    labels = [option.label for option in question.options]
+    assert any("Максимальный диаметр" in label for label in labels)
+    assert any("Минимальный диаметр" in label for label in labels)
+    assert labels[-1] == "Сохранить как дополнительные сведения"
+    assert not any("диаметр" in fact.name for fact in result.facts)   # имя не выдумано
+
+
+def test_answer_binds_the_measurement_to_the_chosen_characteristic(catalog_data):
+    """Ответ «это минимальный диаметр» создаёт факт из текста: значение 5 мм, не выдумано."""
+    engine = ambiguous_engine(catalog_data)
+    question = request(engine, **AMBIGUOUS).next_question
+    chosen = next(option for option in question.options if "Минимальный диаметр" in option.label)
+    answered = request(engine, **{**AMBIGUOUS, "answers": [{"question_id": question.id, "value": chosen.value}]})
+    assert answered.status == "resolved"
+    fact = next(item for item in answered.facts if "диаметр" in item.name)
+    assert (fact.name, fact.value, fact.unit) == ("Минимальный диаметр зажима патрона", "5", "мм")
+
+
+def test_rejecting_the_question_keeps_the_text_as_additional(catalog_data):
+    """«Это дополнительные сведения»: факт не выдумывается, текст не блокирует подбор."""
+    engine = ambiguous_engine(catalog_data)
+    question = request(engine, **AMBIGUOUS).next_question
+    answered = request(engine, **{**AMBIGUOUS, "answers": [{"question_id": question.id, "value": "reject"}]})
+    assert answered.status == "resolved"
+    assert not any("диаметр" in fact.name for fact in answered.facts)
+    # отказ оставляет измерение как дополнительные сведения: факт без имени, текст цел
+    assert any(fact.unit == "мм" and fact.value == "5" and fact.name == "" for fact in answered.facts)
+
+
+def test_answer_outside_the_range_is_refused(catalog_data):
+    """Ответ проверяется: 5 мм для «максимального диаметра» (10…20) — отказ, а не тихое принятие."""
+    engine = ambiguous_engine(catalog_data)
+    question = request(engine, **AMBIGUOUS).next_question
+    chosen = next(option for option in question.options if "Максимальный диаметр" in option.label)
+    with pytest.raises(InvalidConfirmation) as error:
+        request(engine, **{**AMBIGUOUS, "answers": [{"question_id": question.id, "value": chosen.value}]})
+    assert error.value.code == "incompatible_ktru_code"
+
+
+def test_measurement_without_a_matching_dimension_is_asked_too(engine):
+    """Если подходящей характеристики нет вовсе, вопрос всё равно есть: иначе тупик."""
+    result = request(engine, description="Дрель; питание: от сети; 30 кг",
+                     confirmed_category_id="tools")
+    question = result.next_question
+    assert question is not None and question.kind == "correction" and "30 кг" in question.title
+    assert [option.value for option in question.options] == ["reject"]
+
+
+# ---------------------- неполное имя характеристики: привязывается само и остаётся мягким
+def test_partial_name_is_bound_without_a_question(catalog_data):
+    """«минимальный диаметр 5 мм»: имя написано не полностью, но однозначно — вопроса нет."""
+    result = request(ambiguous_engine(catalog_data),
+                     description="Дрель; питание: от сети; мощность 650 вт; минимальный диаметр 5 мм",
+                     confirmed_category_id="tools", confirmed_ktru_code="TEST-DRILL-MAINS")
+    assert any(fact.name == "минимальный диаметр" and fact.value == "5" for fact in result.facts)
+    assert not any(issue.code == "unmapped_measurement" for issue in result.issues)
+    assert result.status == "resolved"
+
+
+def test_partial_name_value_out_of_range_does_not_exclude(catalog_data):
+    """Мягкий факт проверяется, но не исключает: 12 мм вне 1…10 не выбрасывает позицию."""
+    result = request(ambiguous_engine(catalog_data),
+                     description="Дрель; питание: от сети; мощность 650 вт; минимальный диаметр 12 мм",
+                     confirmed_category_id="tools", confirmed_ktru_code="TEST-DRILL-MAINS")
+    assert "TEST-DRILL-MAINS" not in {candidate.ktru_code for candidate in result.excluded}
+    assert not any(issue.code == "unmapped_measurement" for issue in result.issues)
 
 
 def test_stale_correction_cannot_silently_remove_a_fact(engine):

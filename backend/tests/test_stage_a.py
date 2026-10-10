@@ -416,17 +416,43 @@ def test_orphan_measurement_survives_as_unassigned_fact():
     assert all(fragment.raw == "Длина: 5 футов; 650 Вт"[slice(*fragment.span)] for fragment in fragments)
 
 
-# ------------------------------------------------- A12: без «починки» похожего
-def test_misspelled_name_is_not_repaired():
-    """«Мошность» остаётся «Мошностью»: похожесть не переписывает ни имя, ни значение."""
-    facts, _ = extract("Мошность: 650 Вт", ("Мощность",))
+# ------------------- A12: «починка» похожего — два уровня (см. app/extraction)
+def test_confident_misspelling_is_repaired_and_reported():
+    """«Мошность» (0.875) — уверенная опечатка: имя исправляется автоматически.
+
+    Политика изменена намеренно владельцем: при уверенности
+    (`app/extraction.TYPO_CONFIDENT`, 0.85) замена делается сразу, а не вопросом.
+    Критерий проверен на 774 однобуквенных опечатках: выше 0.85 попадает 80 % из
+    них, и ни одной спорной. Исходное написание не теряется — оно остаётся в `raw`
+    факта и в провенансе (`confirmation_required=False`).
+    """
+    corrections: list = []
+    facts, _ = extract("Мошность: 650 Вт", ("Мощность",), corrections=corrections)
     assert len(facts) == 1
-    assert facts[0].name == "Мошность"
+    assert facts[0].name == "Мощность"
+    assert facts[0].raw == "Мошность: 650 Вт"
+    assert [(item.original, item.normalized, item.confirmation_required)
+            for item in corrections] == [("Мошность", "Мощность", False)]
     item = structure(facts[0], position(POWER))
-    assert item.name == "Мошность"
-    assert item.def_id is None
+    assert item.name == "Мощность"
+    assert item.def_id is not None
     assert item.value == 650
     assert item.unit is not None and item.unit.text == "Вт"
+
+
+def test_unsure_misspelling_is_not_repaired():
+    """«Машность» (0.750) — только подсказка: имя остаётся как написано.
+
+    Между `TYPO_SUGGEST` (0.72) и `TYPO_CONFIDENT` (0.85) извлечение не подменяет
+    ничего: факт уходит с написанием пользователя, а исправление предлагает поток
+    коррекций (`tests/test_correction_http.py`).
+    """
+    facts, _ = extract("Машность: 650 Вт", ("Мощность",))
+    assert len(facts) == 1
+    assert facts[0].name == "Машность"
+    assert facts[0].raw == "Машность: 650 Вт"
+    item = structure(facts[0], position(POWER))
+    assert item.name == "Машность"
 
 
 def test_value_is_not_normalized_to_dictionary():

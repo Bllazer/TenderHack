@@ -39,6 +39,125 @@ HOMOGLYPH_LATIN_TO_CYRILLIC = str.maketrans({
 #: Токен с цифрой или разделителем — код, ГОСТ, артикул или идентификатор: не трогаем.
 PROTECTED_TOKEN = re.compile(r"[\d._/@#№-]")
 
+#: Чистое число — измерение, а не часть названия типа товара.
+NUMBER_TOKEN = re.compile(r"^[+−-]?\d+(?:[.,]\d+)?$")
+
+#: Порог исправления опечатки в поисковом запросе. Ниже, чем в предложении
+#: исправлений (`app/mapping.py`, 0.82): здесь правка не показывается пользователю,
+#: а только добавляет ещё один вариант запроса, поэтому её можно позволить шире.
+CORRECTION_CUTOFF = 0.80
+
+
+@lru_cache(maxsize=1)
+def measurement_spellings() -> frozenset:
+    """Написания единиц измерения. Ленивый импорт: `app.units` импортирует `canon` отсюда."""
+    from app.units import UNITS
+    return frozenset(UNITS)
+
+
+def retrieval_variants(text: str, vocabulary=(), vocabulary_index=None,
+                       known_lemmas=(), lemmatize=None) -> tuple[str, ...]:
+    """Поисковые варианты для определения ТИПА товара: без измерений, с исправлением опечаток.
+
+    Зачем без измерений: числа и единицы в поисковую запись каталога не входят
+    (значения характеристик в текст не кладутся — они нужны фильтру C, а не поиску
+    типа). Поэтому «шкаф для дакументов 2000 мм» ищет тип в том числе по «2000 мм»
+    и уезжает; «2000 мм шкаф для документов» — не уезжает.
+
+    Зачем исправление опечаток: «шуруповирт» в каталоге не встречается вовсе, и
+    лексические каналы по нему молчат, а «аккумуляторный» тянет к другой семье.
+
+    Два разных словаря, и это важно:
+
+    * **проверка «слово известно»** идёт по леммам каталога (`known_lemmas`):
+      падежная форма — не опечатка, и «сверления» править нельзя;
+    * **подстановка** берётся из слов названий (`vocabulary`): в запрос должно
+      попасть естественное «документов», а не лемма «документ», иначе портится
+      плотный канал, который читает текст как есть.
+
+    Варианты только **добавляются** к исходному: исходный запрос остаётся первым
+    и никогда не подменяется.
+    """
+    tokens = [token for token in text.split() if token]
+    if not tokens:
+        return ()
+
+    units = measurement_spellings()
+    # Единицей считается написание, стоящее ПОСЛЕ числа: «20 см», «650 Вт». Иначе
+    # предлог «с» (он же секунда) или «м» (метр) выбрасывались бы из обычной фразы:
+    # «мебель для хранения бумаг с замком» теряла предлог и превращалась в мусор.
+    measurements = [False] * len(tokens)
+    for index, token in enumerate(tokens):
+        if NUMBER_TOKEN.fullmatch(token):
+            measurements[index] = True
+        elif index and NUMBER_TOKEN.fullmatch(tokens[index - 1]) and canon(token) in units:
+            measurements[index] = True
+    cleaned = [token for index, token in enumerate(tokens) if not measurements[index]]
+
+    def fold(token: str) -> str:
+        return lemmatize(token) if lemmatize is not None else canon(token)
+
+    def correctable(token: str) -> bool:
+        return bool(not PROTECTED_TOKEN.search(token) and len(canon(token)) >= 5
+                    and re.search(r"[А-Яа-яЁё]", token))
+
+    def corrected(source: list[str]) -> list[str]:
+        result = []
+        for token in source:
+            if not correctable(token) or fold(token) in known_lemmas:
+                result.append(token)
+                continue
+            result.append(closest_vocabulary_token(token, vocabulary, vocabulary_index) or token)
+        return result
+
+    candidates = []
+    # Вариант без измерений берётся, только если после удаления остаётся хотя бы два
+    # слова: «дрель 650 Вт» без числа — это одно слово «дрель», и по нему выигрывает
+    # «Дрель ручная механическая» — запрос теряет ровно то, что его уточняло.
+    if len(cleaned) >= 2 and len(cleaned) != len(tokens):
+        candidates.append(" ".join(cleaned))
+    candidates.append(" ".join(corrected(tokens)))
+    if len(cleaned) >= 2:
+        candidates.append(" ".join(corrected(cleaned)))
+    variants: list[str] = []
+    for candidate in candidates:
+        if candidate and candidate != text and candidate not in variants:
+            variants.append(candidate)
+    return tuple(variants)
+
+
+def vocabulary_index(vocabulary) -> dict:
+    """Индекс «первая буква и длина → токены каталога» для быстрого поиска опечаток.
+
+    Ключ — первая буква и длина, а не первые две буквы: опечатка бывает во второй
+    букве («дакументов» ↔ «документов»), и по двум буквам такой кандидат не нашёлся бы.
+    """
+    index: dict[tuple[str, int], list[str]] = {}
+    for token in vocabulary:
+        if token:
+            index.setdefault((token[0], len(token)), []).append(token)
+    return index
+
+
+def closest_vocabulary_token(token: str, vocabulary, index=None) -> str | None:
+    """Ближайший токен каталога к написанному, или None.
+
+    Кандидаты ограничиваются первой буквой и длиной ±2: без этого сравнение шло бы
+    по всему словарю каталога (десятки тысяч токенов) на каждый вариант запроса.
+    """
+    from difflib import get_close_matches
+    key = canon(token)
+    if not key:
+        return None
+    index = index if index is not None else vocabulary_index(vocabulary)
+    candidates: list[str] = []
+    for length in range(max(1, len(key) - 2), len(key) + 3):
+        candidates.extend(index.get((key[0], length), ()))
+    if not candidates:
+        return None
+    close = get_close_matches(key, candidates, n=1, cutoff=CORRECTION_CUTOFF)
+    return close[0] if close else None
+
 
 def _latin_only(text: str) -> bool:
     return bool(re.search(r"[A-Za-z]", text)) and not re.search(r"[А-Яа-яЁё]", text)
@@ -287,15 +406,57 @@ class Search:
             scores += idf * freq * 2.5 / (freq + 1.5 * (.25 + .75 * self.lengths / self.average))
         return scores
 
+    @property
+    def vocabulary(self) -> frozenset:
+        """Слова названий категорий — по ним ищутся опечатки в запросе.
+
+        Именно названия, а не леммы BM25: правка должна подставлять в запрос
+        естественное слово («документов», а не лемму «документ») — иначе портится
+        плотный канал, который читает текст как есть. И именно написание, а не
+        леммы: иначе любая падежная форма выглядела бы опечаткой.
+        """
+        tokens = getattr(self, "_vocabulary", None)
+        if tokens is None:
+            tokens = frozenset(word for category in self.data.catalog.categories
+                               for word in canon(category.name).split())
+            self._vocabulary = tokens
+        return tokens
+
+    @property
+    def vocabulary_tokens(self) -> dict:
+        index = getattr(self, "_vocabulary_index", None)
+        if index is None:
+            index = vocabulary_index(self.vocabulary)
+            self._vocabulary_index = index
+        return index
+
+    def retrieval_variants_for(self, text: str) -> tuple[str, ...]:
+        """Варианты для типа товара; пусто, если состояние Search усечено.
+
+        Независимый аудит ревью собирает `Search.__new__(Search)` и заполняет только
+        `data`, `encoder`, `lexical` и `char` — словаря каталога и анализатора там нет.
+        Слой вариантов это улучшение, а не условие работы `find`: без него `find`
+        возвращает тот же результат, что и раньше.
+        """
+        vocabulary = getattr(self, "vocabulary", None)
+        analyzer = getattr(self, "analyzer", None)
+        lemmas = getattr(self, "df", None)
+        if vocabulary is None or analyzer is None or lemmas is None:
+            return ()
+        return retrieval_variants(text, vocabulary, self.vocabulary_tokens, lemmas, analyzer.lemma)
+
     def channels_for(self, text: str) -> tuple[np.ndarray | None, np.ndarray | None, np.ndarray | None]:
         """Оценки трёх каналов для запроса и его безопасных вариантов.
 
-        Варианты (неверная раскладка, смешение алфавитов) объединяются по максимуму
-        на документ: исходный запрос всегда участвует, поэтому вариант может только
-        добавить попадание, но не ухудшить его. Исходный текст при этом не
-        подменяется — см. `query_variants`.
+        Варианты (неверная раскладка, смешение алфавитов, измерения и опечатки)
+        объединяются по максимуму на документ: исходный запрос всегда участвует.
+        Исходный текст при этом не подменяется — см. `query_variants` и
+        `retrieval_variants`.
         """
         variants = query_variants(text)
+        for candidate in self.retrieval_variants_for(text):
+            if candidate not in variants:
+                variants = variants + (candidate,)
         lexical = [self.lexical(variant) for variant in variants]
         char = [self.char.scores(variant) for variant in variants] if self.char else None
         dense = None
