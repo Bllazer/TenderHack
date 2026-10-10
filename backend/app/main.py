@@ -7,9 +7,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.concurrency import run_in_threadpool
 
 from app.analysis import InvalidConfirmation, analyze
+from app.batch import batch_counts, summarize
 from app.catalog import Catalog, load_snapshot, snapshot
 from app.config import settings
-from app.schemas import AnalysisCreate, AnalysisOut, CatalogStatus, ErrorResponse, Health, Ready, ENGINE_VERSION
+from app.csv_input import decode_base64, split_rows
+from app.schemas import (AnalysisCreate, AnalysisOut, BatchCreate, BatchOut, BatchRow, CatalogStatus,
+                         CsvRowsOut, ErrorResponse, Health, Ready, ENGINE_VERSION)
 from app.search import E5Encoder, Search
 from app.components import existing_components
 from app.catalog_diagnostics import position_blockers
@@ -112,5 +115,76 @@ def create_analysis(body: AnalysisCreate):
     except Exception as exc:
         logger.exception("Analysis failed")
         raise HTTPException(503, {"code": "analysis_unavailable", "message": "Не удалось выполнить проверку; повторите запрос"}) from exc
+    finally:
+        app.state.slots.release()
+
+
+@app.post("/api/v1/analyses/csv", response_model=CsvRowsOut,
+          responses={422: {"model": ErrorResponse}, 503: {"model": ErrorResponse}})
+def parse_csv(body: BatchCreate):
+    """Только разбор загруженного файла: строки для поштучного прогона.
+
+    Ничего не анализирует и не занимает слот: клиент получает список строк и
+    дальше отправляет каждую в обычный `/api/v1/analyses` — так строка CSV
+    проходит тот же путь, что и ввод вручную.
+    """
+    try:
+        raw = decode_base64(body.csv_base64) if body.csv_base64 is not None else body.csv.encode("utf-8")
+    except ValueError as error:
+        raise HTTPException(422, {"code": "csv_invalid", "field": "csv_base64",
+                                  "message": str(error)}) from error
+    parsed = split_rows(raw, max_rows=body.run_limit, skip_header=body.skip_header)
+    if not parsed.rows:
+        raise HTTPException(422, {"code": "csv_empty", "field": "csv",
+                                  "message": (parsed.notes[-1] if parsed.notes
+                                              else "В файле не найдено ни одной строки с товаром")})
+    return CsvRowsOut(catalog_version=app.state.data.catalog.catalog_version, filename=body.filename,
+                      encoding=parsed.encoding, delimiter=parsed.delimiter,
+                      header_skipped=parsed.header_skipped, rows_total=len(parsed.rows),
+                      rows=parsed.rows, rows_skipped=parsed.skipped, notes=parsed.notes,
+                      truncated=parsed.truncated)
+
+
+@app.post("/api/v1/analyses/batch", response_model=BatchOut,
+          responses={422: {"model": ErrorResponse}, 429: {"model": ErrorResponse}, 503: {"model": ErrorResponse}})
+def create_batch(body: BatchCreate):
+    """Загруженный CSV: каждая строка файла разбирается как обычная строка ввода.
+
+    Формат файла не задан, поэтому строка собирается из всех непустых ячеек через
+    `"; "` — тот же текст, который пользователь ввёл бы руками. Строки
+    обрабатываются последовательно в одном слоте, чтобы пакет не вытеснял
+    одиночные запросы; по каждой строке возвращается компактная сводка.
+    """
+    try:
+        raw = decode_base64(body.csv_base64) if body.csv_base64 is not None else body.csv.encode("utf-8")
+    except ValueError as error:
+        raise HTTPException(422, {"code": "csv_invalid", "field": "csv_base64",
+                                  "message": str(error)}) from error
+    parsed = split_rows(raw, max_rows=body.run_limit, skip_header=body.skip_header)
+    if not parsed.rows:
+        raise HTTPException(422, {"code": "csv_empty", "field": "csv",
+                                  "message": (parsed.notes[-1] if parsed.notes
+                                              else "В файле не найдено ни одной строки с товаром")})
+    if not app.state.slots.acquire(blocking=False):
+        raise HTTPException(429, {"code": "analysis_busy",
+                                  "message": "Повторите запрос после завершения текущего анализа"})
+    try:
+        rows = []
+        for item in parsed.rows:
+            base = {"line": item["line"], "description": item["description"]}
+            try:
+                single = AnalysisCreate(description=item["description"], candidate_limit=body.candidate_limit)
+                result = analyze(app.state.data, app.state.search, single, components=app.state.components)
+                rows.append(BatchRow(**base, **summarize(result)))
+            except InvalidConfirmation as exc:
+                rows.append(BatchRow(**base, status="error", error=exc.code))
+            except Exception as exc:
+                logger.exception("Batch row failed on line %s", item["line"])
+                rows.append(BatchRow(**base, status="error", error=type(exc).__name__))
+        return BatchOut(catalog_version=app.state.data.catalog.catalog_version, filename=body.filename,
+                        encoding=parsed.encoding, delimiter=parsed.delimiter,
+                        header_skipped=parsed.header_skipped, rows_total=len(parsed.rows),
+                        rows_skipped=parsed.skipped, notes=parsed.notes, truncated=parsed.truncated,
+                        counts=batch_counts([row.model_dump() for row in rows]), rows=rows)
     finally:
         app.state.slots.release()

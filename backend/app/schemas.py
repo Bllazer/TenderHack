@@ -270,3 +270,73 @@ class CatalogStatus(BaseModel):
     missing_resources: list[str] = Field(default_factory=list)
     templates: int = 0
     final_positions: int = 0
+
+
+class BatchCreate(InputModel):
+    """Разбор загруженного CSV: одна строка файла — одна строка ввода товара."""
+
+    csv: str | None = Field(default=None, max_length=2_000_000)
+    csv_base64: str | None = Field(default=None, max_length=4_000_000)
+    filename: str | None = Field(default=None, max_length=256)
+    candidate_limit: int = Field(default=20, ge=1, le=100)
+    run_limit: int = Field(default=50, ge=1, le=100)
+    skip_header: bool = True
+
+    @model_validator(mode="after")
+    def one_source(self):
+        if (self.csv is None) == (self.csv_base64 is None):
+            raise ValueError("Передайте либо csv, либо csv_base64")
+        return self
+
+
+class BatchRow(BaseModel):
+    """Компактный результат по одной строке файла."""
+
+    line: int
+    description: str
+    status: Literal["needs_data", "needs_input", "ambiguous", "resolved", "error"]
+    selected_ktru_code: str | None = None
+    candidate_count: int = 0
+    excluded_count: int = 0
+    outcome: str | None = None
+    top_candidates: list[str] = Field(default_factory=list)
+    category_id: str | None = None
+    scope_complete: bool = False
+    question_kind: str | None = None
+    question_title: str | None = None
+    question_property: str | None = None
+    issue_codes: list[str] = Field(default_factory=list)
+    reason: str | None = None
+    verification: Verification = Field(default_factory=Verification)
+    error: str | None = None
+
+
+class BatchOut(BaseModel):
+    engine_version: str = ENGINE_VERSION
+    catalog_version: str
+    filename: str | None = None
+    encoding: str
+    delimiter: str
+    header_skipped: bool = False
+    rows_total: int = 0
+    rows_skipped: list[dict] = Field(default_factory=list)
+    notes: list[str] = Field(default_factory=list)
+    truncated: bool = False
+    counts: dict = Field(default_factory=dict)
+    rows: list[BatchRow] = Field(default_factory=list)
+
+
+class CsvRowsOut(BaseModel):
+    """Только разбор файла: строки для поштучного прогона через /api/v1/analyses."""
+
+    engine_version: str = ENGINE_VERSION
+    catalog_version: str
+    filename: str | None = None
+    encoding: str
+    delimiter: str
+    header_skipped: bool = False
+    rows_total: int = 0
+    rows: list[dict] = Field(default_factory=list)
+    rows_skipped: list[dict] = Field(default_factory=list)
+    notes: list[str] = Field(default_factory=list)
+    truncated: bool = False

@@ -77,12 +77,41 @@
 | GET | `/api/v1/catalog/status` | 200 categories/positions/catalog_version/ready/reason/catalog_loaded/missing_resources/templates/final_positions |
 | GET | `/api/v1/catalog/positions/{code}` | 200 карточка правил локального snapshot; 404 detail.code=unknown_ktru_code |
 | POST | `/api/v1/analyses` | 200 полный результат; 422 неверный ввод/подтверждение; 429 заняты слоты; 503 внутренняя ошибка |
+| POST | `/api/v1/analyses/csv` | 200 разбор загруженного файла без анализа (строки + метаданные); 422 csv_empty/csv_invalid |
+| POST | `/api/v1/analyses/batch` | 200 разбор и анализ всех строк одним запросом (компактная сводка по строкам + counts); 422/429/503 |
 
 Старые серверные GET сохранённого анализа, CRUD СТЕ, сохраняемый feedback и старые маршруты чтения категорий/правил удалены (404). POST не хранится. Новый GET карточки читает только неизменяемый каталог, без анализа или сессии; analysis_id, ste_id, title, raw_payload и старый контейнер result не используются. Frontend вызывает только POST анализа. Миграция не требуется: серверного хранилища нет.
 
 `catalog_loaded` означает наличие позиций, `ready` — готовность анализа; это разные признаки. `templates` и `final_positions` — количества известных шаблонов и конечных позиций (неизвестный is_template не включается ни в одну группу). `missing_resources` — список недостающих компонентов/артефактов: category_mapping, search_index, extractor, checker, questions. Для clean (5) без ML-артефактов: catalog_loaded=true, positions=60087, templates=5897, final_positions=54190, categories=0, ready=false, reason=search_index_missing. Подбор не завершён даже при ручной передаче реального кода.
 
 Изменения для frontend-команды: поля статуса каталога и readiness добавлены; POST и его поля сохранены. При необходимости показывайте отдельно «каталог загружен» и причину неготовности. needs_data нельзя показывать как найденный код; selected_ktru_code остаётся null. Frontend в этом изменении не редактируется.
+
+## Загрузка CSV
+
+Файл с товарами — это пачка обычных строк ввода: анализатор, поиск, проверки и подтверждения не меняются. Строка файла становится описанием (`AnalysisCreate.description`), поэтому карточка по строке ничем не отличается от карточки, полученной вручную.
+
+Запрос (оба маршрута, обычный `application/json`):
+
+```json
+{
+  "csv": "описание;характеристики\nКиянка;Форма сечения рабочей части: Круг",
+  "csv_base64": null,
+  "filename": "demo.csv",
+  "candidate_limit": 20,
+  "run_limit": 50,
+  "skip_header": true
+}
+```
+
+`csv` или `csv_base64` — строго одно из двух; `multipart/form-data` и `UploadFile` не поддерживаются (зависимость `python-multipart` в поставку не входит). Base64 нужен, когда файл сохранён в cp1251 или с BOM: байты декодирует сервер, а не браузер. Разбор выполняет [app/csv_input.py](../../app/csv_input.py): UTF-8 (с BOM и без), UTF-16 по BOM, иначе cp1251; разделитель `;`, `,` или табуляция определяется автоматически; кавычки, разделители и переводы строк внутри кавычек поддержаны; строка-заголовок («Наименование», «Описание товара», «Код КТРУ») пропускается при `skip_header=true`, а первая товарная строка вида «Лопата; штыковая» заголовком не считается. Непустые ячейки строки склеиваются через `"; "` — поэтому файл с колонками «описание; характеристики» и файл из одной колонки обрабатываются одинаково, а характеристики внутри строки разбираются обычным путём (`Свойство: значение`). `run_limit` 1–100 (по умолчанию 50), строка длиннее 12000 символов обрезается с примечанием, лишние и пустые строки попадают в `rows_skipped` с причиной, `truncated=true` означает, что файл длиннее лимита.
+
+`POST /api/v1/analyses/csv` ничего не анализирует и не занимает слот: ответ `CsvRowsOut` — `encoding`, `delimiter`, `header_skipped`, `rows_total`, `rows[{line, description}]`, `rows_skipped`, `notes`, `truncated`. Его назначение — получить строки и дальше отправлять каждую в обычный `POST /api/v1/analyses`, чтобы показать полную карточку с характеристиками и кандидатами.
+
+`POST /api/v1/analyses/batch` разбирает файл и сразу анализирует строки **последовательно в одном слоте**: всего два анализа идут параллельно (третий запрос получает 429 `analysis_busy`). Ответ `BatchOut` — те же метаданные плюс `counts` (`rows`, `statuses`, `reasons`, `resolved`) и `rows[BatchRow]`: `line`, `description`, `status`, `selected_ktru_code`, `candidate_count`, `excluded_count`, `outcome`, `top_candidates`, `category_id`, `scope_complete`, `question_kind`, `question_title`, `question_property`, `issue_codes`, `reason`, `verification`, `error`. Полных карточек в пакетном ответе нет намеренно: двадцать полных ответов — это мегабайты и лишнее время на CPU.
+
+`reason` — одна причина незавершения в терминах плана: `type_unknown`, `mapping_missing`, `missing_required`, `conflicting_facts`, `value_indistinguishable`, `catalog_link_missing`, `unsupported_constraint` (служебные `confirm_code_required`, `no_compatible_candidate`); для `resolved` — `null`. Строка CSV никогда не даёт `resolved` сама по себе: подтверждение типа и конечного кода остаётся действием пользователя, поэтому пакетный режим показывает первый шаг сценария, а карточка доводит строку до кода.
+
+Ошибки CSV-маршрутов: 422 `csv_empty` (в файле нет ни одной строки с товаром), 422 `csv_invalid` (не разбирается base64), 422 от pydantic, если переданы `csv` и `csv_base64` вместе или ни одного из них, 429 `analysis_busy` для пакетного маршрута. Ограничения nginx фронта: `client_max_body_size 256k` (для 10–20 строк с запасом) и `proxy_read_timeout 60s` — при пакетном режиме на большом файле таймаут стоит увеличить.
 
 ## Запрос
 
