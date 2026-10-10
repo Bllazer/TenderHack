@@ -208,3 +208,27 @@ def to_structured(facts: list[Fact], position: Position | None = None) -> list[S
     становится кодом характеристики, и сопоставление идёт по нему.
     """
     return [structure(fact, position) for fact in facts]
+
+
+#: версия схемы документа стадии A, как в samples/stage_model_output.json
+SCHEMA_VERSION = "1.0"
+
+
+def stage_item(position_code: str, title: str, pool: list[str],
+               facts: list[StructuredFact]) -> dict:
+    """Один товар в документе стадии A: позиция, её пул и факты по ней."""
+    return {
+        "position_code": position_code,
+        "title": title,
+        "pool": list(pool),
+        "facts": [fact.model_dump() for fact in facts],
+    }
+
+
+def stage_output(items: list[dict], source: str) -> dict:
+    """Документ стадии A целиком — та форма, которую читает validation_run.
+
+    Именно этот JSON является выходом модели: обёртка с версией схемы и список
+    товаров, у каждого свой пул и свои факты.
+    """
+    return {"source": source, "schema_version": SCHEMA_VERSION, "items": list(items)}
