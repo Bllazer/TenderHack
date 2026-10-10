@@ -47,10 +47,10 @@ def show(text: str, names: tuple[str, ...], position) -> None:
 
     print("\n4. ЧТО ИЗМЕНИЛОСЬ")
     for fact, item in zip(facts, to_structured(facts, position)):
-        bound = "char_code позиции" if not item.def_id.startswith("name:") else "ключ по имени"
-        print(f"   {fact.name[:32]:32} оператор {str(item.operator):4} "
-              f"значение {str(item.value)[:26]:26} "
-              f"единица {str(item.unit.name if item.unit else None):6} def_id -> {bound}")
+        bound = item.def_id or "не сопоставлено (C подхватит по имени)"
+        unit = item.unit.text if item.unit else None
+        print(f"   {fact.name[:32]:32} kind {item.kind:8} оператор {str(item.operator):4} "
+              f"значение {str(item.value)[:22]:22} единица {str(unit):6} def_id -> {bound}")
 
     if unparsed:
         print("\n   неразобранные фрагменты:", [f.raw.strip() for f in unparsed])
