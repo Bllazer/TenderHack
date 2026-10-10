@@ -122,6 +122,8 @@ def check_fact(prop: Property, fact: Fact, unit_resolver=None):
         reason = next((r[1] for r in results if r[0] == outcome), "empty_selection")
         return outcome, reason, sorted({c for r in results for c in r[2]}), None
     if prop.value_type in ("text", "boolean"):
+        if fact.unit and all(not item.unit for item in prop.allowed):
+            return "unknown", "unit_mismatch", [], None
         if any(item.kind != "enum" for item in prop.allowed):
             return "unknown", "unsupported_constraint", [], None
         value = canon(fact.value)

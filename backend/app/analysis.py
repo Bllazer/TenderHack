@@ -21,14 +21,23 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
         raise InvalidConfirmation("confirmed_category_id", "unknown_category")
     positions, scope_complete = data.pool(category_id) if category_id else ((), False)
     properties = tuple(prop for position in positions for prop in position.properties)
-    names = tuple(sorted({name for prop in properties for name in (prop.name, *prop.aliases)})) if category_id else data.extraction_names
-    extraction = components.extractor.extract(body.description, names,
-        scoped_properties=properties) if components.extractor else None
+    context = getattr(components.extractor, 'context', lambda scope, props: (props, (), ()))
+    extraction_properties, card_properties, card_evidence = context(category_id, properties)
+    # Before confirmation, a global adjective is not a property label. Explicit
+    # keys still survive; only unambiguous physical labels use the global dictionary.
+    names = tuple(sorted({name for prop in extraction_properties for name in (prop.name, *prop.aliases)})) if category_id else tuple(
+        name for name in data.extraction_names if len(name.split()) > 1 or name in {'Толщина', 'Ширина', 'Высота', 'Длина', 'Диаметр'})
+    contextual_extract = getattr(components.extractor, 'extract_context', None)
+    extraction = (contextual_extract(body.description, names, scoped_properties=extraction_properties, category_id=category_id)
+                  if contextual_extract else components.extractor.extract(body.description, names, scoped_properties=properties)) if components.extractor else None
     extracted, unparsed = (extraction.facts, extraction.unparsed) if extraction else ([], [Fragment(raw=body.description)])
     result = AnalysisOut(status="needs_data", original_text=body.description, normalized_text=normalize(body.description),
                          facts=extracted, unparsed=unparsed, additional=[Fragment(raw=raw) for raw in body.additional],
                          catalog_version=data.catalog.catalog_version,
                          verification=Verification(confirmed_by_user=bool(body.confirmed_ktru_code)))
+    cards = getattr(components.extractor, 'cards', None)
+    result.card_schema_version = cards.version if cards else None
+    result.card_schema_evidence = list(card_evidence)
     result.original_facts = [fact.model_copy(deep=True) for fact in extracted]
     if extraction:
         result.corrections.extend(extraction.corrections)
@@ -36,6 +45,13 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
     answered = {answer.question_id for answer in body.answers}
     for answer in body.answers:
         prop = registry.get(answer.question_id)
+        previous_prop = data.answer_properties.get(answer.question_id) if not prop else None
+        if previous_prop:
+            extracted.append(Fact(id='answer:' + answer.question_id, name=previous_prop.name,
+                value=answer.value or '', values=answer.values, unit=answer.unit,
+                raw=json.dumps(answer.values, ensure_ascii=False) if answer.values is not None else answer.value or 'не знаю',
+                source='answer', subject=previous_prop.subject,
+                unknown=answer.unknown or (answer.values is None and not answer.value)))
         if prop:
             from app.search import canon
             superseded = [fact for fact in extracted if fact.subject == prop.subject and canon(fact.name) in
@@ -49,6 +65,12 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
                                   raw=json.dumps(answer.values, ensure_ascii=False) if answer.values is not None else answer.value or "не знаю", source="answer", subject=prop.subject,
                                   unknown=answer.unknown or (answer.values is None and not answer.value)))
     result.facts = apply_inputs(extracted, body.attributes)
+    if hasattr(components.extractor, 'normalize_context'):
+        components.extractor.normalize_context(result.facts, category_id, extraction_properties)
+    for fact in result.facts:
+        fact.card_mappings = [prop.id for prop in card_properties if prop.name == fact.name and prop.subject == fact.subject]
+        fact.extraction_evidence = list(dict.fromkeys([*fact.extraction_evidence,
+            *(prop.evidence for prop in card_properties if prop.id in fact.card_mappings)]))
     # A current property answer is the full replacement, also for edited card
     # inputs. kind=3 must not silently union an obsolete selection with it.
     for answer in body.answers:
@@ -78,7 +100,8 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
                                                 explanation="Явная правка пользователя; новые значения проверяются заново"))
     replaced = {item.replaces for item in body.attributes if item.replaces}
     result.unparsed = [fragment for fragment in unparsed if fragment.id not in replaced]
-    pending, rejected, accepted = resolve_suggestions(category_id, positions, result.facts, body.answers)
+    pending, rejected, accepted = resolve_suggestions(category_id, positions, result.facts, body.answers,
+                                                     extra_properties=card_properties)
     result.corrections.extend(accepted)
     if search:
         finder = getattr(search, "find_state", ExistingSearcher(search).find_state)
@@ -162,6 +185,9 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
     if any(match["unit"] for fragment in result.unparsed for match in MEASUREMENT.finditer(fragment.raw)):
         active_issues.append(Issue(code="unmapped_measurement", explanation="В исходном тексте осталось измерение без установленного свойства",
                                   suggested_action="Добавьте характеристику с именем и единицей или уточните описание"))
+    if any(fact.unit and not fact.name and fact.id not in rejected for fact in result.facts):
+        active_issues.append(Issue(code='unmapped_measurement', explanation='Измерение сохранено в карточке, но его свойство не установлено',
+                                  suggested_action='Уточните назначение измерения либо сохраните как дополнительные сведения'))
     if any(candidate.outcome == "unknown" for candidate in remaining):
         active_issues.append(Issue(code="verification_incomplete", explanation="Есть непроверенные факты, обязательные поля или ограничения"))
     unique = len(remaining) == 1

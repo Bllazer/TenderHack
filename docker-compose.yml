@@ -1,5 +1,6 @@
 services:
   api:
+    init: true
     build: ./backend
     environment:
       CATALOG_DIR: /srv/resources/catalog-build

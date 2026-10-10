@@ -1,0 +1,100 @@
+[
+  {
+    "code": "31.01.12.160-00000003",
+    "name": "Стул на деревянном каркасе",
+    "xml": "docs\\reviews\\stage3\\xml\\31.01.12.160-00000003.xml",
+    "xml_sha256": "2da339ca84d81cae858be4f25491cc94cc7f7bbc7cd9123ba97078c9cf60b258",
+    "clean_matches_actual_xml": true
+  },
+  {
+    "code": "31.01.11.150-00000003",
+    "name": "Стул на металлическом каркасе",
+    "xml": "docs\\reviews\\stage3\\xml\\31.01.11.150-00000003.xml",
+    "xml_sha256": "e6df72a877f587e104275dd6569394c6aa655e3c4e259d2398b050180b973edd",
+    "clean_matches_actual_xml": true
+  },
+  {
+    "code": "14.14.30.110-00000003",
+    "name": "Футболка трикотажная",
+    "xml": "docs\\reviews\\stage3\\xml\\14.14.30.110-00000003.xml",
+    "xml_sha256": "478e6ea7cf624b23115fd6293ef8dc393bf6b96cf758916fb69de6bd4c89a9b8",
+    "clean_matches_actual_xml": true
+  },
+  {
+    "code": "14.14.30.110-00000002",
+    "name": "Футболка трикотажная",
+    "xml": "docs\\reviews\\stage3\\xml\\14.14.30.110-00000002.xml",
+    "xml_sha256": "f69ce09ac0235776481751214738da1ff0d89928f959fb0ac30b00130077bed8",
+    "clean_matches_actual_xml": true
+  },
+  {
+    "code": "25.73.30.141-00000010",
+    "name": "Молоток",
+    "xml": "docs\\reviews\\stage3\\xml\\25.73.30.141-00000010.xml",
+    "xml_sha256": "e5c899a30b75b459b12f85dd184380cb9e8daaebcf15ab424ae7c05082b8cd9c",
+    "clean_matches_actual_xml": true
+  },
+  {
+    "code": "25.73.30.290-00000003",
+    "name": "Киянка",
+    "xml": "docs\\reviews\\stage3\\xml\\25.73.30.290-00000003.xml",
+    "xml_sha256": "d9ff9897a4cc5563e1031cbd546b86808272d31b38832a43f148707ec71c818a",
+    "clean_matches_actual_xml": true
+  },
+  {
+    "code": "31.01.10.000-00000004",
+    "name": "Стол письменный",
+    "xml": "docs\\reviews\\stage2\\xml\\31.01.10.000-00000004.xml",
+    "xml_sha256": "d4af97a0825f8c3e38eb75e2daec188f1f108540fb00e6735b9e96f6dc8588dd",
+    "clean_matches_actual_xml": true
+  },
+  {
+    "code": "14.11.10.000-00000002",
+    "name": "Куртка зимняя из кожи",
+    "xml": "docs\\reviews\\stage2\\xml\\14.11.10.000-00000002.xml",
+    "xml_sha256": "11e319eb725713e183904c3c96a44c12e25eb8a20a4c35c45c96033885d79e7a",
+    "clean_matches_actual_xml": true
+  },
+  {
+    "code": "14.13.10.000-00000032",
+    "name": "Пальто зимнее из текстильных материалов",
+    "xml": "docs\\reviews\\stage2\\xml\\14.13.10.000-00000032.xml",
+    "xml_sha256": "d6eeb5aa2e4b6ae135d47abb48e690f5a275de16c4e1b655ed5a1ab18049874a",
+    "clean_matches_actual_xml": true
+  },
+  {
+    "code": "14.13.10.000-00000031",
+    "name": "Пальто зимнее из текстильных материалов",
+    "xml": "docs\\reviews\\stage2\\xml\\14.13.10.000-00000031.xml",
+    "xml_sha256": "14852d7be33351226c91ec596eaa6da14909be7302899903082ddb70e1a7a9b1",
+    "clean_matches_actual_xml": true
+  },
+  {
+    "code": "28.24.11.000-00000022",
+    "name": "Пила сабельная",
+    "xml": "docs\\reviews\\stage2\\xml\\28.24.11.000-00000022.xml",
+    "xml_sha256": "caae0fb7ea7e7080a009a666f540753b40742cf39cf6629e84c0409dc124a5a9",
+    "clean_matches_actual_xml": true
+  },
+  {
+    "code": "25.99.29.120-00000003",
+    "name": "Лопата",
+    "xml": "docs\\reviews\\stage2\\xml\\25.99.29.120-00000003.xml",
+    "xml_sha256": "c2c3f265441ad9498732dfebaee56d5bb09616521d7eee26b25a8d0a4291fce4",
+    "clean_matches_actual_xml": true
+  },
+  {
+    "code": "25.99.29.120-00000002",
+    "name": "Лопата",
+    "xml": "docs\\reviews\\stage2\\xml\\25.99.29.120-00000002.xml",
+    "xml_sha256": "556b52a9abc57d5484c0027b6836e4eb2568d128f1b796eb413acf6a4476b8a8",
+    "clean_matches_actual_xml": true
+  },
+  {
+    "code": "25.99.29.120-00000001",
+    "name": "Лопата",
+    "xml": "docs\\reviews\\stage2\\xml\\25.99.29.120-00000001.xml",
+    "xml_sha256": "c8130d8c79def3db9ab47e6def84c048877d77d715f0bb21344152a3d3903d9b",
+    "clean_matches_actual_xml": true
+  }
+]

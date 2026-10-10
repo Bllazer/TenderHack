@@ -333,7 +333,7 @@ def structure(fact: Fact, position: Position | None = None) -> StructuredFact:
         score = min(confidence(fact), UNCONFIRMED_CONFIDENCE)
         method = reason
     else:
-        polarity = "negated" if fact.negated else "affirmed"
+        polarity = "negated" if fact.negated and not fact.negation_interpretation else "affirmed"
         score = confidence(fact)
         method = extract_method(fact)
 

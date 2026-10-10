@@ -7,8 +7,9 @@ from app.catalog import Property
 from app.questions import property_question_id
 
 
-def run(base, output, phase):
-    rows = json.loads((output.parent / 'source-selection.json').read_text(encoding='utf-8'))
+def run(base, output, phase, source_dir=None):
+    source_dir = source_dir or output.parent
+    rows = json.loads((source_dir / 'source-selection.json').read_text(encoding='utf-8'))
     shovel = next(r for r in rows if r['name'] == 'Лопата')
     kit = next(r for r in rows if r is not shovel)
     records = []
@@ -39,7 +40,7 @@ def run(base, output, phase):
             assert any(f['source'] == 'text' and f['span'] for f in facts)
             assert any(f['values'] == values and f['raw'] for f in facts)
 
-    card = json.loads((output.parent / (shovel['code']+'.json')).read_text(encoding='utf-8'))
+    card = json.loads((source_dir / (shovel['code']+'.json')).read_text(encoding='utf-8'))
     property_data = next(p for p in card['position']['properties'] if p['name'] == mount['name'])
     qid = property_question_id(shovel['parent_position']['code'],Property.model_validate(property_data))
     old_answer = [dict(question_id=qid,value=upper)]
@@ -96,5 +97,6 @@ if __name__ == '__main__':
     parser.add_argument('--base', default='http://127.0.0.1:8000')
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--phase', choices=['before','after'],required=True)
+    parser.add_argument('--source-dir', type=Path)
     args=parser.parse_args()
-    run(args.base,args.output,args.phase)
+    run(args.base,args.output,args.phase,args.source_dir)

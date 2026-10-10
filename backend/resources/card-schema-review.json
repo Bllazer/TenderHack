@@ -1,0 +1,309 @@
+{
+  "version": "card-schemas-v1",
+  "sources": {
+    "Инструменты.xlsx": {
+      "sha256": "7a008f3033f268c33c36eeb0a69e4dddc4b1a2a1b44f81a769e5c22c317b0c2e",
+      "fields": [
+        {
+          "id": "pp:7a008f30:24130",
+          "row": 24130,
+          "category": "Молотки",
+          "name": "Материал рукоятки"
+        },
+        {
+          "id": "pp:7a008f30:24164",
+          "row": 24164,
+          "category": "Молотки",
+          "name": "Материал бойка"
+        },
+        {
+          "id": "pp:7a008f30:24158",
+          "row": 24158,
+          "category": "Молотки",
+          "name": "Цвет",
+          "lexical_vocabulary": [
+            "Синий",
+            "Красный",
+            "Белый",
+            "Черный",
+            "Зеленый"
+          ]
+        },
+        {
+          "id": "pp:7a008f30:23327",
+          "row": 23327,
+          "category": "Киянки",
+          "name": "Материал рукоятки"
+        },
+        {
+          "id": "pp:7a008f30:23295",
+          "row": 23295,
+          "category": "Киянки",
+          "name": "Материал рабочей части"
+        },
+        {
+          "id": "pp:7a008f30:39858",
+          "row": 39858,
+          "category": "Лопаты строительные",
+          "name": "Материал черенка"
+        },
+        {
+          "id": "pp:7a008f30:39860",
+          "row": 39860,
+          "category": "Лопаты строительные",
+          "name": "Материал полотна лопаты"
+        }
+      ]
+    },
+    "Мебель.xlsx": {
+      "sha256": "14925eb0655d965b691846db76b643ce4ba6a71050c6c79f678013788928b881",
+      "fields": [
+        {
+          "id": "pp:14925eb0:3717",
+          "row": 3717,
+          "category": "Стулья на деревянном каркасе",
+          "name": "Наличие подлокотников"
+        },
+        {
+          "id": "pp:14925eb0:3719",
+          "row": 3719,
+          "category": "Стулья на деревянном каркасе",
+          "name": "Вид материала сидения"
+        },
+        {
+          "id": "pp:14925eb0:3723",
+          "row": 3723,
+          "category": "Стулья на деревянном каркасе",
+          "name": "Вид материала спинки"
+        },
+        {
+          "id": "pp:14925eb0:3986",
+          "row": 3986,
+          "category": "Стулья на металлическом каркасе",
+          "name": "Наличие подлокотников"
+        }
+      ]
+    },
+    "Одежда.xlsx": {
+      "sha256": "eed9b6205e05cf685acf4926a44641d36b520068be6c28ca9d053e0b2c2027eb",
+      "fields": [
+        {
+          "id": "pp:eed9b620:8871",
+          "row": 8871,
+          "category": "Пальто для взрослых из текстильных материалов зимние",
+          "name": "Половой признак"
+        },
+        {
+          "id": "pp:eed9b620:8873",
+          "row": 8873,
+          "category": "Пальто для взрослых из текстильных материалов зимние",
+          "name": "Тип капюшона"
+        },
+        {
+          "id": "pp:eed9b620:8876",
+          "row": 8876,
+          "category": "Пальто для взрослых из текстильных материалов зимние",
+          "name": "Российский размер"
+        },
+        {
+          "id": "pp:eed9b620:8894",
+          "row": 8894,
+          "category": "Пальто для взрослых из текстильных материалов зимние",
+          "name": "Цвет",
+          "lexical_vocabulary": [
+            "Синий",
+            "Красный",
+            "Белый",
+            "Черный",
+            "Зеленый"
+          ]
+        },
+        {
+          "id": "pp:eed9b620:1219",
+          "row": 1219,
+          "category": "Футболки трикотажные для взрослых",
+          "name": "Половой признак",
+          "lexical_vocabulary": [
+            "Мужской",
+            "Женский"
+          ]
+        },
+        {
+          "id": "pp:eed9b620:1221",
+          "row": 1221,
+          "category": "Футболки трикотажные для взрослых",
+          "name": "Российский размер"
+        },
+        {
+          "id": "pp:eed9b620:1415",
+          "row": 1415,
+          "category": "Футболки трикотажные для взрослых",
+          "name": "Цвет",
+          "lexical_vocabulary": [
+            "Синий",
+            "Красный",
+            "Белый",
+            "Черный",
+            "Зеленый"
+          ]
+        }
+      ]
+    }
+  },
+  "profiles": [
+    {
+      "scope": "25.73.30.141-00000011",
+      "pp_category": "Молотки",
+      "fields": [
+        "pp:7a008f30:24130",
+        "pp:7a008f30:24164",
+        "pp:7a008f30:24158"
+      ],
+      "anchors": [
+        "86d2b111-f"
+      ],
+      "basis": "Reviewed card applicability from product classification and matching reference fields; not official PP/KTRU identity",
+      "evidence": "backend/docs/reviews/stage3/xml/25.73.30.141-00000010.xml"
+    },
+    {
+      "scope": "25.73.30.290-00000004",
+      "pp_category": "Киянки",
+      "fields": [
+        "pp:7a008f30:23327",
+        "pp:7a008f30:23295"
+      ],
+      "anchors": [
+        "b8d0a143-1"
+      ],
+      "basis": "Reviewed card applicability from product classification and matching reference fields; not official PP/KTRU identity",
+      "evidence": "backend/docs/reviews/stage3/xml/25.73.30.290-00000003.xml"
+    },
+    {
+      "scope": "25.99.29.120-00004",
+      "pp_category": "Лопаты строительные",
+      "fields": [
+        "pp:7a008f30:39858",
+        "pp:7a008f30:39860"
+      ],
+      "anchors": [
+        "372218d3-6"
+      ],
+      "basis": "Reviewed card applicability from product classification and matching reference fields; not official PP/KTRU identity",
+      "evidence": "backend/docs/reviews/stage2/xml/25.99.29.120-00000003.xml"
+    },
+    {
+      "scope": "31.01.12.160-00000004",
+      "pp_category": "Стулья на деревянном каркасе",
+      "fields": [
+        "pp:14925eb0:3717",
+        "pp:14925eb0:3719",
+        "pp:14925eb0:3723"
+      ],
+      "anchors": [
+        "2a1681d4-1"
+      ],
+      "basis": "Reviewed card applicability from product classification and matching reference fields; not official PP/KTRU identity",
+      "evidence": "backend/docs/reviews/stage3/xml/31.01.12.160-00000003.xml"
+    },
+    {
+      "scope": "31.01.11.150-00000004",
+      "pp_category": "Стулья на металлическом каркасе",
+      "fields": [
+        "pp:14925eb0:3986"
+      ],
+      "anchors": [
+        "a64c21d9-c"
+      ],
+      "basis": "Reviewed card applicability from product classification and matching reference fields; not official PP/KTRU identity",
+      "evidence": "backend/docs/reviews/stage3/xml/31.01.11.150-00000003.xml"
+    },
+    {
+      "scope": "14.13.10.000-00000033",
+      "pp_category": "Пальто для взрослых из текстильных материалов зимние",
+      "fields": [
+        "pp:eed9b620:8871",
+        "pp:eed9b620:8873",
+        "pp:eed9b620:8876",
+        "pp:eed9b620:8894"
+      ],
+      "anchors": [
+        "008aa780-4"
+      ],
+      "basis": "Reviewed card applicability from product classification and matching reference fields; not official PP/KTRU identity",
+      "evidence": "backend/docs/reviews/stage2/xml/14.13.10.000-00000032.xml"
+    },
+    {
+      "scope": "14.14.30.110-00000003",
+      "pp_category": "Футболки трикотажные для взрослых",
+      "fields": [
+        "pp:eed9b620:1219",
+        "pp:eed9b620:1221",
+        "pp:eed9b620:1415"
+      ],
+      "anchors": [
+        "3c32ae26-1",
+        "c76385c9-1"
+      ],
+      "basis": "Reviewed card applicability from product classification and matching reference fields; not official PP/KTRU identity; reviewed adult-shirt XML: Назначение values Мужская/Женская/Универсальная already express gender; PP gender does not create a second owner",
+      "evidence": "backend/docs/reviews/stage3/xml/14.14.30.110-00000002.xml",
+      "preferred_fields": {
+        "Половой признак": "Назначение"
+      }
+    }
+  ],
+  "lexicon": {
+    "value_aliases": {
+      "Дерево": [
+        "деревянный"
+      ],
+      "Сталь": [
+        "стальной"
+      ]
+    },
+    "parts": {
+      "Материал рукоятки": [
+        "рукоятка",
+        "ручка"
+      ],
+      "Материал бойка": [
+        "боек"
+      ],
+      "Материал рабочей части": [
+        "рабочая часть"
+      ],
+      "Материал черенка": [
+        "черенок"
+      ],
+      "Материал полотна лопаты": [
+        "полотно"
+      ],
+      "Вид материала сидения": [
+        "сидение",
+        "сиденье"
+      ],
+      "Вид материала спинки": [
+        "спинка"
+      ]
+    },
+    "name_aliases": {
+      "Российский размер": [
+        "размер"
+      ],
+      "Тип капюшона": [
+        "капюшон"
+      ],
+      "Наличие подлокотников": [
+        "подлокотник",
+        "подлокотники"
+      ]
+    },
+    "absence": {
+      "Тип капюшона": "Отсутствует",
+      "Наличие подлокотников": "Нет"
+    },
+    "ambiguous_absence": [
+      "черенок"
+    ],
+    "evidence": "reviewed-russian-context-lexicon-v1; XLSX reference literals + explicit part labels; never a constraint"
+  }
+}

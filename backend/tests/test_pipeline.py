@@ -262,7 +262,7 @@ def test_unparsed_measurement_requires_explicit_mapping(engine):
     description = "Дрель; питание: от сети; 650 Вт"
     result = request(engine, description=description, confirmed_category_id="tools")
     assert any(issue.code == "unmapped_measurement" for issue in result.issues)
-    fragment = next(fragment for fragment in result.unparsed if "650" in fragment.raw)
+    fragment = next(fact for fact in result.facts if "650" in fact.raw)
     fixed = request(engine, description=description, confirmed_category_id="tools", confirmed_ktru_code="TEST-DRILL-MAINS",
                     attributes=[{"id":"manual", "name":"Мощность", "value":"650", "unit":"Вт", "replaces":fragment.id}])
     assert fixed.status == "resolved"

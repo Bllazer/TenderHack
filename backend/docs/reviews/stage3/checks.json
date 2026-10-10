@@ -1,0 +1,33 @@
+{
+  "commands": [
+    {"command":"python -m app.card_schemas <original-XLSX-dir>","result":"passed: 18 reviewed fields / 7 card applicability scopes; exact source SHA checked"},
+    {"command":"python -m app.category_map ../ktru_clean resources/catalog-build-stage3 --model-dir resources/model --compact-raw --reuse-from resources/catalog-build","result":"passed: 60087 positions refreshed; ordered search texts preserved"},
+    {"command":"python -m app.prepare index resources/catalog-build-stage3 --model-dir resources/model --reuse-from resources/catalog-build","result":"passed: 14550 exact documents reused; no embeddings computed"},
+    {"command":"python tests/verify_card_stage3_sources.py","result":"passed: 14 original XML comparisons"},
+    {"command":"python tests/record_card_stage3_resources.py","result":"passed: catalog/index/model hashes verified; vectors and tokens match previous artifact"},
+    {"command":"RUN_E5_TESTS=1 RUN_CLEAN_SUPPLY_TESTS=1 CLEAN_SUPPLY_DIR=../ktru_clean python -m pytest -q","result":"391 passed; no skipped; before final question wording adjustment"},
+    {"command":"python -m pytest -q","result":"389 passed / 2 resource skips on final wording"},
+    {"command":"RUN_E5_TESTS=1 RUN_CLEAN_SUPPLY_TESTS=1 python -m pytest -q tests/test_clean_supply.py::test_full_actual_supply_http tests/test_real_search.py::test_real_local_e5_and_offline_index","result":"2 passed on final wording; all 391 tests covered"},
+    {"command":"python -m algorithms.validation_tests","result":"28/28 passed"},
+    {"command":"npm.cmd run build","result":"passed; own type changes preserved original bundle; after team sync 550c53e current bundle is index-B7Ozhk1_.js"},
+    {"command":"BACKEND_TEST_PYTHON=<backend-python> npx.cmd --yes pnpm@11.25.0 test:e2e","result":"11/11 passed also after team sync 550c53e; fixture HTTP API, separate from real-catalog acceptance"},
+    {"command":"docker compose up -d --build --no-deps api","result":"image built and API started with actual clean5 / index / offline model"},
+    {"command":"python tests/real_card_stage3.py --output docs/reviews/stage3/after.json --verify","result":"passed: 32 real HTTP POSTs including additional clothing/furniture/tools families"},
+    {"command":"python tests/real_card_flow_stage3.py --output docs/reviews/stage3/flow.json","result":"passed: 17 POSTs / 13 source-card GETs; real resolved shirt code, excluded code 422 and unknown competitor cannot resolve"},
+    {"command":"python tests/real_semantics_stage2.py --selection docs/reviews/stage2/selection.json --output docs/reviews/stage3/stage2-matrix.json --phase after","result":"passed: 83 POSTs / 10 GETs"},
+    {"command":"python tests/real_semantics_edges_stage2.py --selection docs/reviews/stage2/selection-edges.json --output docs/reviews/stage3/stage2-edges.json","result":"passed: 21 POSTs / 3 GETs"},
+    {"command":"python tests/real_stage2_followup.py --source-dir docs/reviews/stage2-followup --output docs/reviews/stage3/stage2-followup.json --phase after","result":"passed: 22 real POSTs; canonical values and scaled integral counts preserved"},
+    {"command":"REVIEW_OUTPUT_DIR=docs/reviews/stage3/stage1-repeat python tests/real_exclusion_stage1.py after","result":"passed: 5 real scenarios; resurrected=0; all 5 excluded-code confirmations rejected 422"},
+    {"command":"python tests/docker_smoke.py","result":"passed: live/ready/catalog/OpenAPI on API and frontend ports; frontend HTML 200; /api proxy preserved"},
+    {"command":"python tests/record_card_stage3_runtime.py","result":"passed: readiness 200, real resources and response/OpenAPI/Pydantic agreement"}
+  ],
+  "development_failures_resolved": [
+    "Anonymous measurements moved from unparsed to facts: regression assertions updated to preserve raw/span and require assignment.",
+    "New small HTTP fixture initially omitted template parents; fixed test hierarchy without changing production coverage flags.",
+    "Existing morphology chose comparative reading for боёк; noun context now uses the same analyzer and is covered by tests.",
+    "Initial full-family wooden-striker assertion assumed every position had this rule. Real code ...00000012 has no striker-material rule; oracle corrected to source-based exclusions and retained unknown competitor, with no production weakening.",
+    "One focused pytest command named nonexistent test_corrections_http.py; corrected by running the complete final suite (actual file is test_correction_http.py).",
+    "Old container stop initially reported zombie PID; it exited. Added init:true; subsequent API stop/recreate operations passed. Other containers untouched.",
+    "core.autocrlf converted XML excerpt line endings during own temporary stash for fast-forward main. Restored exact original LF bytes; scoped .gitattributes now preserves source hashes; all 14 source checks repeated successfully."
+  ]
+}

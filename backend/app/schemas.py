@@ -2,7 +2,7 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from app.catalog import Position
 
-ENGINE_VERSION = "stateless-pipeline-v4.1-canonical-count"
+ENGINE_VERSION = "stateless-pipeline-v5-context-card"
 
 SelectedValues = Annotated[list[Annotated[str, Field(min_length=1, max_length=512)]], Field(min_length=1, max_length=50)]
 
@@ -83,6 +83,14 @@ class Correction(BaseModel):
     confirmation_required: bool = False
 
 
+class FactAssignment(BaseModel):
+    name: str
+    value: str
+    unit: str | None = None
+    subject: str = "product"
+    evidence: str
+
+
 class Fact(BaseModel):
     id: str
     name: str
@@ -98,6 +106,12 @@ class Fact(BaseModel):
     normalized_value: str | None = None
     normalized_unit: str | None = None
     mappings: list[str] = Field(default_factory=list)
+    surface_value: str | None = None
+    extraction_evidence: list[str] = Field(default_factory=list)
+    card_mappings: list[str] = Field(default_factory=list)
+    assignment_options: list[FactAssignment] = Field(default_factory=list)
+    uncertainty_reason: str | None = None
+    negation_interpretation: Literal["canonical_absence"] | None = None
 
 
 class Fragment(BaseModel):
@@ -221,6 +235,8 @@ class AnalysisOut(BaseModel):
     selected_ktru_code: str | None = None
     catalog_version: str
     engine_version: str = ENGINE_VERSION
+    card_schema_version: str | None = None
+    card_schema_evidence: list[str] = Field(default_factory=list)
 
 
 class ErrorDetail(BaseModel):

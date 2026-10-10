@@ -1,0 +1,629 @@
+{
+  "version": "card-schemas-v1",
+  "sha256": "60a1821b184de88d9b317fe1d43bedf2d9c277e7d965a19053ec2b8d6ba3e46c",
+  "data": {
+    "profiles": [
+      {
+        "scope": "25.73.30.141-00000011",
+        "pp_category": "Молотки",
+        "fields": [
+          "pp:7a008f30:24130",
+          "pp:7a008f30:24164",
+          "pp:7a008f30:24158"
+        ],
+        "anchors": [
+          "86d2b111-f"
+        ],
+        "basis": "Reviewed card applicability from product classification and matching reference fields; not official PP/KTRU identity",
+        "evidence": "backend/docs/reviews/stage3/xml/25.73.30.141-00000010.xml"
+      },
+      {
+        "scope": "25.73.30.290-00000004",
+        "pp_category": "Киянки",
+        "fields": [
+          "pp:7a008f30:23327",
+          "pp:7a008f30:23295"
+        ],
+        "anchors": [
+          "b8d0a143-1"
+        ],
+        "basis": "Reviewed card applicability from product classification and matching reference fields; not official PP/KTRU identity",
+        "evidence": "backend/docs/reviews/stage3/xml/25.73.30.290-00000003.xml"
+      },
+      {
+        "scope": "25.99.29.120-00004",
+        "pp_category": "Лопаты строительные",
+        "fields": [
+          "pp:7a008f30:39858",
+          "pp:7a008f30:39860"
+        ],
+        "anchors": [
+          "372218d3-6"
+        ],
+        "basis": "Reviewed card applicability from product classification and matching reference fields; not official PP/KTRU identity",
+        "evidence": "backend/docs/reviews/stage2/xml/25.99.29.120-00000003.xml"
+      },
+      {
+        "scope": "31.01.12.160-00000004",
+        "pp_category": "Стулья на деревянном каркасе",
+        "fields": [
+          "pp:14925eb0:3717",
+          "pp:14925eb0:3719",
+          "pp:14925eb0:3723"
+        ],
+        "anchors": [
+          "2a1681d4-1"
+        ],
+        "basis": "Reviewed card applicability from product classification and matching reference fields; not official PP/KTRU identity",
+        "evidence": "backend/docs/reviews/stage3/xml/31.01.12.160-00000003.xml"
+      },
+      {
+        "scope": "31.01.11.150-00000004",
+        "pp_category": "Стулья на металлическом каркасе",
+        "fields": [
+          "pp:14925eb0:3986"
+        ],
+        "anchors": [
+          "a64c21d9-c"
+        ],
+        "basis": "Reviewed card applicability from product classification and matching reference fields; not official PP/KTRU identity",
+        "evidence": "backend/docs/reviews/stage3/xml/31.01.11.150-00000003.xml"
+      },
+      {
+        "scope": "14.13.10.000-00000033",
+        "pp_category": "Пальто для взрослых из текстильных материалов зимние",
+        "fields": [
+          "pp:eed9b620:8871",
+          "pp:eed9b620:8873",
+          "pp:eed9b620:8876",
+          "pp:eed9b620:8894"
+        ],
+        "anchors": [
+          "008aa780-4"
+        ],
+        "basis": "Reviewed card applicability from product classification and matching reference fields; not official PP/KTRU identity",
+        "evidence": "backend/docs/reviews/stage2/xml/14.13.10.000-00000032.xml"
+      },
+      {
+        "scope": "14.14.30.110-00000003",
+        "pp_category": "Футболки трикотажные для взрослых",
+        "fields": [
+          "pp:eed9b620:1219",
+          "pp:eed9b620:1221",
+          "pp:eed9b620:1415"
+        ],
+        "anchors": [
+          "3c32ae26-1",
+          "c76385c9-1"
+        ],
+        "basis": "Reviewed card applicability from product classification and matching reference fields; not official PP/KTRU identity; reviewed adult-shirt XML: Назначение values Мужская/Женская/Универсальная already express gender; PP gender does not create a second owner",
+        "evidence": "backend/docs/reviews/stage3/xml/14.14.30.110-00000002.xml",
+        "preferred_fields": {
+          "Половой признак": "Назначение"
+        }
+      }
+    ],
+    "fields": [
+      {
+        "id": "pp:7a008f30:23295",
+        "name": "Материал рабочей части",
+        "category": "Киянки",
+        "kpgz": "01.11.02.02.03.12",
+        "spgz_ids": [
+          "5751374"
+        ],
+        "spgz_names": "Материал рабочей части",
+        "source_type": "Справочник",
+        "schema_type": "Эталонная",
+        "unit": null,
+        "vocabulary": [
+          "Дерево",
+          "Комбинированный",
+          "Пластик",
+          "Резина",
+          "Текстолит",
+          "Фторопласт"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "67fe680369012120330942f7ab00b01e11173389ed3568bb8a009c7e15784f05",
+        "observed_values_length": 376,
+        "evidence": "XLSX:Инструменты.xlsx@sha256:7a008f3033f268c33c36eeb0a69e4dddc4b1a2a1b44f81a769e5c22c317b0c2e#Лист2!23295;review:card-schemas-v1"
+      },
+      {
+        "id": "pp:7a008f30:23327",
+        "name": "Материал рукоятки",
+        "category": "Киянки",
+        "kpgz": "01.11.02.02.03.12",
+        "spgz_ids": [
+          "5751389"
+        ],
+        "spgz_names": "Материал рукоятки",
+        "source_type": "Справочник",
+        "schema_type": "Эталонная",
+        "unit": null,
+        "vocabulary": [
+          "Дерево",
+          "Стекловолокно"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "dc47ecb7efbc58bb5f36116acc984b62b4398d766db0afea719ef1e7bb15b69b",
+        "observed_values_length": 505,
+        "evidence": "XLSX:Инструменты.xlsx@sha256:7a008f3033f268c33c36eeb0a69e4dddc4b1a2a1b44f81a769e5c22c317b0c2e#Лист2!23327;review:card-schemas-v1"
+      },
+      {
+        "id": "pp:7a008f30:24130",
+        "name": "Материал рукоятки",
+        "category": "Молотки",
+        "kpgz": "01.11.02.02.03.15",
+        "spgz_ids": [
+          "11252278",
+          "11252288",
+          "11252295",
+          "11252303",
+          "11252309",
+          "11252576",
+          "11252586",
+          "11252587",
+          "11252597",
+          "11252603",
+          "11252613"
+        ],
+        "spgz_names": "Материал рукоятки | Материал рукоятки | Материал рукоятки | Материал рукоятки | Материал рукоятки | Материал рукоятки | Материал рукоятки | Материал рукоятки | Материал рукоятки | Материал рукоятки | Материал рукоятки",
+        "source_type": "Справочник",
+        "schema_type": "Эталонная",
+        "unit": null,
+        "vocabulary": [
+          "Дерево",
+          "Металл",
+          "Резина",
+          "Стекловолокно"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "517dff40b84e2d3a1e187bc4ea62fca7e81619e98242ab86e5770ccb46fe7a29",
+        "observed_values_length": 1433,
+        "evidence": "XLSX:Инструменты.xlsx@sha256:7a008f3033f268c33c36eeb0a69e4dddc4b1a2a1b44f81a769e5c22c317b0c2e#Лист2!24130;review:card-schemas-v1"
+      },
+      {
+        "id": "pp:7a008f30:24158",
+        "name": "Цвет",
+        "category": "Молотки",
+        "kpgz": "01.11.02.02.03.15",
+        "spgz_ids": [],
+        "spgz_names": "",
+        "source_type": "Текст",
+        "schema_type": "Базовая",
+        "unit": null,
+        "vocabulary": [
+          "Белый",
+          "Зеленый",
+          "Красный",
+          "Синий",
+          "Черный"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "f48332c472920eca96bf13f11a9c2ce07a2dec7052ef537c52c6c048901a1f7e",
+        "observed_values_length": 7,
+        "evidence": "XLSX:Инструменты.xlsx@sha256:7a008f3033f268c33c36eeb0a69e4dddc4b1a2a1b44f81a769e5c22c317b0c2e#Лист2!24158;review:card-schemas-v1"
+      },
+      {
+        "id": "pp:7a008f30:24164",
+        "name": "Материал бойка",
+        "category": "Молотки",
+        "kpgz": "01.11.02.02.03.15",
+        "spgz_ids": [
+          "11252277",
+          "11252284",
+          "11252292",
+          "11252299",
+          "11252305",
+          "11252572",
+          "11252583",
+          "11252598",
+          "11252606",
+          "11252615"
+        ],
+        "spgz_names": "Материал бойка | Материал бойка | Материал бойка | Материал бойка | Материал бойка | Материал бойка | Материал бойка | Материал бойка | Материал бойка | Материал бойка",
+        "source_type": "Справочник",
+        "schema_type": "Эталонная",
+        "unit": null,
+        "vocabulary": [
+          "Алюминий",
+          "Медь",
+          "Сталь"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "7a0f1479dcb463a38947391b310d5f121ee96b33c4247157a55f14664e188cf4",
+        "observed_values_length": 1417,
+        "evidence": "XLSX:Инструменты.xlsx@sha256:7a008f3033f268c33c36eeb0a69e4dddc4b1a2a1b44f81a769e5c22c317b0c2e#Лист2!24164;review:card-schemas-v1"
+      },
+      {
+        "id": "pp:7a008f30:39858",
+        "name": "Материал черенка",
+        "category": "Лопаты строительные",
+        "kpgz": "01.11.02.02.03.28",
+        "spgz_ids": [
+          "11213918",
+          "11213939"
+        ],
+        "spgz_names": "Материал черенка | Материал черенка",
+        "source_type": "Справочник",
+        "schema_type": "Эталонная",
+        "unit": null,
+        "vocabulary": [
+          "Алюминий",
+          "Дерево",
+          "Пластик",
+          "Сталь"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "9579f33aa43df70ac85e83f36bac40632f628e8f02b456edd1d39ba608391e28",
+        "observed_values_length": 32,
+        "evidence": "XLSX:Инструменты.xlsx@sha256:7a008f3033f268c33c36eeb0a69e4dddc4b1a2a1b44f81a769e5c22c317b0c2e#Лист2!39858;review:card-schemas-v1"
+      },
+      {
+        "id": "pp:7a008f30:39860",
+        "name": "Материал полотна лопаты",
+        "category": "Лопаты строительные",
+        "kpgz": "01.11.02.02.03.28",
+        "spgz_ids": [
+          "11213922",
+          "11213943"
+        ],
+        "spgz_names": "Материал полотна лопаты | Материал полотна лопаты",
+        "source_type": "Справочник",
+        "schema_type": "Эталонная",
+        "unit": null,
+        "vocabulary": [
+          "Алюминий",
+          "Дюралюминий",
+          "Сталь",
+          "Титан"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "e4d5d1a3d2bb6852abb7a5a3a89dc512ad5a0da1ed16585ec4b6cf3a335a2768",
+        "observed_values_length": 67,
+        "evidence": "XLSX:Инструменты.xlsx@sha256:7a008f3033f268c33c36eeb0a69e4dddc4b1a2a1b44f81a769e5c22c317b0c2e#Лист2!39860;review:card-schemas-v1"
+      },
+      {
+        "id": "pp:14925eb0:3717",
+        "name": "Наличие подлокотников",
+        "category": "Стулья на деревянном каркасе",
+        "kpgz": "01.16.01.01",
+        "spgz_ids": [
+          "11123789",
+          "11123834",
+          "11123878",
+          "11123942"
+        ],
+        "spgz_names": "Наличие подлокотников | Наличие подлокотников | Наличие подлокотников | Наличие подлокотников",
+        "source_type": "Справочник",
+        "schema_type": "Эталонная",
+        "unit": null,
+        "vocabulary": [
+          "Да",
+          "Нет"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "14776677c24dc44643f5b6876798bb6085b91f13fd9ee70f84f62e0472b30b59",
+        "observed_values_length": 48,
+        "evidence": "XLSX:Мебель.xlsx@sha256:14925eb0655d965b691846db76b643ce4ba6a71050c6c79f678013788928b881#Лист2!3717;review:card-schemas-v1"
+      },
+      {
+        "id": "pp:14925eb0:3719",
+        "name": "Вид материала сидения",
+        "category": "Стулья на деревянном каркасе",
+        "kpgz": "01.16.01.01",
+        "spgz_ids": [
+          "11123786",
+          "11123832",
+          "11123884",
+          "11123939"
+        ],
+        "spgz_names": "Вид материала сидения | Вид материала сидения | Вид материала сидения | Вид материала сидения",
+        "source_type": "Справочник",
+        "schema_type": "Эталонная",
+        "unit": null,
+        "vocabulary": [
+          "Дерево",
+          "Металл",
+          "Пластик"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "142f9c106199cf4284530e107830e0184c1f95429540fd4abfa08869231886eb",
+        "observed_values_length": 2993,
+        "evidence": "XLSX:Мебель.xlsx@sha256:14925eb0655d965b691846db76b643ce4ba6a71050c6c79f678013788928b881#Лист2!3719;review:card-schemas-v1"
+      },
+      {
+        "id": "pp:14925eb0:3723",
+        "name": "Вид материала спинки",
+        "category": "Стулья на деревянном каркасе",
+        "kpgz": "01.16.01.01",
+        "spgz_ids": [
+          "11123813",
+          "11123859",
+          "11123909",
+          "11123918"
+        ],
+        "spgz_names": "Вид материала спинки | Вид материала спинки | Вид материала спинки | Вид материала спинки",
+        "source_type": "Справочник",
+        "schema_type": "Эталонная",
+        "unit": null,
+        "vocabulary": [
+          "Дерево",
+          "Металл",
+          "Пластик"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "68650d3213d79e1e5e64ea785a84fe5dd379d08a5423da27856632bc99c2be3e",
+        "observed_values_length": 2841,
+        "evidence": "XLSX:Мебель.xlsx@sha256:14925eb0655d965b691846db76b643ce4ba6a71050c6c79f678013788928b881#Лист2!3723;review:card-schemas-v1"
+      },
+      {
+        "id": "pp:14925eb0:3986",
+        "name": "Наличие подлокотников",
+        "category": "Стулья на металлическом каркасе",
+        "kpgz": "01.16.01.02",
+        "spgz_ids": [
+          "11271751",
+          "11271814",
+          "11271940",
+          "11271995"
+        ],
+        "spgz_names": "Наличие подлокотников | Наличие подлокотников | Наличие подлокотников | Наличие подлокотников",
+        "source_type": "Справочник",
+        "schema_type": "Эталонная",
+        "unit": null,
+        "vocabulary": [
+          "Да",
+          "Нет"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "14776677c24dc44643f5b6876798bb6085b91f13fd9ee70f84f62e0472b30b59",
+        "observed_values_length": 48,
+        "evidence": "XLSX:Мебель.xlsx@sha256:14925eb0655d965b691846db76b643ce4ba6a71050c6c79f678013788928b881#Лист2!3986;review:card-schemas-v1"
+      },
+      {
+        "id": "pp:eed9b620:1219",
+        "name": "Половой признак",
+        "category": "Футболки трикотажные для взрослых",
+        "kpgz": "01.19.01.12",
+        "spgz_ids": [],
+        "spgz_names": "",
+        "source_type": "Справочник",
+        "schema_type": "Базовая",
+        "unit": null,
+        "vocabulary": [
+          "Женский",
+          "Мужской"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "66d76cb7824afdc7f34c3000897b90ef78413c134acf96e26fe399d28b7e8a05",
+        "observed_values_length": 1175,
+        "evidence": "XLSX:Одежда.xlsx@sha256:eed9b6205e05cf685acf4926a44641d36b520068be6c28ca9d053e0b2c2027eb#Лист2!1219;review:card-schemas-v1"
+      },
+      {
+        "id": "pp:eed9b620:1221",
+        "name": "Российский размер",
+        "category": "Футболки трикотажные для взрослых",
+        "kpgz": "01.19.01.12",
+        "spgz_ids": [
+          "11518606"
+        ],
+        "spgz_names": "Российский размер",
+        "source_type": "Дробное числовое значение",
+        "schema_type": "Эталонная",
+        "unit": null,
+        "vocabulary": [
+          "= 38.00000",
+          "= 40.00000",
+          "= 42.00000",
+          "= 44.00000",
+          "= 46.00000",
+          "= 48.00000",
+          "= 50.00000",
+          "= 52.00000",
+          "= 54.00000",
+          "= 56.00000",
+          "= 58.00000",
+          "= 60.00000",
+          "= 62.00000",
+          "= 64.00000",
+          "= 66.00000",
+          "= 68.00000",
+          "= 70.00000"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_values_length": 0,
+        "evidence": "XLSX:Одежда.xlsx@sha256:eed9b6205e05cf685acf4926a44641d36b520068be6c28ca9d053e0b2c2027eb#Лист2!1221;review:card-schemas-v1"
+      },
+      {
+        "id": "pp:eed9b620:1415",
+        "name": "Цвет",
+        "category": "Футболки трикотажные для взрослых",
+        "kpgz": "01.19.01.12",
+        "spgz_ids": [],
+        "spgz_names": "",
+        "source_type": "Справочник",
+        "schema_type": "Эталонная",
+        "unit": null,
+        "vocabulary": [
+          "Белый",
+          "Зеленый",
+          "Красный",
+          "Синий",
+          "Черный"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "10e9413c6b338d2960ab5d7d82eaf3e9d2c88dda9b88ea458e32287a2124a523",
+        "observed_values_length": 32759,
+        "evidence": "XLSX:Одежда.xlsx@sha256:eed9b6205e05cf685acf4926a44641d36b520068be6c28ca9d053e0b2c2027eb#Лист2!1415;review:card-schemas-v1"
+      },
+      {
+        "id": "pp:eed9b620:8871",
+        "name": "Половой признак",
+        "category": "Пальто для взрослых из текстильных материалов зимние",
+        "kpgz": "01.19.01.17.02.01",
+        "spgz_ids": [
+          "2338642",
+          "2342688"
+        ],
+        "spgz_names": "Половой признак | Половой признак",
+        "source_type": "Справочник",
+        "schema_type": "Эталонная",
+        "unit": null,
+        "vocabulary": [
+          "Женское",
+          "Мужское"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "1a47486b19f829f2035af5dc7e8492c3c3592ba92fda47da5a7d8546896a26d6",
+        "observed_values_length": 52,
+        "evidence": "XLSX:Одежда.xlsx@sha256:eed9b6205e05cf685acf4926a44641d36b520068be6c28ca9d053e0b2c2027eb#Лист2!8871;review:card-schemas-v1"
+      },
+      {
+        "id": "pp:eed9b620:8873",
+        "name": "Тип капюшона",
+        "category": "Пальто для взрослых из текстильных материалов зимние",
+        "kpgz": "01.19.01.17.02.01",
+        "spgz_ids": [
+          "2338647",
+          "2342686"
+        ],
+        "spgz_names": "Тип капюшона | Тип капюшона",
+        "source_type": "Справочник",
+        "schema_type": "Эталонная",
+        "unit": null,
+        "vocabulary": [
+          "Несъемный",
+          "Отсутствует",
+          "Съемный"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "1eefc46f24d6bfc82f0ef28f740792d364dc54ae38a627e701bd2b568ad93ae2",
+        "observed_values_length": 31,
+        "evidence": "XLSX:Одежда.xlsx@sha256:eed9b6205e05cf685acf4926a44641d36b520068be6c28ca9d053e0b2c2027eb#Лист2!8873;review:card-schemas-v1"
+      },
+      {
+        "id": "pp:eed9b620:8876",
+        "name": "Российский размер",
+        "category": "Пальто для взрослых из текстильных материалов зимние",
+        "kpgz": "01.19.01.17.02.01",
+        "spgz_ids": [
+          "2338639",
+          "2342687"
+        ],
+        "spgz_names": "Российский размер | Российский размер",
+        "source_type": "Справочник",
+        "schema_type": "Эталонная",
+        "unit": null,
+        "vocabulary": [
+          "38",
+          "40",
+          "42",
+          "44",
+          "46",
+          "48",
+          "50",
+          "52",
+          "54",
+          "56",
+          "58",
+          "60",
+          "62",
+          "64",
+          "66",
+          "68",
+          "70"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "65c5ef7007bac61c393e2af787677a76af06d9a1c4bb223f6633e8828d4d6f18",
+        "observed_values_length": 66,
+        "evidence": "XLSX:Одежда.xlsx@sha256:eed9b6205e05cf685acf4926a44641d36b520068be6c28ca9d053e0b2c2027eb#Лист2!8876;review:card-schemas-v1"
+      },
+      {
+        "id": "pp:eed9b620:8894",
+        "name": "Цвет",
+        "category": "Пальто для взрослых из текстильных материалов зимние",
+        "kpgz": "01.19.01.17.02.01",
+        "spgz_ids": [],
+        "spgz_names": "",
+        "source_type": "Текст",
+        "schema_type": "Базовая",
+        "unit": null,
+        "vocabulary": [
+          "Белый",
+          "Зеленый",
+          "Красный",
+          "Синий",
+          "Черный"
+        ],
+        "vocabulary_is_constraint": false,
+        "observed_values_sha256": "bffb9659dbf58d30cfa5932163251dd367a21d4a0ad0842925d2ec9a253f481d",
+        "observed_values_length": 5,
+        "evidence": "XLSX:Одежда.xlsx@sha256:eed9b6205e05cf685acf4926a44641d36b520068be6c28ca9d053e0b2c2027eb#Лист2!8894;review:card-schemas-v1"
+      }
+    ],
+    "lexicon": {
+      "value_aliases": {
+        "Дерево": [
+          "деревянный"
+        ],
+        "Сталь": [
+          "стальной"
+        ]
+      },
+      "parts": {
+        "Материал рукоятки": [
+          "рукоятка",
+          "ручка"
+        ],
+        "Материал бойка": [
+          "боек"
+        ],
+        "Материал рабочей части": [
+          "рабочая часть"
+        ],
+        "Материал черенка": [
+          "черенок"
+        ],
+        "Материал полотна лопаты": [
+          "полотно"
+        ],
+        "Вид материала сидения": [
+          "сидение",
+          "сиденье"
+        ],
+        "Вид материала спинки": [
+          "спинка"
+        ]
+      },
+      "name_aliases": {
+        "Российский размер": [
+          "размер"
+        ],
+        "Тип капюшона": [
+          "капюшон"
+        ],
+        "Наличие подлокотников": [
+          "подлокотник",
+          "подлокотники"
+        ]
+      },
+      "absence": {
+        "Тип капюшона": "Отсутствует",
+        "Наличие подлокотников": "Нет"
+      },
+      "ambiguous_absence": [
+        "черенок"
+      ],
+      "evidence": "reviewed-russian-context-lexicon-v1; XLSX reference literals + explicit part labels; never a constraint"
+    },
+    "source_hashes": {
+      "Инструменты.xlsx": "7a008f3033f268c33c36eeb0a69e4dddc4b1a2a1b44f81a769e5c22c317b0c2e",
+      "Мебель.xlsx": "14925eb0655d965b691846db76b643ce4ba6a71050c6c79f678013788928b881",
+      "Одежда.xlsx": "eed9b6205e05cf685acf4926a44641d36b520068be6c28ca9d053e0b2c2027eb"
+    },
+    "binding_semantics": "reviewed_applicability_not_catalog_identity"
+  }
+}

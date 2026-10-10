@@ -1,0 +1,237 @@
+<ns0:position xmlns:ns0="http://zakupki.gov.ru/oos/types/1">
+    <ns0:data>
+        <ns0:code>31.01.12.160-00000003</ns0:code>
+        <ns0:version>5</ns0:version>
+        <ns0:inclusionDate>2019-11-08T10:18:06+03:00</ns0:inclusionDate>
+        <ns0:publishDate>2026-04-23T12:28:35+03:00</ns0:publishDate>
+        <ns0:updateDate>2026-04-23T12:28:36+03:00</ns0:updateDate>
+        <ns0:name>Стул на деревянном каркасе</ns0:name>
+        <ns0:OKPD2>
+            <ns0:code>31.01.12.160</ns0:code>
+            <ns0:name>Мебель для сидения, преимущественно с деревянным каркасом</ns0:name>
+        </ns0:OKPD2>
+        <ns0:status>ACTIVE</ns0:status>
+        <ns0:applicationDateStart>2026-05-06T00:00:00+03:00</ns0:applicationDateStart>
+        <ns0:OKEIs>
+            <ns0:OKEI>
+                <ns0:code>796</ns0:code>
+                <ns0:name>Штука</ns0:name>
+            </ns0:OKEI>
+        </ns0:OKEIs>
+        <ns0:NSI>
+            <ns0:standarts>
+                <ns0:standart>
+                    <ns0:docName>ГОСТ 26800.3-86 "Мебель для административных помещений. Функциональные размеры стульев (с Изменением № 1)"</ns0:docName>
+                </ns0:standart>
+                <ns0:standart>
+                    <ns0:docName>Решение Совета Евразийской экономической комиссии от 15.06.2012 № 32 "О принятии технического регламента Таможенного союза "О безопасности мебельной продукции"                                        (вместе с "ТР ТС 025/2012. Технический регламент Таможенного союза. О безопасности мебельной продукции")</ns0:docName>
+                </ns0:standart>
+                <ns0:standart>
+                    <ns0:docName>ГОСТ 19917-2014 "Межгосударственный стандарт. Мебель для сидения и лежания. Общие технические условия"</ns0:docName>
+                </ns0:standart>
+                <ns0:standart>
+                    <ns0:docName>ГОСТ 12029-93 "Мебель. Стулья и табуреты. Определение прочности и долговечности (с Изменением № 1)"</ns0:docName>
+                </ns0:standart>
+            </ns0:standarts>
+            <ns0:classifiers>
+                <ns0:classifier>
+                    <ns0:name>Общероссийский классификатор продукции по видам экономической деятельности (ОКПД2)</ns0:name>
+                    <ns0:NSIcode>nsiOKPD2</ns0:NSIcode>
+                    <ns0:code>OKPD2</ns0:code>
+                    <ns0:source>N_OKPD2</ns0:source>
+                    <ns0:values>
+                        <ns0:value>
+                            <ns0:code>31.01.12.162</ns0:code>
+                            <ns0:name>Мебель детская для сидения, преимущественно деревянная</ns0:name>
+                        </ns0:value>
+                        <ns0:value>
+                            <ns0:code>31.01.12.161</ns0:code>
+                            <ns0:name>Мебель для сидения, преимущественно с деревянным каркасом для учебных заведений</ns0:name>
+                        </ns0:value>
+                        <ns0:value>
+                            <ns0:code>31.01.12.160</ns0:code>
+                            <ns0:name>Мебель для сидения, преимущественно с деревянным каркасом</ns0:name>
+                        </ns0:value>
+                        <ns0:value>
+                            <ns0:code>31.01.12.169</ns0:code>
+                            <ns0:name>Мебель для сидения, преимущественно с деревянным каркасом прочая</ns0:name>
+                        </ns0:value>
+                        <ns0:value>
+                            <ns0:code>31.01.1</ns0:code>
+                            <ns0:name>Мебель для офисов и предприятий торговли</ns0:name>
+                        </ns0:value>
+                    </ns0:values>
+                </ns0:classifier>
+            </ns0:classifiers>
+        </ns0:NSI>
+        <ns0:characteristics>
+            <ns0:characteristic>
+                <ns0:code>37ff6d62-a</ns0:code>
+                <ns0:name>Наличие мягкого сидения</ns0:name>
+                <ns0:type>1</ns0:type>
+                <ns0:kind>1</ns0:kind>
+                <ns0:actual>true</ns0:actual>
+                <ns0:isRequired>true</ns0:isRequired>
+                <ns0:choiceType>1</ns0:choiceType>
+                <ns0:values>
+                    <ns0:value>
+                        <ns0:valueCode>3530bd59-d</ns0:valueCode>
+                        <ns0:qualityDescription>Да</ns0:qualityDescription>
+                    </ns0:value>
+                </ns0:values>
+            </ns0:characteristic>
+            <ns0:characteristic>
+                <ns0:code>db719a62-f</ns0:code>
+                <ns0:name>Наличие мягкой спинки</ns0:name>
+                <ns0:type>1</ns0:type>
+                <ns0:kind>1</ns0:kind>
+                <ns0:actual>true</ns0:actual>
+                <ns0:isRequired>true</ns0:isRequired>
+                <ns0:choiceType>1</ns0:choiceType>
+                <ns0:values>
+                    <ns0:value>
+                        <ns0:valueCode>7c15c0e5-a</ns0:valueCode>
+                        <ns0:qualityDescription>Да</ns0:qualityDescription>
+                    </ns0:value>
+                </ns0:values>
+            </ns0:characteristic>
+            <ns0:characteristic>
+                <ns0:code>b8cd266d-9</ns0:code>
+                <ns0:name>Вид материала сидения</ns0:name>
+                <ns0:type>1</ns0:type>
+                <ns0:kind>2</ns0:kind>
+                <ns0:actual>true</ns0:actual>
+                <ns0:isRequired>false</ns0:isRequired>
+                <ns0:choiceType>2</ns0:choiceType>
+                <ns0:values>
+                    <ns0:value>
+                        <ns0:valueCode>cb3e0754-8</ns0:valueCode>
+                        <ns0:qualityDescription>Пластик</ns0:qualityDescription>
+                    </ns0:value>
+                    <ns0:value>
+                        <ns0:valueCode>211e517b-7</ns0:valueCode>
+                        <ns0:qualityDescription>Дерево</ns0:qualityDescription>
+                    </ns0:value>
+                    <ns0:value>
+                        <ns0:valueCode>565365eb-c</ns0:valueCode>
+                        <ns0:qualityDescription>Металл</ns0:qualityDescription>
+                    </ns0:value>
+                </ns0:values>
+            </ns0:characteristic>
+            <ns0:characteristic>
+                <ns0:code>cf8f87cf-b</ns0:code>
+                <ns0:name>Вид материала спинки</ns0:name>
+                <ns0:type>1</ns0:type>
+                <ns0:kind>2</ns0:kind>
+                <ns0:actual>true</ns0:actual>
+                <ns0:isRequired>false</ns0:isRequired>
+                <ns0:choiceType>2</ns0:choiceType>
+                <ns0:values>
+                    <ns0:value>
+                        <ns0:valueCode>c622a54e-6</ns0:valueCode>
+                        <ns0:qualityDescription>Дерево</ns0:qualityDescription>
+                    </ns0:value>
+                    <ns0:value>
+                        <ns0:valueCode>a86260fc-5</ns0:valueCode>
+                        <ns0:qualityDescription>Металл</ns0:qualityDescription>
+                    </ns0:value>
+                    <ns0:value>
+                        <ns0:valueCode>4343824a-3</ns0:valueCode>
+                        <ns0:qualityDescription>Пластик</ns0:qualityDescription>
+                    </ns0:value>
+                </ns0:values>
+            </ns0:characteristic>
+            <ns0:characteristic>
+                <ns0:code>2a1681d4-1</ns0:code>
+                <ns0:name>Наличие подлокотников</ns0:name>
+                <ns0:type>1</ns0:type>
+                <ns0:kind>2</ns0:kind>
+                <ns0:actual>true</ns0:actual>
+                <ns0:isRequired>false</ns0:isRequired>
+                <ns0:choiceType>2</ns0:choiceType>
+                <ns0:values>
+                    <ns0:value>
+                        <ns0:valueCode>b7ba4b4d-2</ns0:valueCode>
+                        <ns0:qualityDescription>Да</ns0:qualityDescription>
+                    </ns0:value>
+                    <ns0:value>
+                        <ns0:valueCode>c8cc27b5-5</ns0:valueCode>
+                        <ns0:qualityDescription>Нет</ns0:qualityDescription>
+                    </ns0:value>
+                </ns0:values>
+            </ns0:characteristic>
+            <ns0:characteristic>
+                <ns0:code>ee38d282-6</ns0:code>
+                <ns0:name>Складная конструкция</ns0:name>
+                <ns0:type>1</ns0:type>
+                <ns0:kind>2</ns0:kind>
+                <ns0:actual>true</ns0:actual>
+                <ns0:isRequired>false</ns0:isRequired>
+                <ns0:choiceType>2</ns0:choiceType>
+                <ns0:values>
+                    <ns0:value>
+                        <ns0:valueCode>3d46378a-5</ns0:valueCode>
+                        <ns0:qualityDescription>Да</ns0:qualityDescription>
+                    </ns0:value>
+                    <ns0:value>
+                        <ns0:valueCode>90eec0d3-b</ns0:valueCode>
+                        <ns0:qualityDescription>Нет</ns0:qualityDescription>
+                    </ns0:value>
+                </ns0:values>
+            </ns0:characteristic>
+            <ns0:characteristic>
+                <ns0:code>9ac59760-b</ns0:code>
+                <ns0:name>Наличие пюпитра</ns0:name>
+                <ns0:type>1</ns0:type>
+                <ns0:kind>2</ns0:kind>
+                <ns0:actual>true</ns0:actual>
+                <ns0:isRequired>false</ns0:isRequired>
+                <ns0:choiceType>2</ns0:choiceType>
+                <ns0:values>
+                    <ns0:value>
+                        <ns0:valueCode>5b149eda-0</ns0:valueCode>
+                        <ns0:qualityDescription>Да</ns0:qualityDescription>
+                    </ns0:value>
+                    <ns0:value>
+                        <ns0:valueCode>0b44cbf4-9</ns0:valueCode>
+                        <ns0:qualityDescription>Нет</ns0:qualityDescription>
+                    </ns0:value>
+                </ns0:values>
+            </ns0:characteristic>
+            <ns0:characteristic>
+                <ns0:code>91cf7891-6</ns0:code>
+                <ns0:name>Форма основания</ns0:name>
+                <ns0:type>1</ns0:type>
+                <ns0:kind>2</ns0:kind>
+                <ns0:actual>true</ns0:actual>
+                <ns0:isRequired>false</ns0:isRequired>
+                <ns0:choiceType>2</ns0:choiceType>
+                <ns0:values>
+                    <ns0:value>
+                        <ns0:valueCode>7ec6e587-d</ns0:valueCode>
+                        <ns0:qualityDescription>Ножки</ns0:qualityDescription>
+                    </ns0:value>
+                    <ns0:value>
+                        <ns0:valueCode>4c7ddeab-c</ns0:valueCode>
+                        <ns0:qualityDescription>Полозья</ns0:qualityDescription>
+                    </ns0:value>
+                    <ns0:value>
+                        <ns0:valueCode>8d545e47-d</ns0:valueCode>
+                        <ns0:qualityDescription>Колесные опоры</ns0:qualityDescription>
+                    </ns0:value>
+                </ns0:values>
+            </ns0:characteristic>
+        </ns0:characteristics>
+        <ns0:rubricators>
+            <ns0:rubricatorInfo>
+                <ns0:code>128</ns0:code>
+                <ns0:name>Мебель</ns0:name>
+            </ns0:rubricatorInfo>
+        </ns0:rubricators>
+        <ns0:isTemplate>false</ns0:isTemplate>
+        <ns0:parentPositionInfo>
+            <ns0:code>31.01.12.160-00000004</ns0:code>
+            <ns0:version>6</ns0:version>
+        </ns0:parentPositionInfo>
+    </ns0:data>
+</ns0:position>

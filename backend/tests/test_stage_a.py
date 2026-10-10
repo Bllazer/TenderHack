@@ -408,9 +408,11 @@ def test_supported_unit_is_not_treated_as_unsupported():
     assert hard(structure(facts[0]))
 
 
-def test_orphan_fragments_still_reach_unparsed():
-    _, fragments = extract("Длина: 5 футов; 650 Вт", ("Длина",))
-    assert any("650" in fragment.raw for fragment in fragments)
+def test_orphan_measurement_survives_as_unassigned_fact():
+    facts, fragments = extract("Длина: 5 футов; 650 Вт", ("Длина",))
+    orphan = next(f for f in facts if f.raw == '650 Вт')
+    assert orphan.name == '' and orphan.value == '650' and orphan.unit == 'Вт'
+    assert orphan.raw == 'Длина: 5 футов; 650 Вт'[slice(*orphan.span)]
     assert all(fragment.raw == "Длина: 5 футов; 650 Вт"[slice(*fragment.span)] for fragment in fragments)
 
 

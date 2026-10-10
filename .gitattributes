@@ -1,0 +1,5 @@
+# Source excerpts carry exact byte hashes; checkout must preserve their bytes.
+backend/docs/reviews/**/xml/*.xml -text
+# The small immutable offline card artifacts use canonical LF bytes.
+backend/resources/card-schemas.json text eol=lf
+backend/resources/card-schema-review.json text eol=lf

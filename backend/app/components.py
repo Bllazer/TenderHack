@@ -53,6 +53,22 @@ class Components:
 
 
 class ExistingExtractor:
+    def __init__(self, cards=None):
+        self.cards = cards
+
+    def context(self, category_id, properties):
+        return self.cards.context(category_id, properties) if self.cards else (properties, (), ())
+
+    def normalize_context(self, facts, category_id, properties):
+        from app.extraction import canonicalize_facts
+        canonicalize_facts(facts, properties, self.cards.lexicon if self.cards and category_id else {})
+
+    def extract_context(self, text, names, *, scoped_properties=(), category_id=None):
+        from app.extraction import extract
+        lexicon = self.cards.lexicon if self.cards and category_id else {}
+        facts, unparsed = extract(text, names, scoped_properties=scoped_properties, lexicon=lexicon)
+        return ExtractionResult(facts, unparsed)
+
     def extract(self, text, names, *, scoped_properties=()):
         from app.extraction import extract
         facts, unparsed = extract(text, names, scoped_properties=scoped_properties)
@@ -67,13 +83,17 @@ class ExistingChecker:
 
 def existing_components(data=None):
     from app.questions import next_question
+    from app.card_schemas import CardSchemas
+    from app.config import settings
+    cards = CardSchemas(settings.card_schema_file)
+    extractor = ExistingExtractor(cards)
     if data is not None and data.categories:
         try:
             from app.algorithm_adapter import AlgorithmChecker, AlgorithmQuestions, make_index, make_units
         except ModuleNotFoundError as exc:
             if not (exc.name or "").startswith("algorithms"):
                 raise
-            return Components(ExistingExtractor(), None, None)
+            return Components(extractor, None, None)
         index = make_index(data)
-        return Components(ExistingExtractor(), AlgorithmChecker(index, make_units(data)), AlgorithmQuestions(index))
-    return Components(ExistingExtractor(), ExistingChecker(), next_question)
+        return Components(extractor, AlgorithmChecker(index, make_units(data)), AlgorithmQuestions(index))
+    return Components(extractor, ExistingChecker(), next_question)

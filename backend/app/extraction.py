@@ -5,7 +5,7 @@ from difflib import SequenceMatcher
 from functools import lru_cache
 from threading import Lock
 
-from app.schemas import Fact, Fragment, InputFact
+from app.schemas import Fact, FactAssignment, Fragment, InputFact
 from app.search import canon
 from app.units import UNITS
 
@@ -212,17 +212,118 @@ def enum_targets(properties, value: str, name: str = "", subject: str | None = N
         if name and canon(name) not in {canon(prop.name), *(canon(alias) for alias in prop.aliases)}:
             continue
         key = (prop.semantic_key or prop.id, prop.subject, prop.name, target)
-        if wanted == supplied:
+        if wanted == supplied or lemmas(wanted) == lemmas(supplied):
             exact[key] = (prop, target)
         elif len(supplied) >= 5 and len(wanted) >= 5 and SequenceMatcher(None, supplied, wanted).ratio() >= .85:
             close[key] = (prop, target)
     return list(exact.values()), list(close.values())
 
 
-def extract(text: str, names: tuple[str, ...], *, scoped_properties=()) -> tuple[list[Fact], list[Fragment]]:
+def local_uncertainty(text, left, right, begin, end):
+    """A negation attaches to its own nearby target, not every fact in a clause."""
+    before, after = text[begin:left], text[right:end]
+    negative = bool(re.search(r'\b(?:не(?:\s+(?:совсем|только))?|без|нет)\s*$', before, re.I) or
+                    re.match(r'\s+не\s+(?:нуж\w*|треб\w*)', after, re.I))
+    uncertain = negative or bool(re.match(r'\s*\?', after)) or bool(re.search(
+        r'\b(?:возможно|вероятно|кажется|предположительно|неизвестно|непонятно)\s*$', before, re.I))
+    return negative, uncertain
+
+
+@lru_cache(maxsize=4096)
+def part_lemma(word):
+    # A schema part label is a noun context. Reuse the existing analyzer, but
+    # do not let its first comparative/adjective reading replace that context.
+    readings = analyzer().morph.parse(canon(word))
+    return next((r.normal_form for r in readings if r.tag.POS == 'NOUN' and r.is_known),
+                analyzer().lemma(canon(word)))
+
+
+def explicit_part(text, left, right, parts):
+    tokens = [(part_lemma(m[0]), m.start(), m.end()) for m in TOKEN.finditer(text)]
+    for part in parts:
+        wanted = tuple(part_lemma(m[0]) for m in TOKEN.finditer(part))
+        for i in range(len(tokens) - len(wanted) + 1):
+            window = tokens[i:i + len(wanted)]
+            if tuple(t[0] for t in window) != wanted:
+                continue
+            a, b = window[0][1], window[-1][2]
+            if (a >= right and not text[right:a].strip()) or (
+                    b <= left and re.fullmatch(r'\s+(?:из\s+)?', text[b:left])):
+                return True
+    return False
+
+
+def canonicalize_facts(facts, properties, lexicon):
+    """The same reviewed morphological mapping for text and explicit card edits."""
+    for fact in facts:
+        props = [p for p in properties if p.name == fact.name and p.subject == fact.subject]
+        if props:
+            fact.extraction_evidence = list(dict.fromkeys([*fact.extraction_evidence, *(p.evidence for p in props)]))
+        if fact.unknown or fact.negated or fact.values is not None:
+            continue
+        exact, _ = enum_targets(props, fact.value, fact.name, fact.subject)
+        if not exact:
+            exact = [(p, target) for p, target, _ in enum_dictionary(tuple(props)) if
+                     p.name in lexicon.get('parts', {}) and
+                     any(lemmas(fact.value) == lemmas(form) for form in lexicon.get('value_aliases', {}).get(target, []))]
+        targets = {v for _, v in exact}
+        if len(targets) == 1 and canon(fact.value) != canon(next(iter(targets))):
+            fact.surface_value = fact.surface_value or fact.value
+            fact.value = next(iter(targets))
+            if lexicon:
+                fact.extraction_evidence.append(lexicon['evidence'])
+
+
+def extract(text: str, names: tuple[str, ...], *, scoped_properties=(), lexicon=None) -> tuple[list[Fact], list[Fragment]]:
     facts: list[Fact] = []
     covered: list[tuple[int, int]] = []
     dictionary = name_dictionary(names)
+    lexicon = lexicon or {}
+    prop_names = {p.name for p in scoped_properties}
+    aliases = tuple((name, lemmas(alias)) for name, words in lexicon.get('name_aliases', {}).items()
+                    if name in prop_names for alias in words)
+    dictionary = tuple(sorted((*dictionary, *aliases), key=lambda entry: len(entry[1]), reverse=True))
+    # Absence is only normalized when the scope's own vocabulary represents it.
+    # Otherwise retain a negative, uncertain fact; never invent a positive value.
+    for name, allowed_absence in lexicon.get('absence', {}).items():
+        props = [p for p in scoped_properties if p.name == name]
+        if not props:
+            continue
+        for alias in lexicon.get('name_aliases', {}).get(name, []):
+            wanted = lemmas(alias)
+            tokens = token_spans(text)
+            for i in range(len(tokens) - len(wanted) + 1):
+                window = tokens[i:i + len(wanted)]
+                if tuple(t[0] for t in window) != wanted:
+                    continue
+                left, right = window[0][1], window[-1][2]
+                marker = re.search(r'\bбез\s*$', text[:left], re.I)
+                if not marker:
+                    continue
+                if any(left < b and right > a for a, b in covered):
+                    continue
+                literal = next((v.value for p in props for v in p.allowed if canon(v.value or '') == canon(allowed_absence)), None)
+                fact = make_fact(name, literal or text[left:right], None, text[marker.start():right],
+                                 (marker.start(), right), len(facts), negated=True, unknown=not bool(literal))
+                fact.surface_value = text[left:right]
+                fact.extraction_evidence = [p.evidence for p in props] + [lexicon['evidence']]
+                fact.negation_interpretation = 'canonical_absence' if literal else None
+                if not literal:
+                    fact.uncertainty_reason = 'Отсутствие не представлено допустимым значением выбранного свойства'
+                facts.append(fact)
+                covered.append(fact.span)
+    for alias in lexicon.get('ambiguous_absence', []):
+        for lemma, left, right in token_spans(text):
+            if (lemma,) != lemmas(alias):
+                continue
+            marker = re.search(r'\bбез\s*$', text[:left], re.I)
+            if marker and not any(left < b and right > a for a, b in covered):
+                fact = make_fact('', text[left:right], None, text[marker.start():right],
+                                 (marker.start(), right), len(facts), negated=True, unknown=True)
+                fact.uncertainty_reason = 'Отрицание наличия части сохранено; положительное разрешённое значение не назначено'
+                fact.extraction_evidence = [lexicon['evidence']]
+                facts.append(fact)
+                covered.append(fact.span)
     for start, end, segment in segments(text, dictionary):
         pair = re.match(r"\s*([^:=\n]{1,120})\s*[:=]\s*(.+?)\s*$", segment)
         if pair:
@@ -246,6 +347,9 @@ def extract(text: str, names: tuple[str, ...], *, scoped_properties=()) -> tuple
                 absolute = start + left_token
                 if any(begin <= absolute < finish for begin, finish in covered):
                     continue
+                # A qualified foreign/letter size never becomes a Russian size.
+                if name == 'Российский размер' and re.search(r'\b(?:европейск\w*|eu|буквен\w*)\b', segment, re.I):
+                    continue
                 boundary = re.match(r"\s*(?:[:=]\s*)?", segment[right_token:])
                 match_end = right_token + boundary.end()
                 matched = segment[left_token:match_end]
@@ -260,7 +364,9 @@ def extract(text: str, names: tuple[str, ...], *, scoped_properties=()) -> tuple
                 measure = MEASUREMENT.match(tail)
                 if measure:
                     unit, consumed = measure["unit"], measure.end()
-                    if not unit:
+                    current_props = [p for p in scoped_properties if p.name == name]
+                    if not unit and (not current_props or any(p.value_type == 'number' and
+                            p.numeric_semantics != 'designation' for p in current_props)):
                         # «5 футов»: слово после числа — не единица справочника и не
                         # имя свойства. Сохраняем написание, но не подтверждаем факт.
                         unsupported = re.match(rf"\s+(?P<unit>{UNSUPPORTED_UNIT})", tail[consumed:])
@@ -279,7 +385,9 @@ def extract(text: str, names: tuple[str, ...], *, scoped_properties=()) -> tuple
                                                (absolute, right), len(facts)))
                         covered.append((absolute, right))
     # Reuse A's segmentation/provenance and the confirmed scope, never the global catalog.
-    values = sorted({value for _, value, _ in enum_dictionary(tuple(scoped_properties))}, key=len, reverse=True)
+    scope_parts = any(p.name in lexicon.get('parts', {}) for p in scoped_properties)
+    values = sorted({value for _, value, _ in enum_dictionary(tuple(scoped_properties))} |
+                    (set(lexicon.get('value_aliases', {})) if scope_parts else set()), key=len, reverse=True)
     windows = []
     tokens = list(re.finditer(r"\w+", text))
     clauses = list(segments(text, dictionary))
@@ -295,20 +403,51 @@ def extract(text: str, names: tuple[str, ...], *, scoped_properties=()) -> tuple
             supplied = canon(text[left:right])
             if len(supplied) >= 5 and len(value) >= 5 and SequenceMatcher(None, supplied, canon(value)).ratio() >= .85:
                 windows.append((left, right))
+        # Morphological forms are scoped; reviewed noun/adjective aliases remain
+        # separate from typo suggestions and preserve their source spelling.
+        forms = [value, *(lexicon.get('value_aliases', {}).get(value, []) if scope_parts else ())]
+        morph_tokens = token_spans(text)
+        for form in forms:
+            wanted = lemmas(form)
+            for i in range(len(morph_tokens) - len(wanted) + 1):
+                window = morph_tokens[i:i + len(wanted)]
+                if wanted and tuple(t[0] for t in window) == wanted:
+                    windows.append((window[0][1], window[-1][2]))
     for left, right in sorted(set(windows), key=lambda span: (span[0], -(span[1] - span[0]))):
         if any(left < end and right > start for start, end in covered):
             continue
         value = text[left:right]
         exact, close = enum_targets(scoped_properties, value)
+        if not exact:
+            exact = [(p, target) for p, target, _ in enum_dictionary(tuple(scoped_properties))
+                     if p.name in lexicon.get('parts', {}) and
+                     any(lemmas(value) == lemmas(form) for form in lexicon.get('value_aliases', {}).get(target, []))]
+        # An explicitly stated part can have an INVALID material. Extraction
+        # reports it; membership is decided by C, not by vocabulary matching A.
+        material = next((target for target, forms in lexicon.get('value_aliases', {}).items()
+                         if any(lemmas(value) == lemmas(form) for form in (target, *forms))), None)
+        stated_parts = [(p, material) for p in scoped_properties if material and
+                        p.name in lexicon.get('parts', {}) and
+                        explicit_part(text, left, right, lexicon['parts'][p.name])]
+        if stated_parts:
+            exact = stated_parts
+        # A material names a part only if that part is stated. Without a part,
+        # even a single allowed material owner is not enough linguistic evidence.
+        part_candidates = [(p, v) for p, v in exact if p.name in lexicon.get('parts', {})]
+        explicit_parts = []
+        for p, target in part_candidates:
+            if explicit_part(text, left, right, lexicon['parts'][p.name]):
+                explicit_parts.append((p, target))
+        if explicit_parts:
+            exact = explicit_parts
         ownership = {(prop.semantic_key or prop.id, prop.subject) for prop, _ in exact}
         begin, end, clause = next((a, b, chunk) for a, b, chunk in clauses if a <= left and right <= b)
-        negation = bool(re.search(r"\b(?:не|без|нет)\b", clause, re.I))
-        uncertain = negation or "?" in clause or bool(re.search(
-            r"\b(?:возможно|вероятно|кажется|предположительно|неизвестно|непонятно)\b", clause, re.I))
+        negation, uncertain = local_uncertainty(text, left, right, begin, end)
         raw_left, raw_right = (begin, end) if uncertain else (left, right)
-        if len(ownership) == 1:
+        if len(ownership) == 1 and (not part_candidates or explicit_parts):
             prop = exact[0][0]
-            fact = make_fact(prop.name, value, None, text[raw_left:raw_right], (raw_left, raw_right), len(facts),
+            canonical_value = value if canon(value) == canon(exact[0][1]) else exact[0][1]
+            fact = make_fact(prop.name, canonical_value, None, text[raw_left:raw_right], (raw_left, raw_right), len(facts),
                              negated=negation, unknown=uncertain)
             fact.subject = prop.subject
         elif exact or close:
@@ -317,7 +456,44 @@ def extract(text: str, names: tuple[str, ...], *, scoped_properties=()) -> tuple
         else:
             continue
         facts.append(fact)
+        fact.surface_value = value
+        fact.extraction_evidence = list(dict.fromkeys(p.evidence for p, _ in exact))
+        if exact and not fact.name:
+            fact.assignment_options = [FactAssignment(name=p.name, value=target, subject=p.subject, evidence=p.evidence)
+                                       for p, target in exact]
+            fact.uncertainty_reason = ('Не указана часть товара, к которой относится материал' if part_candidates
+                                       else 'Значение подходит к нескольким разным свойствам выбранной области')
         covered.append((left, right))
+    # Numeric designation may precede its explicit label ("40 размер").
+    for prop in scoped_properties:
+        if prop.numeric_semantics != 'designation' or not prop.numeric_semantics_evidence:
+            continue
+        labels = [prop.name, *lexicon.get('name_aliases', {}).get(prop.name, [])]
+        for label in labels:
+            for match in re.finditer(rf'(?<![\w.,])({NUMBER})\s+({re.escape(label)})(?!\w)', text, re.I):
+                if any(match.start() < b and match.end() > a for a, b in covered):
+                    continue
+                fact = make_fact(prop.name, match[1], None, match[0], match.span(), len(facts))
+                fact.extraction_evidence = [prop.numeric_semantics_evidence]
+                facts.append(fact)
+                covered.append(match.span())
+    # Preserve anonymous physical measures as facts without guessing their role.
+    for match in MEASUREMENT.finditer(text):
+        if not match['unit'] or any(match.start() < b and match.end() > a for a, b in covered):
+            continue
+        fact = make_fact('', measurement_value(match['value']), match['unit'], match[0], match.span(), len(facts))
+        fact.uncertainty_reason = 'Не установлено, какое свойство измерено'
+        from app.units import get_unit
+        unit = get_unit(fact.unit)
+        for prop in scoped_properties:
+            if prop.value_type != 'number' or not prop.verified:
+                continue
+            if unit and any(get_unit(item.unit) and get_unit(item.unit).dimension == unit.dimension for item in prop.allowed):
+                fact.assignment_options.append(FactAssignment(name=prop.name, value=fact.value, unit=fact.unit,
+                                                              subject=prop.subject, evidence=prop.evidence))
+        facts.append(fact)
+        covered.append(match.span())
+    canonicalize_facts(facts, scoped_properties, lexicon)
     unparsed: list[Fragment] = []
     cursor = 0
     for start, end in sorted(covered):

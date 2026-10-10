@@ -1,0 +1,561 @@
+{
+  "archive_sha256": "4ebf16535e453433dfd690c01a107a187ffe619f5b8554147baff6950bf7171c",
+  "positions": {
+    "31.01.12.160-00000003": {
+      "member": "КТРУ/220_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_060.xml",
+      "sha256": "2da339ca84d81cae858be4f25491cc94cc7f7bbc7cd9123ba97078c9cf60b258",
+      "fields": {
+        "code": "31.01.12.160-00000003",
+        "version": "5",
+        "inclusionDate": "2019-11-08T10:18:06+03:00",
+        "publishDate": "2026-04-23T12:28:35+03:00",
+        "updateDate": "2026-04-23T12:28:36+03:00",
+        "name": "Стул на деревянном каркасе",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-05-06T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "37ff6d62-a",
+          "name": "Наличие мягкого сидения",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "db719a62-f",
+          "name": "Наличие мягкой спинки",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "b8cd266d-9",
+          "name": "Вид материала сидения",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cf8f87cf-b",
+          "name": "Вид материала спинки",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "2a1681d4-1",
+          "name": "Наличие подлокотников",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ee38d282-6",
+          "name": "Складная конструкция",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "9ac59760-b",
+          "name": "Наличие пюпитра",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "91cf7891-6",
+          "name": "Форма основания",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "31.01.11.150-00000003": {
+      "member": "КТРУ/220_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_060.xml",
+      "sha256": "e6df72a877f587e104275dd6569394c6aa655e3c4e259d2398b050180b973edd",
+      "fields": {
+        "code": "31.01.11.150-00000003",
+        "version": "5",
+        "inclusionDate": "2019-11-08T10:13:11+03:00",
+        "publishDate": "2026-04-16T17:19:42+03:00",
+        "updateDate": "2026-04-16T17:19:42+03:00",
+        "name": "Стул на металлическом каркасе",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-04-29T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "94b59978-4",
+          "name": "Вид материала спинки",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "a64c21d9-c",
+          "name": "Наличие подлокотников",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "48b1fe49-c",
+          "name": "Складная конструкция",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cfca308b-b",
+          "name": "Наличие пюпитра",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "8e50a5cd-4",
+          "name": "Наличие мягкого сидения",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "cf3a76b9-4",
+          "name": "Наличие мягкой спинки",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "8d783392-c",
+          "name": "Вид материала сидения",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ed7244a8-a",
+          "name": "Форма основания",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "14.14.30.110-00000003": {
+      "member": "КТРУ/226_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_066.xml",
+      "sha256": "478e6ea7cf624b23115fd6293ef8dc393bf6b96cf758916fb69de6bd4c89a9b8",
+      "fields": {
+        "code": "14.14.30.110-00000003",
+        "versionCode": "14.14.30.110-000000035",
+        "version": "5",
+        "inclusionDate": "2020-08-25T10:33:09+03:00",
+        "publishDate": "2025-06-05T14:48:07+03:00",
+        "updateDate": "2025-06-05T14:48:07+03:00",
+        "name": "Футболка трикотажная",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2025-07-05T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "true",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "c76385c9-1",
+          "name": "Назначение",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ccbfb616-2",
+          "name": "Тип трикотажного полотна",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "f43bdb09-2",
+          "name": "Наличие изображения",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "1643cab9-b",
+          "name": "Рост",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "3c32ae26-1",
+          "name": "Российский размер",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "85e5785c-d",
+          "name": "Наличие рукавов",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "14.14.30.110-00000002": {
+      "member": "КТРУ/226_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_066.xml",
+      "sha256": "f69ce09ac0235776481751214738da1ff0d89928f959fb0ac30b00130077bed8",
+      "fields": {
+        "code": "14.14.30.110-00000002",
+        "versionCode": "14.14.30.110-000000025",
+        "version": "5",
+        "inclusionDate": "2020-08-25T10:32:47+03:00",
+        "publishDate": "2025-06-05T14:51:32+03:00",
+        "updateDate": "2025-06-05T14:51:32+03:00",
+        "name": "Футболка трикотажная",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2025-07-05T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "c76385c9-1",
+          "name": "Назначение",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ccbfb616-2",
+          "name": "Тип трикотажного полотна",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "f43bdb09-2",
+          "name": "Наличие изображения",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "1643cab9-b",
+          "name": "Рост",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "3c32ae26-1",
+          "name": "Российский размер",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "85e5785c-d",
+          "name": "Наличие рукавов",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.73.30.141-00000010": {
+      "member": "КТРУ/232_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_072.xml",
+      "sha256": "e5c899a30b75b459b12f85dd184380cb9e8daaebcf15ab424ae7c05082b8cd9c",
+      "fields": {
+        "code": "25.73.30.141-00000010",
+        "version": "4",
+        "inclusionDate": "2021-02-10T09:34:29+03:00",
+        "publishDate": "2026-06-03T13:06:15+03:00",
+        "updateDate": "2026-06-03T13:06:16+03:00",
+        "name": "Молоток",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2026-07-03T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": ""
+      },
+      "characteristics": [
+        {
+          "code": "86d2b111-f",
+          "name": "Тип",
+          "type": "1",
+          "kind": "1",
+          "actual": "true",
+          "isRequired": "true",
+          "choiceType": "1",
+          "values": ""
+        },
+        {
+          "code": "f78c450e-2",
+          "name": "Масса молотка",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "aa26f312-6",
+          "name": "Материал бойка",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "eef63e69-7",
+          "name": "Безынерционный",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "ca0d4c23-5",
+          "name": "Форма бойка",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "cc742fbb-8",
+          "name": "Длина рукоятки",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    },
+    "25.73.30.290-00000003": {
+      "member": "КТРУ/232_nsiKTRUNew_all_2026-10-05.zip",
+      "actual_xml": "nsiKTRUNew_all_actual_20261003020003_072.xml",
+      "sha256": "d9ff9897a4cc5563e1031cbd546b86808272d31b38832a43f148707ec71c818a",
+      "fields": {
+        "code": "25.73.30.290-00000003",
+        "versionCode": "25.73.30.290-000000031",
+        "version": "1",
+        "inclusionDate": "2021-02-10T11:33:33+03:00",
+        "publishDate": "2021-02-10T11:33:33+03:00",
+        "updateDate": "2025-01-31T19:54:46+03:00",
+        "name": "Киянка",
+        "OKPD2": "",
+        "status": "ACTIVE",
+        "applicationDateStart": "2021-04-01T00:00:00+03:00",
+        "OKEIs": "",
+        "NSI": "",
+        "characteristics": "",
+        "rubricators": "",
+        "isTemplate": "false",
+        "parentPositionInfo": "",
+        "noNewFeatures": "false"
+      },
+      "characteristics": [
+        {
+          "code": "b8d0a143-1",
+          "name": "Материал рабочей части",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "04c51a89-e",
+          "name": "Вес",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "c0e59c39-2",
+          "name": "Длина",
+          "type": "2",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "f5de5ed5-d",
+          "name": "Форма сечения рабочей части",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "70f5139a-a",
+          "name": "Форма поверхности рабочей части",
+          "type": "1",
+          "kind": "3",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        },
+        {
+          "code": "bd1f360b-0",
+          "name": "Киянка безынерционная",
+          "type": "1",
+          "kind": "2",
+          "actual": "true",
+          "isRequired": "false",
+          "choiceType": "2",
+          "values": ""
+        }
+      ],
+      "clean_matches_actual_xml": true
+    }
+  },
+  "missing": []
+}

@@ -38,7 +38,7 @@ def map_facts(position: Position, facts: list[Fact]):
             issues.append(Issue(code="mapping_ambiguous", fact_id=fact.id, candidate_code=position.code,
                                 explanation=f"Имя «{fact.name}» соответствует нескольким свойствам позиции; уточните контекст"))
         elif fact.name:
-            possible = get_close_matches(canon(fact.name), [canon(prop.name) for prop in position.properties
+            possible = [] if fact.card_mappings else get_close_matches(canon(fact.name), [canon(prop.name) for prop in position.properties
                                                          if prop.subject == fact.subject], n=1, cutoff=.82)
             if possible:
                 target = next(name for name in names if canon(name) == possible[0])

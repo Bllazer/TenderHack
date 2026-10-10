@@ -6,11 +6,13 @@ from app.schemas import Correction, Issue, Question, QuestionOption
 from app.extraction import enum_targets
 
 
-def resolve_suggestions(category_id, positions, facts, answers):
+def resolve_suggestions(category_id, positions, facts, answers, *, extra_properties=()):
     proposals = {}
     for position in positions:
         _, _, corrections = map_facts(position, facts)
         for correction in corrections:
+            if any(f.id == correction.fact_id and f.card_mappings for f in facts):
+                continue
             proposals.setdefault(correction.fact_id, set()).add(correction.normalized)
     current_answers = {answer.question_id: answer for answer in answers}
     pending, rejected, accepted = [], set(), []
@@ -37,15 +39,17 @@ def resolve_suggestions(category_id, positions, facts, answers):
                 Issue(code="unresolved_property_correction", fact_id=fact.id,
                       explanation=f"Не подтверждено сопоставление «{fact.name}» с «{' / '.join(targets)}»",
                       confirmation_required=True, suggested_action="Подтвердите или отклоните предлагаемое сопоставление")))
-    properties = tuple(prop for position in positions for prop in position.properties)
+    properties = (*tuple(prop for position in positions for prop in position.properties), *extra_properties)
     for fact in facts:
         if fact.unknown and fact.name:
             continue
         exact, close = enum_targets(properties, fact.value, fact.name, fact.subject if fact.name else None)
         # An explicitly named exact value is already handled by contextual mapping/C.
-        if fact.name and exact:
+        if fact.name and exact and not fact.assignment_options:
             continue
-        targets = sorted({(prop.name, value, prop.subject) for prop, value in (exact or close)})
+        targets = sorted({(option.name, option.value, option.subject, option.unit or fact.unit)
+                          for option in fact.assignment_options} if fact.assignment_options else
+                         {(prop.name, value, prop.subject, fact.unit) for prop, value in (exact or close)}, key=repr)
         if not targets:
             continue
         identity = repr((category_id, fact.id, fact.name, fact.value, fact.raw, targets))
@@ -57,27 +61,33 @@ def resolve_suggestions(category_id, positions, facts, answers):
             rejected.add(fact.id)
             # Rejected assignment remains source information, not evidence for C.
             fact.name = ""
+            fact.card_mappings.clear()
+            fact.assignment_options.clear()
         elif answer and not answer.unknown and answer.value in choices:
-            name, value, subject = choices[answer.value]
+            name, value, subject, unit = choices[answer.value]
             accepted.append(Correction(fact_id=fact.id, kind="proposed_text_fix", original=fact.value,
                 normalized=value, explanation=f"Пользователь подтвердил «{name}: {value}»; все факты проверены заново"))
-            fact.name, fact.value, fact.subject = name, value, subject
+            fact.name, fact.value, fact.subject, fact.unit = name, value, subject, unit
+            fact.uncertainty_reason = None
+            fact.assignment_options.clear()
+            fact.card_mappings = [p.id for p in extra_properties if p.name == name and p.subject == subject]
         else:
             original = fact.value
             pending.append((fact, Question(id=qid, kind="correction",
-                title=f"Уточните значение «{original}»",
+                title=(f"К какому свойству относится «{original}»?" if fact.assignment_options else
+                       f"Уточните значение «{original}»"),
                 reason=("Отрицание или неопределённость нельзя заменить положительным значением; исправьте факт явно или сохраните дополнительно"
                         if fact.negated or fact.unknown else
-                        "Допустимое значение или его назначение требует вашего подтверждения в выбранной области"),
+                        fact.uncertainty_reason or "Допустимое значение или его назначение требует вашего подтверждения в выбранной области"),
                 property_name=fact.name or None,
-                options=[QuestionOption(value=token, label=f"{name}: {value}")
-                         for token, (name, value, subject) in choices.items()] +
+                options=[QuestionOption(value=token, label=f"{name}: {value} {unit or ''}".strip())
+                         for token, (name, value, subject, unit) in choices.items()] +
                         [QuestionOption(value="reject", label="Сохранить как дополнительные сведения")]),
                 Issue(code="unresolved_value_correction", fact_id=fact.id,
                     explanation=f"Не подтверждено исправление или назначение «{original}»",
                     confirmation_required=True, suggested_action="Подтвердите или отклоните предложенное значение")))
             accepted.append(Correction(fact_id=fact.id, kind="proposed_text_fix", original=original,
-                normalized=" / ".join(f"{name}: {value}" for name, value, _ in targets),
+                normalized=" / ".join(f"{name}: {value} {unit or ''}".strip() for name, value, _, unit in targets),
                 explanation="Варианты допустимых значений выбранной области; исправление не применено",
                 confirmation_required=True))
     # Suggestion discovery is not evidence. Recompute mappings after any decision.
