@@ -1,0 +1,641 @@
+{
+  "schema": "tenderhack-user-cases/1",
+  "note": [
+    "Пользовательские приёмочные сценарии (пайплайн T04/T14). Каждый кейс — путь пользователя:",
+    "описание -> подтверждение типа -> ответ на вопрос -> подтверждение кода.",
+    "Ожидания, помеченные в source как docs/reviews/*, сняты с реального прогона на clean5-7331f0732bc0ff5c",
+    "(60 087 позиций). Кейсы без опоры на записанный прогон помечены \"discover\": true —",
+    "ожидание заполняется после первого живого прогона (инварианты при этом проверяются сразу).",
+    "Запуск: python -X utf8 tests/user_cases.py list",
+    "        python -X utf8 tests/user_cases.py run --base http://127.0.0.1:8000",
+    "        python -X utf8 tests/user_cases.py replay --base http://127.0.0.1:8000"
+  ],
+  "defaults": {
+    "candidate_limit": 100
+  },
+  "cases": [
+    {
+      "id": "tools-lopata-01-basic",
+      "group": "tools",
+      "kind": "incomplete",
+      "title": "Лопата без характеристик: сервис спрашивает различающее свойство, код не выбран",
+      "checks": ["T04 неполное описание", "T11 порядок вопросов", "T13 selected=null до доказательств"],
+      "source": "docs/reviews/stage2-followup/edges.json[22]",
+      "steps": [
+        {
+          "post": {"description": "Лопата", "confirmed_category_id": "25.99.29.120-00004"},
+          "expect": {
+            "http": 200,
+            "status": "needs_input",
+            "selected_ktru_code": null,
+            "candidate_count": 3,
+            "question": {"kind": "property", "property_name": "Тип лопаты"},
+            "verification": {"type_verified": true, "ktru_unique": false, "value_verified": false, "blocking_issues": true}
+          }
+        }
+      ],
+      "reason": "missing_required"
+    },
+    {
+      "id": "tools-lopata-02-text-vs-attribute",
+      "group": "tools",
+      "kind": "normal",
+      "title": "Одно и то же значение из текста и из формы не создаёт ложный конфликт",
+      "checks": ["T06 повтор не перезаписывается", "T10 противоречие только при реальном расхождении"],
+      "source": "docs/reviews/stage2-followup/after.json[00]",
+      "steps": [
+        {
+          "post": {
+            "description": "Лопата; Крепление черенка: Верхнее",
+            "confirmed_category_id": "25.99.29.120-00004",
+            "attributes": [{"id": "mount", "name": "Крепление черенка", "values": ["Верхнее"]}]
+          },
+          "expect": {
+            "http": 200,
+            "status": "needs_input",
+            "selected_ktru_code": null,
+            "candidate_count": 3,
+            "question": {"kind": "property", "property_name": "Тип лопаты"},
+            "issues_exclude": ["conflicting_facts"]
+          }
+        }
+      ],
+      "reason": "missing_required"
+    },
+    {
+      "id": "tools-lopata-03-conflict",
+      "group": "tools",
+      "kind": "conflict",
+      "title": "Конфликт: в тексте «Верхнее», в форме «Нижнее» — сначала исправление",
+      "checks": ["T10 группа «противоречие»", "T11 конфликт раньше значений", "T13 resolved запрещён"],
+      "source": "docs/reviews/stage2-followup/after.json[02]",
+      "steps": [
+        {
+          "post": {
+            "description": "Лопата; Крепление черенка: Верхнее",
+            "confirmed_category_id": "25.99.29.120-00004",
+            "attributes": [{"id": "mount", "name": "Крепление черенка", "values": ["Нижнее"]}]
+          },
+          "expect": {
+            "http": 200,
+            "status": "needs_input",
+            "selected_ktru_code": null,
+            "question": {"kind": "conflict"},
+            "issues_include": ["conflicting_facts"],
+            "verification": {"value_verified": false, "blocking_issues": true}
+          }
+        }
+      ],
+      "reason": "conflicting_facts"
+    },
+    {
+      "id": "tools-lopata-04-kind3-order",
+      "group": "tools",
+      "kind": "special",
+      "title": "Множественный выбор (kind=3): порядок и повторы не меняют пул",
+      "checks": ["T01 kind определяет множественность", "T09 «и/или» учитывает kind", "T13 правка пересчитывает результат"],
+      "source": "docs/reviews/stage2-followup/after.json[05,06]",
+      "steps": [
+        {
+          "post": {
+            "description": "Лопата",
+            "confirmed_category_id": "25.99.29.120-00004",
+            "attributes": [{"id": "multi", "name": "Конструктивные особенности", "values": ["Черенок", "Ручка на черенке"]}]
+          },
+          "expect": {"http": 200, "status": "needs_input", "selected_ktru_code": null, "candidate_count": 3}
+        },
+        {
+          "post": {
+            "description": "Лопата",
+            "confirmed_category_id": "25.99.29.120-00004",
+            "attributes": [{"id": "multi", "name": "Конструктивные особенности", "values": ["Ручка на черенке", "Черенок"]}]
+          },
+          "expect": {"http": 200, "status": "needs_input", "candidate_count": 3},
+          "same_as_previous": ["candidate_count"]
+        }
+      ]
+    },
+    {
+      "id": "tools-lopata-05-unknown-answer",
+      "group": "tools",
+      "kind": "incomplete",
+      "title": "Ответ «не знаю» сохраняет неопределённость и не исключает позиции",
+      "checks": ["T11 «не знаю» не исключает", "T13 требуется доказательство, а не отсутствие ответа"],
+      "source": "docs/reviews/stage2-followup/edges.json[23]",
+      "steps": [
+        {"post": {"description": "Лопата", "confirmed_category_id": "25.99.29.120-00004"},
+         "expect": {"status": "needs_input", "candidate_count": 3, "selected_ktru_code": null},
+         "capture_question": "q1"},
+        {"answer": {"question": "q1", "unknown": true},
+         "expect": {"http": 200, "status": "needs_input", "candidate_count": 3, "selected_ktru_code": null,
+                    "verification": {"value_verified": false}}}
+      ]
+    },
+    {
+      "id": "tools-lopata-06-unit-conversion",
+      "group": "tools",
+      "kind": "unit_convert",
+      "title": "Одна и та же длина в см и мм не конфликтует, другая — конфликтует",
+      "checks": ["T06 перевод единиц внутри размерности", "T10 группа «противоречие» после приведения единиц"],
+      "source": "docs/reviews/stage2-followup/after.json[07,08]",
+      "steps": [
+        {
+          "post": {
+            "description": "Лопата; Длина черенка: 1000 мм",
+            "confirmed_category_id": "25.99.29.120-00004",
+            "attributes": [{"id": "handle", "name": "Длина черенка", "values": ["100", "100.0"], "unit": "см"}]
+          },
+          "expect": {"http": 200, "status": "needs_input", "selected_ktru_code": null, "candidate_count": 3,
+                     "issues_exclude": ["conflicting_facts"],
+                     "question": {"kind": "property", "property_name": "Тип лопаты"}}
+        },
+        {
+          "post": {
+            "description": "Лопата; Длина черенка: 1000 мм",
+            "confirmed_category_id": "25.99.29.120-00004",
+            "attributes": [{"id": "handle", "name": "Длина черенка", "values": ["110"], "unit": "см"}]
+          },
+          "expect": {"http": 200, "status": "needs_input", "selected_ktru_code": null,
+                     "question": {"kind": "conflict"},
+                     "issues_include": ["conflicting_facts"]}
+        }
+      ],
+      "reason": "conflicting_facts"
+    },
+    {
+      "id": "tools-lopata-07-typo-in-value",
+      "group": "tools",
+      "kind": "typo",
+      "title": "Опечатка в значении свойства: предлагаем исправление, но не подтверждаем молча",
+      "checks": ["T10 группа «опечатка/раскладка»", "T13 proposed_text_fix требует решения пользователя"],
+      "discover": true,
+      "steps": [
+        {
+          "post": {
+            "description": "Лопата; Крепление черенка: Верхнии",
+            "confirmed_category_id": "25.99.29.120-00004"
+          },
+          "expect": {"http": 200, "status": "needs_input", "selected_ktru_code": null,
+                     "verification": {"value_verified": false}}
+        }
+      ]
+    },
+    {
+      "id": "tools-kilanka-01-question",
+      "group": "tools",
+      "kind": "normal",
+      "title": "Киянка: единственный совместимый код, вопросы значений закончились — спрашиваем код",
+      "checks": ["T09 уникальность после сужения", "T11 подтверждение кода", "T13 один кандидат != resolved"],
+      "source": "docs/reviews/stage2/after.json[41]",
+      "steps": [
+        {
+          "post": {
+            "description": "Киянка",
+            "confirmed_category_id": "25.73.30.290-00000004",
+            "attributes": [{"id": "sel", "name": "Форма сечения рабочей части", "values": ["Круг"]}]
+          },
+          "expect": {
+            "http": 200,
+            "status": "needs_input",
+            "selected_ktru_code": null,
+            "candidate_count": 1,
+            "question": {"kind": "code"},
+            "verification": {"type_verified": true, "ktru_unique": true, "fields_complete": true,
+                             "value_verified": true, "catalog_scope_complete": true, "blocking_issues": false}
+          }
+        }
+      ],
+      "reason": "confirm_code_required"
+    },
+    {
+      "id": "tools-kilanka-02-resolved",
+      "group": "tools",
+      "kind": "normal",
+      "title": "Киянка: подтверждение кода пользователем завершает подбор",
+      "checks": ["T13 resolved только при всех условиях и подтверждении", "T14 положительный сценарий"],
+      "source": "docs/reviews/stage2/after.json[42]",
+      "steps": [
+        {
+          "post": {
+            "description": "Киянка",
+            "confirmed_category_id": "25.73.30.290-00000004",
+            "attributes": [{"id": "sel", "name": "Форма сечения рабочей части", "values": ["Круг"]}],
+            "confirmed_ktru_code": "25.73.30.290-00000003"
+          },
+          "expect": {
+            "http": 200,
+            "status": "resolved",
+            "selected_ktru_code": "25.73.30.290-00000003",
+            "candidate_count": 1,
+            "question": null,
+            "verification": {"type_verified": true, "ktru_unique": true, "fields_complete": true,
+                             "value_verified": true, "catalog_scope_complete": true,
+                             "confirmed_by_user": true, "blocking_issues": false}
+          }
+        }
+      ]
+    },
+    {
+      "id": "tools-kilanka-03-invalid-value",
+      "group": "tools",
+      "kind": "special",
+      "title": "Значение вне закрытого набора исключает все позиции (0 кандидатов)",
+      "checks": ["T10 «несуществующее/недопустимое значение»", "T09 закрытые множества"],
+      "source": "docs/reviews/stage2/after.json[47]",
+      "steps": [
+        {
+          "post": {
+            "description": "Киянка",
+            "confirmed_category_id": "25.73.30.290-00000004",
+            "attributes": [{"id": "sel", "name": "Форма сечения рабочей части", "values": ["Круг", "НЕВХОДЯЩЕЕ ЗНАЧЕНИЕ"]}]
+          },
+          "expect": {"http": 200, "status": "needs_input", "candidate_count": 0, "selected_ktru_code": null}
+        }
+      ],
+      "reason": "no_compatible_candidate"
+    },
+    {
+      "id": "tools-kilanka-04-confirm-excluded-422",
+      "group": "tools",
+      "kind": "special",
+      "title": "Ручное подтверждение исключённого кода отклоняется (422)",
+      "checks": ["T13 подтверждение не обходит несовместимость"],
+      "source": "docs/reviews/stage2/after.json[48]",
+      "steps": [
+        {
+          "post": {
+            "description": "Киянка",
+            "confirmed_category_id": "25.73.30.290-00000004",
+            "attributes": [{"id": "sel", "name": "Форма сечения рабочей части", "values": ["Круг", "НЕВХОДЯЩЕЕ ЗНАЧЕНИЕ"]}],
+            "confirmed_ktru_code": "25.73.30.290-00000003"
+          },
+          "expect": {"http": 422, "error_code": "incompatible_ktru_code"}
+        }
+      ]
+    },
+    {
+      "id": "tools-eritrotsity-01-integer-count",
+      "group": "tools",
+      "kind": "unit_convert",
+      "title": "Счётное свойство: целое значение принимается, пул сужается до 2",
+      "checks": ["T06 числовые типы", "T09 счётная семантика"],
+      "source": "docs/reviews/stage2-followup/after.json[09]",
+      "steps": [
+        {
+          "post": {
+            "description": "Набор для системы замораживания эритроцитов донорской крови",
+            "confirmed_category_id": "32.50.13.190-00013",
+            "attributes": [{"id": "quantity", "name": "Количество контейнеров в наборе", "unit": "шт", "value": "1"}]
+          },
+          "expect": {"http": 200, "status": "needs_input", "selected_ktru_code": null, "candidate_count": 2}
+        }
+      ]
+    },
+    {
+      "id": "tools-eritrotsity-02-fractional-count",
+      "group": "tools",
+      "kind": "special",
+      "title": "Дробное количество (1.5 шт) несовместимо: 0 кандидатов",
+      "checks": ["T01 целостность счётных величин", "T14 «число без единицы не получает размерность» (обратный случай)"],
+      "source": "docs/reviews/stage2-followup/after.json[10]",
+      "steps": [
+        {
+          "post": {
+            "description": "Набор для системы замораживания эритроцитов донорской крови",
+            "confirmed_category_id": "32.50.13.190-00013",
+            "attributes": [{"id": "quantity", "name": "Количество контейнеров в наборе", "unit": "шт", "value": "1.5"}]
+          },
+          "expect": {"http": 200, "status": "needs_input", "candidate_count": 0, "selected_ktru_code": null}
+        }
+      ],
+      "reason": "no_compatible_candidate"
+    },
+    {
+      "id": "tools-eritrotsity-03-fractional-422",
+      "group": "tools",
+      "kind": "special",
+      "title": "Ручной код не обходит дробное количество (422)",
+      "checks": ["T13 подтверждение не обходит ограничения"],
+      "source": "docs/reviews/stage2-followup/after.json[21]",
+      "steps": [
+        {
+          "post": {
+            "description": "Набор для системы замораживания эритроцитов донорской крови",
+            "confirmed_category_id": "32.50.13.190-00013",
+            "confirmed_ktru_code": "32.50.13.190-00244",
+            "attributes": [{"id": "bad-count", "name": "Количество контейнеров в наборе", "value": "1.5", "unit": "шт"}]
+          },
+          "expect": {"http": 422, "error_code": "incompatible_ktru_code"}
+        }
+      ]
+    },
+    {
+      "id": "tools-source-defect-01-needs-input",
+      "group": "tools",
+      "kind": "special",
+      "title": "Позиция с дефектом источника не завершается: needs_input, код не выбран",
+      "checks": ["T01 source_issues", "T13 дефект источника не даёт resolved", "T14 позиция без характеристик/дефект"],
+      "source": "docs/reviews/stage2-followup/edges.json[13]",
+      "steps": [
+        {
+          "post": {
+            "description": "Сосуд Дьюара",
+            "confirmed_category_id": "25.29.12.000-00000002",
+            "confirmed_ktru_code": "25.29.12.000-00000001"
+          },
+          "expect": {"http": 200, "status": "needs_input", "selected_ktru_code": null, "candidate_count": 1}
+        }
+      ],
+      "reason": "unsupported_constraint"
+    },
+    {
+      "id": "tools-source-defect-02-needs-data",
+      "group": "tools",
+      "kind": "special",
+      "title": "Непроверяемые ограничения в пуле: needs_data и понятное объяснение, а не пустой вопрос",
+      "checks": ["T13 catalog_constraints_unavailable", "T10 системный исход unsupported_constraint"],
+      "source": "docs/reviews/stage2-followup/edges.json[14]",
+      "steps": [
+        {
+          "post": {
+            "description": "Концентратор кислородный промышленный",
+            "confirmed_category_id": "28.99.39.190-00000353",
+            "confirmed_ktru_code": "28.99.39.190-00000352"
+          },
+          "expect": {
+            "http": 200,
+            "status": "needs_data",
+            "selected_ktru_code": null,
+            "issues_include": ["catalog_constraints_unavailable"]
+          }
+        }
+      ],
+      "reason": "unsupported_constraint"
+    },
+    {
+      "id": "tools-template-422",
+      "group": "tools",
+      "kind": "special",
+      "title": "Шаблон нельзя подтвердить как итоговый код (422)",
+      "checks": ["T01 шаблон не итог", "T14 «шаблон не становится итогом»"],
+      "source": "docs/reviews/stage2-followup/edges.json[17]",
+      "steps": [
+        {
+          "post": {
+            "description": "Сосуд Дьюара",
+            "confirmed_category_id": "25.29.12.000-00000002",
+            "confirmed_ktru_code": "25.29.12.000-00000002"
+          },
+          "expect": {"http": 422, "error_code": "incompatible_ktru_code"}
+        }
+      ]
+    },
+    {
+      "id": "tools-drill-01-mains-power",
+      "group": "tools",
+      "kind": "normal",
+      "title": "Дрель ручная электрическая от сети: тип питания сужает пул аккумуляторной позиции",
+      "checks": ["T09 пример из пайплайна (00000001 vs 00000002)", "T07 правильный тип товара", "T11 недостающее обязательное поле"],
+      "source": "проверено на живом каталоге 11.10.2026",
+      "steps": [
+        {"post": {"description": "Дрель ручная электрическая, от сети"},
+         "expect": {"http": 200, "status": "needs_input", "selected_ktru_code": null,
+                    "category_first": "28.24.11.000-00000003"}},
+        {"confirm_category": "auto",
+         "expect": {"http": 200, "status": "needs_input", "selected_ktru_code": null,
+                    "candidate_count": 1,
+                    "candidates_include": ["28.24.11.000-00000001"],
+                    "excluded_include": ["28.24.11.000-00000002"],
+                    "question": {"kind": "property", "property_name": "Минимальный диаметр зажима патрона"}}}
+      ],
+      "reason": "missing_required"
+    },
+    {
+      "id": "tools-drill-02-requirement-operator",
+      "group": "tools",
+      "kind": "special",
+      "title": "Требование «мощность не менее 650 Вт» не должно молча терять верный код",
+      "checks": ["T09 «частичное пересечение — гипотеза, не доказательство»", "спорный пункт: C помечает операторы как incompatible"],
+      "discover": true,
+      "steps": [
+        {"post": {"description": "Дрель ручная электрическая, мощность не менее 650 Вт",
+                  "confirmed_category_id": "28.24.11.000-00000003"},
+         "expect": {"http": 200, "selected_ktru_code": null, "status_exclude": ["resolved"]}}
+      ],
+      "reason": "unsupported_constraint"
+    },
+    {
+      "id": "tools-drill-03-wrong-unit",
+      "group": "tools",
+      "kind": "wrong_unit",
+      "title": "Неверная размерность (мощность в кг) блокирует завершение, значение не переписывается",
+      "checks": ["T10 «несоответствие единицы»", "T06 единица не наследуется из справочника", "T14 «число без единицы не получает подтверждённую размерность»"],
+      "discover": true,
+      "steps": [
+        {"post": {"description": "Дрель ручная электрическая, от сети",
+                  "confirmed_category_id": "28.24.11.000-00000003",
+                  "attributes": [
+            {"id": "bad-unit", "name": "Мощность", "value": "0.65", "unit": "кг"}]},
+         "expect": {"http": 200, "status": "needs_input", "selected_ktru_code": null,
+                    "verification": {"value_verified": false}}}
+      ],
+      "reason": "unsupported_constraint"
+    },
+    {
+      "id": "tools-no-match-panamka",
+      "group": "tools",
+      "kind": "no_match",
+      "title": "Товара нет в каталоге: сервис не должен уверенно предлагать чужие типы",
+      "checks": ["T07 порог значимости поиска (известный открытый дефект)", "T13 ограниченное покрытие сообщается"],
+      "known_issue": true,
+      "steps": [
+        {"post": {"description": "Панамка детская"},
+         "expect": {"http": 200, "status_in": ["needs_data", "needs_input"], "categories_max": 0}}
+      ],
+      "reason": "catalog_link_missing"
+    },
+    {
+      "id": "furn-shkaf-01-multiselect",
+      "group": "furniture",
+      "kind": "normal",
+      "title": "Шкаф для медицинских карт: множественный выбор материала, пул из 3 позиций",
+      "checks": ["T01 kind=3", "T09 множественный выбор", "T11 следующий вопрос"],
+      "source": "docs/reviews/stage2/after.json[01]",
+      "steps": [
+        {
+          "post": {
+            "description": "Шкаф для хранения медицинских карт",
+            "confirmed_category_id": "32.50.30.110-00000091",
+            "attributes": [{"id": "sel", "name": "Материал изделия", "values": ["Металл"]}]
+          },
+          "expect": {"http": 200, "status": "needs_input", "selected_ktru_code": null, "candidate_count": 3,
+                     "question": {"kind": "property", "property_name": "Длина"}}
+        }
+      ],
+      "reason": "missing_required"
+    },
+    {
+      "id": "furn-shkaf-02-invalid-value",
+      "group": "furniture",
+      "kind": "special",
+      "title": "Одно недопустимое значение из нескольких исключает все позиции",
+      "checks": ["T09 поэлементная проверка множества", "T10 «недопустимое значение»"],
+      "source": "docs/reviews/stage2/after.json[04]",
+      "steps": [
+        {
+          "post": {
+            "description": "Шкаф для хранения медицинских карт",
+            "confirmed_category_id": "32.50.30.110-00000091",
+            "attributes": [{"id": "sel", "name": "Материал изделия", "values": ["Металл", "НЕВХОДЯЩЕЕ ЗНАЧЕНИЕ"]}]
+          },
+          "expect": {"http": 200, "status": "needs_input", "candidate_count": 0, "selected_ktru_code": null,
+                     "excluded_count_min": 1}
+        }
+      ],
+      "reason": "no_compatible_candidate"
+    },
+    {
+      "id": "furn-stol-01-basic",
+      "group": "furniture",
+      "kind": "incomplete",
+      "title": "Письменный стол: два кандидата, следующий вопрос — тип каркаса",
+      "checks": ["T11 различающее свойство", "T13 код не выбран без доказательств"],
+      "source": "docs/reviews/stage2/after.json[15]",
+      "steps": [
+        {"post": {"description": "Стол письменный", "confirmed_category_id": "31.01.10.000-00000006"},
+         "expect": {"http": 200, "status": "needs_input", "selected_ktru_code": null, "candidate_count": 2,
+                    "question": {"kind": "property", "property_name": "Тип каркаса"}}}
+      ],
+      "reason": "missing_required"
+    },
+    {
+      "id": "cloth-coat-01-sex",
+      "group": "clothes",
+      "kind": "near_type",
+      "title": "Мужское и женское пальто различаются смысловым признаком, а не номером кода",
+      "checks": ["T04 похожие товары", "T11 смысловой разделитель", "T09 признак сужает фиксированный пул"],
+      "source": "карточки позиций 14.13.10.000-00000031/32: допускают только «Женское» / «Мужское»",
+      "steps": [
+        {"post": {"description": "пальто мужское", "confirmed_category_id": "14.13.10.000-00000033"},
+         "expect": {"http": 200, "status": "needs_input", "selected_ktru_code": null,
+                    "candidates_include": ["14.13.10.000-00000032"],
+                    "excluded_include": ["14.13.10.000-00000031"]}},
+        {"post": {"description": "пальто женское", "confirmed_category_id": "14.13.10.000-00000033"},
+         "expect": {"http": 200, "status": "needs_input", "selected_ktru_code": null,
+                    "candidates_include": ["14.13.10.000-00000031"],
+                    "excluded_include": ["14.13.10.000-00000032"]}}
+      ],
+      "reason": "missing_required"
+    },
+    {
+      "id": "cloth-coat-02-size-not-cm",
+      "group": "clothes",
+      "kind": "special",
+      "title": "Размер одежды 48 не превращается в сантиметры",
+      "checks": ["T06 «размер одежды 48/M не становится сантиметрами»", "T10 лишняя характеристика не выдумывается"],
+      "source": "docs/reviews/stage1/before.json cases[4]",
+      "steps": [
+        {"post": {"description": "пальто мужское 48 размера", "confirmed_category_id": "14.13.10.000-00000033"},
+         "expect": {"http": 200, "status": "needs_input", "selected_ktru_code": null,
+                    "candidates_include": ["14.13.10.000-00000032"],
+                    "question": {"kind": "code"},
+                    "facts_not": [{"value": "48", "unit": "см"}]}}
+      ],
+      "reason": "confirm_code_required"
+    },
+    {
+      "id": "cloth-fur-coat-01",
+      "group": "clothes",
+      "kind": "incomplete",
+      "title": "Пальто зимнее с верхом из меха: 4 кандидата, вопрос про половой признак",
+      "checks": ["T07 категория найдена", "T11 вопрос по различающему свойству"],
+      "source": "docs/reviews/stage2/after.json[31]",
+      "steps": [
+        {"post": {"description": "Пальто зимнее с верхом из меха", "confirmed_category_id": "14.20.10.000-00000017"},
+         "expect": {"http": 200, "status": "needs_input", "selected_ktru_code": null, "candidate_count": 4,
+                    "question": {"kind": "property", "property_name": "Половой признак"}}}
+      ],
+      "reason": "missing_required"
+    },
+    {
+      "id": "cloth-trousers-01",
+      "group": "clothes",
+      "kind": "incomplete",
+      "title": "Брюки: 4 кандидата, вопрос про половой признак",
+      "checks": ["T07 категория найдена", "T04 одежда"],
+      "source": "docs/reviews/stage2/after.json[76]",
+      "steps": [
+        {"post": {"description": "Брюки", "confirmed_category_id": "14.13.12.140-00000003"},
+         "expect": {"http": 200, "status": "needs_input", "selected_ktru_code": null, "candidate_count": 4,
+                    "question": {"kind": "property", "property_name": "Половой признак"}}}
+      ],
+      "reason": "missing_required"
+    },
+    {
+      "id": "spec-gas-ambiguous",
+      "group": "special",
+      "kind": "special",
+      "title": "Три равнозначных кода: ambiguous без вопросов по значениям, ручной выбор не помогает",
+      "checks": ["T11 остановка при одинаковых ограничениях", "T13 ambiguous и selected=null"],
+      "source": "docs/reviews/LOCAL_RUN_2026-10-10.md (подтверждено на живом каталоге 11.10.2026)",
+      "steps": [
+        {"post": {"description": "Газ природный; Промышленное и коммунально-бытовое назначение; Объем баллона: 11 л",
+                  "confirmed_category_id": "06.20.10.110-00000009"},
+         "expect": {"http": 200, "status": "ambiguous", "selected_ktru_code": null,
+                    "candidate_count": 3, "question": null,
+                    "candidates_include": ["06.20.10.110-00000003", "06.20.10.110-00000005", "06.20.10.110-00000007"],
+                    "verification": {"value_indistinguishable": false, "ktru_unique": false}}}
+      ],
+      "reason": "value_indistinguishable"
+    },
+    {
+      "id": "spec-additional-new-property",
+      "group": "special",
+      "kind": "new_property",
+      "title": "Новое свойство («Упаковка: картонная») сохраняется и не исключает позиции",
+      "checks": ["T10 «лишняя/неприменимая характеристика» без основания не выдаётся", "T08 unknown/additional сохраняются",
+                 "T13 положительный сценарий до resolved"],
+      "source": "docs/reviews/LOCAL_RUN_2026-10-10.md (шпажки, подтверждено 11.10.2026)",
+      "steps": [
+        {"post": {"description": "Шпажки для шашлыка; Материал: Дерево; Упаковка: картонная",
+                  "confirmed_category_id": "16.29.12.000-00000095"},
+         "expect": {"http": 200, "status": "needs_input", "selected_ktru_code": null,
+                    "candidate_count": 1,
+                    "candidates_include": ["16.29.12.000-00000094"],
+                    "question": {"kind": "code"},
+                    "issues_exclude": ["unresolved_property_correction", "no_compatible_candidate"],
+                    "verification": {"value_verified": true}}},
+        {"confirm_code": "16.29.12.000-00000094",
+         "expect": {"http": 200, "status": "resolved", "selected_ktru_code": "16.29.12.000-00000094",
+                    "verification": {"confirmed_by_user": true, "blocking_issues": false}}}
+      ]
+    },
+    {
+      "id": "spec-foreign-numbers",
+      "group": "special",
+      "kind": "near_type",
+      "title": "Число чужого типа не даёт resolved (мощность на мебельной области)",
+      "checks": ["T14 «совпавшие числа чужого типа не дают resolved»", "T09 товар должен принадлежать типу"],
+      "discover": true,
+      "steps": [
+        {"post": {"description": "Стол письменный", "confirmed_category_id": "31.01.10.000-00000006",
+                  "attributes": [{"id": "power", "name": "Мощность", "value": "650", "unit": "Вт"}]},
+         "expect": {"http": 200, "selected_ktru_code": null,
+                    "status_exclude": ["resolved"]}}
+      ]
+    },
+    {
+      "id": "spec-empty-catalog",
+      "group": "special",
+      "kind": "special",
+      "title": "Пустой каталог: needs_data без выдуманных кандидатов",
+      "checks": ["T13 «Каталог пуст -> needs_data»", "T14 «пустой каталог возвращает needs_data»"],
+      "requires": "empty_catalog",
+      "steps": [
+        {"post": {"description": "Киянка"},
+         "expect": {"http": 200, "status": "needs_data", "candidate_count": 0, "selected_ktru_code": null}}
+      ],
+      "reason": "catalog_link_missing"
+    }
+  ]
+}
