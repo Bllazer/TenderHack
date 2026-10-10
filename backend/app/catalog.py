@@ -41,6 +41,11 @@ class Property(Frozen):
     verified: bool = False
     allowed: tuple[AllowedValue, ...] = ()
     semantic_key: str | None = None
+    kind: str | None = "1"
+    source_type: str | None = None
+    choice_type: str | None = None
+    raw_json: str = "{}"
+    unsupported_reasons: tuple[str, ...] = ()
 
 
 class Position(Frozen):
@@ -56,6 +61,31 @@ class Position(Frozen):
     raw_json: str = "{}"
     properties: tuple[Property, ...] = ()
     quarantined: bool = False
+    version: str | None = None
+    source_status: str | None = None
+    source_issues: tuple[str, ...] = ()
+    resolve_blocked: bool | None = None
+    resolve_blocked_reason: tuple[str, ...] = ()
+
+
+class UnitSpelling(Frozen):
+    name: str
+    usage: int
+
+
+class UnitDefinition(Frozen):
+    code: str
+    spellings: tuple[UnitSpelling, ...]
+    usage_total: int
+
+
+class UnitAlias(Frozen):
+    raw: str
+    okei_code: str
+    okei_name: str
+    global_safe: bool
+    context: str | None = None
+    raw_json: str
 
 
 class Category(Frozen):
@@ -76,6 +106,9 @@ class Catalog(Frozen):
     synthetic: bool = False
     categories: tuple[Category, ...] = ()
     positions: tuple[Position, ...] = ()
+    units: tuple[UnitDefinition, ...] = ()
+    unit_aliases: tuple[UnitAlias, ...] = ()
+    auxiliary_json: str = "{}"
 
     @model_validator(mode="after")
     def validate_links(self):
@@ -144,6 +177,25 @@ class Snapshot:
     scopes: Mapping = field(default_factory=lambda: MappingProxyType({}))
     extraction_names: tuple[str, ...] = ()
     answer_properties: Mapping[str, Property] = field(default_factory=lambda: MappingProxyType({}))
+    children: Mapping[str, tuple[Position, ...]] = field(default_factory=lambda: MappingProxyType({}))
+    missing_resources: tuple[str, ...] = ()
+    alias_lookup: Mapping[str, tuple[UnitAlias, ...]] = field(default_factory=lambda: MappingProxyType({}))
+
+    def resolve_unit(self, prop: Property, name: str | None):
+        from app.units import get_unit
+        from app.search import canon
+        from app.clean_supply import OKEI_SUPPORTED
+        if not name:
+            return None
+        aliases = self.alias_lookup.get(canon(name), ())
+        if aliases:
+            expected = {item.okei_code for item in prop.allowed}
+            matches = [alias for alias in aliases if alias.global_safe or expected == {alias.okei_code}]
+            mapped = {OKEI_SUPPORTED.get(alias.okei_code) for alias in matches}
+            if len(mapped) != 1 or None in mapped:
+                return None
+            return get_unit(next(iter(mapped)))
+        return get_unit(name)
 
     def pool(self, category_id: str) -> tuple[tuple[Position, ...], bool]:
         if category_id in self.scopes:
@@ -152,10 +204,7 @@ class Snapshot:
         visited: set[str] = set()
         found: list[Position] = []
         complete = category.link_verified and category.coverage_verified
-        children: dict[str, list[Position]] = {}
-        for position in self.positions.values():
-            if position.parent_code:
-                children.setdefault(position.parent_code, []).append(position)
+        children = self.children
 
         def expand(code: str) -> None:
             nonlocal complete
@@ -183,10 +232,20 @@ class Snapshot:
 
 def snapshot(catalog: Catalog, **kwargs) -> Snapshot:
     from app.questions import property_question_id
+    children = {}
+    aliases = {}
+    from app.search import canon
+    for position in catalog.positions:
+        if position.parent_code:
+            children.setdefault(position.parent_code, []).append(position)
+    for alias in catalog.unit_aliases:
+        aliases.setdefault(canon(alias.raw), []).append(alias)
     names = tuple(sorted({name for position in catalog.positions for prop in position.properties if prop.verified
-                          for name in (prop.name, *prop.aliases)}))
+                          for name in (prop.name, *prop.aliases)})) if catalog.categories else ()
     data = Snapshot(catalog, MappingProxyType({p.code: p for p in catalog.positions}),
-                    MappingProxyType({c.id: c for c in catalog.categories}), extraction_names=names, **kwargs)
+                    MappingProxyType({c.id: c for c in catalog.categories}), extraction_names=names,
+                    children=MappingProxyType({key: tuple(value) for key, value in children.items()}),
+                    alias_lookup=MappingProxyType({key: tuple(value) for key, value in aliases.items()}), **kwargs)
     scopes = {category.id: data.pool(category.id) for category in catalog.categories}
     answer_properties = {property_question_id(category_id, prop): prop for category_id, (positions, _) in scopes.items()
                          for position in positions for prop in position.properties}
@@ -204,6 +263,8 @@ def load_snapshot(directory: Path, allow_synthetic: bool = False) -> Snapshot:
         raise ValueError("Synthetic catalogs are test-only")
     if not catalog.categories or not catalog.positions:
         return snapshot(catalog, problem="catalog_empty")
+    if not (directory / "manifest.json").exists():
+        return snapshot(catalog, problem="search_index_missing", missing_resources=("search_index",))
     manifest = json.loads((directory / "manifest.json").read_text(encoding="utf-8"))
     if manifest["catalog_version"] != catalog.catalog_version or manifest["analyzer_version"] != ANALYZER_VERSION:
         raise ValueError("Catalog/index version mismatch")

@@ -1,5 +1,6 @@
 """Three-valued constraint checking. Unknown is never success."""
 import re
+import json
 from dataclasses import dataclass
 from decimal import Decimal
 
@@ -84,19 +85,19 @@ def subset(query: Interval, allowed: list[Interval]) -> bool:
                for item in merged)
 
 
-def signature(fact: Fact, prop: Property):
+def signature(fact: Fact, prop: Property, unit_resolver=None):
     if prop.value_type == "number":
-        parsed, unit = number(fact.value), get_unit(fact.unit)
+        parsed, unit = number(fact.value), unit_resolver(prop, fact.unit) if unit_resolver else get_unit(fact.unit)
         if parsed:
             return parsed.scaled(unit.factor) if unit else parsed, unit.dimension if unit else fact.unit
     return canon(fact.value), canon(fact.unit or "")
 
 
-def check_fact(prop: Property, fact: Fact):
+def check_fact(prop: Property, fact: Fact, unit_resolver=None):
     """outcome, reason, value_codes, optional safe normalization."""
     if fact.unknown:
         return "unknown", "unknown_fact", [], None
-    if not prop.verified or not prop.evidence or prop.required is None or prop.value_type == "unsupported":
+    if not prop.verified or not prop.evidence or prop.required is None or prop.value_type == "unsupported" or prop.kind not in ("1", "2"):
         return "unknown", "unsupported_constraint", [], None
     if not prop.allowed:
         return "unknown", "no_supported_constraints", [], None
@@ -133,7 +134,7 @@ def check_fact(prop: Property, fact: Fact):
     dimensions = {unit.dimension if unit else "dimensionless" for unit in units}
     if len(dimensions) != 1:
         return "unknown", "unsupported_constraint", [], None
-    supplied = get_unit(fact.unit)
+    supplied = unit_resolver(prop, fact.unit) if unit_resolver else get_unit(fact.unit)
     expected_dimension = next(iter(dimensions))
     if expected_dimension != "dimensionless" and not fact.unit:
         return "unknown", "unit_missing", [], None
@@ -157,7 +158,7 @@ def check_fact(prop: Property, fact: Fact):
     return "compatible", "allowed_range", [item.value_code for item in contributors if item.value_code], (normalized, target.name if target else None)
 
 
-def evaluate(position: Position, facts: list[Fact]):
+def evaluate(position: Position, facts: list[Fact], unit_resolver=None):
     groups, issues, corrections = map_facts(position, facts)
     checks: list[Check] = []
     missing: list[str] = []
@@ -167,7 +168,7 @@ def evaluate(position: Position, facts: list[Fact]):
         known = [fact for fact in found if not fact.unknown]
         if prop.required is True and not known:
             missing.append(prop.name)
-        if len({signature(fact, prop) for fact in known}) > 1:
+        if prop.kind != "3" and len({signature(fact, prop, unit_resolver) for fact in known}) > 1:
             issues.append(Issue(code="conflicting_facts", property_id=prop.id, candidate_code=position.code,
                                 fact_id=known[0].id, rule_source=prop.evidence,
                                 explanation=f"Для «{prop.name}» указаны противоречащие значения: " + ", ".join(fact.value for fact in known),
@@ -177,11 +178,11 @@ def evaluate(position: Position, facts: list[Fact]):
             continue
         if not found:
             reason = "missing_required" if prop.required else "not_provided"
-            if not prop.verified or prop.required is None or not prop.allowed or prop.value_type == "unsupported":
+            if not prop.verified or prop.required is None or not prop.allowed or prop.value_type == "unsupported" or prop.kind not in ("1", "2"):
                 reason = "unsupported_constraint"
             checks.append(Check(property_id=prop.id, name=prop.name, outcome="unknown", reason=reason))
             continue
-        results = [check_fact(prop, fact) for fact in found]
+        results = [check_fact(prop, fact, unit_resolver) for fact in found]
         outcome = ("incompatible" if any(row[0] == "incompatible" for row in results) else
                    "unknown" if any(row[0] == "unknown" for row in results) else "compatible")
         selected = next((row for row in results if row[0] == outcome), results[0])
@@ -209,6 +210,12 @@ def evaluate(position: Position, facts: list[Fact]):
     if any(issue.code == "mapping_ambiguous" for issue in issues):
         uncertain = True
     outcome = "incompatible" if incompatible else "unknown" if uncertain or not has_checked_value else "compatible"
+    if position.source_issues or position.resolve_blocked is True:
+        issues.append(Issue(code="source_issue" if position.source_issues else "resolve_blocked", candidate_code=position.code,
+                            rule_source=position.source_path, explanation="Позиция заблокирована источником для завершения подбора",
+                            suggested_action="Уточните ограничения исходного КТРУ"))
+        checks.append(Check(property_id="", name="Источник", outcome="unknown", reason="source_issue" if position.source_issues else "resolve_blocked"))
+        outcome = "unknown"
     return Candidate(ktru_code=position.code, name=position.name, okpd2=position.okpd2, outcome=outcome,
                      checks=checks, missing_required=missing, has_characteristics=bool(position.properties)), issues, corrections
 

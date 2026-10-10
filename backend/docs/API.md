@@ -7,11 +7,15 @@
 | Метод | Путь | Результат |
 |---|---|---|
 | GET | `/api/health`, `/api/health/live` | 200 `{"status":"ok"}` — процесс работает |
-| GET | `/api/health/ready` | 200 status/catalog_version/engine_version либо 503 `detail.code` и catalog_version |
-| GET | `/api/v1/catalog/status` | 200 categories/positions/catalog_version/ready/reason |
+| GET | `/api/health/ready` | 200 status/catalog_version/engine_version либо 503 detail.code/catalog_version/missing_resources |
+| GET | `/api/v1/catalog/status` | 200 categories/positions/catalog_version/ready/reason/catalog_loaded/missing_resources/templates/final_positions |
 | POST | `/api/v1/analyses` | 200 полный результат; 422 неверный ввод/подтверждение; 429 заняты слоты; 503 внутренняя ошибка |
 
 Старые серверные GET сохранённого анализа, CRUD СТЕ, сохраняемый feedback и маршруты чтения категорий/правил удалены (404). Их заменяет полный ответ POST; analysis_id, ste_id, title, raw_payload и старый контейнер result не используются. Frontend вызывает только POST анализа. Миграция не требуется: серверного хранилища нет.
+
+`catalog_loaded` означает наличие позиций, `ready` — готовность анализа; это разные признаки. `templates` и `final_positions` — количества известных шаблонов и конечных позиций (неизвестный is_template не включается ни в одну группу). `missing_resources` — список недостающих компонентов/артефактов: category_mapping, search_index, extractor, checker, questions. Для clean (5) без ML-артефактов: catalog_loaded=true, positions=60087, templates=5897, final_positions=54190, categories=0, ready=false, reason=search_index_missing. Подбор не завершён даже при ручной передаче реального кода.
+
+Изменения для frontend-команды: поля статуса каталога и readiness добавлены; POST и его поля сохранены. При необходимости показывайте отдельно «каталог загружен» и причину неготовности. needs_data нельзя показывать как найденный код; selected_ktru_code остаётся null. Frontend в этом изменении не редактируется.
 
 ## Запрос
 
@@ -77,6 +81,17 @@ additional: до 100 строк по 1024 символа. answers: до 100 об
 
 ## Ошибки
 
-422 валидации Pydantic: `{"detail":[{"type":"...","loc":["body","..."],"msg":"...","input":"..."}]}`. 422 подтверждения: `{"detail":{"code":"incompatible_ktru_code","field":"confirmed_ktru_code","message":"Подтверждение не соответствует текущей области и фактам"}}`; также unknown_category/stale_source согласно полю ошибки.
+422 валидации Pydantic: `{"detail":[{"type":"...","loc":["body","..."],"msg":"...","input":"..."}]}`. 422 подтверждения: `{"detail":{"code":"incompatible_ktru_code","field":"confirmed_ktru_code","message":"Подтверждение не соответствует текущей области и фактам"}}`; также unknown_category/stale_source согласно полю ошибки. template_confirmation запрещает выбор известного шаблона, в том числе до подключения поиска.
 
-429: detail.code=analysis_busy; повторите после завершения текущего анализа. 503 выполнения: detail.code=analysis_unavailable, безопасное сообщение без внутренних исключений. 503 readiness: detail.code — catalog_empty/resources_invalid/model_unavailable/search_unavailable. HTTP-ошибка никогда не заменяется фиктивным resolved.
+429: detail.code=analysis_busy; повторите после завершения текущего анализа. 503 выполнения: detail.code=analysis_unavailable, безопасное сообщение без внутренних исключений. 503 readiness: detail.code — catalog_empty/resources_invalid/model_unavailable/search_unavailable/search_index_missing/extractor_missing/checker_missing/questions_missing; detail.catalog_version и detail.missing_resources указывают snapshot и недостающие компоненты. HTTP-ошибка никогда не заменяется фиктивным resolved. source_issue/resolve_blocked/verification_incomplete в issues блокируют завершение, а не исправляются подтверждением кода.
+
+## Реальный HTTP-пример clean (5) без поисковых артефактов
+
+```http
+POST /api/v1/analyses
+Content-Type: application/json
+
+{"description":"Чай черный (ферментированный)","confirmed_ktru_code":"10.83.13.120-00000003"}
+```
+
+HTTP 200: status=needs_data, issues[0].code=search_index_missing, categories/candidates=[], candidate_count=0, scope.complete=false, verification.type_verified/value_verified/catalog_scope_complete=false, verification.confirmed_by_user=true, verification.blocking_issues=true, selected_ktru_code=null. Подтверждение отражается как действие пользователя, а не доказательство. next_steps требует category_mapping и search_index. Полный фактический ответ Compose: [examples/clean5-needs-data.json](examples/clean5-needs-data.json).

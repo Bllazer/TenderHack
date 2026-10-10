@@ -24,6 +24,9 @@ _GROUPS = (
     ("surface_density", (("г/м²", "1", ("г/м2",)),)),
     ("charge", (("А·ч", "1", ("а*ч", "ач", "а·ч")),)),
     ("temperature", (("°C", "1", ("°с", "°c")),)),
+    ("count", (("шт", "1", ("штука", "штук", "штуки")),)),
+    ("unit_count", (("ед", "1", ("единица",)),)),
+    ("pair_count", (("пар", "1", ("пара",)),)),
 )
 UNITS = {canon(alias): Unit(name, dimension, Decimal(factor))
          for dimension, rows in _GROUPS for name, factor, aliases in rows for alias in (name, *aliases)}

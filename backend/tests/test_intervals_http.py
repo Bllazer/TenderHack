@@ -62,6 +62,7 @@ def test_empty_catalog_interval_blocks_http_readiness(monkeypatch, catalog_data,
     rule.update(lower="750", upper="750", lower_inclusive=left, upper_inclusive=right)
     (tmp_path / "catalog.json").write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
     monkeypatch.setattr(main.settings, "catalog_dir", tmp_path)
+    monkeypatch.setattr(main.settings, "clean_supply_dir", None)
     with TestClient(main.app) as api:
         ready = api.get("/api/health/ready")
         assert ready.status_code == 503 and ready.json()["detail"]["code"] == "resources_invalid"

@@ -1,0 +1,60 @@
+{
+  "status": "needs_data",
+  "original_text": "Чай черный (ферментированный)",
+  "normalized_text": "Чай черный (ферментированный)",
+  "original_facts": [],
+  "facts": [],
+  "unparsed": [
+    {
+      "id": "fragment:0:29",
+      "raw": "Чай черный (ферментированный)",
+      "span": [
+        0,
+        29
+      ]
+    }
+  ],
+  "additional": [],
+  "categories": [],
+  "candidates": [],
+  "excluded": [],
+  "candidate_count": 0,
+  "excluded_count": 0,
+  "scope": {
+    "category_id": null,
+    "position_count": 0,
+    "evaluated_count": 0,
+    "complete": false
+  },
+  "issues": [
+    {
+      "code": "search_index_missing",
+      "severity": "error",
+      "explanation": "Полный анализ не готов: search_index_missing",
+      "fact_id": null,
+      "property_id": null,
+      "candidate_code": null,
+      "rule_source": null,
+      "suggested_action": "Подготовьте проверенный snapshot и перезапустите API",
+      "confirmation_required": false
+    }
+  ],
+  "corrections": [],
+  "next_question": null,
+  "next_steps": [
+    "Подключите недостающие компоненты: category_mapping, search_index"
+  ],
+  "verification": {
+    "type_verified": false,
+    "ktru_unique": false,
+    "fields_complete": false,
+    "value_verified": false,
+    "catalog_scope_complete": false,
+    "value_indistinguishable": false,
+    "confirmed_by_user": true,
+    "blocking_issues": true
+  },
+  "selected_ktru_code": null,
+  "catalog_version": "clean5-578e29f99d1a803c",
+  "engine_version": "stateless-pipeline-v1"
+}

@@ -11,13 +11,23 @@ from app.catalog import Catalog, load_snapshot, snapshot
 from app.config import settings
 from app.schemas import AnalysisCreate, AnalysisOut, CatalogStatus, ErrorResponse, Health, Ready
 from app.search import E5Encoder, Search
+from app.components import existing_components
 
 logger = logging.getLogger(__name__)
 
 
 def resources():
     try:
-        data = load_snapshot(settings.catalog_dir)
+        if settings.clean_supply_dir and settings.clean_supply_dir.exists():
+            from app.clean_supply import expected_supply_version, load_clean_supply
+            if (settings.catalog_dir / "manifest.json").exists():
+                data = load_snapshot(settings.catalog_dir)
+                if data.catalog.catalog_version != expected_supply_version(settings.clean_supply_dir):
+                    raise ValueError("Prepared snapshot does not match the clean supply")
+            else:
+                data = load_clean_supply(settings.clean_supply_dir)
+        else:
+            data = load_snapshot(settings.catalog_dir)
     except Exception:
         logger.exception("Catalog/index initialization failed")
         data = snapshot(Catalog(catalog_version="unavailable", source_description="", validation_report=""), problem="resources_invalid")
@@ -38,6 +48,7 @@ def resources():
 async def lifespan(app: FastAPI):
     app.state.data, app.state.search = await run_in_threadpool(resources)
     app.state.slots = BoundedSemaphore(max(1, settings.max_parallel_analyses))
+    app.state.components = existing_components()
     yield
 
 
@@ -56,8 +67,10 @@ def live():
 @app.get("/api/health/ready", response_model=Ready, responses={503: {"model": ErrorResponse}})
 def ready():
     data = app.state.data
-    if data.problem or not app.state.search:
-        raise HTTPException(503, {"code": data.problem or "search_unavailable", "catalog_version": data.catalog.catalog_version})
+    missing = [*data.missing_resources, *app.state.components.missing]
+    if data.problem or not app.state.search or missing:
+        raise HTTPException(503, {"code": data.problem or (missing[0] + "_missing" if missing else "search_unavailable"),
+                                  "catalog_version": data.catalog.catalog_version, "missing_resources": missing})
     return {"status": "ok", "catalog_version": data.catalog.catalog_version, "engine_version": "stateless-pipeline-v1"}
 
 
@@ -65,8 +78,12 @@ def ready():
 def catalog_status():
     data = app.state.data
     return {"categories": len(data.categories), "positions": len(data.positions),
-            "catalog_version": data.catalog.catalog_version, "ready": not data.problem and bool(app.state.search),
-            "reason": data.problem}
+            "catalog_version": data.catalog.catalog_version, "ready": not data.problem and bool(app.state.search) and not app.state.components.missing,
+            "reason": data.problem or (app.state.components.missing[0] + "_missing" if app.state.components.missing else None),
+            "catalog_loaded": bool(data.positions),
+            "missing_resources": list(data.missing_resources) + list(app.state.components.missing),
+            "templates": sum(p.is_template is True for p in data.positions.values()),
+            "final_positions": sum(p.is_template is False for p in data.positions.values())}
 
 
 @app.post("/api/v1/analyses", response_model=AnalysisOut,
@@ -75,7 +92,7 @@ def create_analysis(body: AnalysisCreate):
     if not app.state.slots.acquire(blocking=False):
         raise HTTPException(429, {"code": "analysis_busy", "message": "Повторите запрос после завершения текущего анализа"})
     try:
-        return analyze(app.state.data, app.state.search, body)
+        return analyze(app.state.data, app.state.search, body, components=app.state.components)
     except InvalidConfirmation as exc:
         raise HTTPException(422, {"code": exc.code, "field": exc.field,
                                   "message": "Подтверждение не соответствует текущей области и фактам"}) from exc

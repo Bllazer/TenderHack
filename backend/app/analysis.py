@@ -1,8 +1,8 @@
 """Stateless A -> B -> contextual mapping -> C/E -> D orchestration."""
 from app.catalog import Snapshot
-from app.checks import evaluate
-from app.extraction import MEASUREMENT, apply_inputs, extract, normalize
-from app.questions import next_question, property_question_id
+from app.components import Components, ExistingSearcher, SearchInput, existing_components
+from app.extraction import MEASUREMENT, apply_inputs, normalize
+from app.questions import property_question_id
 from app.schemas import AnalysisCreate, AnalysisOut, Correction, Fact, Fragment, Issue, Scope, Verification
 
 
@@ -11,13 +11,17 @@ class InvalidConfirmation(ValueError):
         self.field, self.code = field, code
 
 
-def analyze(data: Snapshot, search, body: AnalysisCreate) -> AnalysisOut:
-    extracted, unparsed = extract(body.description, data.extraction_names)
+def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components | None = None) -> AnalysisOut:
+    components = components or existing_components()
+    extraction = components.extractor.extract(body.description, data.extraction_names) if components.extractor else None
+    extracted, unparsed = (extraction.facts, extraction.unparsed) if extraction else ([], [Fragment(raw=body.description)])
     result = AnalysisOut(status="needs_data", original_text=body.description, normalized_text=normalize(body.description),
                          facts=extracted, unparsed=unparsed, additional=[Fragment(raw=raw) for raw in body.additional],
                          catalog_version=data.catalog.catalog_version,
                          verification=Verification(confirmed_by_user=bool(body.confirmed_ktru_code)))
     result.original_facts = [fact.model_copy(deep=True) for fact in extracted]
+    if extraction:
+        result.corrections.extend(extraction.corrections)
     category_id = body.confirmed_category_id
     if category_id and category_id not in data.categories:
         raise InvalidConfirmation("confirmed_category_id", "unknown_category")
@@ -53,15 +57,27 @@ def analyze(data: Snapshot, search, body: AnalysisCreate) -> AnalysisOut:
     replaced = {item.replaces for item in body.attributes if item.replaces}
     result.unparsed = [fragment for fragment in unparsed if fragment.id not in replaced]
     if search:
-        result.categories = search.find(body.description)
-    if data.problem or not data.categories or not data.positions:
-        result.issues = [Issue(code=data.problem or "catalog_empty", explanation="Проверенная поставка каталога, индексов и модели ещё не готова",
+        finder = getattr(search, "find_state", ExistingSearcher(search).find_state)
+        result.categories = finder(SearchInput(body.description, tuple(result.facts)))
+        if any(category.id not in data.categories for category in result.categories):
+            raise ValueError("Component returned foreign category ID")
+    if data.problem or components.missing or not data.categories or not data.positions or not search:
+        reason = data.problem or (components.missing[0] + "_missing" if components.missing else "search_unavailable" if not search else "catalog_empty")
+        result.issues = [Issue(code=reason, explanation=f"Полный анализ не готов: {reason}",
                               suggested_action="Подготовьте проверенный snapshot и перезапустите API")]
-        result.next_steps = ["Сведения сохранены в форме. Подбор доступен после подключения проверенного каталога"]
+        result.next_steps = ["Подключите недостающие компоненты: " + ", ".join((*data.missing_resources, *components.missing) or (reason,))]
+        if body.confirmed_ktru_code and body.confirmed_ktru_code in data.positions:
+            position = data.positions[body.confirmed_ktru_code]
+            if position.is_template is True:
+                raise InvalidConfirmation("confirmed_ktru_code", "template_confirmation")
+            if position.source_issues or position.resolve_blocked is True:
+                result.issues.append(Issue(code="source_issue" if position.source_issues else "resolve_blocked",
+                                          candidate_code=position.code, explanation="Источник запрещает завершение подбора этой позиции"))
+        result.verification.blocking_issues = any(issue.severity == "error" for issue in result.issues)
         return result
     if not category_id:
         result.status = "needs_input"
-        result.next_question, _ = next_question(None, result.categories, (), [], result.facts, [], answered, False, None)
+        result.next_question, _ = components.questions(None, result.categories, (), [], result.facts, [], answered, False, None)
         result.next_steps = ["Подтвердите категорию; совпадение чисел не доказывает тип товара"]
         if body.confirmed_ktru_code:
             result.issues.append(Issue(code="type_unconfirmed", explanation="Сначала подтвердите категорию товара"))
@@ -70,7 +86,15 @@ def analyze(data: Snapshot, search, body: AnalysisCreate) -> AnalysisOut:
     all_candidates = []
     all_issues = []
     for position in positions:
-        candidate, issues, corrections = evaluate(position, result.facts)
+        candidate, issues, corrections = components.checker.evaluate(position, result.facts, data.resolve_unit)
+        if candidate.ktru_code != position.code:
+            raise ValueError("Component returned foreign candidate ID")
+        unsupported = any(not prop.verified or not prop.allowed or prop.required is None or
+                          prop.kind not in ("1", "2") or prop.unsupported_reasons for prop in position.properties)
+        if not position.properties or unsupported or position.source_issues or position.resolve_blocked is True:
+            candidate.outcome = "unknown"
+            issues.append(Issue(code="source_issue" if position.source_issues else "verification_incomplete",
+                                candidate_code=position.code, explanation="Данные позиции не допускают завершение подбора"))
         all_candidates.append(candidate)
         all_issues.extend(issues)
         result.corrections.extend(corrections)
@@ -102,7 +126,7 @@ def analyze(data: Snapshot, search, body: AnalysisCreate) -> AnalysisOut:
     fields_complete = unique and not remaining[0].missing_required
     blocking = any(issue.severity == "error" for issue in active_issues)
     ready = unique and value_verified and fields_complete and scope_complete and not blocking
-    result.next_question, indistinguishable = next_question(category_id, result.categories, positions, remaining,
+    result.next_question, indistinguishable = components.questions(category_id, result.categories, positions, remaining,
                                                            result.facts, active_issues, answered, ready, body.confirmed_ktru_code)
     result.verification = Verification(type_verified=bool(category_id and data.categories[category_id].link_verified),
                                       ktru_unique=unique, fields_complete=fields_complete, value_verified=value_verified,

@@ -4,12 +4,14 @@ services:
     environment:
       CATALOG_DIR: /srv/resources/catalog
       MODEL_DIR: /srv/resources/model
+      CLEAN_SUPPLY_DIR: /srv/clean-supply
       HF_HUB_OFFLINE: "1"
       TRANSFORMERS_OFFLINE: "1"
       MAX_PARALLEL_ANALYSES: "2"
     volumes:
       - ./backend/resources/catalog:/srv/resources/catalog:ro
       - ./backend/resources/model:/srv/resources/model:ro
+      - ./ktru_clean:/srv/clean-supply:ro
     ports:
       - "127.0.0.1:8000:8000"
     healthcheck:
@@ -17,6 +19,7 @@ services:
       interval: 10s
       timeout: 3s
       retries: 5
+      start_period: 120s
   frontend:
     build: ./frontend
     ports:

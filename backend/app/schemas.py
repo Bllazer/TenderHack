@@ -176,6 +176,7 @@ class ErrorDetail(BaseModel):
     field: str | None = None
     message: str | None = None
     catalog_version: str | None = None
+    missing_resources: list[str] = Field(default_factory=list)
 
 
 class ErrorResponse(BaseModel):
@@ -197,3 +198,7 @@ class CatalogStatus(BaseModel):
     catalog_version: str
     ready: bool
     reason: str | None
+    catalog_loaded: bool = False
+    missing_resources: list[str] = Field(default_factory=list)
+    templates: int = 0
+    final_positions: int = 0
