@@ -16,5 +16,16 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
+    // Та же проксировка для просмотра собранной версии: `pnpm preview` работает без nginx.
+    preview: {
+      port: 8080,
+      strictPort: true,
+      proxy: {
+        '/api': {
+          target: env.API_PROXY_TARGET || 'http://127.0.0.1:8000',
+          changeOrigin: true,
+        },
+      },
+    },
   }
 })
