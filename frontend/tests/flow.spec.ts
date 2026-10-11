@@ -17,6 +17,7 @@ test('full API flow, confirmation, correction and category change', async ({ pag
   await page.getByRole('button', { name: 'Продолжить' }).click()
   await expect(page.locator('.result-data')).toContainText('700')
   const changedCategory = page.waitForRequest(r => r.url().endsWith('/api/v1/analyses'))
+  await page.locator('.edit-actions > summary').click()
   await page.getByRole('button', { name: 'Изменить категорию' }).click()
   expect((await changedCategory).postDataJSON().confirmed_ktru_code).toBeNull()
   await page.getByRole('radio', { name: 'Дрели электрические' }).check()
@@ -109,6 +110,7 @@ test('editing description waits for explicit submit, including pauses and exampl
   await page.getByRole('button', { name: 'Продолжить' }).click()
   await page.getByRole('button', { name: 'Подтвердить код' }).click()
   await expect(page.getByRole('heading', { name: 'Подбор завершён' })).toBeVisible()
+  await page.locator('.edit-actions > summary').click()
   await page.getByRole('button', { name: 'Изменить описание' }).click()
   let analysisRequests = 0
   page.on('request', r => { if (r.url().endsWith('/api/v1/analyses')) analysisRequests++ })

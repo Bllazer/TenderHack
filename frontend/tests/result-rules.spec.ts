@@ -28,6 +28,7 @@ test('no similar categories shows helpful empty state instead of empty question'
   await expect(page.getByRole('heading', { name: 'Ничего похожего не найдено' })).toBeVisible()
   await expect(page.getByText('Добавьте название товара')).toBeVisible()
   await expect(page.locator('#question-form')).toHaveCount(0)
+  await page.locator('.edit-actions > summary').click()
   await page.getByRole('button', { name: 'Изменить описание' }).click()
   await expect(page.getByLabel('Описание товара', { exact: true })).toHaveValue('Неизвестный товар')
 })
