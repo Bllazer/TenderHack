@@ -112,7 +112,7 @@ def _sniff_delimiter(text: str) -> tuple:
     в «0; 65». Если ни один разделитель не даёт устойчивой таблицы — файл одноколоночный.
     """
     candidates = {";": text, "\t": text, ",": re.sub(r"(?<=\d),(?=\d)", "", text)}
-    scored: list[tuple[float, int, str]] = []
+    scored: list[tuple[float, float, int, str]] = []
     for delimiter, sample in candidates.items():
         counts = [len(cells) for cells in
                   csv.reader(io.StringIO(sample, newline=""), delimiter=delimiter)
@@ -124,13 +124,17 @@ def _sniff_delimiter(text: str) -> tuple:
         # Согласованность считаем по строкам, где колонок больше одной: одноколоночный
         # заголовок («описание») не должен мешать распознать таблицу с данными.
         consistent = multi.count(common) / max(len(multi), 1)
+        # Покрытие — доля ВСЕХ строк, разобранных на колонки: при равной согласованности
+        # побеждает разделитель, который делит больше строк. Иначе в файле «описание;характеристики»
+        # с запятыми внутри описаний выигрывала запятая (её видела одна строка из пяти).
+        coverage = len(multi) / max(len(counts), 1)
         if consistent >= 0.6:
-            scored.append((consistent, common, delimiter))
+            scored.append((round(consistent, 6), round(coverage, 6), common, delimiter))
     if not scored:
         return "", "разделитель не найден: файл разобран как одноколоночный"
     scored.sort(reverse=True)
-    delimiter = scored[0][2]
-    ambiguous = len(scored) > 1 and scored[1][0] == scored[0][0] and scored[1][1] == scored[0][1]
+    delimiter = scored[0][3]
+    ambiguous = len(scored) > 1 and scored[1][:2] == scored[0][:2]
     note = ("разделитель определён неуверенно: подходит и «%s», и «%s»; передайте csv_delimiter явно"
             % (scored[0][2], scored[1][2])) if ambiguous else None
     return delimiter, note
