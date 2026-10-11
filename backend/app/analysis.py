@@ -19,6 +19,98 @@ INVALID_ANSWER_CODES = frozenset({"invalid_value", "invalid_number", "invalid_ty
                                   "out_of_range", "unit_mismatch", "unit_missing", "unit_unknown",
                                   "numeric_semantics_unknown", "multiple_values_not_allowed"})
 
+#: Во сколько раз значение может превышать наблюдаемый в КТРУ диапазон характеристики.
+#: Справочник иногда оставляет верхнюю границу открытой («900 и более мм» у длины рукоятки
+#: молотка), и тогда формально допустимо любое значение — «200 метров» проходили и доходили
+#: до подтверждения кода. Границы наблюдаемых значений берутся из самого каталога, поэтому
+#: это не выдуманный предел, а проверка масштаба: двукратный выход — предупреждение,
+#: десятикратный — ошибка, которая не даёт подтвердить код.
+SCALE_WARNING_FACTOR = 2
+SCALE_ERROR_FACTOR = 10
+
+#: Кэш наблюдаемых границ по версии каталога: обход 14 тысяч позиций делается один раз.
+_ENVELOPE_CACHE: dict[str, dict[tuple[str, str], tuple[Decimal, Decimal, str]]] = {}
+
+
+def catalogue_envelope(data: Snapshot) -> dict[tuple[str, str], tuple[Decimal, Decimal, str, Decimal]]:
+    """Наблюдаемые границы числовых характеристик по всему КТРУ.
+
+    Ключ — (название характеристики, размерность), значение — (минимум, максимум, единица,
+    множитель единицы к основной). Учитываются только интервалы с ОБЕИМИ границами: открытые
+    концы ничего не говорят о масштабе величины. Результат кэшируется по версии каталога,
+    потому что обход позиций стоит времени, а запросов много.
+    """
+    version = getattr(getattr(data, "catalog", None), "catalog_version", "") or ""
+    cached = _ENVELOPE_CACHE.get(version)
+    if cached is not None:
+        return cached
+    envelope: dict[tuple[str, str], tuple[Decimal, Decimal, str, Decimal]] = {}
+    for position in data.positions.values():
+        for prop in position.properties:
+            for item in prop.allowed:
+                if item.kind not in ("interval", "number") or item.lower in (None, "") or item.upper in (None, ""):
+                    continue
+                unit = get_unit(item.unit) or (data.resolve_unit(prop, item.unit) if item.unit else None)
+                if unit is None:
+                    continue
+                try:
+                    lower, upper = Decimal(str(item.lower)), Decimal(str(item.upper))
+                except (InvalidOperation, ValueError):
+                    continue
+                key = (canon_name(prop.name), unit.dimension)
+                current = envelope.get(key)
+                if current is None:
+                    envelope[key] = (lower, upper, unit.name, unit.factor)
+                else:
+                    envelope[key] = (min(current[0], lower), max(current[1], upper), current[2], current[3])
+    _ENVELOPE_CACHE[version] = envelope
+    return envelope
+
+
+def canon_name(value: str) -> str:
+    return " ".join(value.casefold().replace("ё", "е").split())
+
+
+def out_of_scale_values(data: Snapshot, facts: list, rejected) -> list[Issue]:
+    """Значения, выходящие за наблюдаемый в КТРУ масштаб характеристики.
+
+    «200 метров» у длины рукоятки молотка: справочник допускает «900 и более мм», поэтому
+    обычная проверка границ молчала, и значение доходило до подтверждения кода. Здесь
+    сравниваем с тем, что реально встречается в КТРУ: двукратный выход — предупреждение,
+    десятикратный — ошибка, которая не даёт подтвердить код.
+    """
+    envelope = catalogue_envelope(data)
+    if not envelope:
+        return []
+    issues: list[Issue] = []
+    for fact in facts:
+        if fact.id in rejected or not fact.name or not fact.unit or fact.value in (None, ""):
+            continue
+        unit = get_unit(fact.unit)
+        if unit is None:
+            continue
+        bounds = envelope.get((canon_name(fact.name), unit.dimension))
+        if bounds is None:
+            continue
+        lower, upper, base_name, base_factor = bounds
+        try:
+            value = Decimal(str(fact.value)) * unit.factor
+        except (InvalidOperation, ValueError):
+            continue
+        observed_lower, observed_upper = lower * base_factor, upper * base_factor
+        factor = SCALE_ERROR_FACTOR if observed_upper > 0 and value > observed_upper * SCALE_ERROR_FACTOR \
+            else SCALE_WARNING_FACTOR
+        if value <= observed_upper * factor and (observed_lower <= 0 or value >= observed_lower / factor):
+            continue
+        displayed = fact.raw or f"{fact.value} {fact.unit or ''}".strip()
+        issues.append(Issue(
+            code="value_out_of_scale", severity="error" if factor == SCALE_ERROR_FACTOR else "warning",
+            fact_id=fact.id,
+            explanation=f"{fact.name}: «{displayed}» — в КТРУ для этой характеристики встречается "
+                        f"от {_short(lower)} до {_short(upper)} {base_name}".strip(),
+            suggested_action="Проверьте значение: похоже, указана не та единица или не то число"))
+    return issues
+
 
 def merge_answer_issues(issues: list[Issue]) -> list[Issue]:
     """Один неверный ответ — одно замечание вместо строки на каждую позицию.
@@ -344,6 +436,7 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
     if any(candidate.outcome == "unknown" for candidate in remaining):
         active_issues.append(Issue(code="verification_incomplete", explanation="Есть непроверенные факты, обязательные поля или ограничения"))
     active_issues.extend(implausible_measurements(data, positions, remaining, result.facts, rejected))
+    active_issues.extend(out_of_scale_values(data, result.facts, rejected))
     unique = len(remaining) == 1
     value_verified = unique and remaining[0].outcome == "compatible" and not pending
     fields_complete = unique and not remaining[0].missing_required

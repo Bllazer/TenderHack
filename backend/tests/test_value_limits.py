@@ -17,7 +17,8 @@ BACKEND = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(BACKEND))
 sys.path.insert(0, str(BACKEND / "tests"))
 
-from app.analysis import implausible_measurements, merge_answer_issues  # noqa: E402
+from app.analysis import (implausible_measurements, merge_answer_issues,  # noqa: E402
+                         out_of_scale_values)
 from app.catalog import (AllowedValue, Catalog, Category, Position, Property,  # noqa: E402
                          load_snapshot, snapshot)
 from app.questions import allowed_ranges, property_question, ranges_hint  # noqa: E402
@@ -138,14 +139,71 @@ def test_supply_aliases_gain_word_forms(unit_supply):
 
 
 # ------------------------------------------------- проверка вброса по позициям
-def measurement_snapshot(lower: str, upper: str) -> object:
+def measurement_snapshot(lower: str, upper: str, name: str = "Внутренний диаметр",
+                         version: str | None = None) -> object:
+    """Снимок с одной позицией и одной числовой характеристикой (для проверок границ)."""
     category = Category(id="hose", name="Шланг лабораторный", search_text="шланг лабораторный",
                         position_codes=("H1",))
     position = Position(code="H1", name="Шланг лабораторный", source_path="test", status="actual",
-                        is_template=False, properties=(numeric_property(lower, upper),))
-    catalog = Catalog(format_version=1, catalog_version="limits", source_description="test",
-                      validation_report="test", synthetic=True, categories=[category], positions=[position])
+                        is_template=False, properties=(numeric_property(lower, upper, name=name),))
+    catalog = Catalog(format_version=1, catalog_version=version or f"limits-{name}-{lower}-{upper}",
+                      source_description="test", validation_report="test", synthetic=True,
+                      categories=[category], positions=[position])
     return snapshot(catalog, vectors=[1.0], tokens=(("шланг", "лабораторный"),))
+
+
+def scale_cases(data, name: str, values) -> dict:
+    """Для каждого (значение, единица) — серьёзность замечания о масштабе или None."""
+    result = {}
+    for value, unit in values:
+        fact = Fact(id="f", name=name, value=value, unit=unit, raw=f"{value} {unit}",
+                    span=(0, 5), source="text")
+        issues = out_of_scale_values(data, [fact], set())
+        result[(value, unit)] = issues[0].severity if issues else None
+    return result
+
+
+def test_out_of_scale_value_is_rejected_when_catalogue_range_is_open():
+    """«200 метров» у длины рукоятки: справочник открыт сверху, но масштаб проверяется.
+
+    Так выглядел случай со скриншота: у «Длина рукоятки» последний интервал — «900 и более
+    мм», поэтому обычная проверка границ молчала, и значение доходило до подтверждения кода.
+    """
+    data = measurement_snapshot("100", "900", name="Длина рукоятки")
+    cases = scale_cases(data, "Длина рукоятки", [("200", "метров"), ("20000", "мм"), ("3000", "мм"),
+                                                 ("500", "мм"), ("50", "мм")])
+    assert cases[("200", "метров")] == "error"      # 200 000 мм против наблюдаемых 100–900 мм
+    assert cases[("20000", "мм")] == "error"        # десятикратный выход
+    assert cases[("3000", "мм")] == "warning"       # двукратный выход
+    assert cases[("500", "мм")] is None             # внутри наблюдаемого
+    assert cases[("50", "мм")] is None              # на границе допустимого (100 / 2)
+
+
+def test_scale_check_follows_catalogue_data():
+    """Расширили наблюдаемый диапазон — значение перестало быть подозрительным."""
+    strict = measurement_snapshot("100", "900", name="Длина рукоятки")
+    loose = measurement_snapshot("100", "90000", name="Длина рукоятки")
+    assert scale_cases(strict, "Длина рукоятки", [("20000", "мм")])[("20000", "мм")] == "error"
+    assert scale_cases(loose, "Длина рукоятки", [("20000", "мм")])[("20000", "мм")] is None
+
+
+def test_scale_check_ignores_unknown_characteristics_and_unmapped_facts():
+    """Неизвестная характеристика и факт без имени не судятся: сравнивать не с чем."""
+    data = measurement_snapshot("100", "900", name="Длина рукоятки")
+    unknown = Fact(id="f", name="Неведомая величина", value="200", unit="метров",
+                   raw="200 метров", span=(0, 10), source="text")
+    anonymous = Fact(id="f2", name="", value="200", unit="метров", raw="200 метров",
+                     span=(0, 10), source="text")
+    assert out_of_scale_values(data, [unknown], set()) == []
+    assert out_of_scale_values(data, [anonymous], set()) == []
+
+
+def test_scale_check_converts_units_before_comparing():
+    """Единицы приводятся к основной: 0.2 м и 0.5 м против наблюдаемых 100–900 мм — молча."""
+    data = measurement_snapshot("100", "900", name="Длина рукоятки")
+    cases = scale_cases(data, "Длина рукоятки", [("0.2", "метров"), ("0.5", "метров")])
+    assert cases[("0.2", "метров")] is None
+    assert cases[("0.5", "метров")] is None
 
 
 def test_implausible_measurement_is_reported_against_found_positions():
@@ -156,7 +214,8 @@ def test_implausible_measurement_is_reported_against_found_positions():
                                       [type("C", (), {"ktru_code": "H1"})()], [fact], set())
     assert len(issues) == 1
     assert issues[0].code == "implausible_value" and issues[0].severity == "error"
-    # Границы показываются в единице пользователя: 1–500 мм = 0.001–0.5 м.\n    assert "от 0.001 до 0.5 м" in issues[0].explanation
+    # Границы показываются в единице пользователя: 1-500 мм = 0.001-0.5 м.
+    assert "от 0.001 до 0.5 м" in issues[0].explanation
 
 
 def test_plausible_measurement_is_silent():
