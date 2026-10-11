@@ -84,6 +84,45 @@ def canon_name(value: str) -> str:
     return " ".join(value.casefold().replace("ё", "е").split())
 
 
+def property_unit(prop) -> str | None:
+    """Единица характеристики — единственная у неё или у вопроса.
+
+    Пользователь не выбирает единицы: он пишет значение в той единице, что есть в карточке.
+    Если единица одна, ответ без единицы получает её автоматически, и «число без единицы» не
+    превращается в ошибку unit_missing.
+    """
+    units = {item.unit for item in prop.allowed if item.unit}
+    return next(iter(units)) if len(units) == 1 else None
+
+
+def include_same_named(data: Snapshot, category_id: str | None, positions, scope_complete: bool):
+    """Одноимённые семейства КТРУ — один товар: собираем их позиции в общий пул.
+
+    В каталоге 893 имени имеют дубли, у 135 характеристики различаются («Протез пениса
+    жёсткий» — 16 семейств по 1 позиции). Поиск уже не повторяет одноимённые варианты, но
+    выбор одного семейства давал пул только его позиций, и остальные коды терялись. Здесь пул
+    расширяется до всех одноимённых семейств, а сам каталог не переписывается.
+    """
+    from app.search import canon
+    category = (data.categories or {}).get(category_id) if category_id else None
+    if category is None:
+        return positions, scope_complete
+    key = canon(category.name)
+    known = {position.code for position in positions}
+    extra: list = []
+    complete = scope_complete
+    for other_id, other in (data.categories or {}).items():
+        if other_id == category_id or canon(other.name) != key:
+            continue
+        # Полноту области определяет выбранное семейство: добор одноимённых позиций не должен
+        # блокировать подтверждение кода (иначе 15 позиций «Протеза пениса жёсткого» нельзя
+        # довести до конца из-за неподтверждённого покрытия одного из 16 семейств).
+        part, _part_complete = data.pool(other_id)
+        extra.extend(position for position in part if position.code not in known)
+        known.update(position.code for position in part)
+    return tuple(positions) + tuple(extra), complete
+
+
 def out_of_scale_values(data: Snapshot, facts: list, rejected, groups: set[str] | None = None) -> list[Issue]:
     """Значения, выходящие за наблюдаемый в КТРУ масштаб характеристики.
 
@@ -160,22 +199,34 @@ def merge_answer_issues(issues: list[Issue]) -> list[Issue]:
     return [merged[key] for key in order]
 
 
-def reask_after_invalid(category_id: str, positions, issues) -> tuple[Issue, "Question"] | None:
-    """Готовит повторный вопрос, если ответ был недопустимым.
+def reask_after_invalid(category_id: str, positions, facts, issues) -> tuple[Issue, "Question"] | None:
+    """Вопрос про значение, которое нужно исправить, — вместо перехода дальше.
 
-    Пул после неверного ответа пуст, поэтому обычный выбор вопроса ничего не находит, и
-    пользователь оставался вообще без вопроса. Здесь вопрос собирается из характеристики
-    области с допустимыми значениями всех её позиций — вместе с диапазоном, чтобы было
-    видно, какое значение корректно.
+    Два случая, и оба означают «пользователь остаётся на этом шаге»:
+
+    * ответ был недопустимым (код пришёл от ответа) — вопрос задаётся снова;
+    * в тексте найдено неправдоподобное значение (`value_out_of_scale`, `implausible_value`,
+      выход за границы) — спрашиваем именно эту характеристику, с диапазоном из карточки,
+      иначе поток уходил к следующему вопросу или к выбору кода, а вброс оставался в карточке.
     """
-    head = next((issue for issue in issues if issue.fact_id and issue.fact_id.startswith("answer:")
-                 and issue.code in INVALID_ANSWER_CODES), None)
+    blocking = INVALID_ANSWER_CODES | {"value_out_of_scale", "implausible_value"}
+    head = next((issue for issue in issues
+                 if issue.code in blocking and issue.severity == "error"), None)
     if head is None:
         return None
-    question_id = head.fact_id.removeprefix("answer:")
     registry = {property_question_id(category_id, prop): prop
                 for position in positions for prop in position.properties}
-    prop = registry.get(question_id)
+    prop = None
+    if head.fact_id and head.fact_id.startswith("answer:"):
+        prop = registry.get(head.fact_id.removeprefix("answer:"))
+    if prop is None and head.property_id:
+        prop = next((item for item in registry.values() if item.id == head.property_id), None)
+    if prop is None:
+        fact = next((item for item in facts if item.id == head.fact_id), None)
+        if fact is not None and fact.name:
+            key = canon_name(fact.name)
+            prop = next((item for item in registry.values()
+                         if canon_name(item.name) == key and item.subject == fact.subject), None)
     if prop is None:
         return None
     key = (prop.semantic_key or prop.id, prop.subject)
@@ -183,7 +234,10 @@ def reask_after_invalid(category_id: str, positions, issues) -> tuple[Issue, "Qu
                 if (other.semantic_key or other.id, other.subject) == key and other.verified
                 for item in other.allowed}
     merged = prop.model_copy(update={"allowed": tuple(variants.values())})
-    return head, property_question(category_id, merged, "Значение недопустимо — укажите корректное")
+    reason = ("Значение недопустимо — укажите корректное" if head.code in ("invalid_value", "invalid_number",
+                                                                           "invalid_count", "out_of_range")
+              else "Значение неправдоподобно — проверьте единицу и число")
+    return head, property_question(category_id, merged, reason)
 
 
 def implausible_measurements(data: Snapshot, positions, remaining, facts, rejected) -> list[Issue]:
@@ -272,6 +326,7 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
     if category_id and category_id not in data.categories:
         raise InvalidConfirmation("confirmed_category_id", "unknown_category")
     positions, scope_complete = data.pool(category_id) if category_id else ((), False)
+    positions, scope_complete = include_same_named(data, category_id, positions, scope_complete)
     properties = tuple(prop for position in positions for prop in position.properties)
     context = getattr(components.extractor, 'context', lambda scope, props: (props, (), ()))
     extraction_properties, card_properties, card_evidence = context(category_id, properties)
@@ -313,7 +368,8 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
                 result.corrections.append(Correction(fact_id="answer:" + answer.question_id, kind="proposed_fact_change",
                                                     original=fact.raw, normalized=json.dumps(answer.values, ensure_ascii=False) if answer.values is not None else answer.value or "не знаю",
                                                     explanation="Текущий явный ответ пользователя заменяет предыдущее значение; источник сохранён"))
-            extracted.append(Fact(id="answer:" + answer.question_id, name=prop.name, value=answer.value or "", values=answer.values, unit=answer.unit,
+            extracted.append(Fact(id="answer:" + answer.question_id, name=prop.name, value=answer.value or "",
+                                  values=answer.values, unit=answer.unit or property_unit(prop),
                                   raw=json.dumps(answer.values, ensure_ascii=False) if answer.values is not None else answer.value or "не знаю", source="answer", subject=prop.subject,
                                   unknown=answer.unknown or (answer.values is None and not answer.value)))
     result.facts = apply_inputs(extracted, body.attributes)
@@ -469,9 +525,11 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
     asked = {item for item in answered if item not in rejected_answers}
     result.next_question, indistinguishable = components.questions(category_id, result.categories, positions, remaining,
                                                            result.facts, active_issues, asked, ready, body.confirmed_ktru_code)
-    if result.next_question is None and rejected_answers:
-        # Пул опустел из-за недопустимого ответа: спрашиваем снова, уже с границами.
-        repeated = reask_after_invalid(category_id, positions, active_issues)
+    if rejected_answers or any(issue.severity == "error" and issue.code in
+                               ("value_out_of_scale", "implausible_value", "out_of_range")
+                               for issue in active_issues):
+        # Значение недопустимо или неправдоподобно: спрашиваем его, а не идём дальше.
+        repeated = reask_after_invalid(category_id, positions, result.facts, active_issues)
         if repeated is not None:
             head, result.next_question = repeated
             result.next_steps = [result.next_question.title, head.suggested_action]

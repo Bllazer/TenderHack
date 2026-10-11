@@ -330,6 +330,48 @@ def explicit_part(text, left, right, parts):
     return False
 
 
+def value_fits_property(prop, fact) -> bool:
+    """Подходит ли значение факта этой характеристике (для сопоставления по имени).
+
+    Проверка значения, а не только имени: иначе «Пол» связывался бы с любым свойством на
+    «Пол…», даже если значение к нему не относится.
+    """
+    if fact.values is not None:
+        return True
+    supplied, unit = canon(fact.value), get_unit(fact.unit)
+    if not supplied:
+        return False
+    for item in prop.allowed:
+        if item.kind == "enum" and item.value and (
+                canon(item.value) == supplied or lemmas(item.value) == lemmas(fact.value)):
+            return True
+        if item.kind in ("number", "interval"):
+            target = get_unit(item.unit)
+            if unit is not None and target is not None and unit.dimension == target.dimension:
+                return True
+    return False
+
+
+def matching_property(fact, properties):
+    """Характеристика по написанному имени: сначала точно, затем по началу слова.
+
+    Реальный ввод «Халат детский; Пол: для мальчика» называет свойство «Пол», а в карточке оно
+    «Половой признак». Без этой ступени значение не связывалось с характеристикой, и система
+    переспрашивала пол — причём пользователь мог выбрать противоположный.
+    """
+    exact = [prop for prop in properties if prop.name == fact.name and prop.subject == fact.subject]
+    if exact:
+        return exact
+    key = canon(fact.name)
+    if len(key) < 3:
+        return []
+    matched = [prop for prop in properties
+               if any(canon(word).startswith(key) for word in prop.name.split())
+               and value_fits_property(prop, fact)]
+    owners = {(prop.semantic_key or prop.id, prop.subject) for prop in matched}
+    return matched if len(owners) == 1 else []
+
+
 def canonicalize_facts(facts, properties, lexicon):
     """The same reviewed morphological mapping for text and explicit card edits."""
     for fact in facts:
@@ -338,7 +380,9 @@ def canonicalize_facts(facts, properties, lexicon):
             fact.name, fact.unknown = '', True
             fact.uncertainty_reason = 'Явно указана другая система размера; преобразование в российскую систему не подтверждено'
             fact.assignment_options = [FactAssignment(name=target, value=fact.value, evidence='explicit size-system qualifier')]
-        props = [p for p in properties if p.name == fact.name and p.subject == fact.subject]
+        props = matching_property(fact, properties)
+        if props and props[0].name != fact.name:
+            fact.name = props[0].name                      # «Пол» → «Половой признак»
         if props:
             fact.extraction_evidence = list(dict.fromkeys([*fact.extraction_evidence, *(p.evidence for p in props)]))
         if fact.unknown or fact.negated or fact.values is not None:

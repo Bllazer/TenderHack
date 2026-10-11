@@ -8,10 +8,18 @@ import CsvWorkspace from './CsvWorkspace'
 import type { CsvItem } from './CsvWorkspace'
 
 type Stage = 'input' | 'question' | 'review' | 'correction' | 'done'
+/** Есть ли открытый вопрос, который пользователь должен закрыть до результата. */
+function hasPendingQuestion(result: Result): boolean {
+  return result.status === 'needs_input' && !!result.next_question
+    && !['code', 'conflict'].includes(result.next_question.kind)
+}
 function resultStage(result: Result): Stage {
   if (result.status === 'resolved' && result.selected_ktru_code) return 'done'
+  // Вопрос важнее «осталась одна позиция»: иначе шаг результата открывался раньше,
+  // чем пользователь успевал указать требуемую характеристику (например, длину).
+  if (hasPendingQuestion(result)) return 'question'
   if (result.candidate_count === 1 || result.categories.length === 0) return 'review'
-  return result.status === 'needs_input' && result.next_question && !['code', 'conflict'].includes(result.next_question.kind) ? 'question' : 'review'
+  return 'review'
 }
 
 type Snapshot = { stage: Stage; draft: Draft; result: Result | null }
@@ -72,7 +80,7 @@ function App() {
     if (loading) return
     if (index === 0) { setStage('input'); return }
     if (!result) return
-    if (index === 2) { setStage(result.status === 'resolved' && result.selected_ktru_code ? 'done' : 'review'); return }
+    if (index === 2) { setStage(result.status === 'resolved' && result.selected_ktru_code ? 'done' : hasPendingQuestion(result) ? 'question' : 'review'); return }
     if (question && !['code', 'conflict'].includes(question.kind)) setStage('question')
   }
 
@@ -193,7 +201,7 @@ function App() {
       return
     }
     const next = { ...draft, confirmed_ktru_code: question.kind === 'correction' ? draft.confirmed_ktru_code : null, answers: [...draft.answers.filter(item => item.question_id !== question.id),
-      { question_id: question.id, value: unknown ? null : answer, unit: answerUnit || null, unknown }] }
+      { question_id: question.id, value: unknown ? null : answer, unit: answerUnit || question.unit || null, unknown }] }
     if (question.kind === 'category') next.confirmed_category_id = unknown ? null : answer
     void submit(next)
   }
@@ -236,8 +244,9 @@ function App() {
           <p className="help">{userMessage(question.reason)}</p>
           {question.options.length > 0 ? <fieldset className="radio-list" disabled={loading}><legend className="sr-only">{question.title}</legend>
             {question.options.map(option => <label className="radio-row" key={option.value}><input type="radio" name="answer" checked={!unknown && answer === option.value} onChange={() => { setAnswer(option.value); setUnknown(false); setError('') }} /><span>{option.label}</span></label>)}
-          </fieldset> : <div className="measurement"><label className="sr-only" htmlFor="answer">Значение</label><input aria-describedby={error ? 'form-error' : undefined} aria-invalid={!!error} id="answer" value={answer} disabled={loading} onChange={event => { setAnswer(event.target.value); setUnknown(false) }} placeholder="Значение" />
-            <label className="sr-only" htmlFor="answer-unit">Единица</label><input id="answer-unit" value={answerUnit} disabled={loading} onChange={event => setAnswerUnit(event.target.value)} placeholder="Единица" /></div>}
+          </fieldset> : <div className="measurement"><label className="sr-only" htmlFor="answer">Значение</label><input aria-describedby={error ? 'form-error' : undefined} aria-invalid={!!error} id="answer" value={answer} disabled={loading} onChange={event => { setAnswer(event.target.value); setUnknown(false) }} placeholder={question.ranges?.length ? 'Значение' : 'Значение'} inputMode="decimal" />
+            {question.unit ? <span className="unit-fixed" aria-label="Единица измерения">{question.unit}</span> : null}</div>}
+          {question.hint && <p className="help compact range-hint">{question.hint}</p>}
           {question.kind === 'category' && <button type="button" className="secondary reject-types" disabled={loading} onClick={rejectTypes}>Ни один тип не подходит — изменить запрос</button>}
           {question.allow_unknown && question.kind !== 'category' && <label className="radio-row"><input type="radio" name="answer" checked={unknown} disabled={loading} onChange={() => { setUnknown(true); setError('') }} /><span>Не знаю</span></label>}
 
@@ -256,9 +265,11 @@ function App() {
           {result.next_steps.map(step => <p className="help compact" key={userMessage(step)}>{userMessage(step)}</p>)}
           {result.facts.length > 0 && <><h3 className="section-label">Характеристики</h3><dl className="result-data">{result.facts.map(fact => <div key={fact.id}><dt>{fact.name || 'Неустановленное свойство'}</dt><dd>{fact.unknown ? 'Не знаю' : `${fact.value} ${fact.unit || ''}`} {fact.normalized_value !== null && (fact.normalized_value !== fact.value || fact.normalized_unit !== fact.unit) && <small> → {fact.normalized_value} {fact.normalized_unit}</small>} <button type="button" className="link-button" onClick={() => edit(fact)}>Исправить</button></dd></div>)}</dl></>}
           {result.corrections.map((item, index) => <p className="unit-note" key={index}>{item.original} → {item.normalized}. {item.explanation}{item.confirmation_required && ' Требуется подтверждение — исходный факт пока не изменён.'}</p>)}
-          {result.candidates.length > 0 && <><h3 className="section-label">Конечные позиции: {result.candidate_count}</h3>
+          {result.candidates.length > 0 && <details className="candidates" open={result.candidate_count <= 3}>
+            <summary className="section-label">Конечные позиции: {result.candidate_count}{result.candidate_count > 3 && ' — нажмите, чтобы развернуть'}</summary>
             {result.candidates.map(candidate => <div className="candidate" key={candidate.ktru_code}><strong>{candidate.name}</strong><div className="result-code">{candidate.ktru_code}</div>
-              <p className="help compact">{candidate.outcome === 'compatible' ? 'Значения совместимы' : candidate.outcome === 'incompatible' ? 'Значения несовместимы' : 'Проверка не завершена'}{candidate.missing_required.length > 0 && ` · Требуется: ${candidate.missing_required.join(', ')}`}</p></div>)}</>}
+              <p className="help compact">{candidate.outcome === 'compatible' ? 'Значения совместимы' : candidate.outcome === 'incompatible' ? 'Значения несовместимы' : 'Проверка не завершена'}{candidate.missing_required.length > 0 && ` · Требуется: ${candidate.missing_required.join(', ')}`}</p></div>)}
+          </details>}
           {result.issues.map((issue, index) => <p className={issue.severity === 'error' ? 'form-error' : 'help compact'} key={index}>{userMessage(issue.explanation)} {userMessage(issue.suggested_action)}</p>)}
           {stage === 'done' && <div className="result-name"><h3 className="result-code">{result.selected_ktru_code}</h3><span className="confirmed">Подтверждено и проверено</span></div>}
           <div className="known-data"><span>Проверено позиций: {result.scope.evaluated_count}</span><span>{result.scope.complete ? 'Область проверена полностью' : 'Покрытие не подтверждено'}</span></div>
