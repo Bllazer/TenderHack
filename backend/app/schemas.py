@@ -308,6 +308,9 @@ class BatchCreate(InputModel):
     candidate_limit: int = Field(default=20, ge=1, le=100)
     run_limit: int = Field(default=50, ge=1, le=100)
     skip_header: bool = True
+    #: Явный выбор разделителя, когда формат файла неоднозначен. Разбор никогда не режет
+    #: строку по случайной запятой: десятичная запятая в числе разделителем не считается.
+    csv_delimiter: str | None = Field(default=None, pattern=r"^(;|,|\t|\|)$")
 
     @model_validator(mode="after")
     def one_source(self):

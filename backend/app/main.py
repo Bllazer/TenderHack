@@ -10,7 +10,7 @@ from app.analysis import InvalidConfirmation, analyze
 from app.batch import batch_counts, summarize
 from app.catalog import Catalog, load_snapshot, snapshot
 from app.config import settings
-from app.csv_input import decode_base64, split_rows
+from app.csv_input import CsvEncodingError, decode_base64, split_rows
 from app.schemas import (AnalysisCreate, AnalysisOut, BatchCreate, BatchOut, BatchRow, CatalogStatus,
                          CsvRowsOut, ErrorResponse, Health, Ready, ENGINE_VERSION)
 from app.search import E5Encoder, Search
@@ -161,11 +161,18 @@ def parse_csv(body: BatchCreate):
     except ValueError as error:
         raise HTTPException(422, {"code": "csv_invalid", "field": "csv_base64",
                                   "message": str(error)}) from error
-    parsed = split_rows(raw, max_rows=body.run_limit, skip_header=body.skip_header)
+    try:
+        parsed = split_rows(raw, max_rows=body.run_limit, skip_header=body.skip_header,
+                            delimiter=body.csv_delimiter)
+    except CsvEncodingError as error:
+        raise HTTPException(422, {"code": error.code, "field": "csv",
+                                  "message": str(error)}) from error
     if not parsed.rows:
-        raise HTTPException(422, {"code": "csv_empty", "field": "csv",
-                                  "message": (parsed.notes[-1] if parsed.notes
-                                              else "В файле не найдено ни одной строки с товаром")})
+        # Причина важнее общего текста: строка могла быть отклонена (например, слишком длинное
+        # описание), и пользователю нужно знать, что именно не так.
+        reason = (parsed.skipped[0]["reason"] if parsed.skipped else
+                  parsed.notes[-1] if parsed.notes else "В файле не найдено ни одной строки с товаром")
+        raise HTTPException(422, {"code": "csv_empty", "field": "csv", "message": reason})
     return CsvRowsOut(catalog_version=app.state.data.catalog.catalog_version, filename=body.filename,
                       encoding=parsed.encoding, delimiter=parsed.delimiter,
                       header_skipped=parsed.header_skipped, rows_total=len(parsed.rows),
@@ -188,11 +195,18 @@ def create_batch(body: BatchCreate):
     except ValueError as error:
         raise HTTPException(422, {"code": "csv_invalid", "field": "csv_base64",
                                   "message": str(error)}) from error
-    parsed = split_rows(raw, max_rows=body.run_limit, skip_header=body.skip_header)
+    try:
+        parsed = split_rows(raw, max_rows=body.run_limit, skip_header=body.skip_header,
+                            delimiter=body.csv_delimiter)
+    except CsvEncodingError as error:
+        raise HTTPException(422, {"code": error.code, "field": "csv",
+                                  "message": str(error)}) from error
     if not parsed.rows:
-        raise HTTPException(422, {"code": "csv_empty", "field": "csv",
-                                  "message": (parsed.notes[-1] if parsed.notes
-                                              else "В файле не найдено ни одной строки с товаром")})
+        # Причина важнее общего текста: строка могла быть отклонена (например, слишком длинное
+        # описание), и пользователю нужно знать, что именно не так.
+        reason = (parsed.skipped[0]["reason"] if parsed.skipped else
+                  parsed.notes[-1] if parsed.notes else "В файле не найдено ни одной строки с товаром")
+        raise HTTPException(422, {"code": "csv_empty", "field": "csv", "message": reason})
     if not app.state.slots.acquire(blocking=False):
         raise HTTPException(429, {"code": "analysis_busy",
                                   "message": "Повторите запрос после завершения текущего анализа"})
