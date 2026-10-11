@@ -116,7 +116,8 @@
 | GET | `/api/health`, `/api/health/live` | 200 `{"status":"ok"}` — процесс работает |
 | GET | `/api/health/ready` | 200 status/catalog_version/engine_version либо 503 detail.code/catalog_version/missing_resources |
 | GET | `/api/v1/catalog/status` | 200 categories/positions/catalog_version/ready/reason/catalog_loaded/missing_resources/templates/final_positions |
-| GET | `/api/v1/catalog/positions/{code}` | 200 карточка правил локального snapshot; 404 detail.code=unknown_ktru_code |
+| GET | `/api/v1/catalog/positions/{code}` | 200 `CatalogPositionCard` (правила позиции + `blocking_reasons`); 404 detail.code=unknown_ktru_code |
+| GET | `/api/v1/catalog/categories/{category_id}/properties` | 200 `CategoryPropertiesOut` (справочные характеристики области); 404 detail.code=unknown_category |
 | POST | `/api/v1/analyses` | 200 полный результат; 422 неверный ввод/подтверждение; 429 заняты слоты; 503 внутренняя ошибка |
 | POST | `/api/v1/analyses/csv` | 200 разбор загруженного файла без анализа (строки + метаданные); 422 csv_empty/csv_invalid |
 | POST | `/api/v1/analyses/batch` | 200 разбор и анализ всех строк одним запросом (компактная сводка по строкам + counts); 422/429/503 |
@@ -124,6 +125,12 @@
 Старые серверные GET сохранённого анализа, CRUD СТЕ, сохраняемый feedback и старые маршруты чтения категорий/правил удалены (404). POST не хранится. Новый GET карточки читает только неизменяемый каталог, без анализа или сессии; analysis_id, ste_id, title, raw_payload и старый контейнер result не используются. Frontend вызывает только POST анализа. Миграция не требуется: серверного хранилища нет.
 
 `catalog_loaded` означает наличие позиций, `ready` — готовность анализа; это разные признаки. `templates` и `final_positions` — количества известных шаблонов и конечных позиций (неизвестный is_template не включается ни в одну группу). `missing_resources` — список недостающих компонентов/артефактов: category_mapping, search_index, extractor, checker, questions. Для clean (5) без ML-артефактов: catalog_loaded=true, positions=60087, templates=5897, final_positions=54190, categories=0, ready=false, reason=search_index_missing. Подбор не завершён даже при ручной передаче реального кода.
+
+### Карточка позиции и характеристики категории
+
+`GET /api/v1/catalog/positions/{code}` → `CatalogPositionCard`: `catalog_version`, `position` (код, название, `okpd2`, статус, `is_template`, `properties[{id,name,value_type,required,verified,kind,numeric_semantics,subject,evidence,aliases,allowed[]}]`, `source_path`, `source_issues`, `resolve_blocked`) и `blocking_reasons[{code,explanation,property_name,applicability,blocks_resolution}]`. Это **справочные правила** — их нужно показывать отдельно от сведений пользователя; `allowed[].kind` = `enum` (`value`) или `interval`/`number` (`lower`, `upper`, `unit`, `raw_unit`), пустые границы означают отсутствие ограничения с этой стороны. Неизвестный код → 404 `unknown_ktru_code`.
+
+`GET /api/v1/catalog/categories/{category_id}/properties` → `CategoryPropertiesOut`: `category_id`, `catalog_version`, `complete`, `notes[]`, `properties[{property_id,name,subject,aliases,required,multiple,options[],units[],question_id,source,name_shared}]`. Идентичность характеристики — это `(subject, property_id)`, **а не название**: в КТРУ есть разные характеристики с одинаковым названием, и их правила не сливаются в одно поле. Если название делится между несколькими характеристиками, у каждой свой `property_id`, а `name_shared=true` и в `notes` добавляется пояснение — клиент показывает их как разные поля. `options` заполняется только для перечислений (значения), `units` — единицы из справочника; числовые наборы и интервалы клиент получает из карточки позиции.
 
 Изменения для frontend-команды: поля статуса каталога и readiness добавлены; POST и его поля сохранены. При необходимости показывайте отдельно «каталог загружен» и причину неготовности. needs_data нельзя показывать как найденный код; selected_ktru_code остаётся null. Frontend в этом изменении не редактируется.
 

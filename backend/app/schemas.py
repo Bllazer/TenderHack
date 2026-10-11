@@ -166,6 +166,37 @@ class CatalogPositionCard(BaseModel):
     blocking_reasons: list[BlockingReason]
 
 
+class CatalogPropertyField(BaseModel):
+    """Одна характеристика области: справочные правила (значения, единицы, обязательность).
+
+    Идентичность характеристики — это `(subject, property_id)`, а НЕ название: в КТРУ
+    встречаются разные характеристики с одинаковым названием, и объединять их правила в один
+    «достоверный» набор нельзя. Если название делится между несколькими характеристиками,
+    у каждой свой `property_id`, а `name_shared` = true — клиент показывает это как разные
+    поля, а не как одно.
+    """
+    property_id: str
+    name: str
+    subject: str
+    aliases: list[str] = Field(default_factory=list)
+    required: bool = False
+    multiple: bool = False
+    options: list[str] = Field(default_factory=list)
+    units: list[str] = Field(default_factory=list)
+    question_id: str | None = None
+    source: str | None = None
+    name_shared: bool = False
+
+
+class CategoryPropertiesOut(BaseModel):
+    """Справочные характеристики категории (не путать с фактами пользователя)."""
+    category_id: str
+    catalog_version: str
+    complete: bool
+    properties: list[CatalogPropertyField] = Field(default_factory=list)
+    notes: list[str] = Field(default_factory=list)
+
+
 class Candidate(BaseModel):
     ktru_code: str
     name: str

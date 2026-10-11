@@ -16,7 +16,7 @@ from app.schemas import (AnalysisCreate, AnalysisOut, BatchCreate, BatchOut, Bat
 from app.search import E5Encoder, Search
 from app.components import existing_components
 from app.catalog_diagnostics import position_blockers
-from app.schemas import CatalogPositionCard
+from app.schemas import CatalogPositionCard, CategoryPropertiesOut
 
 logger = logging.getLogger(__name__)
 
@@ -103,32 +103,49 @@ def catalog_position(code: str):
 
 
 
-@app.get("/api/v1/catalog/categories/{category_id}/properties")
+@app.get("/api/v1/catalog/categories/{category_id}/properties", response_model=CategoryPropertiesOut,
+         responses={404: {"model": ErrorResponse}})
 def category_properties(category_id: str):
+    """Справочные характеристики области: значения, единицы, обязательность.
+
+    Идентичность характеристики — `(subject, property_id)`, а не название: одноимённые, но
+    разные характеристики не сливаются в одно правило (иначе клиент принимал бы объединение
+    значений за одно свойство). Совпадение названий отмечается флагом `name_shared`.
+    """
     from app.questions import property_question_id
     data = app.state.data
     if category_id not in data.categories:
-        raise HTTPException(404, {"code": "unknown_category"})
+        raise HTTPException(404, {"code": "unknown_category", "field": "category_id"})
     positions, complete = data.pool(category_id)
     properties = tuple(prop for position in positions for prop in position.properties)
     context = getattr(app.state.components.extractor, "context", None)
     if context:
         properties, _, _ = context(category_id, properties)
-    fields = {}
+    grouped: dict[tuple, dict] = {}
     for prop in properties:
-        key = (prop.subject, prop.name)
-        field = fields.setdefault(key, {"name": prop.name, "subject": prop.subject,
-            "aliases": set(), "required": False, "multiple": False, "options": set(), "units": set(),
+        key = (prop.subject, prop.semantic_key or prop.id, prop.name)
+        field = grouped.setdefault(key, {"property_id": prop.id, "name": prop.name,
+            "subject": prop.subject, "aliases": set(), "required": False, "multiple": False,
+            "options": set(), "units": set(),
             "question_id": property_question_id(category_id, prop) if prop.source == "ktru" else None,
             "source": prop.source})
         field["required"] |= bool(prop.required)
         field["multiple"] |= prop.kind == "3"
         field["aliases"].update(prop.aliases)
-        field["options"].update(a.value for a in prop.allowed if a.kind == "enum" and a.value)
-        field["units"].update(a.unit for a in prop.allowed if a.unit)
-    return {"category_id": category_id, "complete": complete, "catalog_version": data.catalog.catalog_version,
-        "properties": [{**field, "aliases": sorted(field["aliases"]), "options": sorted(field["options"]),
-                        "units": sorted(field["units"])} for field in sorted(fields.values(), key=lambda f: (not f["required"], f["name"]))]}
+        field["options"].update(item.value for item in prop.allowed if item.kind == "enum" and item.value)
+        field["units"].update(item.unit for item in prop.allowed if item.unit)
+    names: dict[tuple, int] = {}
+    for key in grouped:
+        names[(key[0], key[2])] = names.get((key[0], key[2]), 0) + 1
+    notes = ["одноимённые характеристики различаются: смотрите property_id"
+             ] if any(count > 1 for count in names.values()) else []
+    fields = [{**field, "aliases": sorted(field["aliases"]), "options": sorted(field["options"]),
+               "units": sorted(field["units"]),
+               "name_shared": names[(field["subject"], field["name"])] > 1}
+              for field in grouped.values()]
+    fields.sort(key=lambda field: (not field["required"], field["name"], field["property_id"]))
+    return CategoryPropertiesOut(category_id=category_id, catalog_version=data.catalog.catalog_version,
+                                 complete=complete, properties=fields, notes=notes)
 
 @app.post("/api/v1/analyses", response_model=AnalysisOut,
           responses={422: {"model": ErrorResponse}, 429: {"model": ErrorResponse}, 503: {"model": ErrorResponse}})
