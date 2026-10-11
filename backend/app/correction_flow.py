@@ -4,13 +4,29 @@ import hashlib
 from app.mapping import map_facts
 from app.schemas import Correction, Issue, Question, QuestionOption
 from app.extraction import enum_targets
+from app.search import canon
+
+
+def scoped_names(positions) -> set[tuple[str, str]]:
+    """Имена характеристик найденных позиций (с синонимами) — что уже точно совпало."""
+    return {(canon(prop.name), prop.subject) for position in positions for prop in position.properties} | \
+           {(canon(alias), prop.subject) for position in positions for prop in position.properties
+            for alias in prop.aliases}
 
 
 def resolve_suggestions(category_id, positions, facts, answers, *, extra_properties=()):
+    known = scoped_names(positions)
+    by_id = {fact.id: fact for fact in facts}
     proposals = {}
     for position in positions:
         _, _, corrections = map_facts(position, facts)
         for correction in corrections:
+            fact = by_id.get(correction.fact_id)
+            # Имя уже точно совпало с характеристикой позиции — «исправлять» его нечем.
+            # Тот же предохранитель для «Не знаю»: подсказка исправления имени на пустом
+            # значении возвращала один и тот же вопрос («Масса молотка» → «Масса головки молотка»).
+            if fact is not None and ((canon(fact.name), fact.subject) in known or fact.unknown):
+                continue
             if any(f.id == correction.fact_id and f.card_mappings for f in facts):
                 continue
             proposals.setdefault(correction.fact_id, set()).add(correction.normalized)
@@ -29,6 +45,8 @@ def resolve_suggestions(category_id, positions, facts, answers, *, extra_propert
             accepted.append(Correction(fact_id=fact.id, kind="proposed_text_fix", original=fact.name,
                 normalized=answer.value.removeprefix("accept:"), explanation="Сопоставление явно подтверждено пользователем"))
             fact.name = answer.value.removeprefix("accept:")
+        elif answer and answer.unknown:
+            continue                      # «Не знаю» на подсказку не возвращает тот же вопрос
         else:
             pending.append((fact, Question(id=qid, kind="correction",
                 title=f"Возможно, вы имели в виду «{targets[0]}»?",
