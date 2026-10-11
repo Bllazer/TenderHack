@@ -8,7 +8,7 @@ test('full API flow, confirmation, correction and category change', async ({ pag
   await page.getByRole('button', { name: 'Продолжить' }).click()
   await page.getByRole('button', { name: 'Перейти: Уточнение' }).click()
   await page.locator('#answer').fill('650')
-  await expect(page.locator('#answer-unit')).toHaveValue('Вт')
+  await expect(page.locator('.unit-fixed')).toHaveText('Вт')
   await page.getByRole('button', { name: 'Продолжить' }).click()
   await expect(page.getByRole('button', { name: 'Подтвердить код' })).toBeVisible()
   await expect(page.getByRole('heading', { name: 'Подбор завершён' })).toHaveCount(0)

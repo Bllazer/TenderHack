@@ -8,7 +8,7 @@ export default function CsvWorkspace({ onOpen, update, onRemove }: { onOpen: (it
   const [filename, setFilename] = useSessionState('csv.filename', '')
   const [notes, setNotes] = useSessionState<string[]>('csv.notes', [])
   const [error, setError] = useState('')
-  const [copiedLine, setCopiedLine] = useState<number | null>(null)
+  const [copiedCode, setCopiedCode] = useState('')
   const [busy, setBusy] = useState(false)
   const [progress, setProgress] = useSessionState('csv.progress', 0)
   const [skipHeader, setSkipHeader] = useSessionState('csv.skipHeader', true)
@@ -28,25 +28,32 @@ export default function CsvWorkspace({ onOpen, update, onRemove }: { onOpen: (it
         body: JSON.stringify({ csv_base64: btoa(binary), filename: file.name, run_limit: 100, skip_header: skipHeader }) })
       const data = await response.json()
       if (!response.ok) throw new Error(typeof data.detail?.message === 'string' ? userMessage(data.detail.message) : 'Не удалось прочитать файл. Проверьте формат CSV.')
-      setRows(data.rows.map((item: { line: number; description: string }) => ({ line: item.line, draft: { ...emptyDraft(), description: item.description }, result: null, error: '' })))
+      const uploaded: CsvItem[] = data.rows.map((item: { line: number; description: string }) => ({ line: item.line, draft: { ...emptyDraft(), description: item.description }, result: null, error: '' }))
+      setRows(uploaded)
       setFilename(file.name); setProgress(0)
       setNotes([...data.notes, ...(data.truncated ? ['Взяты только первые 100 позиций. Разделите большой файл на части.'] : []), ...data.rows_skipped.map((item: { line: number; reason: string }) => `Строка ${item.line} пропущена: ${userMessage(item.reason)}`)])
+      await run(uploaded)
     } catch (e) { if (!controller.signal.aborted) setError(e instanceof Error ? e.message : 'Не удалось загрузить файл.') }
     finally { setBusy(false) }
   }
-  async function run() {
+  async function run(items = rows) {
     const controller = new AbortController(); abort.current = controller; setBusy(true); setError(''); setProgress(0)
     try {
-      for (let i = 0; i < rows.length; i++) {
+      for (let i = 0; i < items.length; i++) {
         if (controller.signal.aborted) break
-        const item = rows[i]
+        const item = items[i]
         {
           try {
-            const result = await analyze(item.draft, controller.signal)
-            setRows(current => current.map(row => row.line === item.line ? { ...row, result, error: '' } : row))
+            let next = item.draft
+            let result = await analyze(next, controller.signal)
+            if (!next.confirmed_category_id && result.categories.length > 0 && result.next_question?.kind === 'category') {
+              next = { ...next, confirmed_category_id: result.categories[0].id, confirmed_ktru_code: null }
+              result = await analyze(next, controller.signal)
+            }
+            setRows(current => current.map(row => row.line === item.line && row.draft === item.draft ? { ...row, draft: next, result, error: '' } : row))
           } catch (e) {
             if (controller.signal.aborted) break
-            setRows(current => current.map(row => row.line === item.line ? { ...row, error: e instanceof Error ? e.message : 'Не удалось проверить товар' } : row))
+            setRows(current => current.map(row => row.line === item.line ? row.draft === item.draft ? { ...row, error: e instanceof Error ? e.message : 'Не удалось проверить товар' } : row : row))
           }
         }
         setProgress(i + 1)
@@ -55,12 +62,11 @@ export default function CsvWorkspace({ onOpen, update, onRemove }: { onOpen: (it
   }
   function removeFile() {
     if (busy) return
-    setRows([]); setFilename(''); setNotes([]); setError(''); setProgress(0); setCopiedLine(null); onRemove()
+    setRows([]); setFilename(''); setNotes([]); setError(''); setProgress(0); setCopiedCode(''); onRemove()
   }
-  async function copyCode(item: CsvItem) {
-    const code = item.result?.selected_ktru_code
+  async function copyCode(item: CsvItem, code = item.result?.selected_ktru_code) {
     if (!code) return
-    try { await navigator.clipboard.writeText(code); setCopiedLine(item.line); setError('') }
+    try { await navigator.clipboard.writeText(code); setCopiedCode(`${item.line}:${code}`); setError('') }
     catch { setError('Не удалось скопировать код. Выделите его и скопируйте вручную.') }
   }
   function exportCsv() {
@@ -82,8 +88,8 @@ export default function CsvWorkspace({ onOpen, update, onRemove }: { onOpen: (it
     {error && <p className="form-error" role="alert">{error}</p>}
     {notes.map((note, i) => <p className="data-notice" key={i}>{note}</p>)}
     {filename && <div className="csv-toolbar"><div className="csv-file-heading"><span className="csv-file-icon" aria-hidden="true">CSV</span><div><h3>{filename}</h3><span className="csv-file-meta">{rows.length} позиций · изменения сохраняются в этой вкладке</span></div><button type="button" className="link-button csv-remove" disabled={busy} onClick={removeFile}>Убрать файл</button></div><div className="csv-actions"><button className="secondary" disabled={busy} onClick={exportCsv}>Скачать результаты</button>{busy ? <button className="secondary" onClick={() => abort.current?.abort()}>Остановить</button> : <button className="primary" disabled={rows.some(row => !row.draft.description.trim())} onClick={() => void run()}>{checked > 0 ? 'Перепроверить товары' : 'Проверить товары'}</button>}</div></div>}
-    {busy && <div className="csv-processing" role="status" aria-live="polite"><span className="csv-spinner" aria-hidden="true" /><div><strong>{rows.length ? 'Подбираем характеристики товаров' : 'Читаем CSV-файл'}</strong><p>{rows.length ? `Проверено ${progress} из ${rows.length}. Можно остановить обработку — готовые результаты сохранятся.` : 'Распознаём строки и проверяем формат файла…'}</p></div>{rows.length > 0 && <progress aria-label="Прогресс проверки товаров" value={progress} max={rows.length} />}</div>}
-    {rows.length > 0 && <><p className="csv-table-hint">Описание можно редактировать прямо в таблице. «Уточнить» открывает пошаговый подбор.</p><div className="csv-table-wrap"><table className="csv-table"><thead><tr><th>Строка</th><th>Описание товара</th><th>Результат</th><th>Действие</th></tr></thead><tbody>{rows.map(item => <tr key={item.line} className={item.result?.status === 'resolved' ? 'csv-confirmed-row' : ''}><td><span className="csv-line-number">{item.line}</span></td><td><textarea ref={element => { if (element) { element.style.height = 'auto'; element.style.height = element.scrollHeight + 'px' } }} onInput={event => { const element = event.currentTarget; element.style.height = 'auto'; element.style.height = element.scrollHeight + 'px' }} aria-label={`Описание строки ${item.line}`} value={item.draft.description} disabled={busy} maxLength={12000} onChange={e => setRows(current => current.map(row => row.line === item.line ? { ...row, draft: { ...emptyDraft(), description: e.target.value }, result: null, error: '' } : row))} /></td><td><span className={`csv-status ${item.error ? 'status-error' : item.result?.status === 'resolved' ? 'status-success' : item.result?.status === 'needs_data' ? 'status-error' : item.result ? 'status-attention' : 'status-pending'}`}><span className="status-dot" aria-hidden="true" />{item.error ? 'Не удалось проверить' : label(item.result)}</span>{item.error && <p className="csv-row-error">{item.error}</p>}{item.result?.selected_ktru_code && <div className="csv-code"><span className="result-code">{item.result.selected_ktru_code}</span><button type="button" className="link-button" onClick={() => void copyCode(item)} aria-label={`Копировать код строки ${item.line}`}>{copiedLine === item.line ? 'Скопировано' : 'Копировать'}</button></div>}</td><td><button className="secondary" disabled={busy || !item.draft.description.trim()} onClick={() => onOpen(item)}>{item.result?.status === 'resolved' ? 'Посмотреть' : item.result ? 'Уточнить' : 'Открыть'}</button></td></tr>)}</tbody></table></div></>}
+    {busy && <div className="csv-processing" role="status" aria-live="polite"><span className="csv-spinner" aria-hidden="true" /><div><strong>{rows.length ? 'Подбираем характеристики товаров' : 'Читаем CSV-файл'}</strong><p>{rows.length ? `Проверено ${progress} из ${rows.length}. Уже проверенные товары можно уточнять — обработка остальных продолжится.` : 'Распознаём строки и проверяем формат файла…'}</p></div>{rows.length > 0 && <progress aria-label="Прогресс проверки товаров" value={progress} max={rows.length} />}</div>}
+    {rows.length > 0 && <><p className="csv-table-hint">Тип товара выбираем по первому результату поиска. Возможные коды ещё требуют проверки характеристик. «Уточнить» открывает пошаговый подбор.</p><div className="csv-table-wrap"><table className="csv-table"><thead><tr><th>Строка</th><th>Описание товара</th><th>Результат</th><th>Действие</th></tr></thead><tbody>{rows.map((item, index) => <tr key={item.line} className={item.result?.status === 'resolved' ? 'csv-confirmed-row' : ''}><td><span className="csv-line-number">{item.line}</span></td><td><textarea ref={element => { if (element) { element.style.height = 'auto'; element.style.height = element.scrollHeight + 'px' } }} onInput={event => { const element = event.currentTarget; element.style.height = 'auto'; element.style.height = element.scrollHeight + 'px' }} aria-label={`Описание строки ${item.line}`} value={item.draft.description} disabled={busy} maxLength={12000} onChange={e => setRows(current => current.map(row => row.line === item.line ? { ...row, draft: { ...emptyDraft(), description: e.target.value }, result: null, error: '' } : row))} /></td><td><span className={`csv-status ${item.error ? 'status-error' : item.result?.status === 'resolved' ? 'status-success' : item.result?.status === 'needs_data' ? 'status-error' : item.result ? 'status-attention' : 'status-pending'}`}><span className="status-dot" aria-hidden="true" />{item.error ? 'Не удалось проверить' : label(item.result)}</span>{item.error && <p className="csv-row-error">{item.error}</p>}{item.result && <>{item.draft.confirmed_category_id && <p className="csv-category">{item.result.categories.find(category => category.id === item.draft.confirmed_category_id)?.name || 'Выбран наиболее похожий тип товара'}</p>}{!item.result.selected_ktru_code && item.result.candidates.length > 0 && <p className="csv-codes-caption">Возможные коды</p>}{(item.result.selected_ktru_code ? [item.result.selected_ktru_code] : item.result.candidates.filter(candidate => candidate.outcome !== 'incompatible').map(candidate => candidate.ktru_code)).map(code => <div className="csv-code" key={code}><span className="result-code" title={item.result?.candidates.find(candidate => candidate.ktru_code === code)?.name}>{code}</span><button type="button" className="link-button" onClick={() => void copyCode(item, code)} aria-label={item.result?.selected_ktru_code ? `Копировать код строки ${item.line}` : `Копировать ${code} из строки ${item.line}`}>{copiedCode === `${item.line}:${code}` ? 'Скопировано' : 'Копировать'}</button></div>)}</>}</td><td><button className="secondary" disabled={(busy && index >= progress) || !item.draft.description.trim()} onClick={() => onOpen(item)}>{item.result?.status === 'resolved' ? 'Посмотреть' : item.result ? 'Уточнить' : 'Открыть'}</button></td></tr>)}</tbody></table></div></>}
   </section>
 }
 function label(result: Result | null) {

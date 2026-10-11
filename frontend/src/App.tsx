@@ -9,8 +9,9 @@ import CsvWorkspace from './CsvWorkspace'
 import type { CsvItem } from './CsvWorkspace'
 
 type Stage = 'input' | 'question' | 'review' | 'correction' | 'done'
-function resultStage(result: Result): Stage {
+function resultStage(result: Result, continueProperties = false): Stage {
   if (result.status === 'resolved' && result.selected_ktru_code) return 'done'
+  if (continueProperties && result.status === 'needs_input' && result.next_question?.kind === 'property') return 'question'
   if (result.candidate_count === 1 || result.categories.length === 0) return 'review'
   return result.status === 'needs_input' && result.next_question && !['code', 'conflict'].includes(result.next_question.kind) ? 'question' : 'review'
 }
@@ -105,7 +106,7 @@ function App() {
       if (requestId !== sequence.current) return
       setHistory(items => [...items, { stage, draft, result }])
       setResult(response); setEditing(null); setAnswer(''); setSelectedValues([]); setAnswerUnit(response.next_question?.unit || ''); setUnknown(false)
-      setStage(resultStage(response))
+      setStage(resultStage(response, stage === 'question' && question?.kind === 'property'))
       if (csvLine !== null && response.status === 'resolved' && response.selected_ktru_code) {
         setCsvUpdate({ line: csvLine, draft: next, result: response, error: '' })
         setCsvLine(null); setMode('csv')
@@ -256,6 +257,7 @@ function App() {
             {question.options.map(option => <label className="radio-row" key={option.value}><input type="radio" name="answer" checked={!unknown && answer === option.value} onChange={() => { setAnswer(option.value); setUnknown(false); setError('') }} /><span>{option.label}</span></label>)}
           </fieldset> : <div className="measurement"><label className="sr-only" htmlFor="answer">Значение</label><input aria-describedby={error ? 'form-error' : undefined} aria-invalid={!!error} id="answer" value={answer} disabled={loading} onChange={event => { setAnswer(event.target.value); setUnknown(false) }} placeholder="Значение" />
             {question.unit ? <span className="unit-fixed" aria-label="Единица измерения">{question.unit}</span> : null}</div>}
+          {question.kind === 'property' && !question.multiple && question.options.length > 0 && (question.ranges?.length || 0) > 0 && <div className="measurement"><label className="sr-only" htmlFor="answer">Значение</label><input id="answer" value={question.options.some(option => option.value === answer) ? '' : answer} disabled={loading} onChange={event => { setAnswer(event.target.value); setUnknown(false); setError('') }} placeholder="Или введите точное значение" />{question.unit && <span className="unit-fixed" aria-label="Единица измерения">{question.unit}</span>}</div>}
           {question.hint && <p className="help compact range-hint">{question.hint}</p>}
           {question.kind === 'category' && <button type="button" className="secondary reject-types" disabled={loading} onClick={rejectTypes}>Ни один тип не подходит — изменить запрос</button>}
           {question.allow_unknown && question.kind !== 'category' && <label className="radio-row"><input type={question.multiple && question.kind === 'property' ? 'checkbox' : 'radio'} name="answer" checked={unknown} disabled={loading} onChange={event => { setUnknown(event.target.checked); setError('') }} /><span>Не знаю</span></label>}

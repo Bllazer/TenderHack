@@ -80,3 +80,5 @@ textarea{height:150px;background:#fff;border-color:#c2cfdf;padding:16px 18px;fon
 .range-hint { margin-top: .25rem; }
 .candidates > summary { cursor: pointer; }
 .candidates[open] > summary { margin-bottom: .5rem; }
+
+.csv-category{font-size:11px;color:#748398;line-height:18px;margin:10px 0 4px}.csv-codes-caption{font-size:11px;color:#748398;margin:8px 0 0}.csv-code .result-code{overflow-wrap:anywhere}

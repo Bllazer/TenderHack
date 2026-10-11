@@ -13,17 +13,9 @@ async function openCorrection(page: import('@playwright/test').Page) {
   await expect(page.getByRole('heading', { name: 'Подбор завершён' })).toHaveCount(0)
 }
 
-test('real test API: accepting correction exposes conflict; explicit fact edit reanalyzes', async ({ page }) => {
+test('real test API: mapped typo retains invalid value; explicit edit reanalyzes', async ({ page }) => {
   await openCorrection(page)
-  const radios = page.getByRole('radio')
-  await expect(radios).toHaveCount(3)
-  await radios.nth(0).check()
-  const request = page.waitForRequest(r => r.url().endsWith('/api/v1/analyses'))
-  await page.getByRole('button', { name: 'Продолжить' }).click()
-  const state = (await request).postDataJSON()
-  expect(state.answers.at(-1)).toMatchObject({ value: 'accept:Мощность', unknown: false })
-  await expect(page.locator('.result')).toContainText('650')
-  await expect(page.locator('.result')).toContainText('900')
+  await expect(page.locator('.result-data')).toContainText('900')
   await expect(page.getByRole('heading', { name: 'Подбор завершён' })).toHaveCount(0)
   await page.locator('.result-data > div').filter({ hasText: '900' }).getByRole('button', { name: 'Исправить' }).click()
   await page.getByLabel('Значение', { exact: true }).fill('650')
@@ -35,20 +27,15 @@ test('real test API: accepting correction exposes conflict; explicit fact edit r
   await expect(page.getByRole('button', { name: 'Подтвердить код' })).toBeVisible()
 })
 
-test('real test API: rejecting keeps typo as additional and unknown stays pending', async ({ page }) => {
-  await openCorrection(page)
-  await page.getByRole('radio').nth(1).check()
-  const request = page.waitForRequest(r => r.url().endsWith('/api/v1/analyses'))
-  await page.getByRole('button', { name: 'Продолжить' }).click()
-  expect((await request).postDataJSON().answers.at(-1).value).toBe('reject')
-  await expect(page.getByText('Неразобранные и дополнительные сведения')).toHaveCount(0)
-  await page.goto('/')
+test('real test API: unknown answer stays pending and is not asked twice', async ({ page }) => {
   await openCorrection(page)
   await page.getByRole('radio', { name: 'Не знаю', exact: true }).check()
   const unknown = page.waitForRequest(r => r.url().endsWith('/api/v1/analyses'))
   await page.getByRole('button', { name: 'Продолжить' }).click()
   expect((await unknown).postDataJSON().answers.at(-1)).toMatchObject({ unknown: true, value: null })
   await expect(page.getByRole('heading', { name: 'Подбор завершён' })).toHaveCount(0)
+  await expect(page.getByRole('button', { name: 'Подтвердить код' })).toHaveCount(0)
+  await expect(page.locator('#question-form')).toHaveCount(0)
 })
 
 test('mock UI: renders every server option and sends exact opaque value for current question ID', async ({ page }) => {
@@ -56,7 +43,7 @@ test('mock UI: renders every server option and sends exact opaque value for curr
   await page.route('**/api/v1/analyses', async route => {
     const response = await route.fetch()
     const result = await response.json()
-    await route.fulfill({ json: { ...result, status: 'needs_input', selected_ktru_code: null,
+    await route.fulfill({ json: { ...result, categories: [{ id: 'tools', name: 'Дрели', rank: 1 }], candidate_count: 2, status: 'needs_input', selected_ktru_code: null,
       next_question: { id: 'mapping:server-specific', kind: 'correction', title: 'Серверное исправление', reason: 'Серверное обоснование',
         options: values.map((value, i) => ({ value, label: `Вариант ${i + 1}` })), unit: null, allow_unknown: true } } })
   })
@@ -76,17 +63,12 @@ test('mock UI: renders every server option and sends exact opaque value for curr
   await expect(page.getByRole('heading', { name: 'Подбор завершён' })).toHaveCount(0)
 })
 
-test('real test API: code confirmation cannot bypass typo correction', async ({ request }) => {
+test('real test API: code confirmation cannot bypass invalid corrected value', async ({ request }) => {
   const body = { description, attributes: [], additional: [], answers: [], confirmed_category_id: 'tools', confirmed_ktru_code: 'TEST-DRILL-MAINS' }
   const first = await request.post('http://127.0.0.1:18001/api/v1/analyses', { data: body })
   const result = await first.json()
   expect(result.status).toBe('needs_input')
   expect(result.selected_ktru_code).toBeNull()
-  expect(result.next_question.kind).toBe('correction')
-  const option = result.next_question.options.find((item: { value: string }) => item.value.startsWith('accept:'))
-  const accepted = await request.post('http://127.0.0.1:18001/api/v1/analyses', { data: { ...body, answers: [{ question_id: result.next_question.id, value: option.value, unknown: false }] } })
-  const conflict = await accepted.json()
-  expect(conflict.status).toBe('needs_input')
-  expect(conflict.selected_ktru_code).toBeNull()
-  expect(conflict.issues.some((issue: { code: string }) => issue.code === 'conflicting_facts')).toBeTruthy()
+  expect(result.verification.value_verified).toBe(false)
+  expect(result.next_question.property_name).toBe('Мощность')
 })
