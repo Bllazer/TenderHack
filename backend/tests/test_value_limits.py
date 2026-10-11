@@ -1,4 +1,4 @@
-﻿"""Ограничения значений: диапазон в вопросе из найденных позиций и отсечение вбросов.
+"""Ограничения значений: диапазон в вопросе из найденных позиций и отсечение вбросов.
 
 Проверяются правила, а не константы: границы берутся из справочника позиций, поэтому
 изменение интервала в позиции обязано изменить и подсказку, и решение о вбросе.
@@ -140,25 +140,26 @@ def test_supply_aliases_gain_word_forms(unit_supply):
 
 # ------------------------------------------------- проверка вброса по позициям
 def measurement_snapshot(lower: str, upper: str, name: str = "Внутренний диаметр",
-                         version: str | None = None) -> object:
+                         version: str | None = None, code: str = "H1", unit: str = "мм") -> object:
     """Снимок с одной позицией и одной числовой характеристикой (для проверок границ)."""
     category = Category(id="hose", name="Шланг лабораторный", search_text="шланг лабораторный",
-                        position_codes=("H1",))
-    position = Position(code="H1", name="Шланг лабораторный", source_path="test", status="actual",
-                        is_template=False, properties=(numeric_property(lower, upper, name=name),))
-    catalog = Catalog(format_version=1, catalog_version=version or f"limits-{name}-{lower}-{upper}",
+                        position_codes=(code,))
+    position = Position(code=code, name="Шланг лабораторный", source_path="test", status="actual",
+                        is_template=False,
+                        properties=(numeric_property(lower, upper, unit=unit, name=name),))
+    catalog = Catalog(format_version=1, catalog_version=version or f"limits-{name}-{lower}-{upper}-{unit}",
                       source_description="test", validation_report="test", synthetic=True,
                       categories=[category], positions=[position])
     return snapshot(catalog, vectors=[1.0], tokens=(("шланг", "лабораторный"),))
 
 
-def scale_cases(data, name: str, values) -> dict:
+def scale_cases(data, name: str, values, group: str = "H1") -> dict:
     """Для каждого (значение, единица) — серьёзность замечания о масштабе или None."""
     result = {}
     for value, unit in values:
         fact = Fact(id="f", name=name, value=value, unit=unit, raw=f"{value} {unit}",
                     span=(0, 5), source="text")
-        issues = out_of_scale_values(data, [fact], set())
+        issues = out_of_scale_values(data, [fact], set(), {group})
         result[(value, unit)] = issues[0].severity if issues else None
     return result
 
@@ -187,6 +188,32 @@ def test_scale_check_follows_catalogue_data():
     assert scale_cases(loose, "Длина рукоятки", [("20000", "мм")])[("20000", "мм")] is None
 
 
+def test_scale_check_is_scoped_to_the_found_group():
+    """Масштаб берётся у найденной группы КТРУ, а не по всему каталогу.
+
+    Регрессия, найденная набором сценариев обновления: «Объем баллона» у аэрозолей
+    измеряется миллилитрами, у газовых баллонов — литрами. Общие границы по названию
+    объявляли нормальные 11 л выходом за масштаб, и сценарий «Газ природный» переставал
+    быть ambiguous.
+    """
+    aerosol = measurement_snapshot("0.5", "80", name="Объем баллона", version="aerosol",
+                                   code="20.42.15.110-00000001", unit="мл")
+    cylinder = measurement_snapshot("5", "50", name="Объем баллона", version="cylinder",
+                                    code="06.20.10.110-00000003", unit="л")
+    fact = Fact(id="f", name="Объем баллона", value="11", unit="л", raw="11 л",
+                span=(0, 4), source="text")
+    # у аэрозолей 11 л действительно вне масштаба, у баллонов — норма
+    assert out_of_scale_values(aerosol, [fact], set(), {"20.42.15.110"})
+    assert out_of_scale_values(cylinder, [fact], set(), {"06.20.10.110"}) == []
+
+
+def test_scale_check_normalises_units_inside_a_group():
+    """Внутри группы единицы приводятся к основной: 11000 мл против 500–80000 мл молча."""
+    data = measurement_snapshot("500", "80000", name="Объем баллона", unit="мл")
+    assert scale_cases(data, "Объем баллона", [("11", "л"), ("500", "мл"), ("500", "л")]) == {
+        ("11", "л"): None, ("500", "мл"): None, ("500", "л"): "warning"}
+
+
 def test_scale_check_ignores_unknown_characteristics_and_unmapped_facts():
     """Неизвестная характеристика и факт без имени не судятся: сравнивать не с чем."""
     data = measurement_snapshot("100", "900", name="Длина рукоятки")
@@ -194,8 +221,16 @@ def test_scale_check_ignores_unknown_characteristics_and_unmapped_facts():
                    raw="200 метров", span=(0, 10), source="text")
     anonymous = Fact(id="f2", name="", value="200", unit="метров", raw="200 метров",
                      span=(0, 10), source="text")
-    assert out_of_scale_values(data, [unknown], set()) == []
-    assert out_of_scale_values(data, [anonymous], set()) == []
+    assert out_of_scale_values(data, [unknown], set(), {"H1"}) == []
+    assert out_of_scale_values(data, [anonymous], set(), {"H1"}) == []
+
+
+def test_scale_check_without_groups_stays_silent():
+    """Без найденных групп судить не о чем: пустой набор групп — нет замечаний."""
+    data = measurement_snapshot("100", "900", name="Длина рукоятки")
+    fact = Fact(id="f", name="Длина рукоятки", value="200", unit="метров", raw="200 метров",
+                span=(0, 10), source="text")
+    assert out_of_scale_values(data, [fact], set(), set()) == []
 
 
 def test_scale_check_converts_units_before_comparing():
