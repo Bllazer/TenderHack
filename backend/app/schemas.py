@@ -183,6 +183,28 @@ class QuestionOption(BaseModel):
     label: str
 
 
+def _number(value: float) -> str:
+    return f"{value:g}"
+
+
+class QuestionRange(BaseModel):
+    """Допустимый интервал значения — берётся из найденных позиций, а не из констант."""
+    lower: float | None = None
+    upper: float | None = None
+    unit: str | None = None
+
+    def text(self) -> str:
+        if self.lower is not None and self.upper is not None:
+            body = f"от {_number(self.lower)} до {_number(self.upper)}"
+        elif self.lower is not None:
+            body = f"не меньше {_number(self.lower)}"
+        elif self.upper is not None:
+            body = f"не больше {_number(self.upper)}"
+        else:
+            return ""
+        return f"{body} {self.unit or ''}".strip()
+
+
 class Question(BaseModel):
     id: str
     kind: Literal["conflict", "category", "property", "code", "correction"]
@@ -193,6 +215,11 @@ class Question(BaseModel):
     unit: str | None = None
     allow_unknown: bool = True
     multiple: bool = False
+    #: Допустимые границы числового значения у оставшихся позиций (объединение интервалов
+    #: их характеристик) и готовая подсказка для интерфейса. Пусто, если характеристика не
+    #: числовая: тогда ограничивать нечем, и вопрос остаётся свободным.
+    ranges: list[QuestionRange] = Field(default_factory=list)
+    hint: str | None = None
 
 
 class Verification(BaseModel):

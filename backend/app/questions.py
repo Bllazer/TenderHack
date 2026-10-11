@@ -1,8 +1,9 @@
 import hashlib
+from decimal import Decimal, InvalidOperation
 
 from app.catalog import Position, Property
 from app.checks import rule_signature
-from app.schemas import Candidate, CategoryCandidate, Fact, Issue, Question, QuestionOption
+from app.schemas import Candidate, CategoryCandidate, Fact, Issue, Question, QuestionOption, QuestionRange
 
 
 def property_question_id(category_id: str, prop: Property) -> str:
@@ -10,13 +11,62 @@ def property_question_id(category_id: str, prop: Property) -> str:
     return "property:" + hashlib.sha256(identity.encode()).hexdigest()[:24]
 
 
+def _decimal(value) -> Decimal | None:
+    try:
+        return Decimal(str(value)) if value not in (None, "") else None
+    except (InvalidOperation, ValueError):
+        return None
+
+
+def allowed_ranges(prop: Property) -> list[QuestionRange]:
+    """Объединение интервалов характеристики у оставшихся позиций, по единицам.
+
+    Интервалы берутся из справочника (в `prop.allowed` уже лежат значения всех оставшихся
+    позиций), поэтому границы всегда соответствуют найденным позициям и меняются вместе с
+    ними. Пересекающиеся интервалы сливаются: пользователю нужен список, а не набор
+    пересечений. Разные единицы не смешиваются — для каждой своя запись.
+    """
+    by_unit: dict[str | None, list[tuple[Decimal, Decimal]]] = {}
+    for item in prop.allowed:
+        if item.kind != "interval":
+            continue
+        lower, upper = _decimal(item.lower), _decimal(item.upper)
+        if lower is None and upper is None:
+            continue
+        by_unit.setdefault(item.unit, []).append((lower if lower is not None else Decimal("-Infinity"),
+                                                 upper if upper is not None else Decimal("Infinity")))
+    ranges: list[QuestionRange] = []
+    for unit, intervals in by_unit.items():
+        merged: list[list[Decimal]] = []
+        for lower, upper in sorted(intervals):
+            if merged and lower <= merged[-1][1]:
+                merged[-1][1] = max(merged[-1][1], upper)
+            else:
+                merged.append([lower, upper])
+        for lower, upper in merged:
+            ranges.append(QuestionRange(
+                lower=None if lower.is_infinite() else float(lower),
+                upper=None if upper.is_infinite() else float(upper),
+                unit=unit))
+    return ranges
+
+
+def ranges_hint(ranges: list[QuestionRange]) -> str | None:
+    texts = [item.text() for item in ranges if item.text()]
+    if not texts:
+        return None
+    return "Допустимо: " + " или ".join(texts)
+
+
 def property_question(category_id: str, prop: Property, reason: str) -> Question:
     values = sorted({item.value for item in prop.allowed if item.kind == "enum" and item.value})
     units = {item.unit for item in prop.allowed}
+    ranges = allowed_ranges(prop)
     return Question(id=property_question_id(category_id, prop), kind="property", title=f"Укажите: {prop.name}",
                     property_name=prop.name, reason=reason,
                     options=[QuestionOption(value=value, label=value) for value in values[:20]],
-                    unit=next(iter(units)) if len(units) == 1 else None, multiple=prop.kind == "3")
+                    unit=next(iter(units)) if len(units) == 1 else None, multiple=prop.kind == "3",
+                    ranges=ranges, hint=ranges_hint(ranges))
 
 
 def next_question(category_id: str | None, categories: list[CategoryCandidate], positions: tuple[Position, ...],

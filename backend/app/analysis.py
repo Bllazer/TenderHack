@@ -1,12 +1,155 @@
 """Stateless A -> B -> contextual mapping -> C/E -> D orchestration."""
 import json
+from decimal import Decimal, InvalidOperation
+
 from app.catalog import Snapshot
+from app.units import get_unit
 from app.components import Components, ExistingSearcher, SearchInput, existing_components
 from app.extraction import MEASUREMENT, apply_inputs, normalize
 from app.questions import property_question_id
 from app.correction_flow import resolve_suggestions
 from app.catalog_diagnostics import position_blockers
-from app.schemas import AnalysisCreate, AnalysisOut, Correction, Fact, Fragment, Issue, Scope, Verification
+from app.schemas import (AnalysisCreate, AnalysisOut, Correction, Fact, Fragment, Issue, Question, Scope,
+                         Verification)
+from app.questions import property_question
+
+#: Коды, означающие «значение ответа недопустимо». Ответ с таким кодом не считается
+#: отвеченным: вопрос повторяется, чтобы пользователь ввёл корректное значение.
+INVALID_ANSWER_CODES = frozenset({"invalid_value", "invalid_number", "invalid_type", "invalid_count",
+                                  "out_of_range", "unit_mismatch", "unit_missing", "unit_unknown",
+                                  "numeric_semantics_unknown", "multiple_values_not_allowed"})
+
+
+def merge_answer_issues(issues: list[Issue]) -> list[Issue]:
+    """Один неверный ответ — одно замечание вместо строки на каждую позицию.
+
+    Каждая позиция перечисляет свои допустимые значения, поэтому про один и тот же ответ
+    приходило до двенадцати почти одинаковых сообщений, различавшихся только хвостом
+    «Допустимо: …». Склеиваем их: общий текст один, допустимые значения — объединение.
+    Замечания не от ответа не трогаем: там позиция важна.
+    """
+    merged: dict[tuple, Issue] = {}
+    order: list[tuple] = []
+    for issue in issues:
+        if not (issue.fact_id and issue.fact_id.startswith("answer:")):
+            key = ("__raw__", id(issue))
+            merged[key] = issue
+            order.append(key)
+            continue
+        key = (issue.code, issue.fact_id, issue.property_id)
+        if key not in merged:
+            merged[key] = issue.model_copy()
+            order.append(key)
+            continue
+        current = merged[key]
+        head, _, tail = current.explanation.partition(". Допустимо:")
+        allowed = [item.strip(" .") for item in tail.split(",") if item.strip(" .")] if tail else []
+        extra_head, _, extra_tail = issue.explanation.partition(". Допустимо:")
+        if extra_tail:
+            allowed.extend(item.strip(" .") for item in extra_tail.split(",") if item.strip(" ."))
+        current.explanation = head + (". Допустимо: " + ", ".join(dict.fromkeys(allowed)) + "." if allowed else "")
+    return [merged[key] for key in order]
+
+
+def reask_after_invalid(category_id: str, positions, issues) -> tuple[Issue, "Question"] | None:
+    """Готовит повторный вопрос, если ответ был недопустимым.
+
+    Пул после неверного ответа пуст, поэтому обычный выбор вопроса ничего не находит, и
+    пользователь оставался вообще без вопроса. Здесь вопрос собирается из характеристики
+    области с допустимыми значениями всех её позиций — вместе с диапазоном, чтобы было
+    видно, какое значение корректно.
+    """
+    head = next((issue for issue in issues if issue.fact_id and issue.fact_id.startswith("answer:")
+                 and issue.code in INVALID_ANSWER_CODES), None)
+    if head is None:
+        return None
+    question_id = head.fact_id.removeprefix("answer:")
+    registry = {property_question_id(category_id, prop): prop
+                for position in positions for prop in position.properties}
+    prop = registry.get(question_id)
+    if prop is None:
+        return None
+    key = (prop.semantic_key or prop.id, prop.subject)
+    variants = {item.model_dump_json(): item for position in positions for other in position.properties
+                if (other.semantic_key or other.id, other.subject) == key and other.verified
+                for item in other.allowed}
+    merged = prop.model_copy(update={"allowed": tuple(variants.values())})
+    return head, property_question(category_id, merged, "Значение недопустимо — укажите корректное")
+
+
+def implausible_measurements(data: Snapshot, positions, remaining, facts, rejected) -> list[Issue]:
+    """Измерения вне диапазонов ВСЕХ найденных позиций — их нельзя принимать молча.
+
+    Зачем: «молоток 200 метров» — вброс, но до этой проверки он либо не разбирался как
+    измерение, либо уходил в карточку без замечаний, потому что не был привязан к
+    характеристике. Границы берутся только из справочника найденных позиций (по размерности
+    и с пересчётом единиц), никаких собственных пределов в коде нет: если значение не
+    попадает ни в один интервал ни одной характеристики оставшихся позиций — показываем
+    пользователю допустимый диапазон и просим исправить значение.
+    """
+    pool = {position.code: position for position in positions}
+    codes = {candidate.ktru_code for candidate in remaining}
+    by_dimension: dict[str, list[tuple[Decimal, Decimal, str]]] = {}
+    for code in codes:
+        position = pool.get(code)
+        if position is None:
+            continue
+        for prop in position.properties:
+            for item in prop.allowed:
+                if item.kind not in ("interval", "number"):
+                    continue
+                unit = get_unit(item.unit) or (data.resolve_unit(prop, item.unit) if item.unit else None)
+                if unit is None:
+                    continue
+                lower = Decimal(str(item.lower)) if item.lower not in (None, "") else None
+                upper = Decimal(str(item.upper)) if item.upper not in (None, "") else None
+                if item.kind == "number" and item.value not in (None, ""):
+                    lower = upper = Decimal(str(item.value))
+                if lower is None and upper is None:
+                    continue
+                by_dimension.setdefault(unit.dimension, []).append(
+                    (lower * unit.factor if lower is not None else Decimal("-Infinity"),
+                     upper * unit.factor if upper is not None else Decimal("Infinity"),
+                     unit.name))
+    if not by_dimension:
+        return []
+    issues: list[Issue] = []
+    for fact in facts:
+        # Значение проверяем даже у факта с неустановленным свойством: это по-прежнему
+        # утверждение о товаре («200 метров» у молотка), и молча его принимать нельзя.
+        if fact.id in rejected or not fact.unit or fact.value in (None, ""):
+            continue
+        unit = get_unit(fact.unit)
+        if unit is None or unit.dimension not in by_dimension:
+            continue
+        try:
+            value = Decimal(str(fact.value)) * unit.factor
+        except (InvalidOperation, ValueError):
+            continue
+        intervals = by_dimension[unit.dimension]
+        if any(lower <= value <= upper for lower, upper, _ in intervals):
+            continue
+        # Допустимое показываем в единице пользователя: так значение понятнее.
+        parts = []
+        for lower, upper, _ in intervals:
+            if lower.is_finite() and upper.is_finite():
+                parts.append(f"от {_short(lower / unit.factor)} до {_short(upper / unit.factor)}")
+            elif upper.is_finite():
+                parts.append(f"до {_short(upper / unit.factor)}")
+            elif lower.is_finite():
+                parts.append(f"от {_short(lower / unit.factor)}")
+        bounds = " или ".join(dict.fromkeys(parts)) or "значение не ограничено справочником"
+        displayed = fact.raw or f"{fact.value} {fact.unit or ''}".strip()
+        issues.append(Issue(code="implausible_value", severity="error", fact_id=fact.id,
+                            explanation=f"Значение «{displayed}» не встречается ни у одной характеристики "
+                                        f"найденных позиций: допустимо {bounds} {unit.name}".strip(),
+                            suggested_action="Укажите правдоподобное значение или другую характеристику"))
+    return issues
+
+
+def _short(value: Decimal) -> str:
+    text = f"{value.normalize():f}"
+    return text.rstrip("0").rstrip(".") if "." in text else text
 
 
 class InvalidConfirmation(ValueError):
@@ -200,13 +343,27 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
                                   suggested_action='Уточните назначение измерения либо сохраните как дополнительные сведения'))
     if any(candidate.outcome == "unknown" for candidate in remaining):
         active_issues.append(Issue(code="verification_incomplete", explanation="Есть непроверенные факты, обязательные поля или ограничения"))
+    active_issues.extend(implausible_measurements(data, positions, remaining, result.facts, rejected))
     unique = len(remaining) == 1
     value_verified = unique and remaining[0].outcome == "compatible" and not pending
     fields_complete = unique and not remaining[0].missing_required
     blocking = any(issue.severity == "error" for issue in active_issues)
     ready = unique and value_verified and fields_complete and scope_complete and not blocking
+    # Ответ с недопустимым значением не считается отвеченным: вопрос задаётся снова, уже с
+    # допустимыми границами из найденных позиций, иначе пользователь не узнает, что ввёл
+    # значение вне диапазона, и поток вставал без вопроса.
+    rejected_answers = {issue.fact_id.removeprefix("answer:") for issue in active_issues
+                        if issue.fact_id and issue.fact_id.startswith("answer:")
+                        and issue.code in INVALID_ANSWER_CODES}
+    asked = {item for item in answered if item not in rejected_answers}
     result.next_question, indistinguishable = components.questions(category_id, result.categories, positions, remaining,
-                                                           result.facts, active_issues, answered, ready, body.confirmed_ktru_code)
+                                                           result.facts, active_issues, asked, ready, body.confirmed_ktru_code)
+    if result.next_question is None and rejected_answers:
+        # Пул опустел из-за недопустимого ответа: спрашиваем снова, уже с границами.
+        repeated = reask_after_invalid(category_id, positions, active_issues)
+        if repeated is not None:
+            head, result.next_question = repeated
+            result.next_steps = [result.next_question.title, head.suggested_action]
     if pending:
         result.next_question = next((entry[1] for entry in pending if entry[1] is not None), result.next_question)
         indistinguishable = False
@@ -220,6 +377,7 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
                                       catalog_scope_complete=scope_complete, value_indistinguishable=indistinguishable,
                                       confirmed_by_user=bool(body.confirmed_ktru_code), blocking_issues=blocking)
     result.issues = list({issue.model_dump_json(): issue for issue in active_issues}.values())
+    result.issues = merge_answer_issues(result.issues)
     result.corrections = list({item.model_dump_json(): item for item in result.corrections}.values())
     if ready and result.verification.type_verified and body.confirmed_ktru_code == remaining[0].ktru_code:
         result.status, result.selected_ktru_code = "resolved", remaining[0].ktru_code
