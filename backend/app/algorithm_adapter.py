@@ -7,7 +7,9 @@ from algorithms.AlgorithmD import next_question as algorithm_question
 from algorithms.contract import Fact as AlgorithmFact
 from algorithms.ktru_index import Alternative, Characteristic, KtruIndex, Position as AlgorithmPosition
 from app.checks import evaluate
-from app.questions import discriminates, next_question, property_question, property_question_id
+from app.questions import (allowed_marker, discriminates, next_question, property_question,
+                           property_question_id)
+from app.search import canon
 from app.schemas import Issue
 from app.structured import to_structured
 
@@ -124,17 +126,32 @@ class AlgorithmQuestions:
         keys = {(prop.semantic_key or prop.id, prop.subject) for prop in properties}
         if not properties or len(keys) != 1 or any(not prop.verified for prop in properties):
             return fallback, indistinguishable
-        variants = {item.model_dump_json(): item for prop in properties for item in prop.allowed}
+        # Одинаковые по смыслу правила из разных позиций — один вариант, а не два.
+        variants = {allowed_marker(item): item for prop in properties for item in prop.allowed}
         prop = properties[0].model_copy(update={"allowed":tuple(variants.values())})
         # Различает ли характеристика оставшиеся позиции — считаем сами, а не берём на слово
         # из подсказки алгоритма: у карточки бывает несколько размеров (или масс), которые все
         # ведут к одному коду, и тогда вопрос нужен только для полноты карточки.
         remaining = tuple(position for position in positions
                           if position.code in {candidate.ktru_code for candidate in candidates})
-        separates = discriminates((prop.semantic_key or prop.id, prop.subject), remaining)
+        # Идентичность характеристики — semantic_key или каноническое имя: в карточках
+        # КТРУ одинаковые характеристики лежат в разных позициях со своими id.
+        key = (prop.semantic_key or canon(prop.name), prop.subject)
+        separates = discriminates(key, remaining)
         question = property_question(
             category_id, prop,
             "Различает позиции" if separates
             else "Обязательное поле карточки КТРУ: на выбор кода не влияет")
         question.affects_code = separates
+        if question.id in answered:
+            # На этот вопрос уже отвечали (в том числе «Не знаю»): повторять нельзя —
+            # иначе экран зацикливался на одном и том же вопросе.
+            return fallback, indistinguishable
+        if not separates and fallback is not None and fallback.kind == "property" \
+                and getattr(fallback, "affects_code", False):
+            # Алгоритм предложил характеристику, которая ничего не различает, а в области
+            # есть действительно различающая (единственное различие двух позиций) — спрашиваем
+            # её первой: иначе пользователь отвечает на общие для обеих позиций поля, а код
+            # так и не определяется.
+            return fallback, False
         return question, False

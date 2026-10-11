@@ -26,19 +26,19 @@ def position(code: str, values: tuple[str, ...]) -> Position:
 def test_same_values_in_all_positions_do_not_discriminate():
     """Несколько размеров ведут к одному коду: выбор размера код не меняет."""
     positions = (position("A", ("110", "116", "122")),)
-    key = ("size", "product")
+    key = ("рост", "product")   # идентичность вопроса — semantic_key или каноническое имя
     assert not discriminates(key, positions)
 
 
 def test_values_that_exclude_a_position_do_discriminate():
     """Если значение отсекает позицию, характеристика действительно различает."""
     positions = (position("A", ("110", "116")), position("B", ("122", "128")))
-    key = ("size", "product")
+    key = ("рост", "product")   # идентичность вопроса — semantic_key или каноническое имя
     assert discriminates(key, positions)
 
 
 def test_two_positions_with_identical_values_do_not_discriminate():
     """Две позиции с одинаковым набором значений: вопрос всё равно ничего не решает."""
     positions = (position("A", ("110", "116")), position("B", ("110", "116")))
-    key = ("size", "product")
+    key = ("рост", "product")   # идентичность вопроса — semantic_key или каноническое имя
     assert not discriminates(key, positions)
