@@ -285,3 +285,56 @@ def test_rejected_fact_is_not_judged():
     fact = Fact(id="f1", name="", value="200", unit="метров", raw="200 метров", span=(0, 10), source="text")
     assert implausible_measurements(data, tuple(data.positions.values()),
                                     [type("C", (), {"ktru_code": "H1"})()], [fact], {"f1"}) == []
+
+
+# ------------------------------- автоподстановка и снятие значения («Не знаю»)
+def test_single_allowed_value_is_substituted_without_a_question():
+    """Единственное значение обязательной характеристики подставляется само.
+
+    У «Протеза пениса» в найденной позиции «Диаметр» имеет один вариант — спрашивать нечего,
+    вопрос лишь заставлял нажать «Продолжить». Диапазоны и перечисления остаются вопросами.
+    """
+    from app.analysis import auto_single_values
+    prop = numeric_property("13", "13", name="Диаметр", unit="мм")
+    prop = prop.model_copy(update={"required": True})
+    position = Position(code="H1", name="Шланг", source_path="test", status="actual",
+                        is_template=False, properties=(prop,))
+    result = type("R", (), {"corrections": []})()
+    facts: list = []
+    auto_single_values(result, (position,), facts)
+    assert [(fact.name, fact.value, fact.unit) for fact in facts] == [("Диаметр", "13", "мм")]
+    assert result.corrections and result.corrections[0].kind == "auto_normalization"
+
+
+def test_range_value_is_still_asked():
+    """Настоящий диапазон и перечисление автоподстановкой не закрываются."""
+    from app.analysis import auto_single_values
+    prop = numeric_property("1", "500", name="Диаметр", unit="мм").model_copy(update={"required": True})
+    position = Position(code="H1", name="Шланг", source_path="test", status="actual",
+                        is_template=False, properties=(prop,))
+    result = type("R", (), {"corrections": []})()
+    facts: list = []
+    auto_single_values(result, (position,), facts)
+    assert facts == []
+
+
+def test_unknown_answer_clears_the_previous_value():
+    """«Не знаю» снимает прежнее значение характеристики: иначе дубль и петля на экране."""
+    from app.analysis import clear_unknown_properties
+    prop = numeric_property("100", "900", name="Длина рукоятки", unit="мм")
+    answer = type("A", (), {"question_id": "q", "unknown": True})()
+    result = type("R", (), {"facts": [Fact(id="text:1", name="Длина рукоятки", value="200",
+                                           unit="метров", raw="200 метров", span=(0, 10), source="text")],
+                            "corrections": []})()
+    clear_unknown_properties(result, (Position(code="H1", name="x", source_path="t", status="actual",
+                                              is_template=False, properties=(prop,)),),
+                             [answer], {"q": prop})
+    assert result.facts == []
+    assert result.corrections and "Не знаю" in result.corrections[0].explanation
+
+
+def test_single_value_hint_reads_naturally():
+    """Одно значение — «Допустимо: 13 мм», а не «от 13 до 13 мм»."""
+    from app.questions import allowed_ranges, ranges_hint
+    prop = numeric_property("13", "13", name="Диаметр", unit="мм")
+    assert ranges_hint(allowed_ranges(prop), "мм") == "Допустимо: 13 мм"

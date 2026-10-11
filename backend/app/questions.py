@@ -100,6 +100,9 @@ def ranges_hint(ranges: list[QuestionRange], unit: str | None = None) -> str | N
     exact = [item for item in ranges if item.lower is not None and item.lower == item.upper]
     if ranges and len(exact) == len(ranges):
         values = [item.lower for item in exact]
+        if len(set(values)) == 1:
+            # Одно возможное значение — так и пишем: «Допустимо: 13 мм», а не «от 13 до 13 мм».
+            return f"Допустимо: {_short(values[0])} {unit or ''}".strip()
         return f"Допустимо одно из значений: от {_short(values[0])} до {_short(values[-1])} {unit or ''}".strip()
     texts = [item.text() for item in ranges
              if (item.lower is not None or item.upper is not None)]

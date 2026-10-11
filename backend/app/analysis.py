@@ -6,12 +6,11 @@ from app.catalog import Snapshot
 from app.units import get_unit
 from app.components import Components, ExistingSearcher, SearchInput, existing_components
 from app.extraction import MEASUREMENT, apply_inputs, normalize
-from app.questions import property_question_id
+from app.questions import property_question, property_question_id, ranges_hint
 from app.correction_flow import resolve_suggestions
 from app.catalog_diagnostics import position_blockers
 from app.schemas import (AnalysisCreate, AnalysisOut, Correction, Fact, Fragment, Issue, Question, Scope,
                          Verification)
-from app.questions import property_question
 
 #: Коды, означающие «значение ответа недопустимо». Ответ с таким кодом не считается
 #: отвеченным: вопрос повторяется, чтобы пользователь ввёл корректное значение.
@@ -29,7 +28,7 @@ SCALE_WARNING_FACTOR = 2
 SCALE_ERROR_FACTOR = 10
 
 #: Кэш наблюдаемых границ по версии каталога: обход 14 тысяч позиций делается один раз.
-_ENVELOPE_CACHE: dict[str, dict[tuple[str, str, str], tuple[Decimal, Decimal, str]]] = {}
+_ENVELOPE_CACHE: dict[str, dict[tuple[str, str, str], tuple[Decimal, Decimal, str, Decimal]]] = {}
 
 
 def group_prefix(code: str) -> str:
@@ -37,7 +36,7 @@ def group_prefix(code: str) -> str:
     return code.split("-")[0]
 
 
-def catalogue_envelope(data: Snapshot) -> dict[tuple[str, str, str], tuple[Decimal, Decimal, str]]:
+def catalogue_envelope(data: Snapshot) -> dict[tuple[str, str, str], tuple[Decimal, Decimal, str, Decimal]]:
     """Наблюдаемые границы числовых характеристик — по группе КТРУ, а не по всему каталогу.
 
     Ключ — (название характеристики, размерность, группа КТРУ), значение — (минимум, максимум,
@@ -55,7 +54,7 @@ def catalogue_envelope(data: Snapshot) -> dict[tuple[str, str, str], tuple[Decim
     cached = _ENVELOPE_CACHE.get(version)
     if cached is not None:
         return cached
-    envelope: dict[tuple[str, str, str], tuple[Decimal, Decimal, str]] = {}
+    envelope: dict[tuple[str, str, str], tuple[Decimal, Decimal, str, Decimal]] = {}
     for position in data.positions.values():
         prefix = group_prefix(position.code)
         for prop in position.properties:
@@ -73,9 +72,9 @@ def catalogue_envelope(data: Snapshot) -> dict[tuple[str, str, str], tuple[Decim
                 lower, upper = lower * unit.factor, upper * unit.factor
                 current = envelope.get(key)
                 if current is None:
-                    envelope[key] = (lower, upper, unit.dimension)
+                    envelope[key] = (lower, upper, unit.name, unit.factor)
                 else:
-                    envelope[key] = (min(current[0], lower), max(current[1], upper), current[2])
+                    envelope[key] = (min(current[0], lower), max(current[1], upper), current[2], current[3])
     _ENVELOPE_CACHE[version] = envelope
     return envelope
 
@@ -123,6 +122,80 @@ def include_same_named(data: Snapshot, category_id: str | None, positions, scope
     return tuple(positions) + tuple(extra), complete
 
 
+def observed_range(data: Snapshot, name: str, groups: set[str]):
+    """Наблюдаемый диапазон характеристики у найденных групп — для подсказки в вопросе.
+
+    Нужен там, где справочник границ не даёт («900 и более мм»): иначе подсказка выглядит
+    как «Допустимо: мм». Показывается в единице карточки (мм), а не в единице ввода (м).
+    """
+    from app.schemas import QuestionRange
+    envelope = catalogue_envelope(data)
+    key_name = canon_name(name)
+    for key, value in envelope.items():
+        if key[0] != key_name or key[2] not in groups:
+            continue
+        lower, upper, unit_name, factor = value
+        return QuestionRange(lower=float(lower / factor), upper=float(upper / factor), unit=unit_name)
+    return None
+
+
+def clear_unknown_properties(result, positions, answers, registry) -> None:
+    """Ответ «Не знаю» снимает прежнее значение характеристики.
+
+    Без этого оставались две строки по одной характеристике (текстовое значение и «Не знаю»),
+    а блокирующее замечание по снятому значению возвращало тот же вопрос — экран зацикливался
+    на «Не знаю». Проход идёт ПОСЛЕ resolve_suggestions: только там текстовый факт получает
+    имя характеристики, и его можно сопоставить.
+    """
+    unknown = [registry[answer.question_id] for answer in answers
+               if answer.unknown and answer.question_id in registry]
+    if not unknown:
+        return
+    keys = {(canon_name(prop.name), prop.subject) for prop in unknown}
+    keys |= {(canon_name(alias), prop.subject) for prop in unknown for alias in prop.aliases}
+    stale = [fact for fact in result.facts
+             if fact.source != "answer" and (canon_name(fact.name), fact.subject) in keys]
+    if not stale:
+        return
+    result.facts = [fact for fact in result.facts if fact not in stale]
+    for fact in stale:
+        result.corrections.append(Correction(fact_id=fact.id, kind="proposed_fact_change",
+            original=fact.raw, normalized="не знаю",
+            explanation="Пользователь ответил «Не знаю»; прежнее значение характеристики снято, подбор идёт без него"))
+
+def auto_single_values(result, positions, facts: list) -> None:
+    """Единственное допустимое значение обязательной характеристики подставляется само.
+
+    Если у характеристики во ВСЕХ найденных позициях ровно одно возможное значение
+    («Диаметр: 13 мм»), спрашивать нечего: вопрос лишь заставляет нажать «Продолжить».
+    Подставляются точные числа и вырожденные интервалы (13–13): перечисления и настоящие
+    диапазоны оставляем пользователю, там выбор содержательный.
+    """
+    groups: dict[tuple, list] = {}
+    for position in positions:
+        for prop in position.properties:
+            groups.setdefault((prop.semantic_key or prop.id, prop.subject), []).append(prop)
+    known = {(canon_name(fact.name), fact.subject) for fact in facts if not fact.unknown}
+    for (_, subject), props in groups.items():
+        first = props[0]
+        if first.required is not True or (canon_name(first.name), subject) in known:
+            continue
+        if len({item.model_dump_json() for prop in props for item in prop.allowed}) != 1:
+            continue
+        item = first.allowed[0]
+        if item.kind == "number" and item.value not in (None, ""):
+            value, unit = str(item.value), item.unit
+        elif item.kind == "interval" and item.lower not in (None, "") and item.lower == item.upper:
+            value, unit = str(item.lower), item.unit
+        else:
+            continue
+        facts.append(Fact(id=f"single:{first.id}", name=first.name, value=value, unit=unit,
+                          raw=f"{value} {unit or ''}".strip(), source="input", subject=subject,
+                          unknown=False))
+        result.corrections.append(Correction(fact_id=f"single:{first.id}", kind="auto_normalization",
+            original="", normalized=f"{value} {unit or ''}".strip(),
+            explanation="Единственное допустимое значение характеристики подставлено автоматически"))
+
 def out_of_scale_values(data: Snapshot, facts: list, rejected, groups: set[str] | None = None) -> list[Issue]:
     """Значения, выходящие за наблюдаемый в КТРУ масштаб характеристики.
 
@@ -155,15 +228,18 @@ def out_of_scale_values(data: Snapshot, facts: list, rejected, groups: set[str] 
         factor = SCALE_ERROR_FACTOR if upper > 0 and value > upper * SCALE_ERROR_FACTOR else SCALE_WARNING_FACTOR
         if value <= upper * factor and (lower <= 0 or value >= lower / factor):
             continue
-        # Показываем границы в единице пользователя: 100–900 мм понятнее, чем 0.1–0.9 м.
-        displayed_lower = lower / unit.factor
-        displayed_upper = upper / unit.factor
+        # Границы — в единице карточки (мм), а не в единице ввода (м): пользователь пишет
+        # значение, но сверяется с тем, что записано в справочнике.
+        catalogue_unit = envelope[candidates[0]][2]
+        catalogue_factor = envelope[candidates[0]][3] or Decimal(1)
+        displayed_lower = lower / catalogue_factor
+        displayed_upper = upper / catalogue_factor
         shown = fact.raw or f"{fact.value} {fact.unit or ''}".strip()
         issues.append(Issue(
             code="value_out_of_scale", severity="error" if factor == SCALE_ERROR_FACTOR else "warning",
             fact_id=fact.id,
             explanation=f"{fact.name}: «{shown}» — у найденных позиций эта характеристика встречается "
-                        f"от {_short(displayed_lower)} до {_short(displayed_upper)} {unit.name}".strip(),
+                        f"от {_short(displayed_lower)} до {_short(displayed_upper)} {catalogue_unit}".strip(),
             suggested_action="Проверьте значение: похоже, указана не та единица или не то число"))
     return issues
 
@@ -373,6 +449,7 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
                                   raw=json.dumps(answer.values, ensure_ascii=False) if answer.values is not None else answer.value or "не знаю", source="answer", subject=prop.subject,
                                   unknown=answer.unknown or (answer.values is None and not answer.value)))
     result.facts = apply_inputs(extracted, body.attributes)
+    auto_single_values(result, positions, result.facts)
     if hasattr(components.extractor, 'normalize_context'):
         components.extractor.normalize_context(result.facts, category_id, extraction_properties)
     for fact in result.facts:
@@ -411,6 +488,7 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
     pending, rejected, accepted = resolve_suggestions(category_id, positions, result.facts, body.answers,
                                                      extra_properties=card_properties)
     result.corrections.extend(accepted)
+    clear_unknown_properties(result, positions, body.answers, registry)
     if search:
         finder = getattr(search, "find_state", ExistingSearcher(search).find_state)
         result.categories = finder(SearchInput(body.description, tuple(result.facts)))
@@ -530,9 +608,27 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
                                for issue in active_issues):
         # Значение недопустимо или неправдоподобно: спрашиваем его, а не идём дальше.
         repeated = reask_after_invalid(category_id, positions, result.facts, active_issues)
+        if repeated is not None and repeated[1].id in asked:
+            # На этот вопрос уже отвечали (в том числе «Не знаю»): второй раз не спрашиваем,
+            # иначе один и тот же экран возвращался бесконечно. Значение, помеченное как
+            # неизвестное, перестаёт блокировать подтверждение.
+            for issue in active_issues:
+                if issue.code in ("value_out_of_scale", "implausible_value") and issue.severity == "error":
+                    issue.severity = "warning"
+                    issue.suggested_action = "Значение помечено как неизвестное; проверьте единицу или укажите число"
+            repeated = None
         if repeated is not None:
             head, result.next_question = repeated
             result.next_steps = [result.next_question.title, head.suggested_action]
+            # Справочник может не давать границ («900 и более мм»): берём наблюдаемые у
+            # найденных групп, в единице карточки, иначе подсказка выглядит как «Допустимо: мм».
+            if not any(item.lower is not None or item.upper is not None for item in result.next_question.ranges):
+                fact = next((item for item in result.facts if item.id == head.fact_id), None)
+                found = observed_range(data, getattr(fact, "name", "") or "",
+                                       {group_prefix(candidate.ktru_code) for candidate in remaining})
+                if found is not None:
+                    result.next_question.ranges = [found]
+                    result.next_question.hint = ranges_hint([found])
     if pending:
         result.next_question = next((entry[1] for entry in pending if entry[1] is not None), result.next_question)
         indistinguishable = False
