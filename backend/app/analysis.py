@@ -425,8 +425,11 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
     if extraction:
         result.corrections.extend(extraction.corrections)
     registry = {property_question_id(category_id, prop): prop for position in positions for prop in position.properties}
-    answered = {answer.question_id for answer in body.answers}
+    excluded = set(body.excluded_fact_ids)
+    answered = {answer.question_id for answer in body.answers if "answer:" + answer.question_id not in excluded}
     for answer in body.answers:
+        if "answer:" + answer.question_id in excluded:
+            continue
         prop = registry.get(answer.question_id)
         previous_prop = data.answer_properties.get(answer.question_id) if not prop else None
         if previous_prop:
@@ -459,6 +462,8 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
     # A current property answer is the full replacement, also for edited card
     # inputs. kind=3 must not silently union an obsolete selection with it.
     for answer in body.answers:
+        if "answer:" + answer.question_id in excluded:
+            continue
         prop = registry.get(answer.question_id)
         if prop is None or any(item.replaces == "answer:" + answer.question_id for item in body.attributes):
             continue
@@ -485,6 +490,9 @@ def analyze(data: Snapshot, search, body: AnalysisCreate, components: Components
                                                 explanation="Явная правка пользователя; новые значения проверяются заново"))
     replaced = {item.replaces for item in body.attributes if item.replaces}
     result.unparsed = [fragment for fragment in unparsed if fragment.id not in replaced]
+    # User exclusions remove facts, never waive required catalog checks. Keep original provenance.
+    result.facts = [fact for fact in result.facts if fact.id not in excluded]
+    result.corrections = [item for item in result.corrections if item.fact_id not in excluded]
     pending, rejected, accepted = resolve_suggestions(category_id, positions, result.facts, body.answers,
                                                      extra_properties=card_properties)
     result.corrections.extend(accepted)

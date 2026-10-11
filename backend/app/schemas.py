@@ -43,6 +43,7 @@ class Answer(InputModel):
 
 
 class AnalysisCreate(InputModel):
+    excluded_fact_ids: list[Annotated[str, Field(min_length=1, max_length=640)]] = Field(default_factory=list, max_length=200)
     description: str = Field(min_length=1, max_length=12000)
     attributes: list[InputFact] = Field(default_factory=list, max_length=100)
     additional: list[Annotated[str, Field(max_length=1024)]] = Field(default_factory=list, max_length=100)
