@@ -7,7 +7,7 @@ from algorithms.AlgorithmD import next_question as algorithm_question
 from algorithms.contract import Fact as AlgorithmFact
 from algorithms.ktru_index import Alternative, Characteristic, KtruIndex, Position as AlgorithmPosition
 from app.checks import evaluate
-from app.questions import next_question, property_question, property_question_id
+from app.questions import discriminates, next_question, property_question, property_question_id
 from app.schemas import Issue
 from app.structured import to_structured
 
@@ -126,5 +126,15 @@ class AlgorithmQuestions:
             return fallback, indistinguishable
         variants = {item.model_dump_json(): item for prop in properties for item in prop.allowed}
         prop = properties[0].model_copy(update={"allowed":tuple(variants.values())})
-        return property_question(category_id, prop, "Различает позиции" if proposal.reason == "splits_candidates"
-                                 else "Нужно для проверки обязательного поля"), False
+        # Различает ли характеристика оставшиеся позиции — считаем сами, а не берём на слово
+        # из подсказки алгоритма: у карточки бывает несколько размеров (или масс), которые все
+        # ведут к одному коду, и тогда вопрос нужен только для полноты карточки.
+        remaining = tuple(position for position in positions
+                          if position.code in {candidate.ktru_code for candidate in candidates})
+        separates = discriminates((prop.semantic_key or prop.id, prop.subject), remaining)
+        question = property_question(
+            category_id, prop,
+            "Различает позиции" if separates
+            else "Обязательное поле карточки КТРУ: на выбор кода не влияет")
+        question.affects_code = separates
+        return question, False

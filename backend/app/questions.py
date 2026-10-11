@@ -117,6 +117,29 @@ def _short(value: float | None) -> str:
     return "" if value is None else f"{value:g}"
 
 
+def discriminates(key, positions) -> bool:
+    """Есть ли значение характеристики, которое отсекает хотя бы одну оставшуюся позицию.
+
+    Типичный случай КТРУ: у карточки несколько размеров (или масс), но все они ведут к одному
+    коду — тогда выбор значения ничего не решает, и задавать его как «различающее» нельзя.
+    Характеристика считается различающей, только если не все позиции принимают все значения.
+    """
+    codes = {position.code for position in positions}
+    if len(codes) < 2:
+        return False
+    accepted: dict[str, set] = {}
+    for position in positions:
+        for prop in position.properties:
+            if (prop.semantic_key or prop.id, prop.subject) != key:
+                continue
+            for item in prop.allowed:
+                marker = item.model_dump_json()
+                accepted.setdefault(marker, set()).add(position.code)
+    if not accepted:
+        return False
+    return any(group != codes for group in accepted.values())
+
+
 def property_question(category_id: str, prop: Property, reason: str) -> Question:
     values = sorted({item.value for item in prop.allowed if item.kind == "enum" and item.value})
     units = {item.unit for item in prop.allowed}
@@ -169,13 +192,28 @@ def next_question(category_id: str | None, categories: list[CategoryCandidate], 
         differing = len(remaining) > 1 and len(constraints) > 1
         required = any(prop.name in candidate.missing_required for candidate in candidates)
         needs_unit = any(check.reason in ("unit_missing", "unit_unknown") for check in checks)
+        # Различает ли характеристика позиции: есть ли значение, которое отсекает хотя бы одну
+        # из оставшихся позиций. Если каждое значение принимают все позиции (типичный случай
+        # «у карточки несколько размеров, но все ведут к одному коду»), выбор кода от значения
+        # не зависит — и вопрос не должен выглядеть как различающий.
+        separates = discriminates(key, remaining)
         if differing or required or needs_unit:
             variants = {item.model_dump_json(): item for position in remaining for other in position.properties
                         if (other.semantic_key or other.id, other.subject) == key and other.verified for item in other.allowed}
-            choices.append((0 if differing else 1, prop.name, prop.model_copy(update={"allowed": tuple(variants.values())})))
+            choices.append((0 if differing else 1, prop.name,
+                            prop.model_copy(update={"allowed": tuple(variants.values())}), separates,
+                            required, needs_unit))
     if choices:
-        priority, _, prop = sorted(choices, key=lambda item: (item[0], item[1]))[0]
-        return property_question(category_id, prop, "Различает позиции" if priority == 0 else "Нужно для проверки обязательного поля или единицы"), False
+        priority, _, prop, separates, required, needs_unit = sorted(choices, key=lambda item: (item[0], item[1]))[0]
+        if separates:
+            reason = "Различает позиции"
+        elif required:
+            reason = "Обязательное поле карточки КТРУ: на выбор кода не влияет"
+        else:
+            reason = "Нужно для проверки единицы измерения"
+        question = property_question(category_id, prop, reason)
+        question.affects_code = separates
+        return question, False
     if unique_ready and not confirmed_code:
         candidate = candidates[0]
         return Question(id="code", kind="code", title="Подтвердите конечный код КТРУ",
