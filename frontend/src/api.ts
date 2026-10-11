@@ -33,8 +33,22 @@ export async function analyze(draft: Draft, signal: AbortSignal): Promise<Result
   const body = await response.json().catch(() => null)
   if (!response.ok) {
     const detail = body?.detail
-    throw new Error(Array.isArray(detail) ? 'Проверьте заполнение полей и длину описания.' : detail?.message || 'Сервис временно недоступен. Повторите запрос.')
+    throw new Error(Array.isArray(detail) ? 'Проверьте заполнение полей и длину описания.' : (detail?.message ? userMessage(detail.message) : '') || 'Сервис временно недоступен. Повторите запрос.')
   }
   if (!body || !['needs_data', 'needs_input', 'ambiguous', 'resolved'].includes(body.status)) throw new Error('Сервис вернул неполный ответ. Повторите проверку.')
   return body as Result
+}
+
+export function userMessage(text: string): string {
+  const labels: Record<string, string> = {
+    invalid_value: 'значение не соответствует справочнику',
+    resources_invalid: 'справочник временно недоступен',
+    unit_missing: 'укажите единицу измерения',
+    unit_unknown: 'единица измерения не распознана',
+    conflicting_facts: 'характеристики противоречат друг другу',
+    mapping_ambiguous: 'уточните, к какой характеристике относится значение',
+    search_index_missing: 'поиск по справочнику временно недоступен',
+    missing_required: 'заполните обязательную характеристику',
+  }
+  return text.replace(/\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b/g, code => labels[code] || 'требуется дополнительная проверка')
 }

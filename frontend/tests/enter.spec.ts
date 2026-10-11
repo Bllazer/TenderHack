@@ -1,0 +1,22 @@
+import { expect, test } from '@playwright/test'
+
+test('Enter activates primary action through description, category, property and confirmation', async ({ page }) => {
+  await page.goto('/')
+  const description = page.getByLabel('Описание товара', { exact: true })
+  await description.fill('Дрель электрическая; питание: от сети')
+  await description.press('End')
+  await description.press('Shift+Enter')
+  await expect(description).toHaveValue('Дрель электрическая; питание: от сети\n')
+  await expect(page.getByRole('radio', { name: 'Дрели электрические' })).toHaveCount(0)
+  await description.press('Enter')
+  const category = page.getByRole('radio', { name: 'Дрели электрические' })
+  await category.check()
+  await category.press('Enter')
+  await page.getByRole('button', { name: 'Перейти: Уточнение' }).click()
+  const value = page.getByLabel('Значение', { exact: true })
+  await value.fill('650')
+  await value.press('Enter')
+  await expect(page.getByRole('button', { name: 'Подтвердить код' })).toBeVisible()
+  await page.locator('.step-title').press('Enter')
+  await expect(page.getByRole('heading', { name: 'Подбор завершён' })).toBeVisible()
+})

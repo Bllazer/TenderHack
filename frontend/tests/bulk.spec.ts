@@ -1,0 +1,20 @@
+import { expect, test } from '@playwright/test'
+
+test('stepwise property entry keeps unknown input editable and sends one answer', async ({ page }) => {
+  await page.goto('/')
+  await page.getByLabel('Описание товара', { exact: true }).fill('Дрель электрическая; питание: от сети')
+  await page.getByRole('button', { name: 'Подобрать КТРУ' }).click()
+  await page.getByRole('radio', { name: 'Дрели электрические' }).check()
+  await page.getByRole('button', { name: 'Продолжить' }).click()
+  await page.getByRole('button', { name: 'Перейти: Уточнение' }).click()
+  await expect(page.locator('#question-form')).toBeVisible()
+  await expect(page.locator('#bulk-form')).toHaveCount(0)
+  await page.getByRole('radio', { name: 'Не знаю', exact: true }).check()
+  await expect(page.getByLabel('Значение', { exact: true })).toBeEnabled()
+  await page.getByLabel('Значение', { exact: true }).fill('650')
+  await expect(page.getByRole('radio', { name: 'Не знаю', exact: true })).not.toBeChecked()
+  const request = page.waitForRequest(r => r.url().endsWith('/api/v1/analyses'))
+  await page.getByRole('button', { name: 'Продолжить' }).click()
+  expect((await request).postDataJSON().answers).toEqual(expect.arrayContaining([expect.objectContaining({ value: '650', unknown: false })]))
+  await expect(page.getByRole('button', { name: 'Подтвердить код' })).toBeVisible()
+})

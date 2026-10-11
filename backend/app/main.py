@@ -102,6 +102,34 @@ def catalog_position(code: str):
                                blocking_reasons=position_blockers(position))
 
 
+
+@app.get("/api/v1/catalog/categories/{category_id}/properties")
+def category_properties(category_id: str):
+    from app.questions import property_question_id
+    data = app.state.data
+    if category_id not in data.categories:
+        raise HTTPException(404, {"code": "unknown_category"})
+    positions, complete = data.pool(category_id)
+    properties = tuple(prop for position in positions for prop in position.properties)
+    context = getattr(app.state.components.extractor, "context", None)
+    if context:
+        properties, _, _ = context(category_id, properties)
+    fields = {}
+    for prop in properties:
+        key = (prop.subject, prop.name)
+        field = fields.setdefault(key, {"name": prop.name, "subject": prop.subject,
+            "aliases": set(), "required": False, "multiple": False, "options": set(), "units": set(),
+            "question_id": property_question_id(category_id, prop) if prop.source == "ktru" else None,
+            "source": prop.source})
+        field["required"] |= bool(prop.required)
+        field["multiple"] |= prop.kind == "3"
+        field["aliases"].update(prop.aliases)
+        field["options"].update(a.value for a in prop.allowed if a.kind == "enum" and a.value)
+        field["units"].update(a.unit for a in prop.allowed if a.unit)
+    return {"category_id": category_id, "complete": complete, "catalog_version": data.catalog.catalog_version,
+        "properties": [{**field, "aliases": sorted(field["aliases"]), "options": sorted(field["options"]),
+                        "units": sorted(field["units"])} for field in sorted(fields.values(), key=lambda f: (not f["required"], f["name"]))]}
+
 @app.post("/api/v1/analyses", response_model=AnalysisOut,
           responses={422: {"model": ErrorResponse}, 429: {"model": ErrorResponse}, 503: {"model": ErrorResponse}})
 def create_analysis(body: AnalysisCreate):

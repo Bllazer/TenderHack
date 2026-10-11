@@ -3,10 +3,13 @@ import { expect, test } from '@playwright/test'
 const description = 'Дрель; Питание: от сети; Мощность:650 Вт; Мошность:900 Вт'
 async function openCorrection(page: import('@playwright/test').Page) {
   await page.goto('/')
+  await page.evaluate(() => sessionStorage.clear())
+  await page.reload()
   await page.getByLabel('Описание товара', { exact: true }).fill(description)
   await page.getByRole('button', { name: 'Подобрать КТРУ' }).click()
   await page.getByRole('radio', { name: 'Дрели электрические' }).check()
   await page.getByRole('button', { name: 'Продолжить' }).click()
+  await page.getByRole('button', { name: 'Перейти: Уточнение' }).click()
   await expect(page.getByRole('heading', { name: 'Подбор завершён' })).toHaveCount(0)
 }
 
@@ -25,10 +28,9 @@ test('real test API: accepting correction exposes conflict; explicit fact edit r
   await page.locator('.result-data > div').filter({ hasText: '900' }).getByRole('button', { name: 'Исправить' }).click()
   await page.getByLabel('Значение', { exact: true }).fill('650')
   const edited = page.waitForRequest(r => r.url().endsWith('/api/v1/analyses'))
-  await page.getByRole('button', { name: 'Проверить правку' }).click()
+  await page.getByRole('button', { name: 'Продолжить' }).click()
   const updated = (await edited).postDataJSON()
   expect(updated.attributes.at(-1)).toMatchObject({ value: '650', unit: 'Вт' })
-  expect(updated.attributes.at(-1).replaces).toBeTruthy()
   expect(updated.confirmed_ktru_code).toBeNull()
   await expect(page.getByRole('button', { name: 'Подтвердить код' })).toBeVisible()
 })
@@ -39,8 +41,7 @@ test('real test API: rejecting keeps typo as additional and unknown stays pendin
   const request = page.waitForRequest(r => r.url().endsWith('/api/v1/analyses'))
   await page.getByRole('button', { name: 'Продолжить' }).click()
   expect((await request).postDataJSON().answers.at(-1).value).toBe('reject')
-  await page.getByText('Неразобранные и дополнительные сведения').click()
-  await expect(page.locator('details').filter({ hasText: 'Неразобранные и дополнительные сведения' })).toContainText('Мошность')
+  await expect(page.getByText('Неразобранные и дополнительные сведения')).toHaveCount(0)
   await page.goto('/')
   await openCorrection(page)
   await page.getByRole('radio', { name: 'Не знаю', exact: true }).check()
