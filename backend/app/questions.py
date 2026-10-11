@@ -4,10 +4,19 @@ from decimal import Decimal, InvalidOperation
 from app.catalog import Position, Property
 from app.checks import rule_signature
 from app.schemas import Candidate, CategoryCandidate, Fact, Issue, Question, QuestionOption, QuestionRange
+from app.search import canon
 
 
 def property_question_id(category_id: str, prop: Property) -> str:
-    identity = f"{category_id}/{prop.semantic_key or prop.id}/{prop.subject}"
+    """Идентификатор вопроса: категория, смысл характеристики и объект.
+
+    В карточках КТРУ одна и та же характеристика («Длина магистрали», «раствор для
+    глицеролизации») лежит в разных позициях со СВОИМИ id правил, а `semantic_key` у них нет.
+    Если брать id правила, вопрос задаётся заново для второй позиции — пользователь отвечает
+    «Не знаю» и остаётся на месте. Поэтому идентичность здесь — смысл: semantic_key, иначе
+    каноническое имя характеристики плюс объект (товар/упаковка).
+    """
+    identity = f"{category_id}/{prop.semantic_key or canon(prop.name)}/{prop.subject}"
     return "property:" + hashlib.sha256(identity.encode()).hexdigest()[:24]
 
 
@@ -117,6 +126,53 @@ def _short(value: float | None) -> str:
     return "" if value is None else f"{value:g}"
 
 
+def allowed_marker(item) -> tuple:
+    """Смысловой признак правила: значение и границы, а не сырой JSON.
+
+    Сравнивать `model_dump_json()` нельзя: у двух позиций одинаковое правило отличается
+    служебными полями (raw_unit, source, порядок), и характеристика ложно выглядела
+    различающей — у «Набора для замораживания эритроцитов» вопрос про длину магистрали
+    задавался первым, хотя обе позиции принимают одно и то же значение, а различает их
+    только раствор. Приводим к смыслу: вид, нормализованное значение, числовые границы и
+    канонизированная единица.
+    """
+    unit = (item.unit or item.raw_unit or "").strip().casefold().replace("ё", "е")
+    return (item.kind, canon(item.value or ""), _bound(item.lower), _bound(item.upper), unit)
+
+
+def _bound(value) -> str:
+    try:
+        return f"{float(str(value).replace(',', '.')):.6g}" if value not in (None, "") else ""
+    except (TypeError, ValueError):
+        return canon(str(value))
+
+
+def discriminates(key, positions) -> bool:
+    """Есть ли значение характеристики, которое отсекает хотя бы одну оставшуюся позицию.
+
+    Типичный случай КТРУ: у карточки несколько размеров (или масс), но все они ведут к одному
+    коду — тогда выбор значения ничего не решает, и задавать его как «различающее» нельзя.
+    Характеристика различает, только если есть значение, принимаемое не всеми позициями:
+    две позиции, отличающиеся одним раствором, различаются именно этим раствором.
+    """
+    codes = {position.code for position in positions}
+    if len(codes) < 2:
+        return False
+    accepted: dict[tuple, set] = {}
+    for position in positions:
+        for prop in position.properties:
+            if (prop.semantic_key or canon(prop.name), prop.subject) != key:
+                continue
+            for item in prop.allowed:
+                accepted.setdefault(allowed_marker(item), set()).add(position.code)
+    if not accepted:
+        return False
+    # Значение, принимаемое всеми позициями, ничего не различает; значение, принимаемое
+    # только частью позиций, — различает. Отдельного «одно правило — значит не различает»
+    # быть не должно: две позиции, отличающиеся только раствором, различаются именно им.
+    return any(group != codes for group in accepted.values())
+
+
 def property_question(category_id: str, prop: Property, reason: str) -> Question:
     values = sorted({item.value for item in prop.allowed if item.kind == "enum" and item.value})
     units = {item.unit for item in prop.allowed}
@@ -153,7 +209,11 @@ def next_question(category_id: str | None, categories: list[CategoryCandidate], 
     if indistinguishable:
         # Names/codes alone are not trusted semantic discriminators. No endless value questions.
         return None, True
-    props = {(prop.semantic_key or prop.id, prop.subject): prop for position in remaining for prop in position.properties}
+    # Идентичность характеристики между позициями — semantic_key или каноническое имя:
+    # в карточках КТРУ одноимённые характеристики лежат в разных позициях со своими id,
+    # и по id они распадались на два «разных» вопроса (пользователь отвечал дважды).
+    props = {(prop.semantic_key or canon(prop.name), prop.subject): prop
+             for position in remaining for prop in position.properties}
     choices = []
     for key, prop in props.items():
         qid = property_question_id(category_id, prop)
@@ -161,21 +221,41 @@ def next_question(category_id: str | None, categories: list[CategoryCandidate], 
             continue
         checks = [check for candidate in candidates for check in candidate.checks
                   if check.property_id in {other.id for position in remaining for other in position.properties
-                                           if (other.semantic_key or other.id, other.subject) == key}]
+                                           if (other.semantic_key or canon(other.name), other.subject) == key}]
         if checks and all(check.outcome == "compatible" for check in checks):
             continue
-        constraints = {tuple(item.model_dump_json() for item in other.allowed)
-                       for position in remaining for other in position.properties if (other.semantic_key or other.id, other.subject) == key}
+        # Различие правил считаем по смыслу, а не по сырому JSON: у двух позиций одинаковое
+        # правило отличается служебными полями, и характеристика ложно выглядела различающей.
+        constraints = {frozenset(allowed_marker(item) for item in other.allowed)
+                       for position in remaining for other in position.properties if (other.semantic_key or canon(other.name), other.subject) == key}
         differing = len(remaining) > 1 and len(constraints) > 1
         required = any(prop.name in candidate.missing_required for candidate in candidates)
         needs_unit = any(check.reason in ("unit_missing", "unit_unknown") for check in checks)
+        # Различает ли характеристика позиции: есть ли значение, которое отсекает хотя бы одну
+        # из оставшихся позиций. Если каждое значение принимают все позиции (типичный случай
+        # «у карточки несколько размеров, но все ведут к одному коду»), выбор кода от значения
+        # не зависит — и вопрос не должен выглядеть как различающий.
+        separates = discriminates(key, remaining)
         if differing or required or needs_unit:
-            variants = {item.model_dump_json(): item for position in remaining for other in position.properties
-                        if (other.semantic_key or other.id, other.subject) == key and other.verified for item in other.allowed}
-            choices.append((0 if differing else 1, prop.name, prop.model_copy(update={"allowed": tuple(variants.values())})))
+            # Одинаковые по смыслу правила из разных позиций — один вариант, а не два:
+            # «1000–1225 мм» от каждой позиции не должен превращаться в два Radio.
+            variants = {allowed_marker(item): item for position in remaining for other in position.properties
+                        if (other.semantic_key or canon(other.name), other.subject) == key and other.verified
+                        for item in other.allowed}
+            choices.append((0 if differing else 1, prop.name,
+                            prop.model_copy(update={"allowed": tuple(variants.values())}), separates,
+                            required, needs_unit))
     if choices:
-        priority, _, prop = sorted(choices, key=lambda item: (item[0], item[1]))[0]
-        return property_question(category_id, prop, "Различает позиции" if priority == 0 else "Нужно для проверки обязательного поля или единицы"), False
+        priority, _, prop, separates, required, needs_unit = sorted(choices, key=lambda item: (item[0], item[1]))[0]
+        if separates:
+            reason = "Различает позиции"
+        elif required:
+            reason = "Обязательное поле карточки КТРУ: на выбор кода не влияет"
+        else:
+            reason = "Нужно для проверки единицы измерения"
+        question = property_question(category_id, prop, reason)
+        question.affects_code = separates
+        return question, False
     if unique_ready and not confirmed_code:
         candidate = candidates[0]
         return Question(id="code", kind="code", title="Подтвердите конечный код КТРУ",

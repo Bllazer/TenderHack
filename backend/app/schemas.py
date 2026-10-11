@@ -252,6 +252,9 @@ class Question(BaseModel):
     #: числовая: тогда ограничивать нечем, и вопрос остаётся свободным.
     ranges: list[QuestionRange] = Field(default_factory=list)
     hint: str | None = None
+    #: Влияет ли значение на выбор кода: false — у карточки несколько значений (размеров,\r
+    #: масс), но все ведут к одному коду, и вопрос нужен только для полноты карточки.\r
+    affects_code: bool | None = None
 
 
 class Verification(BaseModel):
