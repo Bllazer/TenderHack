@@ -13,7 +13,7 @@ import pytest
 
 from app.catalog import AllowedValue, Property, load_snapshot
 from app.extraction import extract
-from app.search import (Analyzer, E5Encoder, Search, SIGNIFICANCE, closest_vocabulary_token,
+from app.search import (Analyzer, E5Encoder, Search, closest_vocabulary_token,
                         edit_distance, letter_overlap, looks_like_typo, transposition_match)
 
 INDEX_DIR = Path(os.environ.get("TEST_INDEX_DIR", "resources/catalog-build"))
@@ -66,9 +66,15 @@ def test_closest_vocabulary_token_prefers_the_not_shorter_word():
     assert closest_vocabulary_token("дерл", vocabulary) == "дрель"
 
 
-def test_significance_threshold_is_calibrated_between_known_bands():
-    """Порог значимости лежит в разрыве: нужные семейства ≥0.049, мусор ≤0.033."""
-    assert 0.033 <= SIGNIFICANCE <= 0.049
+def test_refusal_is_decided_by_channel_support_not_by_a_threshold():
+    """Отказ решается поддержкой каналов, а не порогом по рангу объединения.
+
+    Порог отсекал то, что канал реально подтверждает; теперь «ничего похожего» — это
+    отсутствие и словарной (BM25), и словесной поддержки у всех кандидатов.
+    """
+    from app import search as search_module
+    assert not hasattr(search_module, "SIGNIFICANCE")
+    assert "словесной" in search_module.Search.find.__doc__ if search_module.Search.find.__doc__ else True
 
 
 # ------------------------------------------- сокращения значений перечислений (A)

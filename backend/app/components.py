@@ -32,8 +32,41 @@ class ExistingSearcher:
         self.search = search
 
     def find_state(self, state):
-        # Preserve the existing algorithm's text interface; ML can consume both fields.
-        return self.search.find(state.description)
+        """Поисковый запрос из описания И актуальных фактов пользователя.
+
+        Факты влияют на представление запроса: уточнение характеристики должно менять
+        подсказки типов, а не только проверку уже найденной категории. В запрос идут только
+        положительные именованные значения: имя характеристики и её значение. Технические
+        идентификаторы, ответы accept/reject, флаги проверки, отрицания и факты без имени
+        (в том числе «не знаю») в запрос не попадают — иначе поиск искал бы по служебным
+        строкам. Каталог при этом не пересчитывается: меняется только текст запроса.
+        """
+        return self.search.find(search_text(state.description, state.facts))
+
+
+#: Служебные значения ответов: это выбор пользователя в интерфейсе, а не свойство товара.
+_SERVICE_VALUES = ("accept:", "reject", "не знаю", "не задано")
+
+
+def search_text(description: str, facts) -> str:
+    """Текст запроса: исходное описание плюс именованные положительные факты."""
+    parts = [description.strip()]
+    seen = {part.casefold() for part in parts}
+    for fact in facts or ():
+        name = (getattr(fact, "name", "") or "").strip()
+        value = (getattr(fact, "value", "") or "").strip()
+        if not name or not value or getattr(fact, "unknown", False) or getattr(fact, "negated", False):
+            continue
+        if any(value.casefold().startswith(marker) for marker in _SERVICE_VALUES):
+            continue
+        if getattr(fact, "source", "") == "answer" and getattr(fact, "values", None):
+            value = " ".join(fact.values)
+        part = f"{name} {value}"
+        if part.casefold() in seen:
+            continue
+        seen.add(part.casefold())
+        parts.append(part)
+    return "; ".join(part for part in parts if part)
 
 
 class Checker(Protocol):

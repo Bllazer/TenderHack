@@ -33,7 +33,7 @@ sys.path.insert(0, str(BACKEND / "tests"))
 
 from app.catalog import AllowedValue, Catalog, Category, Position, Property, snapshot  # noqa: E402
 from app.extraction import extract  # noqa: E402
-from app.search import (Analyzer, E5Encoder, Search, SIGNIFICANCE, closest_vocabulary_token,  # noqa: E402
+from app.search import (Analyzer, E5Encoder, Search, closest_vocabulary_token,  # noqa: E402
                         edit_distance, looks_like_typo)
 from conftest import FixtureEncoder  # noqa: E402
 
@@ -284,10 +284,11 @@ def test_thresholds_are_not_tied_to_specific_queries():
     таблицей конкретных запросов, тест упадёт.
     """
     from app import search as search_module
-    assert isinstance(search_module.SIGNIFICANCE, float)
-    assert 0.0 < search_module.SIGNIFICANCE < 1.0
+    # Универсального порога релевантности в поиске нет: решение об отказе принимается по
+    # поддержке каналов (BM25 или словесное совпадение), а не по величине ранга объединения.
+    assert not hasattr(search_module, "SIGNIFICANCE")
     source = Path(search_module.__file__).read_text(encoding="utf-8")
-    assert "SIGNIFICANCE = {" not in source and "SIGNIFICANCE = [" not in source
+    assert "if text ==" not in source and 'in {"' not in source
 
 
 # ------------------------------------------------- реальный каталог, случайные входы
@@ -416,5 +417,6 @@ def test_every_candidate_is_justified_by_words_or_score(real_search, seed):
         tokens = {token for word in (query, *variants) for token in word.casefold().replace("ё", "е").split()}
         for item in real_search.find(query):
             linked = real_search.relevant(by_id[item.id], tokens)
-            assert linked or item.rank_score >= SIGNIFICANCE, (query, item.name, item.rank_score)
+            # Кандидат обязан иметь поддержку канала: словесную связь или словарную (BM25).
+            assert linked or "BM25" in item.reasons, (query, item.name, item.reasons)
             assert item.rank <= 7

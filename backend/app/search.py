@@ -19,7 +19,6 @@ MODEL_ID = "intfloat/multilingual-e5-small"
 #: запросов, для которых семейство существует, минимум 0.0492 и медиана 0.0651;
 #: у товаров, которых в КТРУ нет, максимум 0.0328 («панамка» 0.0258, «кофеварка»
 #: 0.0328, «drel» 0.0164). Порог стоит в разрыве между ними.
-SIGNIFICANCE = 0.040
 
 
 def canon(value: str) -> str:
@@ -475,14 +474,13 @@ def _rank_order(ranks: dict[int, float], order: dict[int, list[tuple[str, int]]]
 
 class Search:
     def __init__(self, data: Snapshot, encoder, analyzer: Analyzer | None = None,
-                 use_char: bool = True, significance: float | None = None):
+                 use_char: bool = True):
         self.data, self.encoder = data, encoder
         self.analyzer = analyzer or Analyzer()
         #: Порог значимости — свойство каталога, а не константа кода: он откалиброван
         #: на полном каталоге КТРУ. Тестовый стенд подставляет заглушку вместо модели,
         #: и его оценки объединения структурно ниже (одна-две ненулевые оценки канала),
         #: поэтому там порог задаётся нулём — иначе стенд не нашёл бы ничего.
-        self.significance = SIGNIFICANCE if significance is None else significance
         self.documents = tuple(Counter(row) for row in data.tokens)
         self.lengths = np.array([sum(row.values()) for row in self.documents], dtype=np.float64)
         self.average = max(float(self.lengths.mean()) if len(self.lengths) else 0, 1)
@@ -676,16 +674,16 @@ class Search:
                 order.setdefault(key, []).append((label, rank))
         categories = self.data.catalog.categories
         tokens = {token for variant in variants for token in canon(variant).split() if token}
-        # Значимость. Пустой ответ («нет похожих товаров») только когда ОБА признака
-        # отсутствуют: и лучший кандидат слабее порога, и ни в одном названии нет
-        # слова запроса. Порог 0.040 выбран по калибровке: у товаров, которых в КТРУ
-        # нет, максимум 0.0328 («панамка» 0.0258, «кофеварка» 0.0328, «drel» 0.0164),
-        # а у найденных семейств оценки заметно выше. Словесное совпадение оставлено
-        # спасательным: «шпа» (0.0318) до порога не дотягивает, но начало слова в
-        # названии — достаточное основание показать кандидата.
         ordered = _rank_order(ranks, order, categories)
-        if ordered and not any(self.relevant(index, tokens) for index in ordered) \
-                and ranks[ordered[0]] < getattr(self, "significance", SIGNIFICANCE):
+        # Отказ («ничего похожего») — только когда у кандидатов нет обоснованной поддержки:
+        # ни словарной (BM25 нашёл совпавшие слова), ни словесной (слово запроса есть в
+        # названии: точно, по лемме, по началу слова или почти написанное). Порог по рангу
+        # объединения для такого решения не годится: RRF — не вероятность, и порог отсекал
+        # то, что канал реально подтверждает. Слабая, но настоящая поддержка — не отказ:
+        # варианты показываются как непроверенные, тип всё равно подтверждает пользователь.
+        supported = [index for index in ordered
+                     if "BM25" in sources.get(index, ()) or self.relevant(index, tokens)]
+        if ordered and not supported:
             ordered = []
         # Слабый хвост не добивается до пяти: кандидат вдвое слабее лучшего и без
         # словесного совпадения — это уже не «похожие товары».
