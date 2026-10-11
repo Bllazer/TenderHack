@@ -658,6 +658,26 @@ def partial_hits(segment: str, tokens, dictionary, names) -> list[tuple[str, int
     return found
 
 
+def first_clause(value: str, dictionary) -> str:
+    """Значение без чужого хвоста: до разделителя или до начала следующей характеристики.
+
+    «Наличие карманов да, нарукавники нет» — значение карманов это «да», а не весь хвост:
+    иначе значение поглощает соседнюю явную пару, и её значение уже не к чему привязать
+    (получалось «Наличие карманов = да, нарукавники нет»). Правило общее: границы берутся
+    из разметки текста и из словаря характеристик, а не из конкретных фраз.
+    """
+    cut = len(value)
+    boundary = re.search(r"[,;|\n\r]", value)
+    if boundary:
+        cut = boundary.start()
+    lowered = canon(value)
+    for name, _ in dictionary:
+        position = lowered.find(canon(name))
+        if 0 < position < cut:
+            cut = position
+    return value[:cut].strip()
+
+
 def emit_fact(segment: str, text: str, start: int, name: str, left_token: int, right_token: int,
               dictionary, scoped_properties, facts: list, covered: list,
               require_measurement: bool = False) -> bool:
@@ -712,7 +732,7 @@ def emit_fact(segment: str, text: str, start: int, name: str, left_token: int, r
         return True
     if require_measurement:
         return False
-    value = tail.strip()
+    value = first_clause(tail.strip(), dictionary)
     # Хвост, который сам начинает новый факт («Мощность напряжение 220 В»), значением
     # не становится: иначе рождается мусорное значение, а настоящее имя теряется.
     if value and not starts_with_property_name(value, dictionary):
