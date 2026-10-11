@@ -1,7 +1,8 @@
 """Property identity is contextual; lexical similarity is only a suggestion."""
-from difflib import get_close_matches
+from difflib import SequenceMatcher, get_close_matches
 
 from app.catalog import Position, Property
+from app.extraction import TYPO_SUGGEST
 from app.schemas import Fact, Issue, Correction
 from app.search import canon
 
@@ -38,12 +39,19 @@ def map_facts(position: Position, facts: list[Fact]):
             issues.append(Issue(code="mapping_ambiguous", fact_id=fact.id, candidate_code=position.code,
                                 explanation=f"Имя «{fact.name}» соответствует нескольким свойствам позиции; уточните контекст"))
         elif fact.name:
-            possible = [] if fact.card_mappings else get_close_matches(canon(fact.name), [canon(prop.name) for prop in position.properties
-                                                         if prop.subject == fact.subject], n=1, cutoff=.82)
+            # Порог тот же, что у подсказки в извлечении (`TYPO_SUGGEST`), иначе факт
+            # с опечаткой создавался бы, но вопроса о нём не возникало.
+            possible = [] if fact.card_mappings else get_close_matches(
+                canon(fact.name), [canon(prop.name) for prop in position.properties
+                                   if prop.subject == fact.subject], n=1, cutoff=TYPO_SUGGEST)
             if possible:
                 target = next(name for name in names if canon(name) == possible[0])
+                seen = SequenceMatcher(None, canon(fact.name), canon(target)).ratio()
                 corrections.append(Correction(fact_id=fact.id, kind="proposed_text_fix", original=fact.name,
-                                              normalized=target, explanation="Похожее имя; сопоставление требует вашей правки",
+                                              normalized=target,
+                                              explanation=f"Возможно, вы имели в виду «{target}»: "
+                                                          f"совпадение написания {seen:.0%}; "
+                                                          "исправление не применено без вашего ответа",
                                               confirmation_required=True))
             if position.no_new_features is True:
                 issues.append(Issue(code="additional_not_exportable", severity="warning", fact_id=fact.id,

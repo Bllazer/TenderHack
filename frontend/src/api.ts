@@ -7,7 +7,7 @@ export type Issue = { code: string; severity: 'info' | 'warning' | 'error'; expl
 export type BlockingReason = { code: string; explanation: string; property_id: string | null; property_name: string | null; kind: string | null; units: (string | null)[]; unsupported_reasons: string[]; source_issues: string[]; resolve_blocked_reason: string[]; rule_source: string | null; applicability: 'source' | 'required' | 'provided' | 'potential'; blocks_resolution: boolean }
 // Excluded candidates retain proven contradictions; their diagnostics do not block remaining candidates.
 export type Candidate = { ktru_code: string; name: string; outcome: 'compatible' | 'incompatible' | 'unknown'; missing_required: string[]; checks: { name: string; outcome: string; reason: string; elements: { value: string; outcome: 'compatible' | 'incompatible' | 'unknown'; reason: string; value_codes: string[] }[] }[]; blocking_reasons: BlockingReason[]; exclusion_reasons: Issue[] }
-export type Question = { id: string; kind: 'category' | 'property' | 'conflict' | 'code' | 'correction'; title: string; reason: string; property_name: string | null; options: { value: string; label: string }[]; unit: string | null; allow_unknown: boolean; multiple: boolean }
+export type Question = { id: string; kind: 'category' | 'property' | 'conflict' | 'code' | 'correction'; title: string; reason: string; property_name: string | null; options: { value: string; label: string }[]; unit: string | null; allow_unknown: boolean; multiple: boolean; ranges?: { lower: number | null; upper: number | null; unit: string | null }[]; hint?: string | null }
 export type Result = {
   status: 'needs_data' | 'needs_input' | 'ambiguous' | 'resolved'; original_text: string; normalized_text: string;
   facts: Fact[]; original_facts?: Fact[]; unparsed: { id: string | null; raw: string; span?: [number, number] | null }[]; additional: { id: string | null; raw: string; span?: [number, number] | null }[];
@@ -51,4 +51,34 @@ export function userMessage(text: string): string {
     missing_required: 'заполните обязательную характеристику',
   }
   return text.replace(/\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b/g, code => labels[code] || 'требуется дополнительная проверка')
+}
+
+
+//: Карточка позиции КТРУ: справочные правила и блокировки источника. Отдельно от фактов
+//: пользователя — правила каталога и введённые сведения нельзя смешивать.
+export type CatalogProperty = {
+  id: string; name: string; value_type: string; required: boolean | null; verified: boolean;
+  kind: string | null; numeric_semantics: string | null; subject: string; evidence: string;
+  aliases: string[]; allowed: { kind: string; value?: string | null; lower?: string | null; upper?: string | null; unit?: string | null; raw_unit?: string | null; source?: string | null }[];
+}
+export type CatalogPositionCard = {
+  catalog_version: string;
+  position: { code: string; name: string; okpd2?: string | null; status: string; is_template: boolean; properties: CatalogProperty[]; source_path?: string; source_issues?: string[]; resolve_blocked?: boolean | null };
+  blocking_reasons: { code: string; explanation: string; property_name: string | null; applicability: string; blocks_resolution: boolean }[];
+}
+export type CategoryProperties = {
+  category_id: string; catalog_version: string; complete: boolean; notes: string[];
+  properties: { property_id: string; name: string; subject: string; aliases: string[]; required: boolean; multiple: boolean; options: string[]; units: string[]; question_id: string | null; source: string | null; name_shared: boolean }[];
+}
+
+export async function catalogPosition(code: string, signal?: AbortSignal): Promise<CatalogPositionCard> {
+  const response = await fetch(`/api/v1/catalog/positions/${encodeURIComponent(code)}`, { signal })
+  if (!response.ok) throw new Error('Не удалось загрузить карточку КТРУ.')
+  return response.json() as Promise<CatalogPositionCard>
+}
+
+export async function categoryProperties(categoryId: string, signal?: AbortSignal): Promise<CategoryProperties> {
+  const response = await fetch(`/api/v1/catalog/categories/${encodeURIComponent(categoryId)}/properties`, { signal })
+  if (!response.ok) throw new Error('Не удалось загрузить характеристики категории.')
+  return response.json() as Promise<CategoryProperties>
 }

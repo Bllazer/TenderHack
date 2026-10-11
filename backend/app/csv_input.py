@@ -32,13 +32,15 @@ MAX_ROWS = 200
 #: подписи заголовков, которые не являются товаром
 _HEADER_HINTS = {
     "наименование", "описание", "название", "товар", "строка", "текст", "продукт",
-    "характеристики", "свойства", "категория", "код", "ктру", "№", "n",
+    "характеристики", "характеристика", "значение", "свойства", "категория", "код", "ктру", "№", "n",
     "description", "name", "text", "product", "title", "category", "code", "attributes",
+    "characteristics", "characteristic", "value", "parameter", "params",
 }
 #: «Наименование товара», «Описание», «Код КТРУ», «Свойства:» — но не «Лопата; штыковая»
 _HEADER_PATTERN = re.compile(
     r"^(наименование|описание|название|товар|строка|текст|продукт|характеристик\w*|свойств\w*|"
-    r"категори\w*|код|ктру|№|n|description|name|text|product|title|category|code|attributes)"
+    r"значени\w*|категори\w*|код|ктру|№|n|description|name|text|product|title|category|code|"
+    r"attributes|characteristic\w*|value|param\w*)"
     r"(\s+(товара|товар|продукта|продукт|строки|характеристик\w*|свойств\w*|ктру))?$")
 _DELIMITERS = (";", ",", "\t")
 
@@ -61,23 +63,35 @@ class CsvRows:
                 "truncated": self.truncated, "rows_total": len(self.rows) + len(self.skipped)}
 
 
+class CsvEncodingError(ValueError):
+    """Кодировку файла определить нельзя: это ошибка ввода (422), а не сбой сервера."""
+
+    code = "csv_encoding"
+
+
 def decode_bytes(data: bytes) -> tuple:
-    """Байты файла -> (текст, имя кодировки). Никогда не падает."""
+    """Байты файла -> (текст, имя кодировки).
+
+    Повреждённая кодировка — это ошибка ввода, а не «примерно прочитанный текст»: раньше
+    файл молча превращался в кракозябры и уходил в подбор. Теперь поднимается
+    `CsvEncodingError`, и HTTP-слой отвечает 422 с понятной причиной.
+    """
     if data.startswith(b"\xef\xbb\xbf"):
         return data.decode("utf-8-sig"), "utf-8-sig"
     if data.startswith(b"\xff\xfe") or data.startswith(b"\xfe\xff"):
         try:
             return data.decode("utf-16"), "utf-16"
+        except UnicodeDecodeError as error:
+            raise CsvEncodingError("UTF-16 с меткой не читается: %s" % error) from error
+    for candidate in ("utf-8", "cp1251"):
+        try:
+            decoded = data.decode(candidate)
         except UnicodeDecodeError:
-            pass
-    try:
-        return data.decode("utf-8"), "utf-8"
-    except UnicodeDecodeError:
-        pass
-    try:
-        return data.decode("cp1251"), "cp1251"
-    except UnicodeDecodeError:
-        return data.decode("utf-8", "replace"), "utf-8/lossy"
+            continue
+        if "\ufffd" in decoded:
+            continue
+        return decoded, candidate
+    raise CsvEncodingError("кодировка не определяется: сохраните файл в UTF-8 или cp1251")
 
 
 def decode_base64(value: str) -> bytes:
@@ -88,13 +102,38 @@ def decode_base64(value: str) -> bytes:
         raise ValueError("csv_base64 не разбирается: %s" % error) from error
 
 
-def _sniff_delimiter(sample: str) -> str:
-    try:
-        return csv.Sniffer().sniff(sample, delimiters="".join(_DELIMITERS)).delimiter
-    except csv.Error:
-        counts = {delimiter: sample.count(delimiter) for delimiter in _DELIMITERS}
-        best = max(counts, key=lambda key: counts[key])
-        return best if counts[best] else ";"
+def _sniff_delimiter(text: str) -> tuple:
+    """Разделитель по СТРУКТУРЕ разобранных строк -> (разделитель, замечание или None).
+
+    Кандидат проверяется настоящим разбором CSV: так учитываются кавычки и переносы внутри
+    ячеек. Годится тот разделитель, при котором большинство строк даёт одинаковое число
+    колонок (не меньше двух). Одинокая запятая в числе («мощность 0,65 кВт») колонок не
+    создаёт: разделитель между цифрами не считается вовсе, поэтому «0,65» не превращается
+    в «0; 65». Если ни один разделитель не даёт устойчивой таблицы — файл одноколоночный.
+    """
+    candidates = {";": text, "\t": text, ",": re.sub(r"(?<=\d),(?=\d)", "", text)}
+    scored: list[tuple[float, int, str]] = []
+    for delimiter, sample in candidates.items():
+        counts = [len(cells) for cells in
+                  csv.reader(io.StringIO(sample, newline=""), delimiter=delimiter)
+                  if any((cell or "").strip() for cell in cells)]
+        multi = [count for count in counts if count > 1]
+        if not multi:
+            continue
+        common = max(set(multi), key=multi.count)
+        # Согласованность считаем по строкам, где колонок больше одной: одноколоночный
+        # заголовок («описание») не должен мешать распознать таблицу с данными.
+        consistent = multi.count(common) / max(len(multi), 1)
+        if consistent >= 0.6:
+            scored.append((consistent, common, delimiter))
+    if not scored:
+        return "", "разделитель не найден: файл разобран как одноколоночный"
+    scored.sort(reverse=True)
+    delimiter = scored[0][2]
+    ambiguous = len(scored) > 1 and scored[1][0] == scored[0][0] and scored[1][1] == scored[0][1]
+    note = ("разделитель определён неуверенно: подходит и «%s», и «%s»; передайте csv_delimiter явно"
+            % (scored[0][2], scored[1][2])) if ambiguous else None
+    return delimiter, note
 
 
 def _is_header(cells: list) -> bool:
@@ -111,24 +150,90 @@ def _is_header(cells: list) -> bool:
     return any(cell in _HEADER_HINTS or _HEADER_PATTERN.match(cell) for cell in filled)
 
 
-def _join_cells(cells: list) -> str:
-    """Ячейки одной строки -> одна строка ввода, как её вводит пользователь."""
+def _pair_names(cells: list) -> list:
+    """Имена характеристик из строки заголовка: первая колонка — товар, дальше свойства.
+
+    Связь колонок выдаётся только если ВСЕ подписи (кроме первой) годятся в имя свойства:
+    короткие (до 60 символов и не больше четырёх слов) и не служебные вроде «Наименование»
+    или «Значение». Иначе имена колонок неизвестны, и строка склеивается как раньше: иначе
+    «Товар; Характеристика; Значение» подписывало бы значение чужим именем.
+    """
+    names = []
+    for cell in cells[1:]:
+        text = re.sub(r"\s+", " ", (cell or "")).strip().strip(":;-–—")
+        words = text.split()
+        usable = 0 < len(text) <= 60 and 0 < len(words) <= 4 and \
+            not (text.lower() in _HEADER_HINTS or _HEADER_PATTERN.match(text.lower()))
+        if not usable:
+            return []          # подписи колонок неизвестны: связь не выдаём вовсе
+        names.append(text)
+    return names
+
+
+def _join_cells(cells: list, pairs: list | None = None) -> str:
+    """Ячейки одной строки -> одна строка ввода, как её вводит пользователь.
+
+    Если у файла была строка заголовка с подписями, связь колонок сохраняется:
+    «Дрель; Мощность: 650 Вт; Напряжение: 220 В». Без заголовка ячейки просто
+    склеиваются, и дальше работает обычный разбор пар.
+    """
     parts = []
-    for cell in cells:
+    for index, cell in enumerate(cells):
         text = re.sub(r"\s+", " ", (cell or "").replace("\u00a0", " ")).strip()
-        if text:
-            parts.append(text)
+        if not text:
+            continue
+        name = pairs[index - 1] if pairs and 0 < index <= len(pairs) else ""
+        parts.append(f"{name}: {text}" if name else text)
     return "; ".join(parts)
 
 
-def split_rows(data: bytes, *, max_rows: int = MAX_ROWS, skip_header: bool = True) -> CsvRows:
-    """Байты CSV -> строки ввода. Одна строка файла = одно описание товара."""
+def split_rows(data: bytes, *, max_rows: int = MAX_ROWS, skip_header: bool = True,
+               delimiter: str | None = None) -> CsvRows:
+    """Байты CSV -> строки ввода. Одна строка файла = одно описание товара.
+
+    `delimiter` — явный выбор разделителя пользователем: когда формат неоднозначен, лучше
+    спросить, чем угадать и испортить значения.
+    """
     text, encoding = decode_bytes(data)
     result = CsvRows(encoding=encoding)
-    sample = "\n".join(line for line in text.splitlines()[:20] if line.strip())
-    result.delimiter = _sniff_delimiter(sample) if sample else ";"
+    if delimiter:
+        result.delimiter = delimiter
+    else:
+        result.delimiter, note = _sniff_delimiter(text)
+        if note:
+            result.notes.append(note)
+    if not result.delimiter:
+        # Одноколоночный файл: строки берутся целиком, разделитель не применяется вовсе —
+        # так десятичная запятая и любые другие символы внутри описания сохраняются как есть.
+        # Разбор идёт через csv.reader с недостижимым разделителем: кавычки и переносы строк
+        # внутри ячеек соблюдаются так же, как в таблице.
+        first = True
+        single = list(csv.reader(io.StringIO(text, newline=""), delimiter="\x1f"))
+        for line_number, cells in enumerate(single, 1):
+            raw = cells[0] if cells else ""
+            if not raw.strip() or not re.search(r"[\wА-Яа-яЁё]", raw):
+                continue                 # пустые строки и строки из одних разделителей
+            if first and skip_header and _is_header([raw]):
+                result.header_skipped = True
+                first = False
+                continue
+            first = False
+            description = re.sub(r"\s+", " ", raw.replace("\u00a0", " ")).strip()
+            if len(description) > MAX_DESCRIPTION:
+                result.skipped.append({"line": line_number,
+                                       "reason": f"описание длиннее {MAX_DESCRIPTION} символов"})
+                continue
+            if len(result.rows) >= max_rows:
+                result.truncated = True
+                result.skipped.append({"line": line_number, "reason": "превышен лимит строк"})
+                continue
+            result.rows.append({"line": line_number, "description": description})
+        if not result.rows and not result.skipped:
+            result.notes.append("в файле не найдено ни одной строки с товаром")
+        return result
 
     reader = csv.reader(io.StringIO(text, newline=""), delimiter=result.delimiter)
+    pairs: list | None = None
     first = True
     for cells in reader:
         line_number = reader.line_num
@@ -137,15 +242,18 @@ def split_rows(data: bytes, *, max_rows: int = MAX_ROWS, skip_header: bool = Tru
         if first and skip_header and _is_header(cells):
             result.header_skipped = True
             first = False
+            pairs = _pair_names(cells) if len(cells) > 1 else None
             continue
         first = False
-        description = _join_cells(cells)
+        description = _join_cells(cells, pairs)
         if not description:
             result.skipped.append({"line": line_number, "reason": "пустая строка"})
             continue
         if len(description) > MAX_DESCRIPTION:
-            description = description[:MAX_DESCRIPTION]
-            result.notes.append("строка %d обрезана до %d символов" % (line_number, MAX_DESCRIPTION))
+            # Молча обрезать нельзя: урезанное описание описывает уже другой товар.
+            result.skipped.append({"line": line_number,
+                                   "reason": f"описание длиннее {MAX_DESCRIPTION} символов"})
+            continue
         if len(result.rows) >= max_rows:
             result.truncated = True
             result.skipped.append({"line": line_number, "reason": "превышен лимит строк"})

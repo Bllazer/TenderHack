@@ -166,6 +166,37 @@ class CatalogPositionCard(BaseModel):
     blocking_reasons: list[BlockingReason]
 
 
+class CatalogPropertyField(BaseModel):
+    """Одна характеристика области: справочные правила (значения, единицы, обязательность).
+
+    Идентичность характеристики — это `(subject, property_id)`, а НЕ название: в КТРУ
+    встречаются разные характеристики с одинаковым названием, и объединять их правила в один
+    «достоверный» набор нельзя. Если название делится между несколькими характеристиками,
+    у каждой свой `property_id`, а `name_shared` = true — клиент показывает это как разные
+    поля, а не как одно.
+    """
+    property_id: str
+    name: str
+    subject: str
+    aliases: list[str] = Field(default_factory=list)
+    required: bool = False
+    multiple: bool = False
+    options: list[str] = Field(default_factory=list)
+    units: list[str] = Field(default_factory=list)
+    question_id: str | None = None
+    source: str | None = None
+    name_shared: bool = False
+
+
+class CategoryPropertiesOut(BaseModel):
+    """Справочные характеристики категории (не путать с фактами пользователя)."""
+    category_id: str
+    catalog_version: str
+    complete: bool
+    properties: list[CatalogPropertyField] = Field(default_factory=list)
+    notes: list[str] = Field(default_factory=list)
+
+
 class Candidate(BaseModel):
     ktru_code: str
     name: str
@@ -183,6 +214,28 @@ class QuestionOption(BaseModel):
     label: str
 
 
+def _number(value: float) -> str:
+    return f"{value:g}"
+
+
+class QuestionRange(BaseModel):
+    """Допустимый интервал значения — берётся из найденных позиций, а не из констант."""
+    lower: float | None = None
+    upper: float | None = None
+    unit: str | None = None
+
+    def text(self) -> str:
+        if self.lower is not None and self.upper is not None:
+            body = f"от {_number(self.lower)} до {_number(self.upper)}"
+        elif self.lower is not None:
+            body = f"не меньше {_number(self.lower)}"
+        elif self.upper is not None:
+            body = f"не больше {_number(self.upper)}"
+        else:
+            return ""
+        return f"{body} {self.unit or ''}".strip()
+
+
 class Question(BaseModel):
     id: str
     kind: Literal["conflict", "category", "property", "code", "correction"]
@@ -193,6 +246,11 @@ class Question(BaseModel):
     unit: str | None = None
     allow_unknown: bool = True
     multiple: bool = False
+    #: Допустимые границы числового значения у оставшихся позиций (объединение интервалов
+    #: их характеристик) и готовая подсказка для интерфейса. Пусто, если характеристика не
+    #: числовая: тогда ограничивать нечем, и вопрос остаётся свободным.
+    ranges: list[QuestionRange] = Field(default_factory=list)
+    hint: str | None = None
 
 
 class Verification(BaseModel):
@@ -281,6 +339,9 @@ class BatchCreate(InputModel):
     candidate_limit: int = Field(default=20, ge=1, le=100)
     run_limit: int = Field(default=50, ge=1, le=100)
     skip_header: bool = True
+    #: Явный выбор разделителя, когда формат файла неоднозначен. Разбор никогда не режет
+    #: строку по случайной запятой: десятичная запятая в числе разделителем не считается.
+    csv_delimiter: str | None = Field(default=None, pattern=r"^(;|,|\t|\|)$")
 
     @model_validator(mode="after")
     def one_source(self):

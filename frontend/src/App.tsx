@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { analyze, emptyDraft, userMessage } from './api'
-import type { Draft, Fact, Result } from './api'
+import { analyze, catalogPosition, emptyDraft, userMessage } from './api'
+import type { CatalogPositionCard, Draft, Fact, Result } from './api'
 import type { KeyboardEvent } from 'react'
 import './App.css'
 import { useSessionState, readSession, writeSession } from './session'
@@ -8,10 +8,18 @@ import CsvWorkspace from './CsvWorkspace'
 import type { CsvItem } from './CsvWorkspace'
 
 type Stage = 'input' | 'question' | 'review' | 'correction' | 'done'
+/** Есть ли открытый вопрос, который пользователь должен закрыть до результата. */
+function hasPendingQuestion(result: Result): boolean {
+  return result.status === 'needs_input' && !!result.next_question
+    && !['code', 'conflict'].includes(result.next_question.kind)
+}
 function resultStage(result: Result): Stage {
   if (result.status === 'resolved' && result.selected_ktru_code) return 'done'
+  // Вопрос важнее «осталась одна позиция»: иначе шаг результата открывался раньше,
+  // чем пользователь успевал указать требуемую характеристику (например, длину).
+  if (hasPendingQuestion(result)) return 'question'
   if (result.candidate_count === 1 || result.categories.length === 0) return 'review'
-  return result.status === 'needs_input' && result.next_question && !['code', 'conflict'].includes(result.next_question.kind) ? 'question' : 'review'
+  return 'review'
 }
 
 type Snapshot = { stage: Stage; draft: Draft; result: Result | null }
@@ -32,6 +40,9 @@ function App() {
   const [history, setHistory] = useSessionState<Snapshot[]>('app.history', [])
   const [answer, setAnswer] = useSessionState('app.answer', '')
   const [answerUnit, setAnswerUnit] = useSessionState('app.answerUnit', '')
+  //: Множественный выбор (question.multiple) передаётся через `values` и хранит ВСЕ
+  //: отмеченные элементы: одиночное значение здесь потеряло бы часть набора.
+  const [answerSet, setAnswerSet] = useSessionState<string[]>('app.answerSet', [])
   const [unknown, setUnknown] = useSessionState('app.unknown', false)
   const [editing, setEditing] = useSessionState<Fact | null>('app.editing', null)
   const [editName, setEditName] = useSessionState('app.editName', '')
@@ -40,6 +51,9 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [copied, setCopied] = useState(false)
+  //: Просмотр карточки КТРУ: справочные правила позиции отдельно от фактов пользователя.
+  const [card, setCard] = useState<{ code: string; data: CatalogPositionCard } | null>(null)
+  const [cardError, setCardError] = useState('')
   const [descriptionHint, setDescriptionHint] = useSessionState('app.descriptionHint', false)
   const busy = useRef(false)
   const sequence = useRef(0)
@@ -51,7 +65,7 @@ function App() {
     && result.verification.fields_complete && result.verification.value_verified && result.verification.catalog_scope_complete && !result.verification.blocking_issues && question.options.some(option => option.value === result.candidates[0].ktru_code)
 
   function openCsv(item: CsvItem) {
-    invalidate(); setCsvLine(item.line); setMode('single'); setDraft(item.draft); setResult(item.result); setHistory([]); setAnswer(''); setUnknown(false)
+    invalidate(); setCsvLine(item.line); setMode('single'); setDraft(item.draft); setResult(item.result); setHistory([]); setAnswer(''); setAnswerSet([]); setUnknown(false)
     setAnswerUnit(item.result?.next_question?.unit || '')
     setStage(item.result ? resultStage(item.result) : 'input')
     if (!item.result) void submit(item.draft)
@@ -65,14 +79,14 @@ function App() {
   function showSingle() {
     if (manual.current) { setStage(manual.current.stage); setDraft(manual.current.draft); setResult(manual.current.result) }
     else { setStage('input'); setDraft(emptyDraft()); setResult(null) }
-    setHistory([]); setAnswer(''); setUnknown(false); setMode('single')
+    setHistory([]); setAnswer(''); setAnswerSet([]); setUnknown(false); setMode('single')
   }
 
   function goToStep(index: number) {
     if (loading) return
     if (index === 0) { setStage('input'); return }
     if (!result) return
-    if (index === 2) { setStage(result.status === 'resolved' && result.selected_ktru_code ? 'done' : 'review'); return }
+    if (index === 2) { setStage(result.status === 'resolved' && result.selected_ktru_code ? 'done' : hasPendingQuestion(result) ? 'question' : 'review'); return }
     if (question && !['code', 'conflict'].includes(question.kind)) setStage('question')
   }
 
@@ -102,7 +116,7 @@ function App() {
       const response = await analyze(next, abort.signal)
       if (requestId !== sequence.current) return
       setHistory(items => [...items, { stage, draft, result }])
-      setResult(response); setEditing(null); setAnswer(''); setAnswerUnit(response.next_question?.unit || ''); setUnknown(false)
+      setResult(response); setEditing(null); setAnswer(''); setAnswerSet([]); setAnswerUnit(response.next_question?.unit || ''); setUnknown(false)
       setStage(resultStage(response))
       if (csvLine !== null && response.status === 'resolved' && response.selected_ktru_code) {
         setCsvUpdate({ line: csvLine, draft: next, result: response, error: '' })
@@ -115,7 +129,7 @@ function App() {
   }
 
   function rejectTypes() {
-    invalidate(); setResult(null); setAnswer(''); setUnknown(false); setHistory([])
+    invalidate(); setResult(null); setAnswer(''); setAnswerSet([]); setUnknown(false); setHistory([])
     setDraft(current => ({ ...current, confirmed_category_id: null, confirmed_ktru_code: null, answers: [],
       attributes: current.attributes.map(item => ({ ...item, replaces: null })) }))
     setDescriptionHint(true); setStage('input')
@@ -159,7 +173,7 @@ function App() {
             options: field.options.map(value => ({ value, label: value })), unit: fact.unit || field.units[0] || null,
             multiple: field.multiple, allow_unknown: true,
           } })
-          setEditing(fact); setAnswer(fact.unknown ? '' : fact.value); setAnswerUnit(fact.unit || field.units[0] || ''); setUnknown(fact.unknown)
+          setEditing(fact); setAnswer(fact.unknown ? '' : fact.value); setAnswerSet(fact.values ?? (fact.value ? [fact.value] : [])); setAnswerUnit(fact.unit || field.units[0] || ''); setUnknown(fact.unknown)
           setStage('question')
           return
         }
@@ -182,7 +196,9 @@ function App() {
   }
   function submitAnswer() {
     if (!question || busy.current) return
-    if (!unknown && !answer.trim()) { setError('Выберите ответ или укажите «Не знаю».'); return }
+    const multiple = question.multiple && question.options.length > 0
+    const filled = multiple ? answerSet.length > 0 : !!answer.trim()
+    if (!unknown && !filled) { setError('Выберите ответ или укажите «Не знаю».'); return }
     if (editing && question.kind === 'property') {
       const existing = draft.attributes.find(item => item.replaces === editing.id || item.id === editing.id)
       const item = { id: existing?.id || `input:${crypto.randomUUID()}`, name: question.property_name || editing.name,
@@ -192,8 +208,12 @@ function App() {
       void submit({ ...draft, confirmed_ktru_code: null, attributes: [...draft.attributes.filter(fact => fact.id !== item.id), item] })
       return
     }
+    // Множественный выбор передаётся через values и БЕЗ value: контракт не допускает
+    // одновременную передачу двух форм одного ответа (см. `multiple` выше).
     const next = { ...draft, confirmed_ktru_code: question.kind === 'correction' ? draft.confirmed_ktru_code : null, answers: [...draft.answers.filter(item => item.question_id !== question.id),
-      { question_id: question.id, value: unknown ? null : answer, unit: answerUnit || null, unknown }] }
+      multiple
+        ? { question_id: question.id, values: unknown ? [] : answerSet, unit: answerUnit || question.unit || null, unknown }
+        : { question_id: question.id, value: unknown ? null : answer, unit: answerUnit || question.unit || null, unknown }] }
     if (question.kind === 'category') next.confirmed_category_id = unknown ? null : answer
     void submit(next)
   }
@@ -202,8 +222,28 @@ function App() {
     try { await navigator.clipboard.writeText(result.selected_ktru_code); setCopied(true) }
     catch { setError('Выделите код и скопируйте его вручную.') }
   }
+  async function openCard(code: string) {
+    setCardError('')
+    try {
+      const data = await catalogPosition(code)
+      setCard({ code, data })
+    } catch (failure) {
+      setCardError(failure instanceof Error ? failure.message : 'Не удалось загрузить карточку КТРУ.')
+    }
+  }
+
   function reset() { setDescriptionHint(false); invalidate(); setDraft(emptyDraft()); setResult(null); setStage('input'); setHistory([]) }
   const noSimilar = !!result && result.categories.length === 0 && result.issues.some(issue => issue.code === 'no_similar_products')
+  /** Правило каталога человеческим языком: вариант, интервал или «не ограничено». */
+  function rule(item: { kind: string; value?: string | null; lower?: string | null; upper?: string | null; unit?: string | null }): string {
+    if (item.kind === 'enum') return item.value || '—'
+    const unit = item.unit ? ` ${item.unit}` : ''
+    if (item.lower && item.upper) return `${item.lower}–${item.upper}${unit}`
+    if (item.lower) return `от ${item.lower}${unit}`
+    if (item.upper) return `до ${item.upper}${unit}`
+    return item.value ? `${item.value}${unit}` : 'не ограничено'
+  }
+
   const title = stage === 'input' ? 'Описание товара' : stage === 'question' ? question?.title || 'Уточните сведения'
     : stage === 'correction' ? 'Исправьте характеристику' : stage === 'done' ? 'Подбор завершён' : noSimilar ? 'Ничего похожего не найдено' : 'Проверьте результат'
   const currentStep = stage === 'input' ? 0 : stage === 'question' || stage === 'correction' ? 1 : 2
@@ -234,10 +274,16 @@ function App() {
         </form>}
         {stage === 'question' && question && <form id="question-form" onSubmit={event => { event.preventDefault(); submitAnswer() }}>
           <p className="help">{userMessage(question.reason)}</p>
-          {question.options.length > 0 ? <fieldset className="radio-list" disabled={loading}><legend className="sr-only">{question.title}</legend>
-            {question.options.map(option => <label className="radio-row" key={option.value}><input type="radio" name="answer" checked={!unknown && answer === option.value} onChange={() => { setAnswer(option.value); setUnknown(false); setError('') }} /><span>{option.label}</span></label>)}
-          </fieldset> : <div className="measurement"><label className="sr-only" htmlFor="answer">Значение</label><input aria-describedby={error ? 'form-error' : undefined} aria-invalid={!!error} id="answer" value={answer} disabled={loading} onChange={event => { setAnswer(event.target.value); setUnknown(false) }} placeholder="Значение" />
-            <label className="sr-only" htmlFor="answer-unit">Единица</label><input id="answer-unit" value={answerUnit} disabled={loading} onChange={event => setAnswerUnit(event.target.value)} placeholder="Единица" /></div>}
+          {question.options.length > 0 ? question.multiple
+            ? <fieldset className="radio-list" disabled={loading}><legend className="sr-only">{question.title}</legend>
+                {question.options.map(option => <label className="radio-row" key={option.value}><input type="checkbox" name="answer" checked={!unknown && answerSet.includes(option.value)} onChange={() => { setAnswerSet(current => current.includes(option.value) ? current.filter(item => item !== option.value) : [...current, option.value]); setUnknown(false); setError('') }} /><span>{option.label}</span></label>)}
+                <p className="help compact">Можно выбрать несколько значений.</p>
+              </fieldset>
+            : <fieldset className="radio-list" disabled={loading}><legend className="sr-only">{question.title}</legend>
+                {question.options.map(option => <label className="radio-row" key={option.value}><input type="radio" name="answer" checked={!unknown && answer === option.value} onChange={() => { setAnswer(option.value); setUnknown(false); setError('') }} /><span>{option.label}</span></label>)}
+              </fieldset> : <div className="measurement"><label className="sr-only" htmlFor="answer">Значение</label><input aria-describedby={error ? 'form-error' : undefined} aria-invalid={!!error} id="answer" value={answer} disabled={loading} onChange={event => { setAnswer(event.target.value); setUnknown(false) }} placeholder={question.ranges?.length ? 'Значение' : 'Значение'} inputMode="decimal" />
+            {question.unit ? <span className="unit-fixed" aria-label="Единица измерения">{question.unit}</span> : null}</div>}
+          {question.hint && <p className="help compact range-hint">{question.hint}</p>}
           {question.kind === 'category' && <button type="button" className="secondary reject-types" disabled={loading} onClick={rejectTypes}>Ни один тип не подходит — изменить запрос</button>}
           {question.allow_unknown && question.kind !== 'category' && <label className="radio-row"><input type="radio" name="answer" checked={unknown} disabled={loading} onChange={() => { setUnknown(true); setError('') }} /><span>Не знаю</span></label>}
 
@@ -254,11 +300,28 @@ function App() {
           {result.status === 'needs_data' && <p className="data-notice" role="status">Сейчас сервису недостаточно данных для проверенного подбора. Описание и характеристики сохранены; причина и следующие шаги указаны ниже.</p>}
           {result.status === 'ambiguous' && <p className="data-notice" role="status">Осталось несколько подходящих позиций. Однозначный код пока не определён — дополните или исправьте характеристики.</p>}
           {result.next_steps.map(step => <p className="help compact" key={userMessage(step)}>{userMessage(step)}</p>)}
-          {result.facts.length > 0 && <><h3 className="section-label">Характеристики</h3><dl className="result-data">{result.facts.map(fact => <div key={fact.id}><dt>{fact.name || 'Неустановленное свойство'}</dt><dd>{fact.unknown ? 'Не знаю' : `${fact.value} ${fact.unit || ''}`} {fact.normalized_value !== null && (fact.normalized_value !== fact.value || fact.normalized_unit !== fact.unit) && <small> → {fact.normalized_value} {fact.normalized_unit}</small>} <button type="button" className="link-button" onClick={() => edit(fact)}>Исправить</button></dd></div>)}</dl></>}
+          {result.facts.length > 0 && <><h3 className="section-label">Характеристики</h3><dl className="result-data">{result.facts.map(fact => <div key={fact.id}><dt>{fact.name || 'Неустановленное свойство'}</dt><dd>{`${fact.surface_value || fact.value} ${fact.unit || ''}`.trim() || 'Не знаю'}{fact.unknown && <span className="help compact"> · значение не подтверждено{fact.uncertainty_reason ? `: ${fact.uncertainty_reason}` : ''}</span>} {fact.normalized_value !== null && (fact.normalized_value !== fact.value || fact.normalized_unit !== fact.unit) && <small> → {fact.normalized_value} {fact.normalized_unit}</small>} <button type="button" className="link-button" onClick={() => edit(fact)}>Исправить</button></dd></div>)}</dl></>}
           {result.corrections.map((item, index) => <p className="unit-note" key={index}>{item.original} → {item.normalized}. {item.explanation}{item.confirmation_required && ' Требуется подтверждение — исходный факт пока не изменён.'}</p>)}
-          {result.candidates.length > 0 && <><h3 className="section-label">Конечные позиции: {result.candidate_count}</h3>
+          {result.candidates.length > 0 && <details className="candidates" open={result.candidate_count <= 3}>
+            <summary className="section-label">Конечные позиции: {result.candidate_count}{result.candidate_count > 3 && ' — нажмите, чтобы развернуть'}</summary>
             {result.candidates.map(candidate => <div className="candidate" key={candidate.ktru_code}><strong>{candidate.name}</strong><div className="result-code">{candidate.ktru_code}</div>
-              <p className="help compact">{candidate.outcome === 'compatible' ? 'Значения совместимы' : candidate.outcome === 'incompatible' ? 'Значения несовместимы' : 'Проверка не завершена'}{candidate.missing_required.length > 0 && ` · Требуется: ${candidate.missing_required.join(', ')}`}</p></div>)}</>}
+              <p className="help compact">{candidate.outcome === 'compatible' ? 'Значения совместимы' : candidate.outcome === 'incompatible' ? 'Значения несовместимы' : 'Проверка не завершена'}{candidate.missing_required.length > 0 && ` · Требуется: ${candidate.missing_required.join(', ')}`}</p>
+              <button type="button" className="link-button" disabled={loading} onClick={() => void openCard(candidate.ktru_code)}>Показать карточку КТРУ</button></div>)}
+          </details>}
+          {result.unparsed.length > 0 && <><h3 className="section-label">Неразобранный текст</h3>
+            <p className="help compact">Эти фрагменты сохранены как есть: система не назначила им характеристику.</p>
+            <ul className="additional-list">{result.unparsed.map((fragment, index) => <li key={index}>{fragment.raw}</li>)}</ul></>}
+          {result.additional.length > 0 && <><h3 className="section-label">Дополнительные сведения</h3>
+            <ul className="additional-list">{result.additional.map((fragment, index) => <li key={index}>{fragment.raw}</li>)}</ul></>}
+          {card && <div className="catalog-card"><h3 className="section-label">Карточка КТРУ {card.data.position.code}</h3>
+            <p className="help compact">{card.data.position.name} · справочные правила (не сведения пользователя)</p>
+            <dl className="result-data">{card.data.position.properties.map(property => <div key={property.id}>
+              <dt>{property.name}{property.required && ' · обязательно'}{!property.verified && ' · не подтверждено'}</dt>
+              <dd>{property.allowed.length === 0 ? 'значения не заданы' : property.allowed.map(rule).join('; ')}</dd></div>)}</dl>
+            {card.data.blocking_reasons.length > 0 && <ul className="additional-list">{card.data.blocking_reasons.map((reason, index) => <li key={index}>{reason.explanation} ({reason.applicability}{reason.blocks_resolution ? ', блокирует подтверждение' : ''})</li>)}</ul>}
+            <p className="help compact">Ваши сведения по этой позиции: {result.facts.filter(fact => fact.card_mappings?.length).map(fact => `${fact.name}: ${fact.unknown ? 'не подтверждено' : fact.value}`).join('; ') || 'нет'}</p>
+            <button type="button" className="link-button" onClick={() => setCard(null)}>Закрыть карточку</button></div>}
+          {cardError && <p className="form-error" role="alert">{cardError}</p>}
           {result.issues.map((issue, index) => <p className={issue.severity === 'error' ? 'form-error' : 'help compact'} key={index}>{userMessage(issue.explanation)} {userMessage(issue.suggested_action)}</p>)}
           {stage === 'done' && <div className="result-name"><h3 className="result-code">{result.selected_ktru_code}</h3><span className="confirmed">Подтверждено и проверено</span></div>}
           <div className="known-data"><span>Проверено позиций: {result.scope.evaluated_count}</span><span>{result.scope.complete ? 'Область проверена полностью' : 'Покрытие не подтверждено'}</span></div>
@@ -275,7 +338,8 @@ function App() {
           {stage === 'question' && question && <button className="primary" type="submit" form="question-form" disabled={loading}>Продолжить</button>}
           {stage === 'correction' && <button className="primary" type="submit" form="correction-form" disabled={loading}>Проверить правку</button>}
           {stage === 'review' && <><button className="secondary" onClick={changeDescription}>Изменить описание</button><button className="secondary" onClick={() => edit(null)}>Добавить характеристику</button>
-            {question?.kind === 'property' && <button className="primary" disabled={loading} onClick={() => { setAnswer(''); setUnknown(false); setAnswerUnit(question.unit || ''); setStage('question') }}>Уточнить характеристики</button>}
+            {question?.kind === 'property' && <button className="primary" disabled={loading} onClick={() => { setAnswer(''); setAnswerSet([]); setUnknown(false); setAnswerUnit(question.unit || ''); setStage('question') }}>Уточнить характеристики</button>}
+            {question?.kind === 'correction' && <button className="primary" disabled={loading} onClick={() => { setAnswer(''); setAnswerSet([]); setUnknown(false); setStage('question') }}>Открыть уточнение: {question.title}</button>}
             {canConfirm && <button className="primary" disabled={loading} onClick={() => void submit({ ...draft, confirmed_ktru_code: question!.options.find(option => option.value === result!.candidates[0].ktru_code)!.value })}>Подтвердить код</button>}
             {(result?.status === 'needs_data' || !!error) && <button className="primary" disabled={loading} onClick={() => void submit(draft)}>Повторить проверку</button>}</>}
           {stage === 'done' && <><button className="secondary" onClick={changeDescription}>Изменить описание</button><button className="secondary" onClick={reset}>Новый подбор</button><button className="primary" onClick={() => void copy()}>{copied ? 'Скопировано' : 'Скопировать код'}</button></>}

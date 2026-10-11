@@ -88,11 +88,13 @@ def _empty_lines():
           [row["description"] for row in rows.rows])
 
 
-@case("длинная строка обрезается с предупреждением")
+@case("длинная строка отклоняется с понятной причиной")
 def _long_line():
+    # Политика изменена по требованию ревью: молчаливая обрезка превращала описание в
+    # другой товар. Строка отклоняется целиком и попадает в skipped с причиной.
     rows = split_rows(("Киянка " + "х" * (MAX_DESCRIPTION + 500) + "\n").encode("utf-8"))
-    check(len(rows.rows[0]["description"]) == MAX_DESCRIPTION, len(rows.rows[0]["description"]))
-    check(any("обрезана" in note for note in rows.notes), rows.notes)
+    check(rows.rows == [], rows.rows[:1])
+    check(any("длиннее" in item["reason"] for item in rows.skipped), rows.skipped)
 
 
 @case("лимит строк соблюдается, лишние попадают в skipped")

@@ -73,6 +73,12 @@ POLARITIES = ("affirmed", "negated", "uncertain")
 #: уверенность неопределённого факта: ниже порога жёсткости 0.6 из контракта C
 UNCONFIRMED_CONFIDENCE = 0.50
 
+#: уверенность факта с НЕПОЛНЫМ именем характеристики: «минимальный диаметр» вместо
+#: «Минимальный диаметр зажима патрона». Подмножество лемм — догадка, поэтому факт
+#: мягкий: C его проверяет, но исключать по нему коды нельзя. Та же ступень, что
+#: `partial` = 0.55 в модели A (`app/model_a.py`).
+PARTIAL_NAME_CONFIDENCE = 0.55
+
 #: значения «да/нет» через canon: регистр и ё/е приводятся к одному виду
 BOOLEAN_VALUES = {"да": True, "нет": False}
 
@@ -264,6 +270,24 @@ def matched_property(fact: Fact, position: Position | None) -> Property | None:
     return candidates[0] if len(candidates) == 1 else None
 
 
+def partial_property(fact: Fact, position: Position | None) -> Property | None:
+    """Характеристика по НЕПОЛНОМУ имени: леммы факта — строгое подмножество её лемм.
+
+    «минимальный диаметр» ⊂ «Минимальный диаметр зажима патрона». Берётся, только если
+    такая характеристика ровно одна: «диаметр» подходит и минимуму, и максимуму, и
+    тогда привязки нет — значение уходит на уточнение. Это догадка, поэтому факт
+    должен быть мягким (см. `PARTIAL_NAME_CONFIDENCE`), а не жёстким.
+    """
+    if position is None:
+        return None
+    target = set(lemmas(fact.name or ""))
+    if not target:
+        return None
+    candidates = [prop for prop in position.properties if prop.subject == fact.subject
+                  and target < set(lemmas(prop.name))]
+    return candidates[0] if len(candidates) == 1 else None
+
+
 def is_boolean_property(prop: Property | None) -> bool:
     """Булева ли характеристика: `value_type == "boolean"` или допустимые ровно {да, нет}."""
     if prop is None:
@@ -278,6 +302,11 @@ def structure(fact: Fact, position: Position | None = None) -> StructuredFact:
     """Спроецировать один факт. С позицией `def_id` становится кодом характеристики."""
     prop = matched_property(fact, position)
     def_id = prop.id if prop is not None else None
+    #: Неполное имя характеристики: привязка есть, но она догадка — факт мягкий.
+    partial = prop is None and partial_property(fact, position) is not None
+    if partial:
+        prop = partial_property(fact, position)
+        def_id = prop.id if prop is not None else None
 
     operator, remainder = split_operator(fact.value or "")
     raw_value = (fact.value or "").strip()
@@ -332,6 +361,12 @@ def structure(fact: Fact, position: Position | None = None) -> StructuredFact:
         polarity = "uncertain"
         score = min(confidence(fact), UNCONFIRMED_CONFIDENCE)
         method = reason
+    elif partial:
+        # Имя характеристики написано не полностью: значение проверяется по найденной
+        # характеристике, но факт не жёсткий — исключать коды по догадке нельзя.
+        polarity = "uncertain"
+        score = min(confidence(fact), PARTIAL_NAME_CONFIDENCE)
+        method = "partial_name"
     else:
         polarity = "negated" if fact.negated and not fact.negation_interpretation else "affirmed"
         score = confidence(fact)

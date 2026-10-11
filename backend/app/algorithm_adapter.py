@@ -1,4 +1,5 @@
 """C/D bridge over the existing immutable snapshot; strict backend checks remain a gate."""
+import json
 from types import MappingProxyType
 
 from algorithms.AlgorithmC import Units, _norm_unit, run_c
@@ -43,7 +44,40 @@ def make_units(data):
     units = Units()
     units.by_code = {unit.code: unit.model_dump() for unit in data.catalog.units}
     units.aliases = {_norm_unit(alias.raw): alias.model_dump() for alias in data.catalog.unit_aliases}
+    _add_word_units(units, data)
     return units
+
+
+def _add_word_units(units, data) -> None:
+    """Дополняет алиасы поставки полными словами единиц («метров», «килограммов»).
+
+    В поставке лежат сокращения и коды ОКЕИ, поэтому «молоток 200 метров» не разбирался
+    как измерение и вброс проходил без проверки. Слова берутся из `app.units` и
+    привязываются к тем же кодам ОКЕИ, что и сокращения: справочник поставки остаётся
+    источником кода, а слово — только написание. Существующие алиасы не переопределяются.
+    """
+    from app.units import UNITS
+
+    template: dict[str, str] = {}
+    for unit in data.catalog.units:
+        for spelling in unit.spellings:
+            known = UNITS.get(spelling.name.casefold().replace("ё", "е"))
+            if known is not None and known.name not in template:
+                template[known.name] = unit.code
+    for alias, known in UNITS.items():
+        if alias in units.aliases or len(alias) < 3 or not alias.isalpha():
+            continue
+        code = template.get(known.name)
+        if code is None:
+            continue
+        sample = next((item for item in units.aliases.values() if item.get("okei_code") == code), None)
+        if sample is None:
+            continue
+        units.aliases[alias] = {**sample, "raw": alias,
+                                "raw_json": json.dumps({"raw": alias, "okei_code": code,
+                                                        "okei_name": sample.get("okei_name"),
+                                                        "resolved_by": "app.units", "global_safe": True},
+                                                       ensure_ascii=False)}
 
 
 class AlgorithmChecker:

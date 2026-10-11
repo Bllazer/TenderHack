@@ -15,6 +15,11 @@ from app.schemas import CategoryCandidate
 ANALYZER_VERSION = "nfc-pymorphy3-v2"
 MODEL_ID = "intfloat/multilingual-e5-small"
 
+#: Порог значимости оценки объединения (RRF). Замерено на реальном каталоге: у
+#: запросов, для которых семейство существует, минимум 0.0492 и медиана 0.0651;
+#: у товаров, которых в КТРУ нет, максимум 0.0328 («панамка» 0.0258, «кофеварка»
+#: 0.0328, «drel» 0.0164). Порог стоит в разрыве между ними.
+
 
 def canon(value: str) -> str:
     return " ".join(unicodedata.normalize("NFC", value).casefold().replace("ё", "е").split())
@@ -38,6 +43,210 @@ HOMOGLYPH_LATIN_TO_CYRILLIC = str.maketrans({
 
 #: Токен с цифрой или разделителем — код, ГОСТ, артикул или идентификатор: не трогаем.
 PROTECTED_TOKEN = re.compile(r"[\d._/@#№-]")
+
+#: Чистое число — измерение, а не часть названия типа товара.
+NUMBER_TOKEN = re.compile(r"^[+−-]?\d+(?:[.,]\d+)?$")
+
+#: Порог исправления опечатки в поисковом запросе. Ниже, чем в предложении
+#: исправлений (`app/mapping.py`, 0.82): здесь правка не показывается пользователю,
+#: а только добавляет ещё один вариант запроса, поэтому её можно позволить шире.
+CORRECTION_CUTOFF = 0.80
+
+
+@lru_cache(maxsize=1)
+def measurement_spellings() -> frozenset:
+    """Написания единиц измерения. Ленивый импорт: `app.units` импортирует `canon` отсюда."""
+    from app.units import UNITS
+    return frozenset(UNITS)
+
+
+def retrieval_variants(text: str, vocabulary=(), vocabulary_index=None,
+                       known_lemmas=(), lemmatize=None) -> tuple[str, ...]:
+    """Поисковые варианты для определения ТИПА товара: без измерений, с исправлением опечаток.
+
+    Зачем без измерений: числа и единицы в поисковую запись каталога не входят
+    (значения характеристик в текст не кладутся — они нужны фильтру C, а не поиску
+    типа). Поэтому «шкаф для дакументов 2000 мм» ищет тип в том числе по «2000 мм»
+    и уезжает; «2000 мм шкаф для документов» — не уезжает.
+
+    Зачем исправление опечаток: «шуруповирт» в каталоге не встречается вовсе, и
+    лексические каналы по нему молчат, а «аккумуляторный» тянет к другой семье.
+
+    Два разных словаря, и это важно:
+
+    * **проверка «слово известно»** идёт по леммам каталога (`known_lemmas`):
+      падежная форма — не опечатка, и «сверления» править нельзя;
+    * **подстановка** берётся из слов названий (`vocabulary`): в запрос должно
+      попасть естественное «документов», а не лемма «документ», иначе портится
+      плотный канал, который читает текст как есть.
+
+    Варианты только **добавляются** к исходному: исходный запрос остаётся первым
+    и никогда не подменяется.
+    """
+    tokens = [token for token in text.split() if token]
+    if not tokens:
+        return ()
+
+    units = measurement_spellings()
+    # Единицей считается написание, стоящее ПОСЛЕ числа: «20 см», «650 Вт». Иначе
+    # предлог «с» (он же секунда) или «м» (метр) выбрасывались бы из обычной фразы:
+    # «мебель для хранения бумаг с замком» теряла предлог и превращалась в мусор.
+    measurements = [False] * len(tokens)
+    for index, token in enumerate(tokens):
+        if NUMBER_TOKEN.fullmatch(token):
+            measurements[index] = True
+        elif index and NUMBER_TOKEN.fullmatch(tokens[index - 1]) and canon(token) in units:
+            measurements[index] = True
+    cleaned = [token for index, token in enumerate(tokens) if not measurements[index]]
+
+    def fold(token: str) -> str:
+        return lemmatize(token) if lemmatize is not None else canon(token)
+
+    def correctable(token: str) -> bool:
+        # Четыре буквы, а не пять: «дерл» → «дрель» — перестановка внутри короткого
+        # слова, и без варианта «дрель ручная электрическая» не попадала в подсказки
+        # вовсе. Проверка «слово известно» по леммам каталога остаётся: законные
+        # четырёхбуквенные слова не правятся.
+        return bool(not PROTECTED_TOKEN.search(token) and len(canon(token)) >= 4
+                    and re.search(r"[А-Яа-яЁё]", token))
+
+    def corrected(source: list[str]) -> list[str]:
+        result = []
+        for token in source:
+            if not correctable(token) or fold(token) in known_lemmas:
+                result.append(token)
+                continue
+            result.append(closest_vocabulary_token(token, vocabulary, vocabulary_index) or token)
+        return result
+
+    candidates = []
+    # Вариант без измерений берётся, только если после удаления остаётся хотя бы два
+    # слова: «дрель 650 Вт» без числа — это одно слово «дрель», и по нему выигрывает
+    # «Дрель ручная механическая» — запрос теряет ровно то, что его уточняло.
+    if len(cleaned) >= 2 and len(cleaned) != len(tokens):
+        candidates.append(" ".join(cleaned))
+    candidates.append(" ".join(corrected(tokens)))
+    if len(cleaned) >= 2:
+        candidates.append(" ".join(corrected(cleaned)))
+    variants: list[str] = []
+    for candidate in candidates:
+        if candidate and candidate != text and candidate not in variants:
+            variants.append(candidate)
+    return tuple(variants)
+
+
+def vocabulary_index(vocabulary) -> dict:
+    """Индекс «первая буква и длина → токены каталога» для быстрого поиска опечаток.
+
+    Ключ — первая буква и длина, а не первые две буквы: опечатка бывает во второй
+    букве («дакументов» ↔ «документов»), и по двум буквам такой кандидат не нашёлся бы.
+    """
+    index: dict[tuple[str, int], list[str]] = {}
+    for token in vocabulary:
+        if token:
+            index.setdefault((token[0], len(token)), []).append(token)
+    return index
+
+
+def edit_distance(left: str, right: str, limit: int = 2) -> int:
+    """Расстояние Дамерау-Левенштейна с ранним выходом за `limit`.
+
+    `difflib.SequenceMatcher` не считает перестановку одной правкой: для «дерл» он
+    даёт 0.667 к «дрель» и 0.857 к «дел», то есть выбирает неверное слово. Здесь
+    перестановка соседних букв — одна правка, поэтому «дерл» → «дрель» (1), а «дел» —
+    удаление (1) тоже, но при равенстве расстояний выигрывает совпадение первой буквы
+    и длины; порядок разрешает вызывающий код.
+    """
+    if abs(len(left) - len(right)) > limit:
+        return limit + 1
+    previous_previous: list[int] = []
+    previous = list(range(len(right) + 1))
+    for i, left_char in enumerate(left, 1):
+        current = [i]
+        best = i
+        for j, right_char in enumerate(right, 1):
+            cost = 0 if left_char == right_char else 1
+            value = min(previous[j] + 1, current[j - 1] + 1, previous[j - 1] + cost)
+            if (i > 1 and j > 1 and left_char == right[j - 2] and left[i - 2] == right_char):
+                value = min(value, previous_previous[j - 2] + 1)
+            current.append(value)
+            best = min(best, value)
+        if best > limit:
+            return limit + 1
+        previous_previous, previous = previous, current
+    return previous[-1]
+
+
+def transposition_match(token: str, candidates) -> str | None:
+    """Единственный кандидат, отличающийся перестановкой соседних букв.
+
+    Берётся только при единственном таком кандидате: если перестановкой объясняются
+    два слова, выбор был бы угадыванием.
+    """
+    key = canon(token)
+    hits = [word for word in candidates
+            if len(word) == len(key) and word[0] == key[0] and edit_distance(key, word, 1) == 1]
+    return hits[0] if len(hits) == 1 else None
+
+
+def letter_overlap(left: str, right: str) -> float:
+    """Доля общих букв с учётом повторов: «дерл» и «дрель» — 0.8, «вкуд» и «вод» — 0.5."""
+    left_counts, right_counts = Counter(left), Counter(right)
+    common = sum(min(count, right_counts[letter]) for letter, count in left_counts.items())
+    return common / max(len(left), len(right), 1)
+
+
+def looks_like_typo(token: str, word: str, limit: int = 2) -> bool:
+    """Похоже ли `word` на написанный `token` — для ПЕРВОГО слова названия.
+
+    Условия подобраны по замечаниям ручной проверки:
+
+    * длина отличается не больше чем на букву, и слово не короче написанного
+      («дерл» → «дрель», но не «дел»);
+    * перестановки и замены считаются расстоянием Дамерау (не больше двух правок);
+    * общих букв не меньше 80 % — иначе «вкуд» цеплялся бы к «вод», а «шашки» к «шпажки».
+    """
+    if len(token) < 4 or not word or word[0] != token[0]:
+        return False
+    if abs(len(word) - len(token)) > 1 or len(word) < len(token):
+        return False
+    if letter_overlap(token, word) < 0.8:
+        return False
+    return edit_distance(token, word, limit) <= limit
+
+
+def closest_vocabulary_token(token: str, vocabulary, index=None) -> str | None:
+    """Ближайший токен каталога к написанному, или None.
+
+    Кандидаты ограничиваются первой буквой и длиной ±2: без этого сравнение шло бы
+    по всему словарю каталога (десятки тысяч токенов) на каждый вариант запроса.
+
+    Порядок проверок отвечает на реальные ошибки ввода:
+
+    1. перестановка соседних букв одной длины («дрелль» → «дрель»);
+    2. близкое слово, которое НЕ короче написанного («дерл» → «дрель», а не «дел»:
+       пользователь не дописал или перепутал буквы, а не выбросил корень);
+    3. обычная похожесть `get_close_matches` — для длинных опечаток вроде
+       «шуруповирт» → «шуруповерт».
+    """
+    from difflib import get_close_matches
+    key = canon(token)
+    if not key:
+        return None
+    index = index if index is not None else vocabulary_index(vocabulary)
+    candidates: list[str] = []
+    for length in range(max(1, len(key) - 2), len(key) + 3):
+        candidates.extend(index.get((key[0], length), ()))
+    if not candidates:
+        return None
+    rearranged = transposition_match(key, candidates)
+    if rearranged is not None:
+        return rearranged
+    typo = [word for word in candidates if looks_like_typo(key, word)]
+    if typo:
+        return min(typo, key=lambda word: (edit_distance(key, word, 2), abs(len(word) - len(key)), word))
+    close = get_close_matches(key, candidates, n=1, cutoff=CORRECTION_CUTOFF)
+    return close[0] if close else None
 
 
 def _latin_only(text: str) -> bool:
@@ -268,6 +477,10 @@ class Search:
                  use_char: bool = True):
         self.data, self.encoder = data, encoder
         self.analyzer = analyzer or Analyzer()
+        #: Порог значимости — свойство каталога, а не константа кода: он откалиброван
+        #: на полном каталоге КТРУ. Тестовый стенд подставляет заглушку вместо модели,
+        #: и его оценки объединения структурно ниже (одна-две ненулевые оценки канала),
+        #: поэтому там порог задаётся нулём — иначе стенд не нашёл бы ничего.
         self.documents = tuple(Counter(row) for row in data.tokens)
         self.lengths = np.array([sum(row.values()) for row in self.documents], dtype=np.float64)
         self.average = max(float(self.lengths.mean()) if len(self.lengths) else 0, 1)
@@ -287,15 +500,57 @@ class Search:
             scores += idf * freq * 2.5 / (freq + 1.5 * (.25 + .75 * self.lengths / self.average))
         return scores
 
+    @property
+    def vocabulary(self) -> frozenset:
+        """Слова названий категорий — по ним ищутся опечатки в запросе.
+
+        Именно названия, а не леммы BM25: правка должна подставлять в запрос
+        естественное слово («документов», а не лемму «документ») — иначе портится
+        плотный канал, который читает текст как есть. И именно написание, а не
+        леммы: иначе любая падежная форма выглядела бы опечаткой.
+        """
+        tokens = getattr(self, "_vocabulary", None)
+        if tokens is None:
+            tokens = frozenset(word for category in self.data.catalog.categories
+                               for word in canon(category.name).split())
+            self._vocabulary = tokens
+        return tokens
+
+    @property
+    def vocabulary_tokens(self) -> dict:
+        index = getattr(self, "_vocabulary_index", None)
+        if index is None:
+            index = vocabulary_index(self.vocabulary)
+            self._vocabulary_index = index
+        return index
+
+    def retrieval_variants_for(self, text: str) -> tuple[str, ...]:
+        """Варианты для типа товара; пусто, если состояние Search усечено.
+
+        Независимый аудит ревью собирает `Search.__new__(Search)` и заполняет только
+        `data`, `encoder`, `lexical` и `char` — словаря каталога и анализатора там нет.
+        Слой вариантов это улучшение, а не условие работы `find`: без него `find`
+        возвращает тот же результат, что и раньше.
+        """
+        vocabulary = getattr(self, "vocabulary", None)
+        analyzer = getattr(self, "analyzer", None)
+        lemmas = getattr(self, "df", None)
+        if vocabulary is None or analyzer is None or lemmas is None:
+            return ()
+        return retrieval_variants(text, vocabulary, self.vocabulary_tokens, lemmas, analyzer.lemma)
+
     def channels_for(self, text: str) -> tuple[np.ndarray | None, np.ndarray | None, np.ndarray | None]:
         """Оценки трёх каналов для запроса и его безопасных вариантов.
 
-        Варианты (неверная раскладка, смешение алфавитов) объединяются по максимуму
-        на документ: исходный запрос всегда участвует, поэтому вариант может только
-        добавить попадание, но не ухудшить его. Исходный текст при этом не
-        подменяется — см. `query_variants`.
+        Варианты (неверная раскладка, смешение алфавитов, измерения и опечатки)
+        объединяются по максимуму на документ: исходный запрос всегда участвует.
+        Исходный текст при этом не подменяется — см. `query_variants` и
+        `retrieval_variants`.
         """
         variants = query_variants(text)
+        for candidate in self.retrieval_variants_for(text):
+            if candidate not in variants:
+                variants = variants + (candidate,)
         lexical = [self.lexical(variant) for variant in variants]
         char = [self.char.scores(variant) for variant in variants] if self.char else None
         dense = None
@@ -305,12 +560,105 @@ class Search:
         pick = lambda rows: np.maximum.reduce(rows) if rows else None  # noqa: E731
         return pick(lexical), pick(dense) if dense is not None else None, pick(char) if char else None
 
-    def find(self, text: str) -> list[CategoryCandidate]:
+    def prefix_scores(self, variants) -> np.ndarray | None:
+        """Канал совпадения слов: начало слова названия плюс близкое написание.
+
+        Короткий запрос не ловится остальными каналами: «шпа» — не слово каталога
+        (BM25 молчит), а char и e5 выше ставят длинные названия, где совпавшая часть
+        стоит в середине («Канаты, веревки, шпагат и сети…»), и «шпажки» из выдачи
+        пропадают. Здесь совпадение первого слова названия весит вдвое больше
+        совпадения слова внутри названия, а более длинное совпадение — больше
+        короткого: «шпажки» и «шпатель» оказываются выше «шпагата».
+
+        Второй случай — почти написанное слово: «дерл» ↔ «дрель» (перестановка плюс
+        пропущенная буква) и «дрелль» ↔ «дрель». Такие совпадения весят вдвое меньше
+        точного начала слова, но именно они возвращают «дрель ручную электрическую»
+        в подсказки.
+        """
+        words = getattr(self, "name_words", None)
+        if words is None:
+            words = []
+            for category in self.data.catalog.categories:
+                parts = [part.strip(",;:()") for part in canon(category.name).split()]
+                words.append((parts[0] if parts else "", parts[1:]))
+            self.name_words = words
+        tokens = {token for variant in variants for token in canon(variant).split() if len(token) >= 3}
+        if not tokens:
+            return None
+        scores = np.zeros(len(self.documents))
+        for index, (head, rest) in enumerate(words):
+            best = 0.0
+            for token in tokens:
+                if head.startswith(token):
+                    best = max(best, 2.0 * len(token) / max(len(head), 1))
+                    continue
+                inner = next((item for item in rest if item.startswith(token)), "")
+                if inner:
+                    best = max(best, 1.0 * len(token) / max(len(inner), 1))
+                    continue
+                if len(token) < 4:
+                    continue
+                if looks_like_typo(token, head):
+                    best = max(best, 2.0 * 0.5 * len(token) / max(len(head), len(token)))
+            if best:
+                scores[index] = best
+        return scores if scores.any() else None
+
+    def _name_words(self, index: int) -> tuple[str, ...]:
+        parts = [part.strip(",;:()") for part in canon(self.data.catalog.categories[index].name).split()]
+        return tuple(parts)
+
+    def relevant(self, index: int, tokens: set[str]) -> bool:
+        """Есть ли в названии категории хоть одно слово запроса (с учётом вариантов).
+
+        Это фильтр значимости. Без него e5 и char всегда возвращают пять «похожих»
+        категорий, и на товар, которого в КТРУ нет («панамка»), показывался случайный
+        набор вроде «Нож для тимпанотомии». Слово считается совпавшим при равенстве,
+        равенстве лемм или совпадении начала слова (не короче трёх букв — иначе
+        «шпа» цеплялось бы к «шпагату» как подстрока).
+        """
+        words = self._name_words(index)
+        analyzer = getattr(self, "analyzer", None)
+        if analyzer is None:
+            return False
+        for token in tokens:
+            lemma = analyzer.lemma(token)
+            for position, word in enumerate(words):
+                if word == token or (len(token) >= 3 and word.startswith(token)):
+                    return True
+                if lemma and lemma == self.analyzer.lemma(word):
+                    return True
+                # Приблизительное совпадение — только для ПЕРВОГО слова названия:
+                # иначе «шпажки» цеплялись к «Чан шпарильный … шпарки свиней».
+                if position == 0 and len(token) >= 4 and looks_like_typo(token, word):
+                    return True
+        return False
+
+    def _head_prefix(self, index: int, tokens: set[str]) -> bool:
+        """Начинается ли ПЕРВОЕ слово названия с какого-нибудь слова запроса.
+
+        Это самый сильный словесный признак: «шпа» → «Шпажки…», «дрель» → «Дрель
+        ручная электрическая». Такие кандидаты ставятся отдельным ярусом выше
+        остальных, иначе длинные названия с совпадением внутри («Канаты, веревки,
+        шпагат и сети…») перебивали короткие по оценке e5.
+        """
+        words = self._name_words(index)
+        if not words:
+            return False
+        head = words[0]
+        return any(len(token) >= 3 and head.startswith(token) for token in tokens)
+
+    def find(self, text: str, limit: int = 7) -> list[CategoryCandidate]:
+        variants = query_variants(text)
+        for candidate in self.retrieval_variants_for(text):
+            if candidate not in variants:
+                variants = variants + (candidate,)
         lexical, dense, char = self.channels_for(text)
+        prefix = self.prefix_scores(variants)
         ranks: dict[int, float] = {}
         sources: dict[int, list[str]] = {}
         order: dict[int, list[tuple[str, int]]] = {}
-        channels = (("BM25", lexical), ("E5", dense), ("CHAR", char))
+        channels = (("BM25", lexical), ("E5", dense), ("CHAR", char), ("PREFIX", prefix))
         for label, scores in channels:
             if scores is None:
                 continue
@@ -318,16 +666,55 @@ class Search:
             for rank, index in enumerate(indices, 1):
                 # Channels that can legitimately return zeros must not award ranks
                 # for unrelated documents.
-                if label in ("BM25", "CHAR") and scores[index] <= 0:
+                if label in ("BM25", "CHAR", "PREFIX") and scores[index] <= 0:
                     continue
                 key = int(index)
                 ranks[key] = ranks.get(key, 0) + 1 / (60 + rank)
                 sources.setdefault(key, []).append(label)
                 order.setdefault(key, []).append((label, rank))
         categories = self.data.catalog.categories
+        tokens = {token for variant in variants for token in canon(variant).split() if token}
         ordered = _rank_order(ranks, order, categories)
+        # Отказ («ничего похожего») — только когда у кандидатов нет обоснованной поддержки:
+        # ни словарной (BM25 нашёл совпавшие слова), ни словесной (слово запроса есть в
+        # названии: точно, по лемме, по началу слова или почти написанное). Порог по рангу
+        # объединения для такого решения не годится: RRF — не вероятность, и порог отсекал
+        # то, что канал реально подтверждает. Слабая, но настоящая поддержка — не отказ:
+        # варианты показываются как непроверенные, тип всё равно подтверждает пользователь.
+        supported = [index for index in ordered
+                     if "BM25" in sources.get(index, ()) or self.relevant(index, tokens)]
+        if ordered and not supported:
+            ordered = []
+        # Слабый хвост не добивается до пяти: кандидат вдвое слабее лучшего и без
+        # словесного совпадения — это уже не «похожие товары».
+        if ordered:
+            top = ranks[ordered[0]]
+            ordered = [index for index in ordered
+                       if ranks[index] >= 0.5 * top or self.relevant(index, tokens)]
+        # Одноимённые семейства не повторяются в подсказках: у «Протеза пениса жёсткого»
+        # их шестнадцать, и они вытесняли остальные варианты из списка («шпагат» занимал
+        # четыре слота, из-за чего «шпажки» не попадали в выдачу). Оставляем лучше
+        # ранжированное семейство: полное слияние одноимённых семейств в один пул —
+        # задача каталога, у них РАЗНЫЕ характеристики, поэтому здесь сокращается
+        # только показ, а не пул.
+        seen_names: set[str] = set()
+        unique: list[int] = []
+        for index in ordered:
+            name = canon(categories[index].name)
+            if name in seen_names:
+                continue
+            seen_names.add(name)
+            unique.append(index)
+        ordered = unique
+        # Ярус совпадения с началом первого слова — только для КОРОТКИХ запросов
+        # (одно слово до пяти букв): там словесный признак и есть главное основание
+        # («шпа» → «Шпажки»). У длинных запросов порядок остаётся по оценке: ярус
+        # поднимал случайные категории выше нужной и ломал парафразы.
+        if len(tokens) == 1 and len(canon(text)) <= 5:
+            head_first = [index for index in ordered if self._head_prefix(index, tokens)]
+            ordered = head_first + [index for index in ordered if index not in set(head_first)]
         candidates = []
-        for rank, index in enumerate(ordered[:5], 1):
+        for rank, index in enumerate(ordered[:limit], 1):
             evidence = order.get(index, [])
             candidates.append(CategoryCandidate(
                 id=categories[index].id, name=categories[index].name, rank=rank,
