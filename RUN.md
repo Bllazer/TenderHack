@@ -8,6 +8,7 @@
 .\start.ps1 -BackendOnly # только API
 .\start.ps1 -Gpu         # не скрывать GPU (torch в .venv всё равно CPU-сборка)
 .\start.ps1 -Reinstall   # пересобрать backend\.venv и переустановить фронтенд
+.\start.ps1 -NoBrowser   # не открывать интерфейс в браузере автоматически
 .\stop.ps1               # остановить всё, что подняли
 ```
 

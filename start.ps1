@@ -7,6 +7,7 @@
   .\start.ps1 -Gpu            # не скрывать GPU (torch в .venv всё равно CPU-сборка)
   .\start.ps1 -Reinstall      # пересобрать backend/.venv и переустановить фронтенд
   .\start.ps1 -SkipInstall    # ничего не скачивать, только запустить уже готовое
+  .\start.ps1 -NoBrowser      # не открывать интерфейс в браузере автоматически
 
 Первый запуск скачивает Python-зависимости в backend\.venv и, если нужно,
 Node.js и pnpm в .tools\. Для этого нужен интернет — один раз.
@@ -23,6 +24,7 @@ param(
     [switch]$Gpu,
     [switch]$SkipInstall,
     [switch]$Reinstall,
+    [switch]$NoBrowser,
     [int]$TimeoutSeconds = 300
 )
 
@@ -640,3 +642,13 @@ Write-Host "  интерфейс : http://127.0.0.1:$FrontendPort/"
 Write-Host "  API       : http://127.0.0.1:$BackendPort/api/docs"
 Write-Host "  проверка  : http://127.0.0.1:$BackendPort/api/health/ready"
 Write-Host "Остановить: .\stop.ps1`n" -ForegroundColor DarkGray
+
+if (-not $NoBrowser) {
+    Write-Host 'Открываю интерфейс в браузере…' -ForegroundColor DarkGray
+    try {
+        Start-Process "http://127.0.0.1:$FrontendPort/"
+    } catch {
+        Write-Note "не удалось открыть браузер: $($_.Exception.Message)"
+        Write-Note "откройте вручную: http://127.0.0.1:$FrontendPort/"
+    }
+}
