@@ -10,29 +10,38 @@ param([int[]]$Ports = @(8000, 5173, 8080))
 $ErrorActionPreference = 'Continue'
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $runDir = Join-Path $root '.run'
+$taskkill = Join-Path $env:SystemRoot 'System32\taskkill.exe'
 
 function Stop-One {
-    param([int]$ProcessId, [string]$Title)
-    $process = Get-Process -Id $ProcessId -ErrorAction SilentlyContinue
+    param([int]$Id, [string]$Title)
+    $process = Get-Process -Id $Id -ErrorAction SilentlyContinue
     if (-not $process) { return }
+
+    if (Test-Path $taskkill) {
+        # /T — вместе с дочерними процессами (uvicorn/vite часто создают их сами).
+        & $taskkill /PID $Id /T /F *> $null
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "  остановлен $Title (pid $Id)" -ForegroundColor Green
+            return
+        }
+    }
+
     try {
-        Stop-Process -Id $ProcessId -Force -ErrorAction Stop
-        # Вместе с процессом уходят его дочерние: uvicorn и vite запускают их сами.
-        Get-CimInstance Win32_Process -Filter "ParentProcessId = $ProcessId" -ErrorAction SilentlyContinue |
-            ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
-        Write-Host "  остановлен $Title (pid $ProcessId)" -ForegroundColor Green
+        Stop-Process -Id $Id -Force -ErrorAction Stop
+        Write-Host "  остановлен $Title (pid $Id)" -ForegroundColor Green
     } catch {
-        Write-Warning "  не удалось остановить $Title (pid $ProcessId): $($_.Exception.Message)"
+        Write-Warning "  не удалось остановить $Title (pid $Id): $($_.Exception.Message)"
     }
 }
 
 Write-Host 'Останавливаю запущенное…' -ForegroundColor Cyan
+
 if (Test-Path $runDir) {
     Get-ChildItem -Path $runDir -Filter '*.pid' | ForEach-Object {
         $value = (Get-Content $_.FullName -ErrorAction SilentlyContinue | Select-Object -First 1)
         $parsed = 0
         if ([int]::TryParse("$value".Trim(), [ref]$parsed) -and $parsed -gt 0) {
-            Stop-One -ProcessId $parsed -Title $_.BaseName
+            Stop-One -Id $parsed -Title $_.BaseName
         }
         Remove-Item $_.FullName -Force -ErrorAction SilentlyContinue
     }
@@ -40,7 +49,8 @@ if (Test-Path $runDir) {
 
 foreach ($port in $Ports) {
     Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue | ForEach-Object {
-        Stop-One -ProcessId $_.OwningProcess -Title "порт $port"
+        Stop-One -Id $_.OwningProcess -Title "порт $port"
     }
 }
+
 Write-Host 'Готово.' -ForegroundColor Cyan
